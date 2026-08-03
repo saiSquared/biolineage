@@ -351,7 +351,7 @@ select:focus,
 textarea:focus,
 button.button:focus,
 a.button:focus {
-    border-color: var(---color-bg);
+    border-color: var(--color-bg);
     box-shadow: 0 0 0 2px var(--color-accent);
     outline: 2px solid transparent;
 }
