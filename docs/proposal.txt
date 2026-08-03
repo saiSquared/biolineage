@@ -1,0 +1,13 @@
+README.md
+overview.md
+20260802-schema-overview.md
+20260802-relationship-model-rationale.md
+20260802-event-ingestion.md
+20260802-place-normalization.md
+20260802-sex-inference.md
+20260802-tree-function-design.md
+20260802-api-integration.md
+20260802-sqlite-to-postgresql-tree-comparison.md
+appendix.md
+places-issues.md
+proposals/20260802-oidc-sso.md
