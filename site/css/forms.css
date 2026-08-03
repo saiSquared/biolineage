@@ -1,0 +1,568 @@
+/*
+button, input, textarea, select, option {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+.date-row button img {
+	width: 36px;
+	height: 36px;
+}
+
+.date-row label {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.date-row label span {
+	display: none;
+}
+
+.date-row select,
+select.edit-select {
+	appearance: none;
+	padding: 12px;
+	border: 1px solid var(--table-border);
+	border-radius: 0.25rem;
+	display: grid;
+	grid-template-areas: 'select';
+	align-items: center;
+	position: relative;
+}
+
+.date-row select::after
+select.edit-select::after {
+	grid-area: select;
+	content: '';
+	justify-self: end;
+	width: 0.8em;
+	height: 0.5em;
+	background-color: var(--color-text);
+	clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+
+.auth label,
+.profile-modal-body label.profile-modal-label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.profile-modal-body label.label-gap {
+	margin-top: 0.5rem;
+}
+
+.profile-modal-body input[type="radio"] {
+	margin-right: 0.5rem;
+}
+
+.auth input[type="text"],
+.auth input[type="email"],
+.auth input[type="password"],
+.profile-modal-body input[type="text"],
+.profile-modal-body input[type="url"] {
+	padding: 12px;
+	border: 1px solid var(--table-border);
+	border-radius: 0.25rem;
+}
+
+.profile-modal-body .loupe input {
+	padding: 12px 45px 12px 35px;
+}
+
+.auth-holder form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.auth-holder form input {
+	margin-bottom: 0.5rem;
+}
+
+.comment-entry-body {
+	padding: 8px 12px;
+	min-height: 20px;
+	white-space: pre-wrap;
+}
+
+.comment-entry-body:focus,
+.comment-entry-body:focus-visible {
+	outline: none;
+}
+
+.comment-entry-body:empty::before {
+	content: attr(data-placeholder);
+	pointer-events: none;
+}
+
+button.action-button {
+	border: none;
+	outline: none;
+	color: var(--color-text);
+	background-color: var(--color-border);
+	border-radius: 4px;
+	padding: 0 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	height: 36px;
+	cursor: pointer;
+}
+
+button.action-button svg,
+button.action-button img {
+	height: 1.25em;
+	aspect-ratio: 1 / 1;
+}
+
+button.action-button span {
+	line-height: 1;
+}
+
+button.action-button:hover {
+	background-color: var(--color-hover);
+}
+
+button.button-500 {
+	background-color: var(--color-accent-500);
+	flex-grow: 1;
+}
+
+button.button-accent {
+	color: var(--color-bg-alt);
+	background-color: var(--color-accent);
+}
+
+button.button-accent:hover {
+	color: var(--color-text);
+	background-color: var(--color-border);
+}
+
+button.button-accent:disabled:hover {
+	color: var(--color-bg-alt);
+	background-color: var(--color-accent);
+}
+
+button.button-ui {
+	background-color: var(--color-bg-alt);
+}
+
+button.action-button:disabled {
+	opacity: 0.3;
+	cursor: default;
+}
+
+button.img-button {
+	border: none;
+	outline: none;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+a.img-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+a.img-button img,
+button.img-button img {
+	width: 40px;
+	height: 40px;
+}
+
+.auth-button {
+    padding: .75rem;
+	color: var(--color-bg-alt);
+    background-color: var(--color-text);
+    border-radius: 1rem;
+    width: 100%;
+	text-decoration: none;
+	border: none;
+	font-family: inherit;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	align-self: start;
+	box-shadow: 0 3px 5px rgba(0 0 0 / 18%);
+	text-align: center;
+	line-height: 1.1;
+	transition: 220ms all ease-in-out;
+	margin-top: 0.5rem;
+}
+
+.form-edit {
+	max-width: 320px;
+	display: flex;
+	flex-direction: column;
+}
+
+.form-edit input[type="text"],
+.form-edit input[type="email"],
+.form-edit input[type="password"] {
+	padding: 0.25rem 0.5rem;
+	border: 1px solid var(--table-border);
+	border-radius: 0.25rem;
+	margin-bottom: 0.5rem;
+}
+
+.form-edit input:read-only {
+	background-color: var(--color-bg);
+	user-select: none;
+	cursor: default;
+}
+
+.form-edit select {
+	width: 100%;
+	appearance: none;
+	border: 1px solid var(--table-border);
+	border-radius: 0.25rem;
+	padding: 0.25rem 0.5rem;
+	cursor: pointer;
+	background-color: var(--color-bg-alt);
+	display: grid;
+	grid-template-areas: "select";
+	align-items: center;
+}
+
+.form-edit select::after {
+	content: "";
+	width: 0.8rem;
+	height: 0.5rem;
+	background-color: var(--color-text);
+	clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+	justify-self: end;
+}
+
+.form-edit select,
+.form-edit select::after {
+	grid-area: select;
+}
+*/
+
+.filter-bar {
+    width: 100%;
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
+}
+
+.filter-bar.actions {
+	justify-content: center;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+	gap: 0.25rem;
+}
+
+label.fixed {
+    flex-grow: 0;
+}
+
+label > span {
+    font-size: 90%;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+input,
+select,
+textarea,
+button.button,
+a.button {
+	appearance: none;
+    font-size: 16px;
+    font-size: max(16px, 1em);
+    font-family: inherit;
+    padding: 0.25em 0.5em;
+    color: var(--color-text);
+    background-color: var(--color-bg-alt);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    transition: 220ms all ease-in-out;
+    max-width: 100%;
+	outline: 2px solid transparent;
+}
+
+input,
+select,
+button.button,
+a.button {
+    line-height: 1;
+	height: 2.25em;
+}
+
+input,
+textarea {
+	cursor: text;
+	width: 100%;
+}
+
+textarea {
+	resize: none;
+	field-sizing: content;
+}
+
+select {
+    display: grid;
+    align-items: center;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20512%22%20fill%3D%22%238b8a8b%22%3E%3Cpath%20d%3D%22M137.4%20374.6c12.5%2012.5%2032.8%2012.5%2045.3%200l128-128c9.2-9.2%2011.9-22.9%206.9-34.9s-16.6-19.8-29.6-19.8L32%20192c-12.9%200-24.6%207.8-29.6%2019.8s-2.2%2025.7%206.9%2034.9l128%20128z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right .7em top 50%;
+    background-size: .65em auto;
+    padding-right: 2em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	cursor: pointer;
+}
+
+button.button,
+a.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	outline: none;
+	cursor: pointer;
+}
+
+button.button img,
+a.button img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button.button:focus,
+a.button:focus {
+    border-color: var(---color-bg);
+    box-shadow: 0 0 0 2px var(--color-accent);
+    outline: 2px solid transparent;
+}
+
+input:hover,
+select:hover,
+textarea:hover,
+button.button:hover,
+a.button:hover {
+    border-color: var(--color-accent);
+}
+
+input:read-only {
+	background-color: var(--oklab-03);
+}
+
+input:read-only:focus {
+	border-color: var(--color-border);
+	box-shadow: none;
+	outline: none;
+}
+
+input:read-only:hover {
+	border-color: var(--color-border);
+}
+
+#filter-text {
+	max-width: 40ch;
+}
+
+#filter-year {
+	max-width: 10ch;
+}
+
+.auth-holder form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.auth-holder form input {
+	margin-bottom: 0.5rem;
+}
+
+.auth-button {
+    padding: .75rem;
+	color: var(--color-bg-alt);
+    background-color: var(--color-text);
+    border-radius: 1rem;
+    width: 100%;
+	text-decoration: none;
+	border: none;
+	font-family: inherit;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	align-self: start;
+	box-shadow: 0 3px 5px rgba(0 0 0 / 18%);
+	text-align: center;
+	line-height: 1.1;
+	transition: 220ms all ease-in-out;
+	margin-top: 0.5rem;
+}
+
+button.action-button {
+	border: none;
+	outline: none;
+	color: var(--color-text);
+	background-color: var(--color-border);
+	border-radius: 4px;
+	padding: 0 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	height: 36px;
+	cursor: pointer;
+}
+
+button.action-button svg,
+button.action-button img {
+	height: 1.25em;
+	aspect-ratio: 1 / 1;
+}
+
+button.action-button span {
+	line-height: 1;
+}
+
+button.action-button:hover {
+	background-color: var(--color-hover);
+}
+
+button.button-500 {
+	background-color: var(--color-accent-500);
+	flex-grow: 1;
+}
+
+button.button-accent {
+	color: var(--color-bg-alt);
+	background-color: var(--color-accent);
+}
+
+button.button-accent:hover {
+	color: var(--color-text);
+	background-color: var(--color-border);
+}
+
+button.button-accent:disabled:hover {
+	color: var(--color-bg-alt);
+	background-color: var(--color-accent);
+}
+
+button.button-ui {
+	background-color: var(--color-bg-alt);
+}
+
+button.action-button:disabled {
+	opacity: 0.3;
+	cursor: default;
+}
+
+button.img-button {
+	border: none;
+	outline: none;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+a.img-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+a.img-button img,
+button.img-button img {
+	width: 40px;
+	height: 40px;
+}
+
+button.img-button:focus,
+button.action-button:focus {
+    border-color: unset;
+    box-shadow: none;
+    outline: none;
+}
+
+button.img-button:hover,
+button.action-button:hover {
+    border-color: unset;
+}
+
+/*
+.modal label {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal label span {
+    font-size: 90%;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.modal input,
+.modal textarea {
+	appearance: none;
+    font-size: 16px;
+    font-size: max(16px, 1em);
+    font-family: inherit;
+    padding: 0.25em 0.5em;
+    color: var(--color-text);
+    background-color: var(--color-bg-alt);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    transition: 220ms all ease-in-out;
+    max-width: 100%;
+}
+
+.modal input {
+    line-height: 1;
+	height: 2.25em;
+}
+
+.modal input,
+.modal textarea {
+	cursor: text;
+	width: 100%;
+}
+
+.modal input:focus,
+.modal textarea:focus {
+    border-color: var(---color-bg);
+    box-shadow: 0 0 0 2px var(--color-accent);
+    outline: 2px solid transparent;
+}
+
+.flex-form {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.flex-form label {
+	width: 100%;
+}
+*/

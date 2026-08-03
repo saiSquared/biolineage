@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><!-- var:title --> - WDM App</title>
+
+	<meta name="description" content="<!-- string:description -->">
+
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="Norm" />
+	<link rel="manifest" href="/site.webmanifest" />
+
+<!-- stylesheets -->
+	<link href="/css/styles.css" rel="stylesheet">
+	<link href="/css/forms.css" rel="stylesheet">
+	<link href="/css/popup-menu.css" rel="stylesheet">
+	<link href="/css/ux-components.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- include:sprites.html -->
+	<header>
+		<div class="header">
+			<div class="header-left">
+				<a class="img-button" href="/"><img src="/img/wdm-horse.svg" alt="WDM Logo"></a>
+			</div>
+			<div class="header-nav" role="navigation">
+			</div>
+			<div class="header-right">
+				<button id="account" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+			</div>
+			<div class="header-mobile">
+				<div>
+					<a class="img-button" href="/"><img src="/img/wdm-horse.svg"></a>
+				</div>
+				<div>
+					<button id="account-mobile" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="interface-bar-holder">
+		<div class="interface-bar">
+			<div>
+<!-- breadcrumbs -->
+			</div>
+			<div>
+				<button id="theme" class="action-button button-ui" aria-label="Toggle Color Theme" aria-haspopup="true" aria-expanded="false"><svg><use href="#theme-default"></use></svg><span>Theme</span></button>
+			</div>
+		</div>
+	</div>
+	<main class="full">
+<!-- slot:full -->
+	</main>
+<!-- menus -->
+	<script src="/js/popup-menu.js?v=1.1"></script>
+	<script src="/js/ux-components.js"></script>
+<!-- scripts -->
+</body>
+
+</html>

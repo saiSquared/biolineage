@@ -1,0 +1,95 @@
+.popup-menu {
+	display: none;
+	position: fixed;
+	background: var(--color-bg-alt);
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0 0 0 / 15%);
+	flex-direction: column;
+	gap: 0.25rem;
+	padding: 0.5rem;
+	max-height: calc(100vh - 80px); /* prevents overflow */
+	overflow-y: auto;
+	z-index: 2000;
+	pointer-events: auto;
+	visibility: hidden;
+	opacity: 0;
+	transform: translateY(-12px) scale(0.95);
+	transition: opacity 120ms ease-out,
+				transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+				visibility 0ms linear 220ms;
+}
+
+.popup-menu.is-opening {
+	display: flex;
+}
+
+.popup-menu.is-open {
+	visibility: visible;
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+	transition-delay: 0ms;
+	z-index: 99999;
+}
+
+.popup-menu.flip-up {
+	transform-origin: bottom;
+}
+
+.popup-menu button {
+	width: 100%;
+	border: none;
+	outline: none;
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	padding: 0.25rem;
+	gap: 0.5rem;
+	color: var(--color-text);
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.popup-menu button img,
+.popup-menu button svg {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.popup-menu button img.popup-button-full,
+.popup-menu button svg.popup-button-full {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background-color: var(--color-bg);
+}
+
+.popup-menu button:hover {
+	background: var(--color-hover);
+}
+
+.popup-menu button:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+}
+
+.popup-menu button .button-in-circle {
+	width: 36px;
+	height: 36px;
+	background-color: var(--color-border);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.popup-menu button .button-in-circle svg {
+	width: 20px;
+	height: 20px;
+}
+
+.menu-divider {
+    margin: 0.5rem 0;
+    border: 1px solid var(--color-border);
+}

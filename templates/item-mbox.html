@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><!-- var:title --> - CosSocial</title>
+
+	<meta name="description" content="<!-- string:description -->">
+
+<!-- include:favicon.html -->
+
+	<link href="/js/modulobox/dist/modulobox.min.css" rel="stylesheet">
+	<link href="/css/styles.css?v=1.67" rel="stylesheet">
+	<link href="/css/popup-menu.css" rel="stylesheet">
+	<link href="/css/ux-components.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- include:sprites.html -->
+	<header>
+		<div class="header">
+			<div class="header-left">
+				<a class="img-button" href="/"><img src="/img/cossocial-logo-circle.svg" alt="CosSocial Logo"></a>
+			</div>
+			<div class="header-nav" role="navigation">
+				<a href="/" aria-current="page"><svg><use href="#icon-home"></use></svg></a>
+				<a href="/spaces"><svg><use href="#icon-spaces"></use></svg></a>
+				<a href="/events"><svg><use href="#icon-events"></use></svg></a>
+				<a href="/activities"><svg><use href="#icon-activities"></use></svg></a>
+			</div>
+			<div class="header-right">
+				<button id="account" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+			</div>
+			<div class="header-mobile">
+				<div>
+					<a class="img-button" href="/"><img src="/img/cossocial-logo-circle.svg"></a>
+				</div>
+				<div>
+					<button id="account-mobile" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="interface-bar-holder">
+		<div class="interface-bar">
+			<div>
+<!-- breadcrumbs -->
+			</div>
+			<div>
+				<button id="theme" class="action-button" aria-label="Toggle Color Theme" aria-haspopup="true" aria-expanded="false"><svg><use href="#theme-default"></use></svg>Theme</button>
+			</div>
+		</div>
+	</div>
+	<main class="item">
+		<div class="item-image">
+<!-- slot:itemImage -->
+		</div>
+		<div class="item-details-holder">
+			<div class="item-details">
+<!-- slot:itemDetails -->
+			</div>
+		</div>
+	</main>
+<!-- menus -->
+	<script src="/js/popup-menu.js?v=1.1"></script>
+	<script src="/js/ux-components.js"></script>
+	<script src="/js/modulobox/dist/modulobox.min.js"></script>
+	<script src="/js/mbox.js" defer></script>
+	<script>
+		const headerHeight = 56 // fixed
+
+		const mainEl = document.querySelector('.item')
+		const barEl = document.querySelector('.interface-bar-holder')
+
+		// if (!mainEl || !barEl) return
+
+		function updateMainHeight() {
+			const barHeight = barEl.offsetHeight
+			const viewport = window.innerHeight
+			const newHeight = viewport - (headerHeight + barHeight)
+			console.log({ barHeight, viewport, newHeight })
+
+			// Prevent negative values if something collapses
+			mainEl.style.height = Math.max(newHeight, 0) + 'px'
+		}
+
+		// Debounce to avoid layout thrash on resize
+		let resizeTimer = null
+		window.addEventListener('resize', () => {
+			clearTimeout(resizeTimer)
+			resizeTimer = setTimeout(updateMainHeight, 50)
+		});
+
+		// Optional: recalc when fonts load (breadcrumbs may wrap)
+		if (document.fonts) {
+			document.fonts.ready.then(updateMainHeight)
+		}
+
+		// Optional: recalc when images inside the bar load
+		const itemMainObserver = new MutationObserver(updateMainHeight)
+		itemMainObserver.observe(barEl, { childList: true, subtree: true })
+
+		document.addEventListener('DOMContentLoaded', () => {
+			console.log('DOM loaded: Item Holder')
+			updateMainHeight()
+		})
+	</script>
+<!-- scripts -->
+</body>
+
+</html>

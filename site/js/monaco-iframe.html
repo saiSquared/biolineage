@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		@font-face {
+			font-family: 'Cascadia Code NF';
+			font-style: normal;
+			font-weight: 400;
+			src: url('/fonts/CascadiaCodeNF.ttf') format('truetype');
+			font-display: fallback;
+		}
+
+		@font-face {
+			font-family: 'Cascadia Code NF';
+			font-style: italic;
+			font-weight: 400;
+			src: url('/fonts/CascadiaCodeNFItalic.ttf') format('truetype');
+			font-display: fallback;
+		}
+
+		body { margin: 0; padding: 0; }
+
+		#container { width: 100vw; height: 100vh; }
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+
+	<!-- Load AMD loader from CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.53.0/min/vs/loader.min.js"></script>
+	<script>
+		const encoded = (filePath) =>
+			filePath.split('/')
+				.map(segment => encodeURIComponent(segment))
+				.join('/')
+
+		const params = new URLSearchParams(window.location.search)
+
+		// Configure the loader path
+		require.config({
+			paths: { "vs": "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.53.0/min/vs/" }
+		})
+
+        // Proxy web workers to avoid cross-domain issues
+        window.MonacoEnvironment = {
+            getWorkerUrl: function(workerId, label) {
+                return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                    self.MonacoEnvironment = {
+                        baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.53.0/min/'
+                    }
+                    importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.53.0/min/vs/base/worker/workerMain.min.js')
+                `)}`
+            }
+        }
+
+		async function loadFile() {
+			const file = await fetch(`https://app.wdmrolls.dev/cdn${encoded(params.get('file'))}`).then(r => r.text())
+			let language = null
+			switch (params.get('ext')) {
+				case '.xml':
+					language = 'xml'
+					break
+				case '.json':
+					language = 'json'
+					break
+			}
+
+			require(["vs/editor/editor.main"], function () {
+				// Create the editor instance
+				const editor = monaco.editor.create(document.getElementById('container'), {
+					value: file,
+					fontFamily: 'Cascadia Code NF',
+					fontLigatures: "'zero', 'ss02', 'ss03', 'ss04', 'ss05', 'calt'",
+					fontVariations: true,
+					occurrencesHighlight: 'singleFile',
+					'semanticHighlighting.enabled': true,
+					language,
+					theme: 'vs-dark',
+					automaticLayout: true // Handles resizing automatically
+				})
+
+				setTimeout(() => {
+					editor.getAction('editor.action.formatDocument').run().then(() => {
+						editor.setPosition({ lineNumber: 1, column: 1 })
+						editor.revealPosition({ lineNumber: 1, column: 1 })
+					})
+				}, 500)
+			})
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			console.log('DOM loaded: CDN Files')
+			loadFile()
+		})
+    </script>
+</body>
+</html>

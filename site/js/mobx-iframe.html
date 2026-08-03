@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>WDM Modulobox viewer</title>
+
+	<link href="/js/modulobox/modulobox.css" rel="stylesheet">
+</head>
+
+<body>
+	<script src="/js/modulobox/modulobox.js"></script>
+	<script>
+		const encoded = (filePath) =>
+			filePath.split('/')
+				.map(segment => encodeURIComponent(segment))
+				.join('/')
+
+		const params = new URLSearchParams(window.location.search)
+		// prompt(params.get('file'))
+		// prompt(`https://app.wdmrolls.dev/cdn${encoded(params.get('file'))}`)
+		mobx = new ModuloBox({
+			scrollToZoom: true,
+			controls: ['zoom', 'fullScreen'],
+			minZoom: 1,
+			zoomTo: 1.8,
+			prevNextKey: true,
+			mouseWheel: true,
+			scrollToClose: false,
+			escapeToClose: false,
+			pinchToClose: false,
+			dragToClose: false,
+			tapToClose: false
+		})
+		const media = [
+			{
+				src: `https://app.wdmrolls.dev/cdn${encoded(params.get('file'))}`
+			}
+		]
+		mobx.on('updateGalleries.modulobox', (galleries) => {
+			mobx.addMedia('wdm-gallery', media)
+		})
+		mobx.init()
+		mobx.open('wdm-gallery', 0)
+	</script>
+</body>
+
+</html>

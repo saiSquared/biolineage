@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><!-- var:title --> - NOE Family Tree</title>
+
+	<meta name="description" content="<!-- string:description -->">
+
+<!-- include:favicon.html -->
+
+<!-- stylesheets -->
+	<link href="/css/styles.css" rel="stylesheet">
+	<link href="/css/forms.css" rel="stylesheet">
+	<link href="/css/popup-menu.css" rel="stylesheet">
+	<link href="/css/ux-components.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- include:sprites.html -->
+	<header>
+		<div class="header">
+			<div class="header-left">
+				<a class="img-button" href="/"><img src="/img/family-tree.svg" alt="WDM Logo"></a>
+			</div>
+			<div class="header-nav" role="navigation">
+			</div>
+			<div class="header-right">
+				<button id="account" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+			</div>
+			<div class="header-mobile">
+				<div>
+					<a class="img-button" href="/"><img src="/img/family-tree.svg"></a>
+				</div>
+				<div>
+					<button id="account-mobile" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="interface-bar-holder">
+		<div class="interface-bar">
+			<div>
+<!-- breadcrumbs -->
+			</div>
+			<div>
+				<button id="theme" class="action-button button-ui" aria-label="Toggle Color Theme" aria-haspopup="true" aria-expanded="false"><svg><use href="#theme-default"></use></svg><span>Theme</span></button>
+			</div>
+		</div>
+	</div>
+	<main class="full">
+<!-- slot:full -->
+	</main>
+<!-- menus -->
+	<script src="/js/popup-menu.js?v=1.1"></script>
+	<script src="/js/ux-components.js"></script>
+<!-- scripts -->
+</body>
+
+</html>

@@ -1,0 +1,1079 @@
+:root {
+	--color-accent: #be2225;
+	--color-bg: #f5f6f7;
+	--color-bg-alt: #fff;
+	--color-text: #0c0d0e;
+	--color-text-muted: #65686c;
+	--color-border: #e5e5e5;
+	--color-hover: #f2f2f2;
+	--color-item-hover: #CEACDC;
+	--card-shadow: 0 1px 3px rgb(167 107 191 / 15%);
+	--card-corner-radius: 12px;
+	--tag-bg: #ebe1f2;
+	--table-border: #6e6b6f;
+	--comment-bg: #e8e4ec;
+	--modal-background: rgb(0 0 0 / 70%);
+	--modal-background-shadow: 0 4px 16px rgb(0 0 0 / 25%);
+	--code-font-stack: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", "Cascadia Code", "Liberation Mono", "DejaVu Sans Mono", monospace;
+	--oklab-02: #ECEDEE;
+	--oklab-03: #E4E5E6;
+	--oklab-04: #DBDCDD;
+	--oklab-05: #D2D3D4;
+	--oklab-06: #CACBCC;
+	--oklab-07: #C1C2C4;
+	--oklab-08: #B9BABB;
+	--oklab-09: #B1B2B3;
+	--oklab-10: #A9AAAB;
+	--oklab-11: #A0A1A3;
+	--oklab-12: #98999B;
+	--oklab-13: #909193;
+	--oklab-14: #888A8B;
+	--oklab-15: #818283;
+	--oklab-16: #797A7B;
+	--oklab-17: #717273;
+	--oklab-18: #6A6B6C;
+	--oklab-19: #626364;
+	--oklab-20: #5B5C5D;
+	--oklab-21: #535556;
+	--oklab-22: #4C4D4F;
+	--oklab-23: #454647;
+	--oklab-24: #3E3F41;
+	--oklab-25: #37393A;
+	--oklab-26: #313233;
+	--oklab-27: #2A2B2C;
+	--oklab-28: #242526;
+	--oklab-29: #1E1F20;
+	--oklab-30: #18191A;
+	--oklab-31: #121314;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body {
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.4;
+	display: flex;
+	flex-direction: column;
+	color: var(--color-text);
+	background-color: var(--color-bg);
+	padding: 0;
+	margin: 0;
+	min-height: 100vh;
+	min-height: 100dvh;
+}
+
+body.modal-open {
+	overflow: hidden;
+	touch-action: none;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+h1 img,
+h2 img,
+h3 img,
+h4 img,
+h5 img,
+h6 img {
+	height: 0.75em;
+	vertical-align: baseline;
+}
+
+header {
+	width: 100%;
+	background-color: var(--color-bg-alt);
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+
+.header {
+	height: 56px;
+	width: 100%;
+	max-width: 1464px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-areas: "header-mobile";
+	background-color: var(--color-bg-alt);
+}
+
+.header-left,
+.header-right {
+	display: none;
+	align-items: center;
+}
+
+.header-left {
+	grid-area: header-left;
+	justify-content: start;
+}
+
+.header-right {
+	grid-area: header-right;
+	justify-content: end;
+}
+
+.header-nav {
+	grid-area: header-nav;
+	display: none;
+	grid-template-columns: repeat(4, 1fr);
+}
+
+.header-nav a {
+	height: 56px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-text-muted);
+	border-bottom: 3px solid var(--color-bg-alt);
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.header-nav a:hover {
+	background-color: var(--color-hover);
+}
+
+.header-nav a svg {
+	width: 24px;
+	height: 24px;
+}
+
+.header-nav a.nav-active {
+	color: var(--color-accent);
+	border-color: var(--color-accent);
+}
+
+.header-nav a.nav-active:hover {
+	background-color: unset;
+}
+
+.header-mobile {
+	grid-area: header-mobile;
+	width: 100%;
+	display: grid;
+	grid-template-columns: auto auto;
+}
+
+.header-mobile > div {
+	display: flex;
+	align-items: center;
+	justify-content: start;
+}
+
+.header-mobile > div:last-child {
+	justify-content: end;
+}
+
+.interface-bar-holder {
+	width: 100%;
+	border-top: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--color-border);
+	background-color: var(--color-bg-alt);
+	position: sticky;
+	top: 56px;
+	z-index: 900;
+}
+
+.interface-bar {
+	width: 100%;
+	max-width: 1464px;
+	margin: 0 auto;
+	padding: 2px 0;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	background-color: var(--color-bg-alt);
+}
+
+.interface-bar > div {
+	display: flex;
+	align-items: center;
+}
+
+.breadcrumbs {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1ch;
+	user-select: none;
+}
+
+.breadcrumbs a:hover {
+	text-decoration: underline;
+}
+
+.breadcrumbs-block {
+	margin: 0.5rem 0;
+}
+
+main.home {
+	width: 100%;
+	max-width: 1464px;
+	margin: 0 auto;
+}
+
+.home-logo-holder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 260px;
+}
+
+.home-logo {
+	height: 230px;
+	margin: auto 48px 0;
+	text-align: center;
+}
+
+.home-search-holder {
+	width: 100%;
+	max-width: 688px;
+	margin: 6px auto;
+}
+
+.home-search {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 40px;
+	min-height: 50px;
+	border: 1px solid #dadce0;
+	border-radius: 26px;
+	box-shadow: 0px 3px 10px 0px rgb(31 31 31 / 8%);
+	padding: 0 13px;
+	background-color: var(--color-bg-alt);
+}
+
+.home-search input {
+	border: none;
+	color: var(--color-text);
+	background-color: transparent;
+}
+
+.home-search input:focus {
+	outline: none;
+	background-color: transparent;
+}
+
+.home-search button {
+	width: 40px;
+	height: 100%;
+	border: none;
+	outline: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.home-search button svg {
+	width: 24px;
+	height: 24px;
+}
+
+.home-logo img {
+	height: 200px;
+	width: auto;
+	max-height: 100%;
+	max-width: 100%;
+	object-fit: contain;
+	object-position: center bottom;
+	vertical-align: bottom;
+}
+
+.button-list {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1rem;
+	margin: 1rem 0 2rem;
+	padding: 0;
+}
+
+.button-list.button-list-centered {
+	justify-content: center;
+}
+
+.button-list li div,
+.button-list li a {
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0 12px;
+	border-radius: 20px;
+	background-color: var(--color-bg-alt);
+	box-shadow: inset 0 0 0 1px #d2d2d2;
+	font-size: 14px;
+}
+
+.button-list li div {
+	color: var(--color-bg-alt);
+	background-color: var(--color-text);
+}
+
+.button-list li div img,
+.button-list li a img {
+	height: 18px;
+	width: auto;
+}
+
+.button-list li a:hover {
+	background-color: var(--color-hover);
+}
+
+.cdn-files {
+	margin: 1rem 0 0;
+}
+
+.search-hit {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 64px 1fr;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.search-hit-image {
+	width: 64px;
+	display: flex;
+	align-items: start;
+	justify-content: center;
+}
+
+.search-hit-image img {
+	width: 64px;
+	height: auto;
+}
+
+.search-hit-header a {
+	display: inline-block;
+}
+
+.search-hit-header a img {
+	height: 24px;
+	width: auto;
+	padding-left: 0.5rem;
+}
+
+.search-hit-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.search-hit-body a {
+	text-decoration: underline;
+}
+
+.search-hit-body h2 {
+	margin: 0;
+	font-size: 22px;
+}
+
+.cdn-nav {
+	list-style: none;
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	margin: 1rem 0;
+	padding: 0;
+}
+
+.default-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.default-table th {
+	text-align: left;
+}
+
+.default-table img {
+	height: 18px;
+	width: auto;
+}
+
+.profile-pic-circle img {
+	border-radius: 50%;
+	background-color: var(--color-bg);
+}
+
+.menu-list {
+	list-style: none;
+	margin: 1rem 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.menu-list li {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.menu-list li a {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.menu-list li a img {
+	height: 40px;
+	width: auto;
+}
+
+.menu-list li a span {
+	display: block;
+	font-size: 0.875em;
+	font-style: italic;
+}
+
+.menu-list li a:hover div {
+	text-decoration: underline;
+}
+
+.menu-list li a:hover span {
+	text-decoration: none;
+}
+
+.diff-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+	margin-bottom: 2rem;
+}
+
+.diff-grid-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.diff-grid-field {
+	padding: 0.25rem;
+}
+
+.diff-grid-field span {
+	font-weight: 600;
+}
+
+.diff-grid-field:nth-child(odd) {
+	background-color: var(--oklab-02);
+}
+
+.diff-grid-field:nth-child(even) {
+	background-color: var(--oklab-03);
+}
+
+.diff-grid a {
+	text-decoration: underline;
+}
+
+.sos-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1rem 0;
+}
+
+.sos-table tbody tr:nth-child(odd) {
+	background-color: var(--oklab-02);
+}
+
+.sos-table thead th,
+.sos-table tbody td {
+	padding: 0.25rem 0.5rem;
+}
+
+.sos-table a {
+	text-decoration: underline;
+}
+
+.sos-table img {
+	height: 40px;
+	width: auto;
+}
+
+.property-grid {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	margin: 1rem 0;
+}
+
+.property-grid span {
+	font-weight: 700;
+	background-color: var(--oklab-02);
+	padding: 0.25rem 0.5rem;
+	text-align: right;
+}
+
+.property-grid div {
+	padding: 0.25rem 0.5rem;
+}
+
+.property-grid a {
+	text-decoration: underline;
+}
+
+.no-margin {
+	margin: 0;
+}
+
+.no-margin-bottom {
+	margin-bottom: 0;
+}
+
+.no-margin-top {
+	margin-top: 0;
+}
+
+#item-image {
+	aspect-ratio: 1 / 1;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.page-title {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+main.auth {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+	gap: 0.5rem;
+	min-width: 300px;
+}
+
+.auth-holder > img {
+	width: 250px;
+}
+
+.branding {
+	font-size: 2.5em;
+	font-weight: 900;
+	color: var(--color-accent);
+}
+
+.auth-divider {
+	width: 100%;
+	text-align: center;
+	position: relative;
+	margin-top: 0.5rem;
+}
+
+.auth-divider::before {
+	content: '';
+	display: block;
+	border-top: 1px solid var(--color-text);
+	margin-top: 0.5lh;
+	position: absolute;
+	width: 100%;
+}
+
+.auth-divider span {
+    background-color: var(--color-bg);
+    z-index: 2;
+    position: relative;
+    padding: 0 0.5rem;
+}
+
+.mobx-share-tooltip ::after, .mobx-thumb-video::after, .mobx-ui button, .mobx-video::after, .mobx-video::before {
+	background-color: transparent !important;
+}
+
+main.full {
+	width: 100%;
+	max-width: 1464px;
+	margin: 0 auto;
+}
+
+.modal-overlay {
+	position: absolute;
+	width: 100%;
+	background: var(--modal-background);
+	opacity: 1;
+	pointer-events: none;
+	transition: opacity 0.25s ease;
+	z-index: 999999;
+	touch-action: none;
+	pointer-events: auto;
+}
+
+.modal {
+	width: 100%;
+	background-color: var(--color-bg-alt);
+	display: grid;
+	grid-template-rows: 50px auto;
+	box-shadow: var(--modal-background-shadow);
+}
+
+.modal-title {
+	width: 100%;
+	height: 50px;
+	display: grid;
+	grid-template-columns: 1fr 50px 50px 50px;
+	border-bottom: 1px solid var(--oklab-04);
+	background-color: transparent;
+}
+
+.modal-title-header {
+	height: 50px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+}
+
+.modal-title-header h2 {
+	margin: 0;
+	padding: 0 16px;
+	font-size: 22px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.modal-title button {
+	width: 50px;
+	height: 50px;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-left: 1px solid var(--oklab-04);
+	color: var(--color-text);
+	background: transparent;
+	cursor: pointer;
+}
+
+.modal-title button svg {
+	width: 20px;
+	height: 20px;
+}
+
+.modal-title button:disabled {
+	color: var(--oklab-02);
+	cursor: default;
+}
+
+.modal-body {
+	display: grid;
+	grid-template-rows: auto auto;
+}
+
+.modal-preview {
+	width: 100%;
+	padding: 0.5rem;
+	aspect-ratio: 1 / 1;
+}
+
+.modal-preview iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.video-holder {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+}
+
+.video-holder video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.video-holder-spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 50%;
+	height: 50%;
+	max-width: 256px;
+	max-height: 256px;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	z-index: 10;
+}
+
+.modal-properties {
+	background-color: var(--oklab-02);
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	overflow-y: auto;
+}
+
+.modal-properties-property {
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-properties-property span {
+	display: block;
+	font-weight: 600;
+}
+
+.download-tool {
+	margin: 1rem 0;
+}
+
+.download-tool a {
+	display: block;
+	margin-bottom: 0.25rem;
+}
+
+.download-tool img {
+	height: 128px;
+	width: auto;
+}
+
+.calendar-table-holder {
+	overflow-x: auto;
+	background-color: var(--color-bg-alt);
+	margin-bottom: 2rem;
+}
+
+.calendar-table-holder table {
+	min-width: 100%;
+	border-collapse: collapse;
+}
+
+.calendar-table-holder tbody tr:nth-child(even) {
+	background-color: var(--oklab-02);
+}
+
+.calendar-table-holder tbody tr:nth-child(odd) {
+	background-color: var(--oklab-04);
+}
+
+.calendar-table-holder tbody tr.calendar-table-group {
+	background-color: var(--color-bg-alt);
+}
+
+.calendar-table-holder tbody tr.calendar-table-group td {
+	padding: 4px 4px 8px;
+	border-bottom: 2px solid var(--color-text);
+}
+
+.calendar-table-group-field {
+	display: block;
+	font-size: 0.75em;
+	margin: 4px 0;
+}
+
+.calendar-table-holder tbody tr:hover,
+.calendar-table-holder tbody tr:focus {
+	cursor: pointer;
+	background-color: var(--oklab-14);
+	color: var(--color-bg-alt);
+}
+
+.calendar-table-holder tbody tr.calendar-table-group:hover {
+	cursor: default;
+	background-color: unset;
+	color: unset;
+}
+
+.calendar-table-holder th {
+	padding: 2px 4px;
+	vertical-align: bottom;
+}
+
+.calendar-table-holder td {
+	padding: 2px 4px;
+	vertical-align: top;
+}
+
+.calendar-table-pill {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px 4px;
+	border-radius: 8px;
+	font-size: 0.8em;
+}
+
+.calendar-table-pill.calendar-table-pill-fixed {
+	max-width: 12ch;
+}
+
+.calendar-color-310-series {
+	background-color: #ffd4e0;
+	color: black;
+}
+
+.calendar-color-403-series {
+	background-color: #cff5d1;
+	color: black;
+}
+
+.calendar-color-pr-series {
+	background-color: #6231ae;
+	color: white;
+}
+
+.calendar-color-101-series {
+	background-color: #9ae095;
+	color: black;
+}
+
+.calendar-color-k-series {
+	background-color: #048a0e;
+	color: white;
+}
+
+.calendar-color-ar-series {
+	background-color: #bfaefc;
+	color: black;
+}
+
+.calendar-color-404-series {
+	background-color: #cff5d1;
+	color: black;
+}
+
+.calendar-color-430 {
+	background-color: #d1e2ff;
+	color: black;
+}
+
+.calendar-color-cr {
+	background-color: #dc043b;
+	color: white;
+}
+
+.calendar-color-304-series {
+	background-color: #ffeab6;
+	color: black;
+}
+
+.calendar-color-logistics {
+	background-color: #9b2226;
+	color: white;
+}
+
+.calendar-color-personnel {
+	background-color: #0a9396;
+	color: white;
+}
+
+.calendar-color-none {
+	display: none;
+}
+
+.calendar-month-print {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	break-after: page;
+}
+
+.calendar-month-print > div {
+	aspect-ratio: 1 / 1;
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.calendar-month-print > div.calendar-month-empty {
+	border: none;
+}
+
+.calendar-month-print > div.calendar-month-empty-top {
+	border-top: 1px solid black;
+}
+
+.calendar-month-print > div.calendar-month-empty-left {
+	border-left: 1px solid black;
+}
+
+.calendar-month-print > div.calendar-month-end-column {
+	border-right: 1px solid black;
+}
+
+.calendar-month-print > div.calendar-month-end-row {
+	border-bottom: 1px solid black;
+}
+
+.calendar-month-print > div span {
+	display: block;
+	text-align: right;
+}
+
+.calendar-month-print-pill {
+	padding: 2px 4px;
+	border-radius: 8px;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.calendar-month-print-pill div {
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@media print {
+	.calendar-color-310-series {
+		background-color: #ffd4e0;
+		color: black;
+	}
+
+	.calendar-color-403-series {
+		background-color: #cff5d1;
+		color: black;
+	}
+
+	.calendar-color-pr-series {
+		background-color: #6231ae;
+		color: white;
+	}
+
+	.calendar-color-101-series {
+		background-color: #9ae095;
+		color: black;
+	}
+
+	.calendar-color-k-series {
+		background-color: #048a0e;
+		color: white;
+	}
+
+	.calendar-color-ar-series {
+		background-color: #bfaefc;
+		color: black;
+	}
+
+	.calendar-color-404-series {
+		background-color: #cff5d1;
+		color: black;
+	}
+
+	.calendar-color-430 {
+		background-color: #d1e2ff;
+		color: black;
+	}
+
+	.calendar-color-cr {
+		background-color: #dc043b;
+		color: white;
+	}
+
+	.calendar-color-304-series {
+		background-color: #ffeab6;
+		color: black;
+	}
+
+	.calendar-color-logistics {
+		background-color: #9b2226;
+		color: white;
+	}
+
+	.calendar-color-personnel {
+		background-color: #0a9396;
+		color: white;
+	}
+
+	.calendar-color-none {
+		display: none;
+	}
+
+	.calendar-month-print {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		break-after: page;
+	}
+
+	.calendar-month-print > div {
+		aspect-ratio: 1 / 1;
+		border-top: 1px solid black;
+		border-left: 1px solid black;
+		padding: 0.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.calendar-month-print > div.calendar-month-empty {
+		border: none;
+	}
+
+	.calendar-month-print > div.calendar-month-empty-top {
+		border-top: 1px solid black;
+	}
+
+	.calendar-month-print > div.calendar-month-empty-left {
+		border-left: 1px solid black;
+	}
+
+	.calendar-month-print > div.calendar-month-end-column {
+		border-right: 1px solid black;
+	}
+
+	.calendar-month-print > div.calendar-month-end-row {
+		border-bottom: 1px solid black;
+	}
+
+	.calendar-month-print > div span {
+		display: block;
+		text-align: right;
+	}
+
+	.calendar-month-print-pill {
+		padding: 2px 4px;
+		border-radius: 8px;
+		width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.calendar-month-print-pill div {
+		max-width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}

@@ -1,0 +1,115 @@
+/* -------------------------------------------------------
+	 TOASTS
+------------------------------------------------------- */
+
+#toast-container {
+	position: fixed;
+	top: 16px;
+	right: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	z-index: 9999;
+}
+
+.toast {
+	padding: 10px 14px;
+	border-radius: 6px;
+	background: #333;
+	color: #fff;
+	opacity: 0;
+	transform: translateY(-8px);
+	transition:
+		opacity 0.25s ease,
+		transform 0.25s ease;
+	font-size: 14px;
+	max-width: 280px;
+	box-shadow: 0 2px 6px rgb(0 0 0 / 25%);
+}
+
+.toast.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.toast-info {
+	background: #3a6ea5;
+}
+
+.toast-success {
+	background: #2e8b57;
+}
+
+.toast-error {
+	background: #b33a3a;
+}
+
+/* -------------------------------------------------------
+	 MODAL
+------------------------------------------------------- */
+
+.ux-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: var(--modal-background);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.25s ease;
+	z-index: 999999;
+}
+
+.ux-modal-overlay.is-visible {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.ux-modal-overlay.hidden {
+	display: none;
+}
+
+.ux-modal {
+	background: var(--color-bg-alt);
+	border-radius: 8px;
+	padding: 24px;
+	width: 90%;
+	max-width: 420px;
+	opacity: 0;
+	transform: translateY(20px);
+	transition:
+		opacity 0.25s ease,
+		transform 0.25s ease;
+	box-shadow: var(--modal-background-shadow);
+}
+
+.ux-modal.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.ux-modal-actions {
+	margin-top: 20px;
+	display: flex;
+	gap: 12px;
+	justify-content: flex-end;
+}
+
+.ux-modal-button {
+	padding: 8px 14px;
+	border-radius: 6px;
+	border: none;
+	background: #3a6ea5;
+	color: #fff;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.ux-modal-button:hover {
+	background: #2f5a87;
+}
+
+.ux-modal h2 {
+	margin-top: 0;
+}

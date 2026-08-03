@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><!-- var:title --> - CosSocial</title>
+
+	<meta name="description" content="<!-- string:description -->">
+
+<!-- include:favicon.html -->
+<!-- stylesheets -->
+	<link href="/css/styles.css" rel="stylesheet">
+	<link href="/css/forms.css" rel="stylesheet">
+	<link href="/css/split.css" rel="stylesheet">
+	<link href="/css/popup-menu.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- include:sprites.html -->
+	<header>
+		<div class="header">
+			<div class="header-left">
+				<a class="img-button" href="/"><img src="/img/cossocial-logo-circle.svg" alt="CosSocial Logo"></a>
+			</div>
+			<div class="header-nav" role="navigation">
+				<a id="cossocial-home" href="/"><svg><use href="#icon-home"></use></svg></a>
+				<a id="cossocial-spaces" href="/spaces"><svg><use href="#icon-spaces"></use></svg></a>
+				<a id="cossocial-events" href="/events"><svg><use href="#icon-events"></use></svg></a>
+				<a id="cossocial-activities" href="/activities"><svg><use href="#icon-activities"></use></svg></a>
+			</div>
+			<div class="header-right">
+				<button id="account" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+			</div>
+			<div class="header-mobile">
+				<div>
+					<a class="img-button" href="/"><img src="/img/cossocial-logo-circle.svg"></a>
+				</div>
+				<div>
+					<button id="account-mobile" class="img-button profile-pic-circle" aria-label="Access aAccount Menu" aria-haspopup="true" aria-expanded="false"><img src="<!-- var:avatar -->"></button>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="interface-bar-holder">
+		<div class="interface-bar">
+			<div>
+<!-- breadcrumbs -->
+			</div>
+			<div>
+				<button id="theme" class="action-button button-ui" aria-label="Toggle Color Theme" aria-haspopup="true" aria-expanded="false"><svg><use href="#theme-default"></use></svg><span>Theme</span></button>
+			</div>
+		</div>
+	</div>
+	<main class="split">
+		<div class="split-left">
+			<div class="split-left-header">
+				<h1><!-- var:heading --></h1>
+				<button id="sidebar-expand"><img src="/img/show.svg"></button>
+			</div>
+			<div class="split-left-content-holder">
+				<div class="split-left-content">
+<!-- slot:splitLeft -->
+				</div>
+			</div>
+		</div>
+		<div class="split-right">
+			<div class="split-right-content">
+<!-- slot:splitRight -->
+			</div>
+		</div>
+	</main>
+<!-- menus -->
+	<script src="/js/popup-menu.js?v=1.1"></script>
+<!-- scripts -->
+</body>
+
+</html>
