@@ -2,13 +2,13 @@
 
 Lineage Tree Function Design for biolineage
 
-This document describes the technical design of the lineage tree rendering functions used by biolineage. It explains ancestor traversal, descendant traversal, cycle detection, ordering rules, and how the API returns tree structures to the frontend. These functions power the `/person/:id/personal-tree` endpoint and form the computational core of lineage visualization.
+This document describes the technical design of the lineage tree rendering functions used by biolineage. It explains ancestor traversal, descendant traversal, cycle detection, ordering rules, and how the API returns tree structures to the frontend. These functions power the `/entity/:id/entity-tree` endpoint and form the computational core of lineage visualization.
 
 ---
 
 ## 1. Overview
 
-The lineage tree functions compute a personal tree for any individual in the database. A personal tree consists of:
+The lineage tree functions compute an entity tree for any individual in the database. An entity tree consists of:
 
 - ancestors
 - descendants
@@ -19,15 +19,15 @@ The lineage tree functions compute a personal tree for any individual in the dat
 
 The tree is computed using PostgreSQL recursive queries and returned as a structured JSON object through the API.
 
-The design is graph-first: persons are nodes, relationships are edges. The tree functions traverse these edges to build a complete lineage structure.
+The design is graph-first: entities are nodes, relationships are edges. The tree functions traverse these edges to build a complete lineage structure.
 
 ---
 
 ## 2. Ancestor Traversal
 
-Ancestor traversal begins at a target person and walks upward through parent edges. The traversal uses a recursive CTE with the following rules:
+Ancestor traversal begins at a target entity and walks upward through parent edges. The traversal uses a recursive CTE with the following rules:
 
-1. Start with the target person.
+1. Start with the target entity.
 2. Select all parents of the current generation.
 3. Add each parent to the ancestor list.
 4. Continue recursively until no further parents exist.
@@ -36,7 +36,7 @@ Ancestor traversal begins at a target person and walks upward through parent edg
 
 Generation depth is defined as:
 
-- depth 0: the target person
+- depth 0: the target entity
 - depth 1: parents
 - depth 2: grandparents
 - depth 3: great-grandparents
@@ -52,7 +52,7 @@ Descendant traversal mirrors ancestor traversal but walks downward through child
 
 Rules:
 
-1. Start with the target person.
+1. Start with the target entity.
 2. Select all children of the current generation.
 3. Add each child to the descendant list.
 4. Continue recursively until no further children exist.
@@ -61,7 +61,7 @@ Rules:
 
 Generation depth for descendants is defined as:
 
-- depth 0: the target person
+- depth 0: the target entity
 - depth 1: children
 - depth 2: grandchildren
 - depth 3: great-grandchildren
@@ -97,7 +97,7 @@ Ordering is essential for rendering a readable lineage tree. The ordering rules 
 1. Sort ancestors by generation depth ascending.
 2. Sort descendants by generation depth ascending.
 3. Within each generation, sort by uuid for deterministic output.
-4. Spouses and partners are listed alongside the target person.
+4. Spouses and partners are listed alongside the target entity.
 5. Siblings are derived from shared parents and grouped together.
 6. Nodes with missing sex or ambiguous relationships are included but not used for ordering beyond depth.
 
@@ -107,12 +107,12 @@ These rules ensure stable output across ingestion runs and consistent rendering 
 
 ## 6. Spouse and Partner Handling
 
-Spouses and partners are not part of ancestor or descendant traversal. They are attached to the target person as relational context.
+Spouses and partners are not part of ancestor or descendant traversal. They are attached to the target entity as relational context.
 
 Rules:
 
-1. Retrieve all spouse or partner edges for the target person.
-2. Include spouses in the personal tree output.
+1. Retrieve all spouse or partner edges for the target entity.
+2. Include spouses in the entity tree output.
 3. Do not treat spouses as ancestors or descendants.
 4. Use spouse relationships to infer sibling groups when children exist.
 
@@ -126,9 +126,9 @@ Siblings are not stored directly in the database. They are derived from shared p
 
 Rules:
 
-1. Retrieve all parents of the target person.
+1. Retrieve all parents of the target entity.
 2. Retrieve all children of those parents.
-3. Exclude the target person.
+3. Exclude the target entity.
 4. Group siblings by shared parent sets.
 
 Sibling derivation is performed after ancestor traversal and before descendant traversal.
@@ -137,9 +137,9 @@ Sibling derivation is performed after ancestor traversal and before descendant t
 
 ## 8. API Output Structure
 
-The `/person/:id/personal-tree` endpoint returns a structured JSON object containing:
+The `/entity/:id/entity-tree` endpoint returns a structured JSON object containing:
 
-- person
+- entity
 - ancestors
 - descendants
 - spouses
@@ -150,7 +150,7 @@ Example structure:
 
 ```json
 {
-  "person": { ... },
+  "entity": { ... },
   "ancestors": [
     { "uuid": "...", "depth": 1, "relationship": "parent" },
     { "uuid": "...", "depth": 2, "relationship": "grandparent" }
@@ -181,7 +181,7 @@ The API does not perform rendering. Rendering is handled by the frontend.
 PostgreSQL recursive CTEs provide stable performance even for deep lineage trees. Performance optimizations include:
 
 - indexing relationship edges
-- indexing person UUIDs
+- indexing entity UUIDs
 - caching normalized place lookups
 - limiting traversal to relevant relationship types
 - using deterministic ordering
@@ -201,4 +201,4 @@ The lineage tree functions in biolineage are designed to be:
 - structurally accurate
 - consistent across ingestion runs
 
-They form the computational foundation of the personal tree endpoint and support all lineage visualization features.
+They form the computational foundation of the entity tree endpoint and support all lineage visualization features.

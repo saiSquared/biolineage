@@ -8,9 +8,9 @@ This document describes how raw event data (birth, death, immigration, and narra
 
 ## 1. Overview
 
-Events are first-class entities in biolineage. Instead of storing birth or death information directly on the person record, each occurrence is represented as an event row linked to the person and to a normalized place. This event-centric model allows the system to represent:
+Events are first-class entities in biolineage. Instead of storing birth or death information directly on the entity record, each occurrence is represented as an event row linked to the entity and to a normalized place. This event-centric model allows the system to represent:
 
-- multiple events per person
+- multiple events per entity
 - partial or ambiguous dates
 - narrative descriptions
 - historical locality variations
@@ -195,7 +195,7 @@ Narrative text is always preserved because it may contain historically meaningfu
 The events table contains:
 
 - uuid
-- person_uuid
+- entity_uuid
 - event_type
 - date
 - place_uuid
@@ -204,13 +204,13 @@ The events table contains:
 
 This minimal structure allows:
 
-- multiple events per person
+- multiple events per entity
 - partial or null dates
 - narrative descriptions
 - linkage to normalized places
 - future event types without schema changes
 
-Burial locality is stored in the places table and linked to the person through context, not through an event row.
+Burial locality is stored in the places table and linked to the entity through context, not through an event row.
 
 Marriage is represented through relationship edges, not through events.
 

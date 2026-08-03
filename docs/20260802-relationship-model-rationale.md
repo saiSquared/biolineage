@@ -12,7 +12,7 @@ The relationship model is one of the core architectural foundations of biolineag
 
 The relationship model in biolineage is designed around a simple principle:
 
-Persons are nodes.
+Entities are nodes.
 Relationships are edges.
 
 This graph-first approach allows the system to represent complex family structures, blended families, inferred parentage, historical ambiguity, and multi-generational lineage without the constraints of hierarchical tree formats such as GEDCOM.
@@ -64,7 +64,7 @@ Spouse and partner relationships are modeled as undirected edges represented by 
 This ensures:
 
 - symmetric traversal
-- correct rendering in personal trees
+- correct rendering in entity trees
 - ability to detect blended families
 - ability to infer shared parentage
 - correct handling of multiple marriages or partnerships
@@ -164,8 +164,8 @@ The graph model is the correct representation for real-world lineage data.
 The relationships table contains:
 
 - uuid
-- person_a_uuid
-- person_b_uuid
+- entity_a_uuid
+- entity_b_uuid
 - relationship_type
 - inferred
 - notes
@@ -199,7 +199,7 @@ The graph model enables:
 - place-linked event traversal
 - future clade/species lineage modeling
 
-The personal tree endpoint relies entirely on this model.
+The entity tree endpoint relies entirely on this model.
 
 ---
 

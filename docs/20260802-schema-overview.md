@@ -10,7 +10,7 @@ This document provides a high‑level description of the PostgreSQL schema used 
 
 The schema is designed around several core principles:
 
-- **Graph‑first lineage modeling** — relationships are edges, persons are nodes.
+- **Graph‑first lineage modeling** — relationships are edges, entities are nodes.
 - **Event‑centric historical modeling** — births, deaths, burials, marriages, migrations, etc. are first‑class entities.
 - **Normalized place representation** — every locality is a structured, deduplicated, UUID‑identified row.
 - **Deterministic ingestion** — raw data from Norm’s dataset is transformed into stable, predictable rows.
@@ -25,7 +25,7 @@ These principles shape every table described below.
 
 The schema consists of four foundational tables:
 
-- **persons**
+- **entities**
 - **events**
 - **relationships**
 - **places**
@@ -49,9 +49,9 @@ UUIDs are generated during ingestion and stored in the transformation pipeline (
 
 ---
 
-## 4. persons Table
+## 4. entities Table
 
-The **persons** table represents individuals in the lineage graph.
+The **entities** table represents individuals in the lineage graph.
 
 **Fields include:**
 
@@ -64,18 +64,60 @@ The **persons** table represents individuals in the lineage graph.
 
 **Rationale:**
 
-The persons table is intentionally minimal. All temporal and spatial information is stored in **events**, and all relational information is stored in **relationships**. This keeps the person entity clean and avoids duplication.
+The entities table is intentionally minimal. All temporal and spatial information is stored in **events**, and all relational information is stored in **relationships**. This keeps the entity clean and avoids duplication.
+
+Perfect — now that all the incorrect *person/people* usages are fixed, what you need is a **clear, authoritative section** in the docs that explains *why Biolineage uses “entity” instead of Norm’s original “person” table*. This section should justify the terminology shift, anchor it in real domain needs, and prevent future confusion for contributors.
+
+Below is a fully‑formed documentation section you can drop directly into your `.md` files. It’s structured, semantically precise, and grounded in the actual architectural motivations you described.
+
+---
+
+### Entity Model Rationale
+
+Biolineage models **entities** rather than “persons,” diverging intentionally from the original `person` table in Norm’s early schema. This change reflects the broader scope of lineage modeling and corrects several semantic and architectural limitations inherent in human‑only terminology.
+
+#### Why “entity” is the correct abstraction
+
+- **Semantic neutrality** — “Person” implies a biological human. Biolineage needs a term that applies equally to humans, animals, organizations, artifacts, and other lineage‑bearing nodes. “Entity” is the only term that scales cleanly across domains.
+
+- **Multi‑species support** — Modern lineage systems must handle horses, dogs, livestock, lab organisms, and historical non‑human subjects. The original “person” table cannot represent these without semantic distortion. “Entity” avoids anthropocentric bias.
+
+- **Instigator model alignment** — Biolineage’s ingestion pipeline treats the source record (GEDCOM individual, horse registry entry, manuscript provenance record, etc.) as the *instigator* of an entity. Using “entity” keeps the conceptual boundary clean: the instigator is the record; the entity is the graph node created from it.
+
+- **Better ontology for lineage graphs** — Lineage graphs often include non‑person nodes: farms, stables, breeding programs, labs, estates, and events. “Entity” allows these to coexist naturally without special‑case tables.
+
+- **Future‑proofing** — As Biolineage expands into historical sovereignty, manuscript lineage, or biological sample tracking, “entity” remains valid. “Person” would require repeated schema migrations or awkward renaming.
+
+### Relationship to Norm’s original `person` table
+
+Norm’s early schema used a `person` table because the initial scope was human genealogy. Once horse records and other non‑human datasets were introduced, the limitations became obvious:
+
+- Horse registries treat animals as first‑class lineage subjects.
+- Breed associations track ancestry exactly like human genealogical systems.
+- Many datasets mix humans and non‑humans (e.g., breeder → horse → offspring).
+
+Rather than creating parallel tables (`person`, `horse`, `animal`, etc.), Biolineage unifies them under **entity**, with type metadata determining the specific category.
+
+#### Practical consequences for contributors
+
+- When referring to the **graph node**, always use **entity**.
+- When referring to a **biological human**, use **person**.
+- When referring to a **GEDCOM record**, use **individual**.
+- When referring to **source provenance**, use **instigator**.
+- When referring to **relationship roles**, use **subject/object** or domain‑specific terms (parent, child, sire, dam).
+
+This keeps the documentation consistent, avoids anthropocentric assumptions, and ensures the model remains extensible.
 
 ---
 
 ## 5. events Table
 
-Events represent historical occurrences tied to persons.
+Events represent historical occurrences tied to entities.
 
 **Fields include:**
 
 - `uuid` — primary key
-- `person_uuid` — FK → persons
+- `entity_uuid` — FK → entities
 - `event_type` — birth, death, burial, marriage, immigration, etc.
 - `date` — normalized date or partial date
 - `place_uuid` — FK → places
@@ -85,10 +127,10 @@ Events represent historical occurrences tied to persons.
 **Rationale:**
 
 Events allow biolineage to model history in a structured way.
-Birth, death, and burial are not attributes of a person — they are **events**.
+Birth, death, and burial are not attributes of an entity — they are **events**.
 This enables:
 
-- multiple events per person
+- multiple events per entity
 - partial dates
 - ambiguous or narrative descriptions
 - future event types (military service, census, migration, etc.)
@@ -102,8 +144,8 @@ Relationships define edges in the lineage graph.
 **Fields include:**
 
 - `uuid` — primary key
-- `person_a_uuid` — FK → persons
-- `person_b_uuid` — FK → persons
+- `entity_a_uuid` — FK → entities
+- `entity_b_uuid` — FK → entities
 - `relationship_type` — parent, child, spouse, partner, sibling, etc.
 - `inferred` — boolean
 - `notes` — optional narrative
@@ -112,7 +154,7 @@ Relationships define edges in the lineage graph.
 
 The relationship model is **graph‑first**.
 Every relationship is directional and explicit.
-Parent/child relationships are stored as edges, not embedded in the person record.
+Parent/child relationships are stored as edges, not embedded in the entity record.
 
 This enables:
 
@@ -162,14 +204,14 @@ Every place is assigned a UUID, ensuring deterministic linkage from events.
 
 The schema uses a simple, predictable FK structure:
 
-- **events → persons**
+- **events → entities**
 - **events → places**
-- **relationships → persons (twice)**
+- **relationships → entities (twice)**
 - **places → none** (places are standalone)
 
 This structure ensures:
 
-- persons are the root nodes
+- entities are the root nodes
 - events attach temporal/spatial meaning
 - relationships attach graph edges
 - places attach locality meaning
@@ -182,17 +224,17 @@ This structure ensures:
 
 The schema forms a three‑layer model:
 
-### Layer 1: Persons
+### Layer 1: Entities
 
 The nodes of the lineage graph.
 
 ### Layer 2: Events
 
-Historical occurrences tied to persons.
+Historical occurrences tied to entities.
 
 ### Layer 3: Relationships
 
-Edges connecting persons.
+Edges connecting entities.
 
 ### Layer 4: Places
 
@@ -200,8 +242,8 @@ Normalized localities referenced by events.
 
 This creates a unified model:
 
-- persons → events → places
-- persons → relationships → persons
+- entities → events → places
+- entities → relationships → entities
 
 Everything else (tree rendering, gender inference, normalization) builds on this foundation.
 

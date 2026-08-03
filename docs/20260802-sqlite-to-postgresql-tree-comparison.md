@@ -85,7 +85,7 @@ The SQLite version exhibited several traversal issues:
 - **Inferred relationships ignored**
 - **Ambiguous parentage causing traversal gaps**
 
-These issues were visible in the personal tree output and required manual correction.
+These issues were visible in the entity tree output and required manual correction.
 
 ---
 
@@ -152,8 +152,8 @@ All of these issues are resolved in the PostgreSQL version.
 
 To ensure correctness, a series of validation tests were run comparing:
 
-- SQLite personal tree output
-- PostgreSQL personal tree output
+- SQLite person tree output
+- PostgreSQL entity tree output
 
 These tests included:
 
@@ -183,7 +183,7 @@ PostgreSQL completed deep trees in milliseconds; SQLite slowed significantly.
 
 ### 7. Event‑linked traversal tests
 
-PostgreSQL correctly linked events to places and persons during traversal.
+PostgreSQL correctly linked events to places and entities during traversal.
 
 The PostgreSQL implementation passed all validation tests.
 

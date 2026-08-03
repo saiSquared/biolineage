@@ -52,7 +52,7 @@ Describes the sex inference subsystem. Covers inference from relationships, narr
 
 ### 20260802-tree-function-design.md
 
-Explains the lineage tree rendering functions. Covers ancestor traversal, descendant traversal, cycle detection, ordering rules, sibling derivation, spouse handling, and the structure returned by the personal tree API.
+Explains the lineage tree rendering functions. Covers ancestor traversal, descendant traversal, cycle detection, ordering rules, sibling derivation, spouse handling, and the structure returned by the entity tree API.
 
 ### 20260802-api-integration.md
 
@@ -98,7 +98,7 @@ The documentation corresponds directly to the implementation:
 - ingestion logic in transform.js
 - relationship and event tables in PostgreSQL
 - place normalization rules in places.xlsx and placeFixes
-- lineage tree functions in the personal tree endpoint
+- lineage tree functions in the entity tree endpoint
 - API routes in Fastify plugins
 - geography schema in db/pg-definitions.js
 

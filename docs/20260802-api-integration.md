@@ -10,7 +10,7 @@ This document describes the API endpoints exposed by biolineage. It explains req
 
 The biolineage API is a lightweight, JSON‑based interface built on Fastify. It exposes endpoints for:
 
-- retrieving person records
+- retrieving entity records
 - retrieving events
 - retrieving relationships
 - retrieving normalized places
@@ -33,12 +33,12 @@ All endpoints return structured JSON with consistent serialization rules.
 
 Routes follow a simple pattern:
 
-- `/person/:uuid`
-- `/person/:uuid/events`
-- `/person/:uuid/relationships`
-- `/person/:uuid/personal-tree`
+- `/entity/:uuid`
+- `/entity/:uuid/events`
+- `/entity/:uuid/relationships`
+- `/entity/:uuid/entity-tree`
 - `/place/:uuid`
-- `/search/person`
+- `/search/entity`
 - `/search/place`
 
 Each route is defined in a dedicated Fastify plugin. Plugins are loaded during server initialization to keep the route structure modular and maintainable.
@@ -46,9 +46,9 @@ Each route is defined in a dedicated Fastify plugin. Plugins are loaded during s
 Example route definition:
 
 ```js
-app.get('/person/:uuid', async (req, reply) => {
-  const person = await db.getPerson(req.params.uuid)
-  reply.send(person)
+app.get('/entity/:uuid', async (req, reply) => {
+  const entity = await db.getEntity(req.params.uuid)
+  reply.send(entity)
 })
 ```
 
@@ -71,11 +71,11 @@ Serialization is deterministic across all endpoints.
 
 ---
 
-## 4. Person Endpoints
+## 4. Entity Endpoints
 
-### 4.1 `/person/:uuid`
+### 4.1 `/entity/:uuid`
 
-Returns a single person record.
+Returns a single entity record.
 
 Response fields include:
 
@@ -87,9 +87,9 @@ Response fields include:
 - created_at
 - updated_at
 
-### 4.2 `/person/:uuid/events`
+### 4.2 `/entity/:uuid/events`
 
-Returns all events associated with the person.
+Returns all events associated with the entity.
 
 Each event includes:
 
@@ -100,15 +100,15 @@ Each event includes:
 - description
 - source
 
-### 4.3 `/person/:uuid/relationships`
+### 4.3 `/entity/:uuid/relationships`
 
-Returns all relationship edges involving the person.
+Returns all relationship edges involving the entity.
 
 Each relationship includes:
 
 - uuid
-- person_a_uuid
-- person_b_uuid
+- entity_a_uuid
+- entity_b_uuid
 - relationship_type
 - inferred
 - notes
@@ -139,13 +139,13 @@ Supports searching for places by name, region, or country.
 
 ## 6. Lineage Tree Endpoint
 
-### 6.1 `/person/:uuid/personal-tree`
+### 6.1 `/entity/:uuid/entity-tree`
 
-This endpoint computes and returns the personal lineage tree for the target person. It integrates directly with the tree rendering functions described in 20260802-tree-function-design.md.
+This endpoint computes and returns the lineage tree for the target entity. It integrates directly with the tree rendering functions described in 20260802-tree-function-design.md.
 
 The response includes:
 
-- person
+- entity
 - ancestors
 - descendants
 - spouses
@@ -156,7 +156,7 @@ Example response structure:
 
 ```json
 {
-  "person": { ... },
+  "entity": { ... },
   "ancestors": [
     { "uuid": "...", "depth": 1, "relationship": "parent" }
   ],
@@ -209,7 +209,7 @@ This ensures consistent results across all API calls.
 The API is designed to support future frontend features, including:
 
 - interactive lineage trees
-- person detail pages
+- entity detail pages
 - event timelines
 - place detail pages
 - search interfaces
@@ -234,7 +234,7 @@ Example error response:
 ```json
 {
   "error": "Not Found",
-  "message": "Person not found",
+  "message": "Entity not found",
   "statusCode": 404
 }
 ```
@@ -253,4 +253,4 @@ The biolineage API is designed to be:
 - tightly coupled to the lineage tree renderer
 - extensible for future features
 
-It provides a clean interface for retrieving persons, events, relationships, places, and lineage trees.
+It provides a clean interface for retrieving entities, events, relationships, places, and lineage trees.

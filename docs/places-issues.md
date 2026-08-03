@@ -239,7 +239,7 @@ These require decision from Norm and Charles
 **Decision needed:**
 
 - Should “Texas” be treated as the state?
-- Should “Texas” be merged with Corsicana if referring to same person?
+- Should “Texas” be merged with Corsicana if referring to same entity?
 - Or kept separate?
 
 ---

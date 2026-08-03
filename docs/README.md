@@ -71,7 +71,7 @@ Fastify is used instead of Express because:
 - it integrates cleanly with TypeScript (future direction)
 - it is ideal for building predictable APIs for lineage queries
 
-Fastify is the backbone of the API endpoints used by the personal tree renderer, event lookup, and place resolution.
+Fastify is the backbone of the API endpoints used by the entity tree renderer, event lookup, and place resolution.
 
 ---
 
@@ -147,7 +147,7 @@ This section provides a description of each file in the `docs/` directory. These
 A high‑level description of the PostgreSQL schema used by biolineage.
 It explains:
 
-- core tables (persons, events, relationships, places)
+- core tables (entities, events, relationships, places)
 - foreign‑key structure
 - UUID strategy
 - how lineage, events, and places interrelate
@@ -241,7 +241,7 @@ It includes:
 - ordering rules
 - how the API returns tree structures to the frontend
 
-This document defines the algorithms behind `/person/:id/personal-tree`.
+This document defines the algorithms behind `/entity/:id/entity-tree`.
 
 ---
 

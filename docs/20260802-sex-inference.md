@@ -39,8 +39,8 @@ Parent/child edges provide the strongest structural evidence for sex inference.
 
 Examples:
 
-- If a person is explicitly listed as the mother of a child, sex is inferred as female.
-- If a person is explicitly listed as the father of a child, sex is inferred as male.
+- If an entity is explicitly listed as the mother of a child, sex is inferred as female.
+- If an entity is explicitly listed as the father of a child, sex is inferred as male.
 
 Norm’s dataset does not contain explicit “mother” or “father” labels, but parentage can be inferred from event context or relationship structure.
 
@@ -132,7 +132,7 @@ This ensures correctness and avoids incorrect assumptions.
 
 ## 8. How Sex Is Stored and Updated
 
-Sex is stored in the persons table as:
+Sex is stored in the entities table as:
 
 - male
 - female
