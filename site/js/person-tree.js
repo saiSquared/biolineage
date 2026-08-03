@@ -194,14 +194,36 @@ async function getPersonTree() {
 }
 
 function groupByLevel(rows) {
-	const map = new Map()
-	for (const row of rows) {
-		if (!map.has(row.level)) {
-			map.set(row.level, { level: row.level, members: [] })
-		}
-		map.get(row.level).members.push(row)
+	// If rows are already grouped (have .members), use them directly
+	const groups = rows[0] && Array.isArray(rows[0].members)
+		? rows
+		: (() => {
+				const map = new Map()
+				for (const row of rows) {
+					if (!map.has(row.level)) {
+						map.set(row.level, { level: row.level, members: [] })
+					}
+					map.get(row.level).members.push(row)
+				}
+				return Array.from(map.values())
+			})()
+
+	// Sort members inside each group: null birthYear FIRST
+	for (const group of groups) {
+		group.members.sort((a, b) => {
+			const ay = a.birthYear
+			const by = b.birthYear
+
+			if (ay == null && by == null) return 0
+			if (ay == null) return -1
+			if (by == null) return 1
+
+			return ay - by
+		})
 	}
-	return Array.from(map.values()).sort((a, b) => a.level - b.level)
+
+	// Sort groups by level
+	return groups.sort((a, b) => a.level - b.level)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
