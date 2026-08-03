@@ -66,6 +66,12 @@
  */
 
 /**
+ * PostgreSQL view
+ * @typedef PGView
+ * @property {String} code - fully qualified SQL statement to create the view
+ */
+
+/**
  * PostgreSQL table definition object
  * @typedef PGTable
  * @property {String} name - name of the table
@@ -996,4 +1002,84 @@ const pgFunctions = [
 	}
 ]
 
-module.exports = { pgTables, pgForeignKeys, pgTriggers, pgFunctions }
+const pgViews = [
+	{
+		code:
+			`create or replace view geography_flat as
+
+			-- Level 1: sovereign only
+			select
+				se.id   as se_id,
+				se.name as se_name,
+				null::uuid as sd_id,
+				null::text as sd_name,
+				null::uuid as ad_id,
+				null::text as ad_name,
+				null::uuid as mu_id,
+				null::text as mu_name,
+				concat_ws(', ', se.name) as full_name
+			from sovereign_entities se
+
+			union all
+
+			-- Level 2: sovereign + subdivision
+			select
+				se.id   as se_id,
+				se.name as se_name,
+				s.id    as sd_id,
+				s.name  as sd_name,
+				null::uuid as ad_id,
+				null::text as ad_name,
+				null::uuid as mu_id,
+				null::text as mu_name,
+				concat_ws(', ', se.name, s.name) as full_name
+			from sovereign_entities se
+			join subdivisions s
+				on s.sovereign_entity_id = se.id
+
+			union all
+
+			-- Level 3: sovereign + subdivision + admin division
+			select
+				se.id   as se_id,
+				se.name as se_name,
+				s.id    as sd_id,
+				s.name  as sd_name,
+				ad.id   as ad_id,
+				ad.name as ad_name,
+				null::uuid as mu_id,
+				null::text as mu_name,
+				concat_ws(', ', se.name, s.name, ad.name) as full_name
+			from sovereign_entities se
+			join subdivisions s
+				on s.sovereign_entity_id = se.id
+			join administrative_divisions ad
+				on ad.subdivision_id = s.id
+
+			union all
+
+			-- Level 4: full path down to municipality
+			select
+				se.id   as se_id,
+				se.name as se_name,
+				s.id    as sd_id,
+				s.name  as sd_name,
+				ad.id   as ad_id,
+				ad.name as ad_name,
+				m.id    as mu_id,
+				m.name  as mu_name,
+				concat_ws(', ', se.name, s.name, ad.name, m.name) as full_name
+			from sovereign_entities se
+			join subdivisions s
+				on s.sovereign_entity_id = se.id
+			join administrative_divisions ad
+				on ad.subdivision_id = s.id
+			join municipalities m
+				on m.administrative_division_id = ad.id
+
+			order by
+				se_name, sd_name, ad_name, mu_name;`
+	}
+]
+
+module.exports = { pgTables, pgForeignKeys, pgTriggers, pgFunctions, pgViews }

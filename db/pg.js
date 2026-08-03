@@ -31,6 +31,9 @@ const { Pool } = require('pg')
  * @typedef {Object} PGEngine
  * @property {Function} createTable
  * @property {Function} createForeignKeys
+ * @property {Function} createTriggers
+ * @property {Function} createFunctions
+ * @property {Function} createViews
  * @property {Function} insert
  * @property {Function} update
  * @property {Function} delete
@@ -478,6 +481,28 @@ function pgDb(config, debug) {
 			} catch (error) {
 				if (!tx) c.release()
 				throw new Error(`Unable to create function:\n${sql}\nERR: ${error.message}`)
+			}
+		},
+
+		/**
+		 * Create function(s)
+		 * @param {import('./pg-definitions').PGView[]} functions - array of trigger objects
+		 */
+		async createViews(views) {
+			const c = tx || await pool.connect()
+			let sql
+
+			try {
+				for (const view of views) {
+					sql = view.code
+					if (debug) console.log(sql)
+					await c.query(sql)
+				}
+
+				if (!tx) c.release()
+			} catch (error) {
+				if (!tx) c.release()
+				throw new Error(`Unable to create view:\n${sql}\nERR: ${error.message}`)
 			}
 		},
 

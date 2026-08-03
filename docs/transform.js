@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid')
 const argon2 = require('argon2')
 const sqliteDb = require('../db/sqlite')
 const pgDb = require('../db/pg')
-const { pgTables, pgForeignKeys, pgTriggers, pgFunctions } = require('../db/pg-definitions')
+const { pgTables, pgForeignKeys, pgTriggers, pgFunctions, pgViews } = require('../db/pg-definitions')
 const dotenv = require('dotenv')
 
 dotenv.config({
@@ -233,6 +233,7 @@ async function initPg() {
 	await normPg.createForeignKeys(pgForeignKeys)
 	await normPg.createTriggers(pgTriggers)
 	await normPg.createFunctions(pgFunctions)
+	await normPg.createViews(pgViews)
 	const clubside = uuidv4()
 	await normPg.insert('users', {
 		id: clubside,

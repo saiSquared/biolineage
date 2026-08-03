@@ -11,7 +11,7 @@ dotenv.config({
 })
 
 const env = Object.freeze({ ...process.env })
-const dbNorm = new sqliteDb('/home/norm.app/db/norm.db')
+const dbNorm = new sqliteDb('/home/biolineage.app/db/norm.db')
 const pgNorm = pgDb({
 	host: env.PG_HOST,
 	port: Number(env.PG_PORT),
