@@ -333,7 +333,6 @@ const pgTables = {
 		],
 		foreignKeys: [
 			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
-			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
@@ -417,6 +416,77 @@ const pgTables = {
 		],
 		unique: [
 			{ fields: ['tree_id', 'entity_id', 'value'] }
+		]
+	},
+
+	/** @type {PGTable} */
+	factTypes: {
+		name: 'fact_types',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'tree_id', type: 'UUID' },
+			{ name: 'entity_type_id', type: 'UUID', nulls: false },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'description', type: 'TEXT' },
+			{ name: 'is_custom', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
+			{ name: 'created_by', type: 'UUID', nulls: false },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_by', type: 'UUID', nulls: false },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
+		],
+		foreignKeys: [
+			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['entity_type_id'], refTable: 'entity_types', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
+		],
+		indexes: [
+			{ fields: ['tree_id'] },
+			{ fields: ['entity_type_id'] },
+			{ fields: ['created_by'] },
+			{ fields: ['modified_by'] }
+		],
+		unique: [
+			{ fields: ['tree_id', 'name', 'entity_type_id'] }
+		]
+	},
+
+	/** @type {PGTable} */
+	facts: {
+		name: 'facts',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'tree_id', type: 'UUID', nulls: false },
+			{ name: 'entity_type_id', type: 'UUID', nulls: false },
+			{ name: 'fact_type_id', type: 'UUID', nulls: false },
+			{ name: 'entity_id', type: 'UUID', nulls: false },
+			{ name: 'value', type: 'TEXT', nulls: false },
+			{ name: 'data', type: 'JSONB' },
+			{ name: 'notes', type: 'TEXT' },
+			{ name: 'is_custom', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
+			{ name: 'created_by', type: 'UUID', nulls: false },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_by', type: 'UUID', nulls: false },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
+		],
+		foreignKeys: [
+			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['entity_type_id'], refTable: 'entity_types', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['fact_type_id'], refTable: 'fact_types', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
+		],
+		indexes: [
+			{ fields: ['tree_id'] },
+			{ fields: ['entity_type_id'] },
+			{ fields: ['fact_type_id'] },
+			{ fields: ['entity_id'] },
+			{ fields: ['created_by'] },
+			{ fields: ['modified_by'] }
+		],
+		unique: [
+			{ fields: ['tree_id', 'fact_type_id', 'entity_id'] }
 		]
 	},
 
@@ -660,13 +730,14 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
-	eventCitations: {
-		name: 'event_citations',
+	citationsMap: {
+		name: 'citations_map',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'tree_id', type: 'UUID', nulls: false },
-			{ name: 'event_id', type: 'UUID', nulls: false },
 			{ name: 'citation_id', type: 'UUID', nulls: false },
+			{ name: 'target_table', type: 'TEXT', nulls: false },
+			{ name: 'target_id', type: 'UUID', nulls: false },
 			{ name: 'notes', type: 'TEXT' },
 			{ name: 'created_by', type: 'UUID', nulls: false },
 			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
@@ -675,15 +746,15 @@ const pgTables = {
 		],
 		foreignKeys: [
 			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
-			{ fields: ['event_id'], refTable: 'events', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['citation_id'], refTable: 'citations', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		indexes: [
 			{ fields: ['tree_id'] },
-			{ fields: ['event_id'] },
 			{ fields: ['citation_id'] },
+			{ fields: ['target_table'] },
+			{ fields: ['target_id'] },
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
 		]
@@ -745,6 +816,8 @@ const pgTables = {
 		indexes: [
 			{ fields: ['tree_id'] },
 			{ fields: ['tag_id'] },
+			{ fields: ['target_table'] },
+			{ fields: ['target_id'] },
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
 		],

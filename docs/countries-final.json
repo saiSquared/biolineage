@@ -1,0 +1,5542 @@
+[
+	{
+		"id": "01bb50e6-c9fb-4d45-a51c-b6e97e0623f9",
+		"name": "Andorra",
+		"longName": "Andorra",
+		"iso31661": {
+			"alpha2": "AD",
+			"alpha3": "AND",
+			"numeric": "20",
+			"nameShort": "Andorra",
+			"nameLong": "Andorra"
+		},
+		"hasFlag": true,
+		"flagFile": "ad.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ad"
+			}
+		]
+	},
+	{
+		"id": "5eba7c33-a99d-4fb3-8fd0-57eb9d1b7601",
+		"name": "United Arab Emirates",
+		"longName": "Dubai (not a country, but a state (an emirate) within the United Arab Emirates)",
+		"iso31661": {
+			"alpha2": "AE",
+			"alpha3": "ARE",
+			"numeric": "784",
+			"nameShort": "United Arab Emirates",
+			"nameLong": "United Arab Emirates (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "ae.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ae"
+			}
+		]
+	},
+	{
+		"id": "eb069301-e9f4-4c1c-9176-761092b05c2b",
+		"name": "Afghanistan",
+		"longName": "Afghanistan",
+		"iso31661": {
+			"alpha2": "AF",
+			"alpha3": "AFG",
+			"numeric": "4",
+			"nameShort": "Afghanistan",
+			"nameLong": "Afghanistan"
+		},
+		"hasFlag": true,
+		"flagFile": "af.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".af"
+			}
+		]
+	},
+	{
+		"id": "60bb6ab6-ad35-4d32-bf98-0c7c2df6877c",
+		"name": "Antigua and Barbuda",
+		"longName": "Antigua and Barbuda",
+		"iso31661": {
+			"alpha2": "AG",
+			"alpha3": "ATG",
+			"numeric": "28",
+			"nameShort": "Antigua and Barbuda",
+			"nameLong": "Antigua and Barbuda"
+		},
+		"hasFlag": true,
+		"flagFile": "ag.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ag"
+			}
+		]
+	},
+	{
+		"id": "6d7d2851-c1e9-4ff5-b75d-811dffb9c85e",
+		"name": "Anguilla",
+		"longName": "Anguilla",
+		"iso31661": {
+			"alpha2": "AI",
+			"alpha3": "AIA",
+			"numeric": "660",
+			"nameShort": "Anguilla",
+			"nameLong": "Anguilla"
+		},
+		"hasFlag": true,
+		"flagFile": "ai.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ai"
+			}
+		]
+	},
+	{
+		"id": "0f644218-b5e2-4239-8526-01fd2e11bd38",
+		"name": "Albania",
+		"longName": "Albania",
+		"iso31661": {
+			"alpha2": "AL",
+			"alpha3": "ALB",
+			"numeric": "8",
+			"nameShort": "Albania",
+			"nameLong": "Albania"
+		},
+		"hasFlag": true,
+		"flagFile": "al.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".al"
+			}
+		]
+	},
+	{
+		"id": "81ba2d45-6d43-4264-b97f-01a5f8b4d8b1",
+		"name": "Armenia",
+		"longName": "Armenia",
+		"iso31661": {
+			"alpha2": "AM",
+			"alpha3": "ARM",
+			"numeric": "51",
+			"nameShort": "Armenia",
+			"nameLong": "Armenia"
+		},
+		"hasFlag": true,
+		"flagFile": "am.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".am"
+			}
+		]
+	},
+	{
+		"id": "c7f22ffe-24ec-4d29-b35d-60ab039b6818",
+		"name": "Angola",
+		"longName": "Angola",
+		"iso31661": {
+			"alpha2": "AO",
+			"alpha3": "AGO",
+			"numeric": "24",
+			"nameShort": "Angola",
+			"nameLong": "Angola"
+		},
+		"hasFlag": true,
+		"flagFile": "ao.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ao"
+			}
+		]
+	},
+	{
+		"id": "e25d8bf4-49f9-404e-b1d6-510c0b282f3e",
+		"name": "Antarctica",
+		"longName": "Antarctica",
+		"iso31661": {
+			"alpha2": "AQ",
+			"alpha3": "ATA",
+			"numeric": "10",
+			"nameShort": "Antarctica",
+			"nameLong": "Antarctica"
+		},
+		"hasFlag": true,
+		"flagFile": "aq.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".aq",
+				"note": "stands for Antarctique"
+			}
+		]
+	},
+	{
+		"id": "a4f9f0ef-f065-45c3-a6aa-0b3668e2bff6",
+		"name": "Argentina",
+		"longName": "Argentina",
+		"iso31661": {
+			"alpha2": "AR",
+			"alpha3": "ARG",
+			"numeric": "32",
+			"nameShort": "Argentina",
+			"nameLong": "Argentina"
+		},
+		"hasFlag": true,
+		"flagFile": "ar.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ar"
+			}
+		]
+	},
+	{
+		"id": "5a9cf2b3-5e8a-43ea-b028-c1260d2bfff7",
+		"name": "American Samoa",
+		"longName": "American Samoa",
+		"iso31661": {
+			"alpha2": "AS",
+			"alpha3": "ASM",
+			"numeric": "16",
+			"nameShort": "American Samoa",
+			"nameLong": "American Samoa"
+		},
+		"hasFlag": true,
+		"flagFile": "as.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".as"
+			}
+		]
+	},
+	{
+		"id": "eb8522e7-99dc-4e97-ae5d-e1343d01325c",
+		"name": "Austria",
+		"longName": "Austria",
+		"iso31661": {
+			"alpha2": "AT",
+			"alpha3": "AUT",
+			"numeric": "40",
+			"nameShort": "Austria",
+			"nameLong": "Austria"
+		},
+		"hasFlag": true,
+		"flagFile": "at.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".at"
+			}
+		]
+	},
+	{
+		"id": "71e0a006-c022-4df1-b52f-0929ce29772e",
+		"name": "Australia",
+		"longName": "Australia",
+		"iso31661": {
+			"alpha2": "AU",
+			"alpha3": "AUS",
+			"numeric": "36",
+			"nameShort": "Australia",
+			"nameLong": "Australia"
+		},
+		"hasFlag": true,
+		"flagFile": "au.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".au"
+			}
+		]
+	},
+	{
+		"id": "50ebcd33-ae30-4741-9229-6c2b0982e465",
+		"name": "Aruba",
+		"longName": "Aruba",
+		"iso31661": {
+			"alpha2": "AW",
+			"alpha3": "ABW",
+			"numeric": "533",
+			"nameShort": "Aruba",
+			"nameLong": "Aruba"
+		},
+		"hasFlag": true,
+		"flagFile": "aw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".aw",
+				"note": "stands for Aruba West Indies"
+			}
+		]
+	},
+	{
+		"id": "decc168a-5753-4f5f-b93e-60b0007bf5dd",
+		"name": "Åland Islands",
+		"longName": "Åland",
+		"iso31661": {
+			"alpha2": "AX",
+			"alpha3": "ALA",
+			"numeric": "248",
+			"nameShort": "Åland Islands",
+			"nameLong": "Åland Islands"
+		},
+		"hasFlag": true,
+		"flagFile": "ax.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ax"
+			}
+		]
+	},
+	{
+		"id": "3fb6f07a-dac3-443e-94e1-6bf5bbc8486e",
+		"name": "Azerbaijan",
+		"longName": "Azerbaijan",
+		"iso31661": {
+			"alpha2": "AZ",
+			"alpha3": "AZE",
+			"numeric": "31",
+			"nameShort": "Azerbaijan",
+			"nameLong": "Azerbaijan"
+		},
+		"hasFlag": true,
+		"flagFile": "az.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".az"
+			}
+		]
+	},
+	{
+		"id": "77c191a6-04ca-4efe-8146-dbfddbbbed2f",
+		"name": "Bosnia and Herzegovina",
+		"longName": "Bosnia and Herzegovina",
+		"iso31661": {
+			"alpha2": "BA",
+			"alpha3": "BIH",
+			"numeric": "70",
+			"nameShort": "Bosnia and Herzegovina",
+			"nameLong": "Bosnia and Herzegovina"
+		},
+		"hasFlag": true,
+		"flagFile": "ba.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ba"
+			}
+		]
+	},
+	{
+		"id": "bbdbecdd-aa46-4e1d-a292-56f52c172cc9",
+		"name": "Barbados",
+		"longName": "Barbados",
+		"iso31661": {
+			"alpha2": "BB",
+			"alpha3": "BRB",
+			"numeric": "52",
+			"nameShort": "Barbados",
+			"nameLong": "Barbados"
+		},
+		"hasFlag": true,
+		"flagFile": "bb.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bb"
+			}
+		]
+	},
+	{
+		"id": "e67013b3-4b01-447e-98d2-3b668300bf6c",
+		"name": "Bangladesh",
+		"longName": "Bangladesh",
+		"iso31661": {
+			"alpha2": "BD",
+			"alpha3": "BGD",
+			"numeric": "50",
+			"nameShort": "Bangladesh",
+			"nameLong": "Bangladesh"
+		},
+		"hasFlag": true,
+		"flagFile": "bd.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bd"
+			}
+		]
+	},
+	{
+		"id": "2fc1ddf4-161f-4345-b37a-738ed8e21948",
+		"name": "Belgium",
+		"longName": "Belgium",
+		"iso31661": {
+			"alpha2": "BE",
+			"alpha3": "BEL",
+			"numeric": "56",
+			"nameShort": "Belgium",
+			"nameLong": "Belgium"
+		},
+		"hasFlag": true,
+		"flagFile": "be.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".be"
+			}
+		]
+	},
+	{
+		"id": "dd9f209e-f46e-40f6-8dad-983e96ec3df1",
+		"name": "Burkina Faso",
+		"longName": "Burkina Faso",
+		"iso31661": {
+			"alpha2": "BF",
+			"alpha3": "BFA",
+			"numeric": "854",
+			"nameShort": "Burkina Faso",
+			"nameLong": "Burkina Faso"
+		},
+		"hasFlag": true,
+		"flagFile": "bf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bf"
+			}
+		]
+	},
+	{
+		"id": "657a0102-b92a-4294-b678-1c634318032b",
+		"name": "Bulgaria",
+		"longName": "Bulgaria",
+		"iso31661": {
+			"alpha2": "BG",
+			"alpha3": "BGR",
+			"numeric": "100",
+			"nameShort": "Bulgaria",
+			"nameLong": "Bulgaria"
+		},
+		"hasFlag": true,
+		"flagFile": "bg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bg"
+			}
+		]
+	},
+	{
+		"id": "420a1012-be98-4af5-88e6-5fa6f5427de0",
+		"name": "Bahrain",
+		"longName": "Bahrain",
+		"iso31661": {
+			"alpha2": "BH",
+			"alpha3": "BHR",
+			"numeric": "48",
+			"nameShort": "Bahrain",
+			"nameLong": "Bahrain"
+		},
+		"hasFlag": true,
+		"flagFile": "bh.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bh"
+			}
+		]
+	},
+	{
+		"id": "1dab6e63-25a4-4232-ae9a-56b0ea919ec6",
+		"name": "Burundi",
+		"longName": "Burundi",
+		"iso31661": {
+			"alpha2": "BI",
+			"alpha3": "BDI",
+			"numeric": "108",
+			"nameShort": "Burundi",
+			"nameLong": "Burundi"
+		},
+		"hasFlag": true,
+		"flagFile": "bi.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bi"
+			}
+		]
+	},
+	{
+		"id": "64f15890-9298-4b5f-9624-6f5dbc293187",
+		"name": "Benin",
+		"longName": "Benin",
+		"iso31661": {
+			"alpha2": "BJ",
+			"alpha3": "BEN",
+			"numeric": "204",
+			"nameShort": "Benin",
+			"nameLong": "Benin"
+		},
+		"hasFlag": true,
+		"flagFile": "bj.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bj"
+			}
+		]
+	},
+	{
+		"id": "0fc9d4b7-8fd4-416d-8b88-c89edd6dc449",
+		"name": "Saint Barthélemy",
+		"longName": "Saint Barthélemy (French overseas collectivity, informally also referred to as Saint Barth’s or Saint Barts)",
+		"iso31661": {
+			"alpha2": "BL",
+			"alpha3": "BLM",
+			"numeric": "652",
+			"nameShort": "Saint Barthélemy",
+			"nameLong": "Saint Barthélemy"
+		},
+		"hasFlag": true,
+		"flagFile": "bl.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bl",
+				"note": "not in use yet"
+			},
+			{
+				"tld": ".gp",
+				"note": "stands for Guadeloupe"
+			},
+			{
+				"tld": ".fr",
+				"note": "stands for France"
+			}
+		]
+	},
+	{
+		"id": "548f6158-2e65-4e24-8d31-a2499bea61cb",
+		"name": "Bermuda",
+		"longName": "Bermuda",
+		"iso31661": {
+			"alpha2": "BM",
+			"alpha3": "BMU",
+			"numeric": "60",
+			"nameShort": "Bermuda",
+			"nameLong": "Bermuda"
+		},
+		"hasFlag": true,
+		"flagFile": "bm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bm"
+			}
+		]
+	},
+	{
+		"id": "b35bdaac-f574-4d92-a1ad-63c9ebf1481f",
+		"name": "Brunei Darussalam",
+		"longName": "Brunei",
+		"iso31661": {
+			"alpha2": "BN",
+			"alpha3": "BRN",
+			"numeric": "96",
+			"nameShort": "Brunei Darussalam",
+			"nameLong": "Brunei Darussalam"
+		},
+		"hasFlag": true,
+		"flagFile": "bn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bn"
+			}
+		]
+	},
+	{
+		"id": "cd13f26d-e201-47ba-b228-b72d9e354113",
+		"name": "Bolivia",
+		"longName": "Bolivia",
+		"iso31661": {
+			"alpha2": "BO",
+			"alpha3": "BOL",
+			"numeric": "68",
+			"nameShort": "Bolivia",
+			"nameLong": "Bolivia (Plurinational State of)"
+		},
+		"hasFlag": true,
+		"flagFile": "bo.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bo"
+			}
+		]
+	},
+	{
+		"id": "ebb94b0d-c7bb-48da-ad64-23d22a0986e3",
+		"name": "Bonaire",
+		"longName": "Bonaire",
+		"iso31661": {
+			"alpha2": "BQ",
+			"alpha3": "BES",
+			"numeric": "535",
+			"nameShort": "Bonaire",
+			"nameLong": "Bonaire, Sint Eustatius and Saba"
+		},
+		"hasFlag": true,
+		"flagFile": "bq.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bq",
+				"note": "not in use yet"
+			},
+			{
+				"tld": ".an",
+				"note": "stands for Netherlands Antilles"
+			},
+			{
+				"tld": ".nl",
+				"note": "stands for Netherlands"
+			}
+		]
+	},
+	{
+		"id": "afc7e1cd-4a70-4b93-924d-8829147e1e6a",
+		"name": "Brazil",
+		"longName": "Brazil",
+		"iso31661": {
+			"alpha2": "BR",
+			"alpha3": "BRA",
+			"numeric": "76",
+			"nameShort": "Brazil",
+			"nameLong": "Brazil"
+		},
+		"hasFlag": true,
+		"flagFile": "br.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".br"
+			}
+		]
+	},
+	{
+		"id": "6dc33357-8f14-435e-bdde-65857a39520b",
+		"name": "Bahamas",
+		"longName": "Bahamas",
+		"iso31661": {
+			"alpha2": "BS",
+			"alpha3": "BHS",
+			"numeric": "44",
+			"nameShort": "Bahamas",
+			"nameLong": "Bahamas (The)"
+		},
+		"hasFlag": true,
+		"flagFile": "bs.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bs"
+			}
+		]
+	},
+	{
+		"id": "eb52f227-7171-41bf-acd9-3272c44896c8",
+		"name": "Bhutan",
+		"longName": "Bhutan",
+		"iso31661": {
+			"alpha2": "BT",
+			"alpha3": "BTN",
+			"numeric": "64",
+			"nameShort": "Bhutan",
+			"nameLong": "Bhutan"
+		},
+		"hasFlag": true,
+		"flagFile": "bt.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bt"
+			}
+		]
+	},
+	{
+		"id": "964e970f-2200-4a5e-ace7-3af31f42ac16",
+		"name": "Bouvet Island",
+		"longName": "Bouvet Island",
+		"iso31661": {
+			"alpha2": "BV",
+			"alpha3": "BVT",
+			"numeric": "74",
+			"nameShort": "Bouvet Island",
+			"nameLong": "Bouvet Island"
+		},
+		"hasFlag": true,
+		"flagFile": "bv.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bv"
+			}
+		]
+	},
+	{
+		"id": "bfca3f2b-f7ff-470e-a47d-740e2d40e0dd",
+		"name": "Botswana",
+		"longName": "Botswana",
+		"iso31661": {
+			"alpha2": "BW",
+			"alpha3": "BWA",
+			"numeric": "72",
+			"nameShort": "Botswana",
+			"nameLong": "Botswana"
+		},
+		"hasFlag": true,
+		"flagFile": "bw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bw"
+			}
+		]
+	},
+	{
+		"id": "15b8ddd8-8ccb-4508-a587-f1c9c4f37bfe",
+		"name": "Belarus",
+		"longName": "Belarus",
+		"iso31661": {
+			"alpha2": "BY",
+			"alpha3": "BLR",
+			"numeric": "112",
+			"nameShort": "Belarus",
+			"nameLong": "Belarus"
+		},
+		"hasFlag": true,
+		"flagFile": "by.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".by",
+				"note": "stands for Byelorussia"
+			}
+		]
+	},
+	{
+		"id": "8ab48421-64d8-4fee-8a67-8f6a535c00d6",
+		"name": "Belize",
+		"longName": "Belize",
+		"iso31661": {
+			"alpha2": "BZ",
+			"alpha3": "BLZ",
+			"numeric": "84",
+			"nameShort": "Belize",
+			"nameLong": "Belize"
+		},
+		"hasFlag": true,
+		"flagFile": "bz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".bz"
+			}
+		]
+	},
+	{
+		"id": "b630da10-fc72-455c-b995-40f1f8336cd8",
+		"name": "Canada",
+		"longName": "Canada",
+		"iso31661": {
+			"alpha2": "CA",
+			"alpha3": "CAN",
+			"numeric": "124",
+			"nameShort": "Canada",
+			"nameLong": "Canada"
+		},
+		"hasFlag": true,
+		"flagFile": "ca.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ca"
+			}
+		]
+	},
+	{
+		"id": "0ae78caa-a6f6-4fc6-add4-2ef962252f6b",
+		"name": "Cocos",
+		"longName": "Cocos (Keeling) Islands (external Australian territory)",
+		"iso31661": {
+			"alpha2": "CC",
+			"alpha3": "CCK",
+			"numeric": "166",
+			"nameShort": "Cocos",
+			"nameLong": "Cocos (Keeling) Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "cc.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cc"
+			}
+		]
+	},
+	{
+		"id": "0779370e-4d0b-43ff-968c-39a2e80a608a",
+		"name": "Democratic Republic of the Congo",
+		"longName": "Congo, Democratic Republic of the (Congo-Kinshasa)",
+		"iso31661": {
+			"alpha2": "CD",
+			"alpha3": "COD",
+			"numeric": "180",
+			"nameShort": "Congo",
+			"nameLong": "Congo (the Democratic Republic of the)"
+		},
+		"hasFlag": true,
+		"flagFile": "cd.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cd"
+			}
+		]
+	},
+	{
+		"id": "16be8b04-59d0-4e1b-91d4-64e44903d8d1",
+		"name": "Central African Republic",
+		"longName": "Central African Republic",
+		"iso31661": {
+			"alpha2": "CF",
+			"alpha3": "CAF",
+			"numeric": "140",
+			"nameShort": "Central African Republic",
+			"nameLong": "Central African Republic (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "cf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cf"
+			}
+		]
+	},
+	{
+		"id": "fad9e86c-ea07-4438-8d4e-157212f548ea",
+		"name": "Republic of the Congo",
+		"longName": "Congo, Republic of the (Congo-Brazzaville)",
+		"iso31661": {
+			"alpha2": "CG",
+			"alpha3": "COG",
+			"numeric": "178",
+			"nameShort": "Congo",
+			"nameLong": "Congo (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "cg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cg"
+			}
+		]
+	},
+	{
+		"id": "6be5ac28-166c-4476-a4ba-945b724fb454",
+		"name": "Switzerland",
+		"longName": "Switzerland",
+		"iso31661": {
+			"alpha2": "CH",
+			"alpha3": "CHE",
+			"numeric": "756",
+			"nameShort": "Switzerland",
+			"nameLong": "Switzerland"
+		},
+		"hasFlag": true,
+		"flagFile": "ch.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ch"
+			}
+		]
+	},
+	{
+		"id": "f6b12654-2643-451a-8dbd-fd31cbdd7e4a",
+		"name": "Côte d'Ivoire",
+		"longName": "Côte d’Ivoire (Ivory Coast)",
+		"iso31661": {
+			"alpha2": "CI",
+			"alpha3": "CIV",
+			"numeric": "384",
+			"nameShort": "Côte d'Ivoire",
+			"nameLong": "Côte d'Ivoire"
+		},
+		"hasFlag": true,
+		"flagFile": "ci.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ci"
+			}
+		]
+	},
+	{
+		"id": "9c7258f4-0b94-4bd6-9ceb-5133708d607a",
+		"name": "Cook Islands",
+		"longName": "Cook Islands",
+		"iso31661": {
+			"alpha2": "CK",
+			"alpha3": "COK",
+			"numeric": "184",
+			"nameShort": "Cook Islands",
+			"nameLong": "Cook Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "ck.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ck"
+			}
+		]
+	},
+	{
+		"id": "b449862d-628c-4532-b483-871c8ce0cef1",
+		"name": "Chile",
+		"longName": "Chile",
+		"iso31661": {
+			"alpha2": "CL",
+			"alpha3": "CHL",
+			"numeric": "152",
+			"nameShort": "Chile",
+			"nameLong": "Chile"
+		},
+		"hasFlag": true,
+		"flagFile": "cl.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cl"
+			}
+		]
+	},
+	{
+		"id": "6a59f70e-3297-4a2f-a665-1a31c9a524ea",
+		"name": "Cameroon",
+		"longName": "Cameroon",
+		"iso31661": {
+			"alpha2": "CM",
+			"alpha3": "CMR",
+			"numeric": "120",
+			"nameShort": "Cameroon",
+			"nameLong": "Cameroon"
+		},
+		"hasFlag": true,
+		"flagFile": "cm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cm"
+			}
+		]
+	},
+	{
+		"id": "f805391a-7dcf-4b2f-806c-9579a33c6ce0",
+		"name": "China",
+		"longName": "China, People’s Republic of",
+		"iso31661": {
+			"alpha2": "CN",
+			"alpha3": "CHN",
+			"numeric": "156",
+			"nameShort": "China",
+			"nameLong": "China"
+		},
+		"hasFlag": true,
+		"flagFile": "cn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cn"
+			}
+		]
+	},
+	{
+		"id": "add6ea25-794e-4606-a5ff-93f678f04114",
+		"name": "Colombia",
+		"longName": "Colombia",
+		"iso31661": {
+			"alpha2": "CO",
+			"alpha3": "COL",
+			"numeric": "170",
+			"nameShort": "Colombia",
+			"nameLong": "Colombia"
+		},
+		"hasFlag": true,
+		"flagFile": "co.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".co"
+			}
+		]
+	},
+	{
+		"id": "ab82702e-e3dd-4976-92a1-1b9578b70341",
+		"name": "Costa Rica",
+		"longName": "Costa Rica",
+		"iso31661": {
+			"alpha2": "CR",
+			"alpha3": "CRI",
+			"numeric": "188",
+			"nameShort": "Costa Rica",
+			"nameLong": "Costa Rica"
+		},
+		"hasFlag": true,
+		"flagFile": "cr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cr"
+			}
+		]
+	},
+	{
+		"id": "00228676-b5a6-4b33-b73c-50c2f708fc17",
+		"name": "Cuba",
+		"longName": "Cuba",
+		"iso31661": {
+			"alpha2": "CU",
+			"alpha3": "CUB",
+			"numeric": "192",
+			"nameShort": "Cuba",
+			"nameLong": "Cuba"
+		},
+		"hasFlag": true,
+		"flagFile": "cu.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cu"
+			}
+		]
+	},
+	{
+		"id": "e4a0933a-9b33-423e-9e82-7101f78f5095",
+		"name": "Cabo Verde",
+		"longName": "Cape Verde (in Portuguese: Cabo Verde)",
+		"iso31661": {
+			"alpha2": "CV",
+			"alpha3": "CPV",
+			"numeric": "132",
+			"nameShort": "Cabo Verde",
+			"nameLong": "Cabo Verde"
+		},
+		"hasFlag": true,
+		"flagFile": "cv.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cv"
+			}
+		]
+	},
+	{
+		"id": "00aaf61b-7ad4-40cf-87ae-a219adad4ca3",
+		"name": "Curaçao",
+		"longName": "Curaçao",
+		"iso31661": {
+			"alpha2": "CW",
+			"alpha3": "CUW",
+			"numeric": "531",
+			"nameShort": "Curaçao",
+			"nameLong": "Curaçao"
+		},
+		"hasFlag": true,
+		"flagFile": "cw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cw"
+			}
+		]
+	},
+	{
+		"id": "b696e27f-ed72-4215-9fb1-0f9e7d82e9de",
+		"name": "Christmas Island",
+		"longName": "Christmas Island (external Australian territory)",
+		"iso31661": {
+			"alpha2": "CX",
+			"alpha3": "CXR",
+			"numeric": "162",
+			"nameShort": "Christmas Island",
+			"nameLong": "Christmas Island"
+		},
+		"hasFlag": true,
+		"flagFile": "cx.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cx"
+			}
+		]
+	},
+	{
+		"id": "d5b43d8e-1fb2-44c5-a515-44906f2ca3ec",
+		"name": "Cyprus",
+		"longName": "Cyprus",
+		"iso31661": {
+			"alpha2": "CY",
+			"alpha3": "CYP",
+			"numeric": "196",
+			"nameShort": "Cyprus",
+			"nameLong": "Cyprus"
+		},
+		"hasFlag": true,
+		"flagFile": "cy.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cy"
+			}
+		]
+	},
+	{
+		"id": "14e2be2c-1021-4e63-879f-1f2a42698606",
+		"name": "Czechia",
+		"longName": "Czechia (Czech Republic)",
+		"iso31661": {
+			"alpha2": "CZ",
+			"alpha3": "CZE",
+			"numeric": "203",
+			"nameShort": "Czechia",
+			"nameLong": "Czechia"
+		},
+		"hasFlag": true,
+		"flagFile": "cz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".cz"
+			}
+		]
+	},
+	{
+		"id": "7dc0122b-282d-4b39-a2f8-a1b2df6cdb85",
+		"name": "Germany",
+		"longName": "Germany",
+		"iso31661": {
+			"alpha2": "DE",
+			"alpha3": "DEU",
+			"numeric": "276",
+			"nameShort": "Germany",
+			"nameLong": "Germany"
+		},
+		"hasFlag": true,
+		"flagFile": "de.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".de",
+				"note": "stands for Deutschland"
+			}
+		]
+	},
+	{
+		"id": "d79ce580-c6c7-4383-96fa-88e484e31a6e",
+		"name": "Djibouti",
+		"longName": "Djibouti",
+		"iso31661": {
+			"alpha2": "DJ",
+			"alpha3": "DJI",
+			"numeric": "262",
+			"nameShort": "Djibouti",
+			"nameLong": "Djibouti"
+		},
+		"hasFlag": true,
+		"flagFile": "dj.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".dj"
+			}
+		]
+	},
+	{
+		"id": "8da44afb-1ed8-4c52-ad65-53d4ff3b4632",
+		"name": "Denmark",
+		"longName": "Denmark",
+		"iso31661": {
+			"alpha2": "DK",
+			"alpha3": "DNK",
+			"numeric": "208",
+			"nameShort": "Denmark",
+			"nameLong": "Denmark"
+		},
+		"hasFlag": true,
+		"flagFile": "dk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".dk"
+			}
+		]
+	},
+	{
+		"id": "bc09cacf-e36e-427d-922d-f69a5329f3df",
+		"name": "Dominica",
+		"longName": "Dominica",
+		"iso31661": {
+			"alpha2": "DM",
+			"alpha3": "DMA",
+			"numeric": "212",
+			"nameShort": "Dominica",
+			"nameLong": "Dominica"
+		},
+		"hasFlag": true,
+		"flagFile": "dm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".dm"
+			}
+		]
+	},
+	{
+		"id": "faa17208-8d35-4a5d-b175-f4717aa5dcc5",
+		"name": "Dominican Republic",
+		"longName": "Dominican Republic",
+		"iso31661": {
+			"alpha2": "DO",
+			"alpha3": "DOM",
+			"numeric": "214",
+			"nameShort": "Dominican Republic",
+			"nameLong": "Dominican Republic (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "do.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".do"
+			}
+		]
+	},
+	{
+		"id": "d93a2e0a-358e-4053-b9ba-8435de37f127",
+		"name": "Algeria",
+		"longName": "Algeria",
+		"iso31661": {
+			"alpha2": "DZ",
+			"alpha3": "DZA",
+			"numeric": "12",
+			"nameShort": "Algeria",
+			"nameLong": "Algeria"
+		},
+		"hasFlag": true,
+		"flagFile": "dz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".dz",
+				"note": "stands for الجزائر or, in the Latin alphabet, al-Jazā’ir, pronounced as Al Dzayer"
+			}
+		]
+	},
+	{
+		"id": "0d547936-c210-461e-8c5f-8e18ab68fc6d",
+		"name": "Ecuador",
+		"longName": "Ecuador",
+		"iso31661": {
+			"alpha2": "EC",
+			"alpha3": "ECU",
+			"numeric": "218",
+			"nameShort": "Ecuador",
+			"nameLong": "Ecuador"
+		},
+		"hasFlag": true,
+		"flagFile": "ec.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ec"
+			}
+		]
+	},
+	{
+		"id": "3addf51b-1b9c-4ce5-a768-1d35c0b12aa5",
+		"name": "Estonia",
+		"longName": "Estonia",
+		"iso31661": {
+			"alpha2": "EE",
+			"alpha3": "EST",
+			"numeric": "233",
+			"nameShort": "Estonia",
+			"nameLong": "Estonia"
+		},
+		"hasFlag": true,
+		"flagFile": "ee.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ee",
+				"note": "stands for Eesti"
+			}
+		]
+	},
+	{
+		"id": "238110ec-65ef-4c09-a333-3c26856f2339",
+		"name": "Egypt",
+		"longName": "Egypt",
+		"iso31661": {
+			"alpha2": "EG",
+			"alpha3": "EGY",
+			"numeric": "818",
+			"nameShort": "Egypt",
+			"nameLong": "Egypt"
+		},
+		"hasFlag": true,
+		"flagFile": "eg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".eg"
+			}
+		]
+	},
+	{
+		"id": "ad63b08c-71af-4edf-9f7c-d4c021294499",
+		"name": "Western Sahara",
+		"longName": "Western Sahara",
+		"iso31661": {
+			"alpha2": "EH",
+			"alpha3": "ESH",
+			"numeric": "732",
+			"nameShort": "Western Sahara",
+			"nameLong": "Western Sahara"
+		},
+		"hasFlag": true,
+		"flagFile": "eh.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".eh",
+				"note": "not in use; instead .ma is used"
+			}
+		]
+	},
+	{
+		"id": "d63fcbea-4993-44d0-935d-a71d776b8706",
+		"name": "Eritrea",
+		"longName": "Eritrea",
+		"iso31661": {
+			"alpha2": "ER",
+			"alpha3": "ERI",
+			"numeric": "232",
+			"nameShort": "Eritrea",
+			"nameLong": "Eritrea"
+		},
+		"hasFlag": true,
+		"flagFile": "er.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".er",
+				"note": "inactive code"
+			}
+		]
+	},
+	{
+		"id": "b577cf44-0b44-42db-af5a-119ccff61985",
+		"name": "Spain",
+		"longName": "Spain",
+		"iso31661": {
+			"alpha2": "ES",
+			"alpha3": "ESP",
+			"numeric": "724",
+			"nameShort": "Spain",
+			"nameLong": "Spain"
+		},
+		"hasFlag": true,
+		"flagFile": "es.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".es",
+				"note": "stands for España"
+			}
+		]
+	},
+	{
+		"id": "118fc4bb-7c39-4ca5-8b7e-701b1f5f2b42",
+		"name": "Ethiopia",
+		"longName": "Ethiopia",
+		"iso31661": {
+			"alpha2": "ET",
+			"alpha3": "ETH",
+			"numeric": "231",
+			"nameShort": "Ethiopia",
+			"nameLong": "Ethiopia"
+		},
+		"hasFlag": true,
+		"flagFile": "et.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".et"
+			}
+		]
+	},
+	{
+		"id": "ed3ea63c-e856-4261-9a36-336fec116d7d",
+		"name": "Finland",
+		"longName": "Finland",
+		"iso31661": {
+			"alpha2": "FI",
+			"alpha3": "FIN",
+			"numeric": "246",
+			"nameShort": "Finland",
+			"nameLong": "Finland"
+		},
+		"hasFlag": true,
+		"flagFile": "fi.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".fi"
+			}
+		]
+	},
+	{
+		"id": "d908de47-efd7-4f2b-b46b-e5c5cdc93dce",
+		"name": "Fiji",
+		"longName": "Fiji",
+		"iso31661": {
+			"alpha2": "FJ",
+			"alpha3": "FJI",
+			"numeric": "242",
+			"nameShort": "Fiji",
+			"nameLong": "Fiji"
+		},
+		"hasFlag": true,
+		"flagFile": "fj.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".fj"
+			}
+		]
+	},
+	{
+		"id": "12e39cb3-35e1-4dd2-9938-e8eb5b460f99",
+		"name": "Falkland Islands",
+		"longName": "Falkland Islands",
+		"iso31661": {
+			"alpha2": "FK",
+			"alpha3": "FLK",
+			"numeric": "238",
+			"nameShort": "Falkland Islands",
+			"nameLong": "Falkland Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "fk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".fk"
+			}
+		]
+	},
+	{
+		"id": "8399c566-5ca2-48bf-82fb-454b77b78b3a",
+		"name": "Micronesia",
+		"longName": "Micronesia (officially: Federated States of Micronesia)",
+		"iso31661": {
+			"alpha2": "FM",
+			"alpha3": "FSM",
+			"numeric": "583",
+			"nameShort": "Micronesia",
+			"nameLong": "Micronesia (Federated States of)"
+		},
+		"hasFlag": true,
+		"flagFile": "fm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".fm"
+			}
+		]
+	},
+	{
+		"id": "d15ee666-2590-47a4-8ee3-6ece5978950e",
+		"name": "Faroe Islands",
+		"longName": "Faroe Islands",
+		"iso31661": {
+			"alpha2": "FO",
+			"alpha3": "FRO",
+			"numeric": "234",
+			"nameShort": "Faroe Islands",
+			"nameLong": "Faroe Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "fo.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".fo",
+				"note": "stands for Føroyar"
+			}
+		]
+	},
+	{
+		"id": "94a48ea6-1e1f-4ab0-ab0c-b15806369b7c",
+		"name": "France",
+		"longName": "France",
+		"iso31661": {
+			"alpha2": "FR",
+			"alpha3": "FRA",
+			"numeric": "250",
+			"nameShort": "France",
+			"nameLong": "France"
+		},
+		"hasFlag": true,
+		"flagFile": "fr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".fr"
+			}
+		]
+	},
+	{
+		"id": "b143e57c-96c6-4382-84a5-907d0138b966",
+		"name": "Gabon",
+		"longName": "Gabon (officially: Gabonese Republic)",
+		"iso31661": {
+			"alpha2": "GA",
+			"alpha3": "GAB",
+			"numeric": "266",
+			"nameShort": "Gabon",
+			"nameLong": "Gabon"
+		},
+		"hasFlag": true,
+		"flagFile": "ga.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ga"
+			}
+		]
+	},
+	{
+		"id": "767924a5-c50f-4ae2-9c75-e011e68b7bd7",
+		"name": "United Kingdom",
+		"longName": "England",
+		"iso31661": {
+			"alpha2": "GB",
+			"alpha3": "GBR",
+			"numeric": "826",
+			"nameShort": "United Kingdom",
+			"nameLong": "United Kingdom of Great Britain and Northern Ireland (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "gb.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".uk"
+			},
+			{
+				"tld": ".co.uk"
+			}
+		]
+	},
+	{
+		"id": "87fa5f5c-1eeb-4261-b96a-d4a7096165e3",
+		"name": "Grenada",
+		"longName": "Grenada",
+		"iso31661": {
+			"alpha2": "GD",
+			"alpha3": "GRD",
+			"numeric": "308",
+			"nameShort": "Grenada",
+			"nameLong": "Grenada"
+		},
+		"hasFlag": true,
+		"flagFile": "gd.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gd"
+			}
+		]
+	},
+	{
+		"id": "251c1754-da05-4a77-928d-c310ab8e844d",
+		"name": "Georgia",
+		"longName": "Georgia",
+		"iso31661": {
+			"alpha2": "GE",
+			"alpha3": "GEO",
+			"numeric": "268",
+			"nameShort": "Georgia",
+			"nameLong": "Georgia"
+		},
+		"hasFlag": true,
+		"flagFile": "ge.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ge"
+			}
+		]
+	},
+	{
+		"id": "59cc138e-2137-473b-a03f-f14cc462f119",
+		"name": "French Guiana",
+		"longName": "French Guiana (French overseas department)",
+		"iso31661": {
+			"alpha2": "GF",
+			"alpha3": "GUF",
+			"numeric": "254",
+			"nameShort": "French Guiana",
+			"nameLong": "French Guiana"
+		},
+		"hasFlag": true,
+		"flagFile": "gf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gf",
+				"note": "stands for Guyane française"
+			}
+		]
+	},
+	{
+		"id": "8ca38356-567e-4c16-85f5-4afc54fa5b5f",
+		"name": "Guernsey",
+		"longName": "Guernsey",
+		"iso31661": {
+			"alpha2": "GG",
+			"alpha3": "GGY",
+			"numeric": "831",
+			"nameShort": "Guernsey",
+			"nameLong": "Guernsey"
+		},
+		"hasFlag": true,
+		"flagFile": "gg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gg"
+			}
+		]
+	},
+	{
+		"id": "c5bd55d4-ef75-4633-a015-9f25f8593504",
+		"name": "Ghana",
+		"longName": "Ghana",
+		"iso31661": {
+			"alpha2": "GH",
+			"alpha3": "GHA",
+			"numeric": "288",
+			"nameShort": "Ghana",
+			"nameLong": "Ghana"
+		},
+		"hasFlag": true,
+		"flagFile": "gh.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gh"
+			}
+		]
+	},
+	{
+		"id": "714a38c7-56ae-4c13-84d7-9253b14455ed",
+		"name": "Gibraltar",
+		"longName": "Gibraltar",
+		"iso31661": {
+			"alpha2": "GI",
+			"alpha3": "GIB",
+			"numeric": "292",
+			"nameShort": "Gibraltar",
+			"nameLong": "Gibraltar"
+		},
+		"hasFlag": true,
+		"flagFile": "gi.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gi"
+			}
+		]
+	},
+	{
+		"id": "401e20e6-f7fd-470e-bf43-54f9d7eb2597",
+		"name": "Greenland",
+		"longName": "Greenland",
+		"iso31661": {
+			"alpha2": "GL",
+			"alpha3": "GRL",
+			"numeric": "304",
+			"nameShort": "Greenland",
+			"nameLong": "Greenland"
+		},
+		"hasFlag": true,
+		"flagFile": "gl.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gl"
+			}
+		]
+	},
+	{
+		"id": "a1a30772-681a-42e2-b4af-5a823cc20405",
+		"name": "Gambia",
+		"longName": "Gambia",
+		"iso31661": {
+			"alpha2": "GM",
+			"alpha3": "GMB",
+			"numeric": "270",
+			"nameShort": "Gambia",
+			"nameLong": "Gambia (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "gm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gm"
+			}
+		]
+	},
+	{
+		"id": "d31519e9-9a89-4b45-b3f6-4e00a3bdac86",
+		"name": "Guinea",
+		"longName": "Guinea",
+		"iso31661": {
+			"alpha2": "GN",
+			"alpha3": "GIN",
+			"numeric": "324",
+			"nameShort": "Guinea",
+			"nameLong": "Guinea"
+		},
+		"hasFlag": true,
+		"flagFile": "gn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gn"
+			}
+		]
+	},
+	{
+		"id": "fd91967c-6ab8-43e7-82f9-f5361ec58353",
+		"name": "Guadeloupe",
+		"longName": "Guadeloupe (French overseas department)",
+		"iso31661": {
+			"alpha2": "GP",
+			"alpha3": "GLP",
+			"numeric": "312",
+			"nameShort": "Guadeloupe",
+			"nameLong": "Guadeloupe"
+		},
+		"hasFlag": true,
+		"flagFile": "gp.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gp"
+			}
+		]
+	},
+	{
+		"id": "f98ae10c-79ec-422e-bfd0-60b34bef0520",
+		"name": "Equatorial Guinea",
+		"longName": "Equatorial Guinea",
+		"iso31661": {
+			"alpha2": "GQ",
+			"alpha3": "GNQ",
+			"numeric": "226",
+			"nameShort": "Equatorial Guinea",
+			"nameLong": "Equatorial Guinea"
+		},
+		"hasFlag": true,
+		"flagFile": "gq.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gq",
+				"note": "stands for Guinée équatoriale"
+			}
+		]
+	},
+	{
+		"id": "26af62a8-81a9-4969-a6aa-77cf88623974",
+		"name": "Greece",
+		"longName": "Greece",
+		"iso31661": {
+			"alpha2": "GR",
+			"alpha3": "GRC",
+			"numeric": "300",
+			"nameShort": "Greece",
+			"nameLong": "Greece"
+		},
+		"hasFlag": true,
+		"flagFile": "gr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gr"
+			}
+		]
+	},
+	{
+		"id": "eb7eb356-93ab-4fe2-87aa-9eb476f305b5",
+		"name": "South Georgia and the South Sandwich Islands",
+		"longName": "South Georgia and the South Sandwich Islands",
+		"iso31661": {
+			"alpha2": "GS",
+			"alpha3": "SGS",
+			"numeric": "239",
+			"nameShort": "South Georgia and the South Sandwich Islands",
+			"nameLong": "South Georgia and the South Sandwich Islands"
+		},
+		"hasFlag": true,
+		"flagFile": "gs.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gs"
+			}
+		]
+	},
+	{
+		"id": "ff3f11de-fd44-48d8-a081-c1279af1584f",
+		"name": "Guatemala",
+		"longName": "Guatemala",
+		"iso31661": {
+			"alpha2": "GT",
+			"alpha3": "GTM",
+			"numeric": "320",
+			"nameShort": "Guatemala",
+			"nameLong": "Guatemala"
+		},
+		"hasFlag": true,
+		"flagFile": "gt.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gt"
+			}
+		]
+	},
+	{
+		"id": "5daa08c4-1ea7-4a54-9e73-7f55ed71fe7b",
+		"name": "Guam",
+		"longName": "Guam",
+		"iso31661": {
+			"alpha2": "GU",
+			"alpha3": "GUM",
+			"numeric": "316",
+			"nameShort": "Guam",
+			"nameLong": "Guam"
+		},
+		"hasFlag": true,
+		"flagFile": "gu.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gu"
+			}
+		]
+	},
+	{
+		"id": "e34bdcda-cbd7-4d3c-8946-9377c6fb97b9",
+		"name": "Guinea-Bissau",
+		"longName": "Guinea-Bissau",
+		"iso31661": {
+			"alpha2": "GW",
+			"alpha3": "GNB",
+			"numeric": "624",
+			"nameShort": "Guinea-Bissau",
+			"nameLong": "Guinea-Bissau"
+		},
+		"hasFlag": true,
+		"flagFile": "gw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gw"
+			}
+		]
+	},
+	{
+		"id": "082ad5c8-cc36-487d-a31a-149ce23fabaf",
+		"name": "Guyana",
+		"longName": "Guyana",
+		"iso31661": {
+			"alpha2": "GY",
+			"alpha3": "GUY",
+			"numeric": "328",
+			"nameShort": "Guyana",
+			"nameLong": "Guyana"
+		},
+		"hasFlag": true,
+		"flagFile": "gy.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".gy"
+			}
+		]
+	},
+	{
+		"id": "07427606-7d9e-4886-bf7b-5113399a6d46",
+		"name": "Hong Kong",
+		"longName": "Hong Kong (special administrative region of China)",
+		"iso31661": {
+			"alpha2": "HK",
+			"alpha3": "HKG",
+			"numeric": "344",
+			"nameShort": "Hong Kong",
+			"nameLong": "Hong Kong"
+		},
+		"hasFlag": true,
+		"flagFile": "hk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".hk"
+			}
+		]
+	},
+	{
+		"id": "251b3117-0721-48d8-a823-51094cbaf4c5",
+		"name": "Heard Island and McDonald Islands",
+		"longName": "Heard Island and McDonald Islands",
+		"iso31661": {
+			"alpha2": "HM",
+			"alpha3": "HMD",
+			"numeric": "334",
+			"nameShort": "Heard Island and McDonald Islands",
+			"nameLong": "Heard Island and McDonald Islands"
+		},
+		"hasFlag": true,
+		"flagFile": "hm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".hm"
+			}
+		]
+	},
+	{
+		"id": "302e7ac3-6a39-49a3-806d-bb3415f5a740",
+		"name": "Honduras",
+		"longName": "Honduras",
+		"iso31661": {
+			"alpha2": "HN",
+			"alpha3": "HND",
+			"numeric": "340",
+			"nameShort": "Honduras",
+			"nameLong": "Honduras"
+		},
+		"hasFlag": true,
+		"flagFile": "hn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".hn"
+			}
+		]
+	},
+	{
+		"id": "7a40cf07-8ac2-48a4-84bb-98598bc6d506",
+		"name": "Croatia",
+		"longName": "Croatia",
+		"iso31661": {
+			"alpha2": "HR",
+			"alpha3": "HRV",
+			"numeric": "191",
+			"nameShort": "Croatia",
+			"nameLong": "Croatia"
+		},
+		"hasFlag": true,
+		"flagFile": "hr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".hr",
+				"note": "stands for Hrvatska"
+			}
+		]
+	},
+	{
+		"id": "09c7e324-c7f6-488d-ae3f-d8af9536fe03",
+		"name": "Haiti",
+		"longName": "Haiti",
+		"iso31661": {
+			"alpha2": "HT",
+			"alpha3": "HTI",
+			"numeric": "332",
+			"nameShort": "Haiti",
+			"nameLong": "Haiti"
+		},
+		"hasFlag": true,
+		"flagFile": "ht.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ht"
+			}
+		]
+	},
+	{
+		"id": "8e5aa531-0a63-4912-b992-44fcfb795417",
+		"name": "Hungary",
+		"longName": "Hungary",
+		"iso31661": {
+			"alpha2": "HU",
+			"alpha3": "HUN",
+			"numeric": "348",
+			"nameShort": "Hungary",
+			"nameLong": "Hungary"
+		},
+		"hasFlag": true,
+		"flagFile": "hu.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".hu"
+			}
+		]
+	},
+	{
+		"id": "c1ecff19-8dbe-4879-b27a-ea07cf9eace2",
+		"name": "Indonesia",
+		"longName": "Indonesia",
+		"iso31661": {
+			"alpha2": "ID",
+			"alpha3": "IDN",
+			"numeric": "360",
+			"nameShort": "Indonesia",
+			"nameLong": "Indonesia"
+		},
+		"hasFlag": true,
+		"flagFile": "id.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".id"
+			}
+		]
+	},
+	{
+		"id": "52478b27-3a00-4ed5-a563-497c695c3ba7",
+		"name": "Ireland",
+		"longName": "Ireland",
+		"iso31661": {
+			"alpha2": "IE",
+			"alpha3": "IRL",
+			"numeric": "372",
+			"nameShort": "Ireland",
+			"nameLong": "Ireland"
+		},
+		"hasFlag": true,
+		"flagFile": "ie.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ie"
+			}
+		]
+	},
+	{
+		"id": "b2f0aaea-9cb6-4666-a50b-8323560ec68d",
+		"name": "Israel",
+		"longName": "Israel",
+		"iso31661": {
+			"alpha2": "IL",
+			"alpha3": "ISR",
+			"numeric": "376",
+			"nameShort": "Israel",
+			"nameLong": "Israel"
+		},
+		"hasFlag": true,
+		"flagFile": "il.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".il"
+			}
+		]
+	},
+	{
+		"id": "2bbe0fc5-7383-409f-bd90-0108f89add11",
+		"name": "Isle of Man",
+		"longName": "Isle of Man",
+		"iso31661": {
+			"alpha2": "IM",
+			"alpha3": "IMN",
+			"numeric": "833",
+			"nameShort": "Isle of Man",
+			"nameLong": "Isle of Man"
+		},
+		"hasFlag": true,
+		"flagFile": "im.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".im"
+			}
+		]
+	},
+	{
+		"id": "19158e2e-947c-4b22-8a3c-a84a369ed6f8",
+		"name": "India",
+		"longName": "India",
+		"iso31661": {
+			"alpha2": "IN",
+			"alpha3": "IND",
+			"numeric": "356",
+			"nameShort": "India",
+			"nameLong": "India"
+		},
+		"hasFlag": true,
+		"flagFile": "in.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".in"
+			}
+		]
+	},
+	{
+		"id": "4fa285d7-4728-49b2-926d-c7d635dc98d0",
+		"name": "British Indian Ocean Territory",
+		"longName": "British Indian Ocean Territory",
+		"iso31661": {
+			"alpha2": "IO",
+			"alpha3": "IOT",
+			"numeric": "86",
+			"nameShort": "British Indian Ocean Territory",
+			"nameLong": "British Indian Ocean Territory (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "io.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".io"
+			}
+		]
+	},
+	{
+		"id": "685af5f1-6ea6-486f-8063-e88975ddacad",
+		"name": "Iraq",
+		"longName": "Iraq",
+		"iso31661": {
+			"alpha2": "IQ",
+			"alpha3": "IRQ",
+			"numeric": "368",
+			"nameShort": "Iraq",
+			"nameLong": "Iraq"
+		},
+		"hasFlag": true,
+		"flagFile": "iq.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".iq"
+			}
+		]
+	},
+	{
+		"id": "52f179fb-c1c8-4099-9dd7-0e2eca3a1b9f",
+		"name": "Iran",
+		"longName": "Iran",
+		"iso31661": {
+			"alpha2": "IR",
+			"alpha3": "IRN",
+			"numeric": "364",
+			"nameShort": "Iran",
+			"nameLong": "Iran (Islamic Republic of)"
+		},
+		"hasFlag": true,
+		"flagFile": "ir.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ir"
+			}
+		]
+	},
+	{
+		"id": "6cae5b77-cf0b-4253-a53f-fd6b7e42f656",
+		"name": "Iceland",
+		"longName": "Iceland",
+		"iso31661": {
+			"alpha2": "IS",
+			"alpha3": "ISL",
+			"numeric": "352",
+			"nameShort": "Iceland",
+			"nameLong": "Iceland"
+		},
+		"hasFlag": true,
+		"flagFile": "is.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".is",
+				"note": "stands for Ísland"
+			}
+		]
+	},
+	{
+		"id": "3e0a8409-0aaa-40b0-a1fc-45189795354c",
+		"name": "Italy",
+		"longName": "Italy",
+		"iso31661": {
+			"alpha2": "IT",
+			"alpha3": "ITA",
+			"numeric": "380",
+			"nameShort": "Italy",
+			"nameLong": "Italy"
+		},
+		"hasFlag": true,
+		"flagFile": "it.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".it"
+			}
+		]
+	},
+	{
+		"id": "e764f473-06e0-43ab-a277-81384760d509",
+		"name": "Jersey",
+		"longName": "Jersey",
+		"iso31661": {
+			"alpha2": "JE",
+			"alpha3": "JEY",
+			"numeric": "832",
+			"nameShort": "Jersey",
+			"nameLong": "Jersey"
+		},
+		"hasFlag": true,
+		"flagFile": "je.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".je"
+			}
+		]
+	},
+	{
+		"id": "8e47eea5-e2c1-42c0-80bc-2350d213516f",
+		"name": "Jamaica",
+		"longName": "Jamaica",
+		"iso31661": {
+			"alpha2": "JM",
+			"alpha3": "JAM",
+			"numeric": "388",
+			"nameShort": "Jamaica",
+			"nameLong": "Jamaica"
+		},
+		"hasFlag": true,
+		"flagFile": "jm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".jm"
+			}
+		]
+	},
+	{
+		"id": "0adf870e-ec46-4738-b2b3-8db8b67207d6",
+		"name": "Jordan",
+		"longName": "Jordan",
+		"iso31661": {
+			"alpha2": "JO",
+			"alpha3": "JOR",
+			"numeric": "400",
+			"nameShort": "Jordan",
+			"nameLong": "Jordan"
+		},
+		"hasFlag": true,
+		"flagFile": "jo.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".jo"
+			}
+		]
+	},
+	{
+		"id": "20fa12ca-e276-41ee-94d3-01bc4879648b",
+		"name": "Japan",
+		"longName": "Japan",
+		"iso31661": {
+			"alpha2": "JP",
+			"alpha3": "JPN",
+			"numeric": "392",
+			"nameShort": "Japan",
+			"nameLong": "Japan"
+		},
+		"hasFlag": true,
+		"flagFile": "jp.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".jp"
+			}
+		]
+	},
+	{
+		"id": "92a3b7fa-cfd4-41dd-8714-4c80f214b962",
+		"name": "Kenya",
+		"longName": "Kenya",
+		"iso31661": {
+			"alpha2": "KE",
+			"alpha3": "KEN",
+			"numeric": "404",
+			"nameShort": "Kenya",
+			"nameLong": "Kenya"
+		},
+		"hasFlag": true,
+		"flagFile": "ke.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ke"
+			}
+		]
+	},
+	{
+		"id": "b90e9476-2eaa-4b05-a155-7597ecb6b11b",
+		"name": "Kyrgyzstan",
+		"longName": "Kyrgyzstan",
+		"iso31661": {
+			"alpha2": "KG",
+			"alpha3": "KGZ",
+			"numeric": "417",
+			"nameShort": "Kyrgyzstan",
+			"nameLong": "Kyrgyzstan"
+		},
+		"hasFlag": true,
+		"flagFile": "kg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".kg"
+			}
+		]
+	},
+	{
+		"id": "441678ed-b1b0-4f9f-b315-02e745d949f7",
+		"name": "Cambodia",
+		"longName": "Cambodia",
+		"iso31661": {
+			"alpha2": "KH",
+			"alpha3": "KHM",
+			"numeric": "116",
+			"nameShort": "Cambodia",
+			"nameLong": "Cambodia"
+		},
+		"hasFlag": true,
+		"flagFile": "kh.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".kh",
+				"note": "stands for Khmer"
+			}
+		]
+	},
+	{
+		"id": "02b52e49-ad54-4c2e-9add-96c67bec5073",
+		"name": "Kiribati",
+		"longName": "Kiribati",
+		"iso31661": {
+			"alpha2": "KI",
+			"alpha3": "KIR",
+			"numeric": "296",
+			"nameShort": "Kiribati",
+			"nameLong": "Kiribati"
+		},
+		"hasFlag": true,
+		"flagFile": "ki.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ki"
+			}
+		]
+	},
+	{
+		"id": "fe1a8f49-5918-426f-b95e-a37ec9c4d242",
+		"name": "Comoros",
+		"longName": "Comoros",
+		"iso31661": {
+			"alpha2": "KM",
+			"alpha3": "COM",
+			"numeric": "174",
+			"nameShort": "Comoros",
+			"nameLong": "Comoros (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "km.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".km (stands for Komori)"
+			}
+		]
+	},
+	{
+		"id": "dbe09234-59ab-466d-af31-88884d977707",
+		"name": "Saint Kitts and Nevis",
+		"longName": "Saint Kitts and Nevis",
+		"iso31661": {
+			"alpha2": "KN",
+			"alpha3": "KNA",
+			"numeric": "659",
+			"nameShort": "Saint Kitts and Nevis",
+			"nameLong": "Saint Kitts and Nevis"
+		},
+		"hasFlag": true,
+		"flagFile": "kn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".kn"
+			}
+		]
+	},
+	{
+		"id": "965a40fb-5a28-4527-ab19-f13ee6c33fc8",
+		"name": "North Korea",
+		"longName": "Korea, North",
+		"iso31661": {
+			"alpha2": "KP",
+			"alpha3": "PRK",
+			"numeric": "408",
+			"nameShort": "North Korea",
+			"nameLong": "Korea (the Democratic People's Republic of)"
+		},
+		"hasFlag": true,
+		"flagFile": "kp.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".kp",
+				"note": "stands for Democratic People's Republic of Korea"
+			}
+		]
+	},
+	{
+		"id": "776e82aa-d288-4783-8ddf-c2cd9a7cf2c9",
+		"name": "South Korea",
+		"longName": "Korea, South",
+		"iso31661": {
+			"alpha2": "KR",
+			"alpha3": "KOR",
+			"numeric": "410",
+			"nameShort": "South Korea",
+			"nameLong": "Korea (the Republic of)"
+		},
+		"hasFlag": true,
+		"flagFile": "kr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".kr"
+			}
+		]
+	},
+	{
+		"id": "65bd3b7d-7f35-4591-93c0-e9ad854f9562",
+		"name": "Kuwait",
+		"longName": "Kuwait",
+		"iso31661": {
+			"alpha2": "KW",
+			"alpha3": "KWT",
+			"numeric": "414",
+			"nameShort": "Kuwait",
+			"nameLong": "Kuwait"
+		},
+		"hasFlag": true,
+		"flagFile": "kw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".kw"
+			}
+		]
+	},
+	{
+		"id": "cc2a5198-8a8f-4311-818e-f946a0641a63",
+		"name": "Cayman Islands",
+		"longName": "Cayman Islands",
+		"iso31661": {
+			"alpha2": "KY",
+			"alpha3": "CYM",
+			"numeric": "136",
+			"nameShort": "Cayman Islands",
+			"nameLong": "Cayman Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "ky.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ky"
+			}
+		]
+	},
+	{
+		"id": "f4922d03-a5f7-4ea3-8fe3-6dedd14815bd",
+		"name": "Kazakhstan",
+		"longName": "Kazakhstan",
+		"iso31661": {
+			"alpha2": "KZ",
+			"alpha3": "KAZ",
+			"numeric": "398",
+			"nameShort": "Kazakhstan",
+			"nameLong": "Kazakhstan"
+		},
+		"hasFlag": true,
+		"flagFile": "kz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".kz"
+			}
+		]
+	},
+	{
+		"id": "0c2202c6-d342-483e-a600-35db66dc76e2",
+		"name": "Laos",
+		"longName": "Lao People’s Democratic Republic",
+		"iso31661": {
+			"alpha2": "LA",
+			"alpha3": "LAO",
+			"numeric": "418",
+			"nameShort": "Lao People's Democratic Republic",
+			"nameLong": "Lao People's Democratic Republic (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "la.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".la"
+			}
+		]
+	},
+	{
+		"id": "7a6a8fcb-011d-40a3-9947-d48d9e1f725f",
+		"name": "Lebanon",
+		"longName": "Lebanon",
+		"iso31661": {
+			"alpha2": "LB",
+			"alpha3": "LBN",
+			"numeric": "422",
+			"nameShort": "Lebanon",
+			"nameLong": "Lebanon"
+		},
+		"hasFlag": true,
+		"flagFile": "lb.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".lb"
+			}
+		]
+	},
+	{
+		"id": "1e5f23c8-e421-4947-9aa7-5a5e2bc7409e",
+		"name": "Saint Lucia",
+		"longName": "Saint Lucia",
+		"iso31661": {
+			"alpha2": "LC",
+			"alpha3": "LCA",
+			"numeric": "662",
+			"nameShort": "Saint Lucia",
+			"nameLong": "Saint Lucia"
+		},
+		"hasFlag": true,
+		"flagFile": "lc.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".lc"
+			}
+		]
+	},
+	{
+		"id": "52d95053-598a-41cf-a4cb-84aeded9c74d",
+		"name": "Liechtenstein",
+		"longName": "Liechtenstein",
+		"iso31661": {
+			"alpha2": "LI",
+			"alpha3": "LIE",
+			"numeric": "438",
+			"nameShort": "Liechtenstein",
+			"nameLong": "Liechtenstein"
+		},
+		"hasFlag": true,
+		"flagFile": "li.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".li"
+			}
+		]
+	},
+	{
+		"id": "d9527420-a0c2-4574-a5f0-2ba92f7d4655",
+		"name": "Sri Lanka",
+		"longName": "Sri Lanka",
+		"iso31661": {
+			"alpha2": "LK",
+			"alpha3": "LKA",
+			"numeric": "144",
+			"nameShort": "Sri Lanka",
+			"nameLong": "Sri Lanka"
+		},
+		"hasFlag": true,
+		"flagFile": "lk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".lk"
+			}
+		]
+	},
+	{
+		"id": "8dc0277c-f2c2-470f-a092-ba9dad6378c7",
+		"name": "Liberia",
+		"longName": "Liberia",
+		"iso31661": {
+			"alpha2": "LR",
+			"alpha3": "LBR",
+			"numeric": "430",
+			"nameShort": "Liberia",
+			"nameLong": "Liberia"
+		},
+		"hasFlag": true,
+		"flagFile": "lr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".lr"
+			}
+		]
+	},
+	{
+		"id": "9a807978-3155-4817-a9fb-6c469c1a8602",
+		"name": "Lesotho",
+		"longName": "Lesotho",
+		"iso31661": {
+			"alpha2": "LS",
+			"alpha3": "LSO",
+			"numeric": "426",
+			"nameShort": "Lesotho",
+			"nameLong": "Lesotho"
+		},
+		"hasFlag": true,
+		"flagFile": "ls.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ls"
+			}
+		]
+	},
+	{
+		"id": "d9cf8998-2437-453c-9562-3775076e4eaf",
+		"name": "Lithuania",
+		"longName": "Lithuania",
+		"iso31661": {
+			"alpha2": "LT",
+			"alpha3": "LTU",
+			"numeric": "440",
+			"nameShort": "Lithuania",
+			"nameLong": "Lithuania"
+		},
+		"hasFlag": true,
+		"flagFile": "lt.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".lt"
+			}
+		]
+	},
+	{
+		"id": "e51c063e-90b3-4a12-aab4-4828559db267",
+		"name": "Luxembourg",
+		"longName": "Luxembourg",
+		"iso31661": {
+			"alpha2": "LU",
+			"alpha3": "LUX",
+			"numeric": "442",
+			"nameShort": "Luxembourg",
+			"nameLong": "Luxembourg"
+		},
+		"hasFlag": true,
+		"flagFile": "lu.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".lu"
+			}
+		]
+	},
+	{
+		"id": "81506d6d-314e-4248-b0ea-aa0fa624ac63",
+		"name": "Latvia",
+		"longName": "Latvia",
+		"iso31661": {
+			"alpha2": "LV",
+			"alpha3": "LVA",
+			"numeric": "428",
+			"nameShort": "Latvia",
+			"nameLong": "Latvia"
+		},
+		"hasFlag": true,
+		"flagFile": "lv.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".lv"
+			}
+		]
+	},
+	{
+		"id": "ea8ada04-aeab-45d7-b95f-811894ac63ed",
+		"name": "Libya",
+		"longName": "Libya",
+		"iso31661": {
+			"alpha2": "LY",
+			"alpha3": "LBY",
+			"numeric": "434",
+			"nameShort": "Libya",
+			"nameLong": "Libya"
+		},
+		"hasFlag": true,
+		"flagFile": "ly.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ly"
+			}
+		]
+	},
+	{
+		"id": "63045b3d-3e6b-4efd-a392-9e89dff8ebcf",
+		"name": "Morocco",
+		"longName": "Morocco",
+		"iso31661": {
+			"alpha2": "MA",
+			"alpha3": "MAR",
+			"numeric": "504",
+			"nameShort": "Morocco",
+			"nameLong": "Morocco"
+		},
+		"hasFlag": true,
+		"flagFile": "ma.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ma",
+				"note": "stands for Maroc"
+			}
+		]
+	},
+	{
+		"id": "1611ce15-5bc9-41b4-9d32-8c1d7d8852e4",
+		"name": "Monaco",
+		"longName": "Monaco",
+		"iso31661": {
+			"alpha2": "MC",
+			"alpha3": "MCO",
+			"numeric": "492",
+			"nameShort": "Monaco",
+			"nameLong": "Monaco"
+		},
+		"hasFlag": true,
+		"flagFile": "mc.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mc"
+			}
+		]
+	},
+	{
+		"id": "8b5ec21e-0d3c-46af-8c62-ce693acc5ed2",
+		"name": "Moldova",
+		"longName": "Moldova",
+		"iso31661": {
+			"alpha2": "MD",
+			"alpha3": "MDA",
+			"numeric": "498",
+			"nameShort": "Moldova",
+			"nameLong": "Moldova (the Republic of)"
+		},
+		"hasFlag": true,
+		"flagFile": "md.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".md"
+			}
+		]
+	},
+	{
+		"id": "788a1a77-673f-4b77-a2e4-f6d4ca3434d1",
+		"name": "Montenegro",
+		"longName": "Montenegro",
+		"iso31661": {
+			"alpha2": "ME",
+			"alpha3": "MNE",
+			"numeric": "499",
+			"nameShort": "Montenegro",
+			"nameLong": "Montenegro"
+		},
+		"hasFlag": true,
+		"flagFile": "me.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".me"
+			}
+		]
+	},
+	{
+		"id": "3fe0a46c-a4c4-4127-b13c-9c0d4b44881c",
+		"name": "Saint Martin",
+		"longName": "Saint Martin (French overseas collectivity)",
+		"iso31661": {
+			"alpha2": "MF",
+			"alpha3": "MAF",
+			"numeric": "663",
+			"nameShort": "Saint Martin",
+			"nameLong": "Saint Martin (French part)"
+		},
+		"hasFlag": true,
+		"flagFile": "mf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mf",
+				"note": "not in use yet"
+			},
+			{
+				"tld": ".gp",
+				"note": "stands for Guadeloupe"
+			},
+			{
+				"tld": "fr",
+				"note": "stands for France"
+			}
+		]
+	},
+	{
+		"id": "f0b61d08-da2b-4667-9551-b3c18281ac67",
+		"name": "Madagascar",
+		"longName": "Madagascar",
+		"iso31661": {
+			"alpha2": "MG",
+			"alpha3": "MDG",
+			"numeric": "450",
+			"nameShort": "Madagascar",
+			"nameLong": "Madagascar"
+		},
+		"hasFlag": true,
+		"flagFile": "mg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mg"
+			}
+		]
+	},
+	{
+		"id": "9c3de720-6bd3-4813-9307-bfe0d4de022b",
+		"name": "Marshall Islands",
+		"longName": "Marshall Islands",
+		"iso31661": {
+			"alpha2": "MH",
+			"alpha3": "MHL",
+			"numeric": "584",
+			"nameShort": "Marshall Islands",
+			"nameLong": "Marshall Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "mh.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mh"
+			}
+		]
+	},
+	{
+		"id": "0ae3af0d-6a45-4d92-83de-651f0d232c78",
+		"name": "North Macedonia",
+		"longName": "Macedonia, North",
+		"iso31661": {
+			"alpha2": "MK",
+			"alpha3": "MKD",
+			"numeric": "807",
+			"nameShort": "North Macedonia",
+			"nameLong": "North Macedonia"
+		},
+		"hasFlag": true,
+		"flagFile": "mk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mk",
+				"note": "stands for Македонија or, in the Latin alphabet, Makedonija"
+			}
+		]
+	},
+	{
+		"id": "97a7e7ae-e2b6-4c08-ac5f-391dfc088107",
+		"name": "Mali",
+		"longName": "Mali",
+		"iso31661": {
+			"alpha2": "ML",
+			"alpha3": "MLI",
+			"numeric": "466",
+			"nameShort": "Mali",
+			"nameLong": "Mali"
+		},
+		"hasFlag": true,
+		"flagFile": "ml.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ml"
+			}
+		]
+	},
+	{
+		"id": "a45583c0-c135-46e4-88db-ece4c40af8da",
+		"name": "Myanmar",
+		"longName": "Burma (officially: Myanmar)",
+		"iso31661": {
+			"alpha2": "MM",
+			"alpha3": "MMR",
+			"numeric": "104",
+			"nameShort": "Myanmar",
+			"nameLong": "Myanmar"
+		},
+		"hasFlag": true,
+		"flagFile": "mm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mm"
+			}
+		]
+	},
+	{
+		"id": "387821e4-d877-4939-90d8-e637a67e0e28",
+		"name": "Mongolia",
+		"longName": "Mongolia",
+		"iso31661": {
+			"alpha2": "MN",
+			"alpha3": "MNG",
+			"numeric": "496",
+			"nameShort": "Mongolia",
+			"nameLong": "Mongolia"
+		},
+		"hasFlag": true,
+		"flagFile": "mn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mn"
+			}
+		]
+	},
+	{
+		"id": "f41836fd-a5cb-4063-96fb-d90d881baf75",
+		"name": "Macao",
+		"longName": "Macau (special administrative region of China)",
+		"iso31661": {
+			"alpha2": "MO",
+			"alpha3": "MAC",
+			"numeric": "446",
+			"nameShort": "Macao",
+			"nameLong": "Macao"
+		},
+		"hasFlag": true,
+		"flagFile": "mo.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mo",
+				"note": "stands for Macao"
+			}
+		]
+	},
+	{
+		"id": "e6ea00ae-105e-4fb0-a050-d9c54bfe28b7",
+		"name": "Northern Mariana Islands",
+		"longName": "Northern Mariana Islands",
+		"iso31661": {
+			"alpha2": "MP",
+			"alpha3": "MNP",
+			"numeric": "580",
+			"nameShort": "Northern Mariana Islands",
+			"nameLong": "Northern Mariana Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "mp.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mp"
+			}
+		]
+	},
+	{
+		"id": "dcd9e6e8-6140-434d-b8c5-32f6afb32353",
+		"name": "Martinique",
+		"longName": "Martinique (French overseas department)",
+		"iso31661": {
+			"alpha2": "MQ",
+			"alpha3": "MTQ",
+			"numeric": "474",
+			"nameShort": "Martinique",
+			"nameLong": "Martinique"
+		},
+		"hasFlag": true,
+		"flagFile": "mq.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mq"
+			}
+		]
+	},
+	{
+		"id": "d72e073e-a2f8-4fd3-a8b1-4beccf0df6fd",
+		"name": "Mauritania",
+		"longName": "Mauritania",
+		"iso31661": {
+			"alpha2": "MR",
+			"alpha3": "MRT",
+			"numeric": "478",
+			"nameShort": "Mauritania",
+			"nameLong": "Mauritania"
+		},
+		"hasFlag": true,
+		"flagFile": "mr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mr"
+			}
+		]
+	},
+	{
+		"id": "6694eee0-66d4-4873-86af-e3e96dda4460",
+		"name": "Montserrat",
+		"longName": "Montserrat",
+		"iso31661": {
+			"alpha2": "MS",
+			"alpha3": "MSR",
+			"numeric": "500",
+			"nameShort": "Montserrat",
+			"nameLong": "Montserrat"
+		},
+		"hasFlag": true,
+		"flagFile": "ms.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ms"
+			}
+		]
+	},
+	{
+		"id": "f4a094c2-af1d-483e-ab2e-3572ece80d34",
+		"name": "Malta",
+		"longName": "Malta",
+		"iso31661": {
+			"alpha2": "MT",
+			"alpha3": "MLT",
+			"numeric": "470",
+			"nameShort": "Malta",
+			"nameLong": "Malta"
+		},
+		"hasFlag": true,
+		"flagFile": "mt.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mt"
+			}
+		]
+	},
+	{
+		"id": "381ad6d5-5dbe-4cdd-b12e-066af1627b95",
+		"name": "Mauritius",
+		"longName": "Mauritius",
+		"iso31661": {
+			"alpha2": "MU",
+			"alpha3": "MUS",
+			"numeric": "480",
+			"nameShort": "Mauritius",
+			"nameLong": "Mauritius"
+		},
+		"hasFlag": true,
+		"flagFile": "mu.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mu"
+			}
+		]
+	},
+	{
+		"id": "c116075a-33f1-4edc-b5fb-c248b4437f53",
+		"name": "Maldives",
+		"longName": "Maldives",
+		"iso31661": {
+			"alpha2": "MV",
+			"alpha3": "MDV",
+			"numeric": "462",
+			"nameShort": "Maldives",
+			"nameLong": "Maldives"
+		},
+		"hasFlag": true,
+		"flagFile": "mv.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mv"
+			}
+		]
+	},
+	{
+		"id": "8d46e18b-e18d-4f7e-89ba-a3a2fbf1b81c",
+		"name": "Malawi",
+		"longName": "Malawi",
+		"iso31661": {
+			"alpha2": "MW",
+			"alpha3": "MWI",
+			"numeric": "454",
+			"nameShort": "Malawi",
+			"nameLong": "Malawi"
+		},
+		"hasFlag": true,
+		"flagFile": "mw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mw"
+			}
+		]
+	},
+	{
+		"id": "b2d73e8e-d491-461e-9b7f-0236f67ba8a2",
+		"name": "Mexico",
+		"longName": "Mexico",
+		"iso31661": {
+			"alpha2": "MX",
+			"alpha3": "MEX",
+			"numeric": "484",
+			"nameShort": "Mexico",
+			"nameLong": "Mexico"
+		},
+		"hasFlag": true,
+		"flagFile": "mx.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mx"
+			}
+		]
+	},
+	{
+		"id": "28bef14c-96a1-4e27-be01-e76ab958a6e4",
+		"name": "Malaysia",
+		"longName": "Malaysia",
+		"iso31661": {
+			"alpha2": "MY",
+			"alpha3": "MYS",
+			"numeric": "458",
+			"nameShort": "Malaysia",
+			"nameLong": "Malaysia"
+		},
+		"hasFlag": true,
+		"flagFile": "my.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".my"
+			}
+		]
+	},
+	{
+		"id": "88b9eb38-bc57-481f-b7ab-3d080b2dab7d",
+		"name": "Mozambique",
+		"longName": "Mozambique",
+		"iso31661": {
+			"alpha2": "MZ",
+			"alpha3": "MOZ",
+			"numeric": "508",
+			"nameShort": "Mozambique",
+			"nameLong": "Mozambique"
+		},
+		"hasFlag": true,
+		"flagFile": "mz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".mz"
+			}
+		]
+	},
+	{
+		"id": "35df17d0-d68a-4544-a8ef-601835a9ea75",
+		"name": "Namibia",
+		"longName": "Namibia",
+		"iso31661": {
+			"alpha2": "NA",
+			"alpha3": "NAM",
+			"numeric": "516",
+			"nameShort": "Namibia",
+			"nameLong": "Namibia"
+		},
+		"hasFlag": true,
+		"flagFile": "na.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".na"
+			}
+		]
+	},
+	{
+		"id": "1faed773-9df3-4cbc-b59a-8cc87d5d40b9",
+		"name": "New Caledonia",
+		"longName": "New Caledonia (French overseas collectivity)",
+		"iso31661": {
+			"alpha2": "NC",
+			"alpha3": "NCL",
+			"numeric": "540",
+			"nameShort": "New Caledonia",
+			"nameLong": "New Caledonia"
+		},
+		"hasFlag": true,
+		"flagFile": "nc.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".nc"
+			}
+		]
+	},
+	{
+		"id": "937f1c48-c004-4922-885d-fb6b275d1c40",
+		"name": "Niger",
+		"longName": "Niger",
+		"iso31661": {
+			"alpha2": "NE",
+			"alpha3": "NER",
+			"numeric": "562",
+			"nameShort": "Niger",
+			"nameLong": "Niger (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "ne.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ne"
+			}
+		]
+	},
+	{
+		"id": "f3d8e206-f4e5-4af2-8c20-58c2cab61279",
+		"name": "Norfolk Island",
+		"longName": "Norfolk Island (external Australian territory)",
+		"iso31661": {
+			"alpha2": "NF",
+			"alpha3": "NFK",
+			"numeric": "574",
+			"nameShort": "Norfolk Island",
+			"nameLong": "Norfolk Island"
+		},
+		"hasFlag": true,
+		"flagFile": "nf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".nf"
+			}
+		]
+	},
+	{
+		"id": "90926b5c-3caa-4a27-862c-52a890f9a334",
+		"name": "Nigeria",
+		"longName": "Nigeria",
+		"iso31661": {
+			"alpha2": "NG",
+			"alpha3": "NGA",
+			"numeric": "566",
+			"nameShort": "Nigeria",
+			"nameLong": "Nigeria"
+		},
+		"hasFlag": true,
+		"flagFile": "ng.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ng"
+			}
+		]
+	},
+	{
+		"id": "4b257687-32ee-45e8-886a-fe5bebe56605",
+		"name": "Nicaragua",
+		"longName": "Nicaragua",
+		"iso31661": {
+			"alpha2": "NI",
+			"alpha3": "NIC",
+			"numeric": "558",
+			"nameShort": "Nicaragua",
+			"nameLong": "Nicaragua"
+		},
+		"hasFlag": true,
+		"flagFile": "ni.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ni"
+			}
+		]
+	},
+	{
+		"id": "35b4c299-41b1-4f43-a5e8-196635dda5ca",
+		"name": "Netherlands",
+		"longName": "Holland (officially: the Netherlands)",
+		"iso31661": {
+			"alpha2": "NL",
+			"alpha3": "NLD",
+			"numeric": "528",
+			"nameShort": "Netherlands",
+			"nameLong": "Netherlands (Kingdom of the)"
+		},
+		"hasFlag": true,
+		"flagFile": "nl.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".nl"
+			}
+		]
+	},
+	{
+		"id": "1f217bd3-c3db-449e-aa03-f8ebe0bd72e9",
+		"name": "Norway",
+		"longName": "Norway",
+		"iso31661": {
+			"alpha2": "NO",
+			"alpha3": "NOR",
+			"numeric": "578",
+			"nameShort": "Norway",
+			"nameLong": "Norway"
+		},
+		"hasFlag": true,
+		"flagFile": "no.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".no"
+			}
+		]
+	},
+	{
+		"id": "be9aa8d5-0177-4963-9444-5c543c000aa4",
+		"name": "Nepal",
+		"longName": "Nepal",
+		"iso31661": {
+			"alpha2": "NP",
+			"alpha3": "NPL",
+			"numeric": "524",
+			"nameShort": "Nepal",
+			"nameLong": "Nepal"
+		},
+		"hasFlag": true,
+		"flagFile": "np.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".np"
+			}
+		]
+	},
+	{
+		"id": "b5a68c07-378f-4ad0-aab4-4ccf2c0a47aa",
+		"name": "Nauru",
+		"longName": "Nauru",
+		"iso31661": {
+			"alpha2": "NR",
+			"alpha3": "NRU",
+			"numeric": "520",
+			"nameShort": "Nauru",
+			"nameLong": "Nauru"
+		},
+		"hasFlag": true,
+		"flagFile": "nr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".nr"
+			}
+		]
+	},
+	{
+		"id": "00db8a7e-e024-44c8-bf3a-c70e7be54bf9",
+		"name": "Niue",
+		"longName": "Niue",
+		"iso31661": {
+			"alpha2": "NU",
+			"alpha3": "NIU",
+			"numeric": "570",
+			"nameShort": "Niue",
+			"nameLong": "Niue"
+		},
+		"hasFlag": true,
+		"flagFile": "nu.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".nu"
+			}
+		]
+	},
+	{
+		"id": "3b9a9452-3060-4969-ad4c-483e551471ba",
+		"name": "New Zealand",
+		"longName": "New Zealand",
+		"iso31661": {
+			"alpha2": "NZ",
+			"alpha3": "NZL",
+			"numeric": "554",
+			"nameShort": "New Zealand",
+			"nameLong": "New Zealand"
+		},
+		"hasFlag": true,
+		"flagFile": "nz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".nz"
+			}
+		]
+	},
+	{
+		"id": "1a4dc344-a49d-4fcf-a718-90a61bef2404",
+		"name": "Oman",
+		"longName": "Oman",
+		"iso31661": {
+			"alpha2": "OM",
+			"alpha3": "OMN",
+			"numeric": "512",
+			"nameShort": "Oman",
+			"nameLong": "Oman"
+		},
+		"hasFlag": true,
+		"flagFile": "om.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".om"
+			}
+		]
+	},
+	{
+		"id": "16d2b0a5-ea42-4a5e-8e9e-73c187639f00",
+		"name": "Panama",
+		"longName": "Panama",
+		"iso31661": {
+			"alpha2": "PA",
+			"alpha3": "PAN",
+			"numeric": "591",
+			"nameShort": "Panama",
+			"nameLong": "Panama"
+		},
+		"hasFlag": true,
+		"flagFile": "pa.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pa"
+			}
+		]
+	},
+	{
+		"id": "2bfbdfd6-2a33-4522-86a6-266f8396f68b",
+		"name": "Peru",
+		"longName": "Peru",
+		"iso31661": {
+			"alpha2": "PE",
+			"alpha3": "PER",
+			"numeric": "604",
+			"nameShort": "Peru",
+			"nameLong": "Peru"
+		},
+		"hasFlag": true,
+		"flagFile": "pe.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pe"
+			}
+		]
+	},
+	{
+		"id": "ff60dd79-6129-45f5-b6e6-63022b426194",
+		"name": "French Polynesia",
+		"longName": "French Polynesia (French overseas collectivity)",
+		"iso31661": {
+			"alpha2": "PF",
+			"alpha3": "PYF",
+			"numeric": "258",
+			"nameShort": "French Polynesia",
+			"nameLong": "French Polynesia"
+		},
+		"hasFlag": true,
+		"flagFile": "pf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pf",
+				"note": "stands for Polynésie française"
+			}
+		]
+	},
+	{
+		"id": "bdc07f20-fd42-49b9-8a64-4b3424f703ce",
+		"name": "Papua New Guinea",
+		"longName": "Papua New Guinea",
+		"iso31661": {
+			"alpha2": "PG",
+			"alpha3": "PNG",
+			"numeric": "598",
+			"nameShort": "Papua New Guinea",
+			"nameLong": "Papua New Guinea"
+		},
+		"hasFlag": true,
+		"flagFile": "pg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pg"
+			}
+		]
+	},
+	{
+		"id": "6d395226-e700-47fe-8d9e-e844446ae10d",
+		"name": "Philippines",
+		"longName": "Philippines",
+		"iso31661": {
+			"alpha2": "PH",
+			"alpha3": "PHL",
+			"numeric": "608",
+			"nameShort": "Philippines",
+			"nameLong": "Philippines (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "ph.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ph"
+			}
+		]
+	},
+	{
+		"id": "1af05bf9-8efd-469a-b592-3d8d4cfb7fba",
+		"name": "Pakistan",
+		"longName": "Pakistan",
+		"iso31661": {
+			"alpha2": "PK",
+			"alpha3": "PAK",
+			"numeric": "586",
+			"nameShort": "Pakistan",
+			"nameLong": "Pakistan"
+		},
+		"hasFlag": true,
+		"flagFile": "pk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pk"
+			}
+		]
+	},
+	{
+		"id": "c66436d6-9b4e-409b-969d-bbf9410a6f69",
+		"name": "Poland",
+		"longName": "Poland",
+		"iso31661": {
+			"alpha2": "PL",
+			"alpha3": "POL",
+			"numeric": "616",
+			"nameShort": "Poland",
+			"nameLong": "Poland"
+		},
+		"hasFlag": true,
+		"flagFile": "pl.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pl"
+			}
+		]
+	},
+	{
+		"id": "fa2ca0e9-d739-4160-8efc-0012e8943cd1",
+		"name": "Saint Pierre and Miquelon",
+		"longName": "Saint-Pierre and Miquelon (French overseas collectivity)",
+		"iso31661": {
+			"alpha2": "PM",
+			"alpha3": "SPM",
+			"numeric": "666",
+			"nameShort": "Saint Pierre and Miquelon",
+			"nameLong": "Saint Pierre and Miquelon"
+		},
+		"hasFlag": true,
+		"flagFile": "pm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pm"
+			}
+		]
+	},
+	{
+		"id": "d553195c-aab1-4220-acee-2bd716265f91",
+		"name": "Pitcairn",
+		"longName": "Pitcairn Islands",
+		"iso31661": {
+			"alpha2": "PN",
+			"alpha3": "PCN",
+			"numeric": "612",
+			"nameShort": "Pitcairn",
+			"nameLong": "Pitcairn"
+		},
+		"hasFlag": true,
+		"flagFile": "pn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pn"
+			}
+		]
+	},
+	{
+		"id": "e5eea293-c8b4-418e-835b-9003c6364cfb",
+		"name": "Puerto Rico",
+		"longName": "Puerto Rico",
+		"iso31661": {
+			"alpha2": "PR",
+			"alpha3": "PRI",
+			"numeric": "630",
+			"nameShort": "Puerto Rico",
+			"nameLong": "Puerto Rico"
+		},
+		"hasFlag": true,
+		"flagFile": "pr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pr"
+			}
+		]
+	},
+	{
+		"id": "131684ab-9249-4c61-bd1c-bb601584a62f",
+		"name": "Palestine",
+		"longName": "Palestine",
+		"iso31661": {
+			"alpha2": "PS",
+			"alpha3": "PSE",
+			"numeric": "275",
+			"nameShort": "Palestine",
+			"nameLong": "Palestine, State of"
+		},
+		"hasFlag": true,
+		"flagFile": "ps.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ps"
+			}
+		]
+	},
+	{
+		"id": "def0cff6-dc18-4a42-85e0-9a89f725bbfb",
+		"name": "Portugal",
+		"longName": "Portugal",
+		"iso31661": {
+			"alpha2": "PT",
+			"alpha3": "PRT",
+			"numeric": "620",
+			"nameShort": "Portugal",
+			"nameLong": "Portugal"
+		},
+		"hasFlag": true,
+		"flagFile": "pt.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pt"
+			}
+		]
+	},
+	{
+		"id": "0d776441-0c1b-47d6-8aae-01a0193c9038",
+		"name": "Palau",
+		"longName": "Palau",
+		"iso31661": {
+			"alpha2": "PW",
+			"alpha3": "PLW",
+			"numeric": "585",
+			"nameShort": "Palau",
+			"nameLong": "Palau"
+		},
+		"hasFlag": true,
+		"flagFile": "pw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".pw",
+				"note": "stands for Pelew"
+			}
+		]
+	},
+	{
+		"id": "b05fd15d-08e1-41cb-a063-294ef5d0be8a",
+		"name": "Paraguay",
+		"longName": "Paraguay",
+		"iso31661": {
+			"alpha2": "PY",
+			"alpha3": "PRY",
+			"numeric": "600",
+			"nameShort": "Paraguay",
+			"nameLong": "Paraguay"
+		},
+		"hasFlag": true,
+		"flagFile": "py.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".py"
+			}
+		]
+	},
+	{
+		"id": "3bd3a089-b86f-44e5-bf21-0e77842eac65",
+		"name": "Qatar",
+		"longName": "Qatar",
+		"iso31661": {
+			"alpha2": "QA",
+			"alpha3": "QAT",
+			"numeric": "634",
+			"nameShort": "Qatar",
+			"nameLong": "Qatar"
+		},
+		"hasFlag": true,
+		"flagFile": "qa.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".qa"
+			}
+		]
+	},
+	{
+		"id": "a4180b83-d1b0-4c54-ab16-a3f173ab1ee5",
+		"name": "Réunion",
+		"longName": "Réunion (French overseas department)",
+		"iso31661": {
+			"alpha2": "RE",
+			"alpha3": "REU",
+			"numeric": "638",
+			"nameShort": "Réunion",
+			"nameLong": "Réunion"
+		},
+		"hasFlag": true,
+		"flagFile": "re.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".re"
+			}
+		]
+	},
+	{
+		"id": "32ad6bd5-7c6e-4eb7-b814-b8b874d8b4e6",
+		"name": "Romania",
+		"longName": "Romania",
+		"iso31661": {
+			"alpha2": "RO",
+			"alpha3": "ROU",
+			"numeric": "642",
+			"nameShort": "Romania",
+			"nameLong": "Romania"
+		},
+		"hasFlag": true,
+		"flagFile": "ro.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ro"
+			}
+		]
+	},
+	{
+		"id": "0f015657-e4dd-4b2d-902b-ce4c5cd06555",
+		"name": "Serbia",
+		"longName": "Serbia",
+		"iso31661": {
+			"alpha2": "RS",
+			"alpha3": "SRB",
+			"numeric": "688",
+			"nameShort": "Serbia",
+			"nameLong": "Serbia"
+		},
+		"hasFlag": true,
+		"flagFile": "rs.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".rs",
+				"note": "stands for Република Србија or, in the Latin alphabet, Republika Srbija"
+			}
+		]
+	},
+	{
+		"id": "b09b9eb9-4782-4494-b7af-e6b5a4d6ef25",
+		"name": "Russia",
+		"longName": "Russian Federation",
+		"iso31661": {
+			"alpha2": "RU",
+			"alpha3": "RUS",
+			"numeric": "643",
+			"nameShort": "Russian Federation",
+			"nameLong": "Russian Federation (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "ru.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ru"
+			}
+		]
+	},
+	{
+		"id": "d23e6540-c311-4ed6-83fb-35ed4e33a330",
+		"name": "Rwanda",
+		"longName": "Rwanda",
+		"iso31661": {
+			"alpha2": "RW",
+			"alpha3": "RWA",
+			"numeric": "646",
+			"nameShort": "Rwanda",
+			"nameLong": "Rwanda"
+		},
+		"hasFlag": true,
+		"flagFile": "rw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".rw"
+			}
+		]
+	},
+	{
+		"id": "2ef662a0-d3a2-475e-b5b7-5e65d9359346",
+		"name": "Saudi Arabia",
+		"longName": "Saudi Arabia",
+		"iso31661": {
+			"alpha2": "SA",
+			"alpha3": "SAU",
+			"numeric": "682",
+			"nameShort": "Saudi Arabia",
+			"nameLong": "Saudi Arabia"
+		},
+		"hasFlag": true,
+		"flagFile": "sa.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sa"
+			}
+		]
+	},
+	{
+		"id": "768a13fe-cff8-468c-955e-4b3642fb3e87",
+		"name": "Solomon Islands",
+		"longName": "Solomon Islands",
+		"iso31661": {
+			"alpha2": "SB",
+			"alpha3": "SLB",
+			"numeric": "90",
+			"nameShort": "Solomon Islands",
+			"nameLong": "Solomon Islands"
+		},
+		"hasFlag": true,
+		"flagFile": "sb.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sb",
+				"note": "stands for British Solomon Islands"
+			}
+		]
+	},
+	{
+		"id": "53646d07-f52d-4858-aa64-fa270ca217ea",
+		"name": "Seychelles",
+		"longName": "Seychelles",
+		"iso31661": {
+			"alpha2": "SC",
+			"alpha3": "SYC",
+			"numeric": "690",
+			"nameShort": "Seychelles",
+			"nameLong": "Seychelles"
+		},
+		"hasFlag": true,
+		"flagFile": "sc.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sc"
+			}
+		]
+	},
+	{
+		"id": "d5629cf2-2f8c-40fd-aea0-4d40434b92f1",
+		"name": "Sudan",
+		"longName": "Sudan",
+		"iso31661": {
+			"alpha2": "SD",
+			"alpha3": "SDN",
+			"numeric": "729",
+			"nameShort": "Sudan",
+			"nameLong": "Sudan (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "sd.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sd"
+			}
+		]
+	},
+	{
+		"id": "e9f3b3c9-ca84-4f8c-97f4-2ad430e6e975",
+		"name": "Sweden",
+		"longName": "Sweden",
+		"iso31661": {
+			"alpha2": "SE",
+			"alpha3": "SWE",
+			"numeric": "752",
+			"nameShort": "Sweden",
+			"nameLong": "Sweden"
+		},
+		"hasFlag": true,
+		"flagFile": "se.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".se"
+			}
+		]
+	},
+	{
+		"id": "d830ec70-94d4-4ff0-8755-55c652c8f03b",
+		"name": "Singapore",
+		"longName": "Singapore",
+		"iso31661": {
+			"alpha2": "SG",
+			"alpha3": "SGP",
+			"numeric": "702",
+			"nameShort": "Singapore",
+			"nameLong": "Singapore"
+		},
+		"hasFlag": true,
+		"flagFile": "sg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sg"
+			}
+		]
+	},
+	{
+		"id": "81866939-ddfd-4021-a731-4d1ae62227c1",
+		"name": "Saint Helena",
+		"longName": "Saint Helena",
+		"iso31661": {
+			"alpha2": "SH",
+			"alpha3": "SHN",
+			"numeric": "654",
+			"nameShort": "Saint Helena",
+			"nameLong": "Saint Helena, Ascension and Tristan da Cunha"
+		},
+		"hasFlag": true,
+		"flagFile": "sh.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sh"
+			}
+		]
+	},
+	{
+		"id": "84a759d6-36a8-4b2c-b5a9-1836bfa2e23f",
+		"name": "Slovenia",
+		"longName": "Slovenia",
+		"iso31661": {
+			"alpha2": "SI",
+			"alpha3": "SVN",
+			"numeric": "705",
+			"nameShort": "Slovenia",
+			"nameLong": "Slovenia"
+		},
+		"hasFlag": true,
+		"flagFile": "si.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".si"
+			}
+		]
+	},
+	{
+		"id": "b3c60340-716c-48cb-a618-bd298d4ec7f5",
+		"name": "Svalbard and Jan Mayen",
+		"longName": "Svalbard and Jan Mayen Islands",
+		"iso31661": {
+			"alpha2": "SJ",
+			"alpha3": "SJM",
+			"numeric": "744",
+			"nameShort": "Svalbard and Jan Mayen",
+			"nameLong": "Svalbard and Jan Mayen"
+		},
+		"hasFlag": true,
+		"flagFile": "sj.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sj"
+			}
+		]
+	},
+	{
+		"id": "5f8623f6-cdb9-44ac-86fd-03ff2042c4e0",
+		"name": "Slovakia",
+		"longName": "Slovakia",
+		"iso31661": {
+			"alpha2": "SK",
+			"alpha3": "SVK",
+			"numeric": "703",
+			"nameShort": "Slovakia",
+			"nameLong": "Slovakia"
+		},
+		"hasFlag": true,
+		"flagFile": "sk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sk"
+			}
+		]
+	},
+	{
+		"id": "8dbbb99a-e00f-4a2a-9ce0-0086293d6626",
+		"name": "Sierra Leone",
+		"longName": "Sierra Leone",
+		"iso31661": {
+			"alpha2": "SL",
+			"alpha3": "SLE",
+			"numeric": "694",
+			"nameShort": "Sierra Leone",
+			"nameLong": "Sierra Leone"
+		},
+		"hasFlag": true,
+		"flagFile": "sl.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sl"
+			}
+		]
+	},
+	{
+		"id": "8766b0c2-76b8-4d20-91ca-0e0a8b7c8ee8",
+		"name": "San Marino",
+		"longName": "San Marino",
+		"iso31661": {
+			"alpha2": "SM",
+			"alpha3": "SMR",
+			"numeric": "674",
+			"nameShort": "San Marino",
+			"nameLong": "San Marino"
+		},
+		"hasFlag": true,
+		"flagFile": "sm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sm"
+			}
+		]
+	},
+	{
+		"id": "6bfb10e3-f457-4db8-af90-bf0e8d4aeec2",
+		"name": "Senegal",
+		"longName": "Senegal",
+		"iso31661": {
+			"alpha2": "SN",
+			"alpha3": "SEN",
+			"numeric": "686",
+			"nameShort": "Senegal",
+			"nameLong": "Senegal"
+		},
+		"hasFlag": true,
+		"flagFile": "sn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sn"
+			}
+		]
+	},
+	{
+		"id": "9b137b70-204d-47d2-9bd4-d30f4d0de78b",
+		"name": "Somalia",
+		"longName": "Somalia",
+		"iso31661": {
+			"alpha2": "SO",
+			"alpha3": "SOM",
+			"numeric": "706",
+			"nameShort": "Somalia",
+			"nameLong": "Somalia"
+		},
+		"hasFlag": true,
+		"flagFile": "so.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".so"
+			}
+		]
+	},
+	{
+		"id": "e09373fe-c712-4532-81ae-21ab7f450f52",
+		"name": "Suriname",
+		"longName": "Suriname",
+		"iso31661": {
+			"alpha2": "SR",
+			"alpha3": "SUR",
+			"numeric": "740",
+			"nameShort": "Suriname",
+			"nameLong": "Suriname"
+		},
+		"hasFlag": true,
+		"flagFile": "sr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sr"
+			}
+		]
+	},
+	{
+		"id": "b78fbfef-4d10-4d63-97e1-824f26fd3683",
+		"name": "South Sudan",
+		"longName": "South Sudan",
+		"iso31661": {
+			"alpha2": "SS",
+			"alpha3": "SSD",
+			"numeric": "728",
+			"nameShort": "South Sudan",
+			"nameLong": "South Sudan"
+		},
+		"hasFlag": true,
+		"flagFile": "ss.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ss"
+			}
+		]
+	},
+	{
+		"id": "5d80f8a6-0020-4477-a4be-c048cfd011b8",
+		"name": "São Tomé and Príncipe",
+		"longName": "São Tomé and Príncipe",
+		"iso31661": {
+			"alpha2": "ST",
+			"alpha3": "STP",
+			"numeric": "678",
+			"nameShort": "Sao Tome and Principe",
+			"nameLong": "Sao Tome and Principe"
+		},
+		"hasFlag": true,
+		"flagFile": "st.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".st"
+			}
+		]
+	},
+	{
+		"id": "f751fcee-b6fc-42f6-b24f-2da3872c7e4e",
+		"name": "El Salvador",
+		"longName": "El Salvador",
+		"iso31661": {
+			"alpha2": "SV",
+			"alpha3": "SLV",
+			"numeric": "222",
+			"nameShort": "El Salvador",
+			"nameLong": "El Salvador"
+		},
+		"hasFlag": true,
+		"flagFile": "sv.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sv"
+			}
+		]
+	},
+	{
+		"id": "a277c97d-f2c0-4e08-a16c-e4af580544a0",
+		"name": "Sint Maarten",
+		"longName": "Sint Maarten",
+		"iso31661": {
+			"alpha2": "SX",
+			"alpha3": "SXM",
+			"numeric": "534",
+			"nameShort": "Sint Maarten",
+			"nameLong": "Sint Maarten (Dutch part)"
+		},
+		"hasFlag": true,
+		"flagFile": "sx.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sx"
+			},
+			{
+				"tld": ".an",
+				"note": "stands for Netherlands Antilles"
+			}
+		]
+	},
+	{
+		"id": "b9f69a5e-f219-4329-a7ab-10786eede5d6",
+		"name": "Syria",
+		"longName": "Syrian Arab Republic",
+		"iso31661": {
+			"alpha2": "SY",
+			"alpha3": "SYR",
+			"numeric": "760",
+			"nameShort": "Syrian Arab Republic",
+			"nameLong": "Syrian Arab Republic (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "sy.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sy"
+			}
+		]
+	},
+	{
+		"id": "5335b7a9-8bcc-4103-9b7e-19517b0cfbcb",
+		"name": "Eswatini",
+		"longName": "Eswatini (formerly Swaziland)",
+		"iso31661": {
+			"alpha2": "SZ",
+			"alpha3": "SWZ",
+			"numeric": "748",
+			"nameShort": "Eswatini",
+			"nameLong": "Eswatini"
+		},
+		"hasFlag": true,
+		"flagFile": "sz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".sz"
+			}
+		]
+	},
+	{
+		"id": "a802973b-cd3f-41d9-afbb-45a11a285ace",
+		"name": "Turks and Caicos Islands",
+		"longName": "Turks and Caicos Islands",
+		"iso31661": {
+			"alpha2": "TC",
+			"alpha3": "TCA",
+			"numeric": "796",
+			"nameShort": "Turks and Caicos Islands",
+			"nameLong": "Turks and Caicos Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "tc.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tc"
+			}
+		]
+	},
+	{
+		"id": "7016c09c-ad79-4fd2-8050-67dbb565c7a7",
+		"name": "Chad",
+		"longName": "Chad",
+		"iso31661": {
+			"alpha2": "TD",
+			"alpha3": "TCD",
+			"numeric": "148",
+			"nameShort": "Chad",
+			"nameLong": "Chad"
+		},
+		"hasFlag": true,
+		"flagFile": "td.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".td",
+				"note": "stands for Tchad"
+			}
+		]
+	},
+	{
+		"id": "aaa92ff8-59a9-4499-973d-fc9759daa248",
+		"name": "French Southern and Antarctic Lands",
+		"longName": "French Southern Territories",
+		"iso31661": {
+			"alpha2": "TF",
+			"alpha3": "ATF",
+			"numeric": "260",
+			"nameShort": "French Southern Territories",
+			"nameLong": "French Southern Territories (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "tf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tf",
+				"note": "stands for Terres australes et antarctiques françaises"
+			}
+		]
+	},
+	{
+		"id": "244e0933-d39d-46f2-aa71-c5030cbeb0fd",
+		"name": "Togo",
+		"longName": "Togo",
+		"iso31661": {
+			"alpha2": "TG",
+			"alpha3": "TGO",
+			"numeric": "768",
+			"nameShort": "Togo",
+			"nameLong": "Togo"
+		},
+		"hasFlag": true,
+		"flagFile": "tg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tg"
+			}
+		]
+	},
+	{
+		"id": "1d62dc67-57b6-43b5-91a9-dece77c5851c",
+		"name": "Thailand",
+		"longName": "Thailand",
+		"iso31661": {
+			"alpha2": "TH",
+			"alpha3": "THA",
+			"numeric": "764",
+			"nameShort": "Thailand",
+			"nameLong": "Thailand"
+		},
+		"hasFlag": true,
+		"flagFile": "th.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".th"
+			}
+		]
+	},
+	{
+		"id": "f719ae55-ea88-470e-9b36-0bee699230f0",
+		"name": "Tajikistan",
+		"longName": "Tajikistan",
+		"iso31661": {
+			"alpha2": "TJ",
+			"alpha3": "TJK",
+			"numeric": "762",
+			"nameShort": "Tajikistan",
+			"nameLong": "Tajikistan"
+		},
+		"hasFlag": true,
+		"flagFile": "tj.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tj"
+			}
+		]
+	},
+	{
+		"id": "cc566925-13d2-48d0-9052-d704379c386b",
+		"name": "Tokelau",
+		"longName": "Tokelau",
+		"iso31661": {
+			"alpha2": "TK",
+			"alpha3": "TKL",
+			"numeric": "772",
+			"nameShort": "Tokelau",
+			"nameLong": "Tokelau"
+		},
+		"hasFlag": true,
+		"flagFile": "tk.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tk"
+			}
+		]
+	},
+	{
+		"id": "982b582b-f280-425b-92fa-aa8ed7f3ede5",
+		"name": "Timor-Leste",
+		"longName": "East Timor (Timor-Leste)",
+		"iso31661": {
+			"alpha2": "TL",
+			"alpha3": "TLS",
+			"numeric": "626",
+			"nameShort": "Timor-Leste",
+			"nameLong": "Timor-Leste"
+		},
+		"hasFlag": true,
+		"flagFile": "tl.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tl",
+				"note": "stands for Timor-Leste"
+			},
+			{
+				"tld": ".tp",
+				"note": "the old country code that is still in use and which stands for Timor Português"
+			}
+		]
+	},
+	{
+		"id": "001fbbae-67d2-4f94-ae31-7c9bd515b9f7",
+		"name": "Turkmenistan",
+		"longName": "Turkmenistan",
+		"iso31661": {
+			"alpha2": "TM",
+			"alpha3": "TKM",
+			"numeric": "795",
+			"nameShort": "Turkmenistan",
+			"nameLong": "Turkmenistan"
+		},
+		"hasFlag": true,
+		"flagFile": "tm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tm"
+			}
+		]
+	},
+	{
+		"id": "80fc5692-ad01-4848-9a42-83c751efb9bd",
+		"name": "Tunisia",
+		"longName": "Tunisia",
+		"iso31661": {
+			"alpha2": "TN",
+			"alpha3": "TUN",
+			"numeric": "788",
+			"nameShort": "Tunisia",
+			"nameLong": "Tunisia"
+		},
+		"hasFlag": true,
+		"flagFile": "tn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tn"
+			}
+		]
+	},
+	{
+		"id": "c21d677c-22e9-43ea-ac8d-9b1f2656cf2a",
+		"name": "Tonga",
+		"longName": "Tonga",
+		"iso31661": {
+			"alpha2": "TO",
+			"alpha3": "TON",
+			"numeric": "776",
+			"nameShort": "Tonga",
+			"nameLong": "Tonga"
+		},
+		"hasFlag": true,
+		"flagFile": "to.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".to"
+			}
+		]
+	},
+	{
+		"id": "58e28494-1cc8-471f-ae2c-60bc87a62dde",
+		"name": "Turkey",
+		"longName": "Türkiye",
+		"iso31661": {
+			"alpha2": "TR",
+			"alpha3": "TUR",
+			"numeric": "792",
+			"nameShort": "Türkiye",
+			"nameLong": "Türkiye"
+		},
+		"hasFlag": true,
+		"flagFile": "tr.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tr"
+			}
+		]
+	},
+	{
+		"id": "1117e762-e0a5-476f-a699-d949b5bdf5ca",
+		"name": "Trinidad and Tobago",
+		"longName": "Trinidad and Tobago",
+		"iso31661": {
+			"alpha2": "TT",
+			"alpha3": "TTO",
+			"numeric": "780",
+			"nameShort": "Trinidad and Tobago",
+			"nameLong": "Trinidad and Tobago"
+		},
+		"hasFlag": true,
+		"flagFile": "tt.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tt"
+			}
+		]
+	},
+	{
+		"id": "63060c91-d7b5-4c06-ba9c-24fa123a5780",
+		"name": "Tuvalu",
+		"longName": "Tuvalu",
+		"iso31661": {
+			"alpha2": "TV",
+			"alpha3": "TUV",
+			"numeric": "798",
+			"nameShort": "Tuvalu",
+			"nameLong": "Tuvalu"
+		},
+		"hasFlag": true,
+		"flagFile": "tv.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tv"
+			}
+		]
+	},
+	{
+		"id": "538e0cca-a544-4509-83ee-7c5a89196481",
+		"name": "Taiwan",
+		"longName": "Taiwan",
+		"iso31661": {
+			"alpha2": "TW",
+			"alpha3": "TWN",
+			"numeric": "158",
+			"nameShort": "Taiwan",
+			"nameLong": "Taiwan (Province of China)"
+		},
+		"hasFlag": true,
+		"flagFile": "tw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tw"
+			}
+		]
+	},
+	{
+		"id": "b978deec-8c78-4054-9ded-099c0d05bc5d",
+		"name": "Tanzania",
+		"longName": "Tanzania",
+		"iso31661": {
+			"alpha2": "TZ",
+			"alpha3": "TZA",
+			"numeric": "834",
+			"nameShort": "Tanzania",
+			"nameLong": "Tanzania, the United Republic of"
+		},
+		"hasFlag": true,
+		"flagFile": "tz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".tz"
+			}
+		]
+	},
+	{
+		"id": "4c3b6968-02ce-473f-9d65-c5e9e477b7a4",
+		"name": "Ukraine",
+		"longName": "Ukraine",
+		"iso31661": {
+			"alpha2": "UA",
+			"alpha3": "UKR",
+			"numeric": "804",
+			"nameShort": "Ukraine",
+			"nameLong": "Ukraine"
+		},
+		"hasFlag": true,
+		"flagFile": "ua.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ua",
+				"note": "stands for Україна, or, in the Latin alphabet, Ukraina"
+			}
+		]
+	},
+	{
+		"id": "a169d209-7acb-4534-ae09-43a0808a43b6",
+		"name": "Uganda",
+		"longName": "Uganda",
+		"iso31661": {
+			"alpha2": "UG",
+			"alpha3": "UGA",
+			"numeric": "800",
+			"nameShort": "Uganda",
+			"nameLong": "Uganda"
+		},
+		"hasFlag": true,
+		"flagFile": "ug.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ug"
+			}
+		]
+	},
+	{
+		"id": "af1012a6-e13d-40d5-86de-4ae39396fbed",
+		"name": "United States Minor Outlying Islands",
+		"longName": "United States Minor Outlying Islands",
+		"iso31661": {
+			"alpha2": "UM",
+			"alpha3": "UMI",
+			"numeric": "581",
+			"nameShort": "United States Minor Outlying Islands",
+			"nameLong": "United States Minor Outlying Islands (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "um.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null
+	},
+	{
+		"id": "115b99bb-9684-4d61-b888-0d1f678b0f80",
+		"name": "United States",
+		"longName": "United States of America (USA)",
+		"iso31661": {
+			"alpha2": "US",
+			"alpha3": "USA",
+			"numeric": "840",
+			"nameShort": "United States",
+			"nameLong": "United States of America (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "us.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".us"
+			}
+		]
+	},
+	{
+		"id": "b666d9ff-bab6-495d-9a68-f7a4208794a6",
+		"name": "Uruguay",
+		"longName": "Uruguay",
+		"iso31661": {
+			"alpha2": "UY",
+			"alpha3": "URY",
+			"numeric": "858",
+			"nameShort": "Uruguay",
+			"nameLong": "Uruguay"
+		},
+		"hasFlag": true,
+		"flagFile": "uy.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".uy"
+			}
+		]
+	},
+	{
+		"id": "f82a851d-8f2b-4657-8c6c-997ac2787d3b",
+		"name": "Uzbekistan",
+		"longName": "Uzbekistan",
+		"iso31661": {
+			"alpha2": "UZ",
+			"alpha3": "UZB",
+			"numeric": "860",
+			"nameShort": "Uzbekistan",
+			"nameLong": "Uzbekistan"
+		},
+		"hasFlag": true,
+		"flagFile": "uz.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".uz"
+			}
+		]
+	},
+	{
+		"id": "0fc09886-39ad-4e7f-b89c-0f16226b2152",
+		"name": "Vatican City",
+		"longName": "Holy See",
+		"iso31661": {
+			"alpha2": "VA",
+			"alpha3": "VAT",
+			"numeric": "336",
+			"nameShort": "Holy See",
+			"nameLong": "Holy See (the)"
+		},
+		"hasFlag": true,
+		"flagFile": "va.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".va"
+			}
+		]
+	},
+	{
+		"id": "1c8cc8b0-6ea5-4f4a-86d5-cce6201adce8",
+		"name": "Saint Vincent and the Grenadines",
+		"longName": "Saint Vincent and the Grenadines",
+		"iso31661": {
+			"alpha2": "VC",
+			"alpha3": "VCT",
+			"numeric": "670",
+			"nameShort": "Saint Vincent and the Grenadines",
+			"nameLong": "Saint Vincent and the Grenadines"
+		},
+		"hasFlag": true,
+		"flagFile": "vc.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".vc"
+			}
+		]
+	},
+	{
+		"id": "d01709b7-e736-4c79-8476-345e06b354b3",
+		"name": "Venezuela",
+		"longName": "Venezuela",
+		"iso31661": {
+			"alpha2": "VE",
+			"alpha3": "VEN",
+			"numeric": "862",
+			"nameShort": "Venezuela",
+			"nameLong": "Venezuela (Bolivarian Republic of)"
+		},
+		"hasFlag": true,
+		"flagFile": "ve.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ve"
+			}
+		]
+	},
+	{
+		"id": "5b5940dd-48e7-422d-9a6c-9d8c03127699",
+		"name": "Virgin Islands (British)",
+		"longName": "British Virgin Islands",
+		"iso31661": {
+			"alpha2": "VG",
+			"alpha3": "VGB",
+			"numeric": "92",
+			"nameShort": "Virgin Islands (British)",
+			"nameLong": "Virgin Islands (United Kingdom)"
+		},
+		"hasFlag": true,
+		"flagFile": "vg.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".vg"
+			}
+		]
+	},
+	{
+		"id": "ed5f395f-740c-479a-8284-16afb9632275",
+		"name": "Virgin Islands (U.S.)",
+		"longName": "United States Virgin Islands",
+		"iso31661": {
+			"alpha2": "VI",
+			"alpha3": "VIR",
+			"numeric": "850",
+			"nameShort": "Virgin Islands (U.S.)",
+			"nameLong": "Virgin Islands (United States)"
+		},
+		"hasFlag": true,
+		"flagFile": "vi.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".vi"
+			}
+		]
+	},
+	{
+		"id": "42ade0f8-5ccd-4bc7-a90a-44071c6ff4b1",
+		"name": "Vietnam",
+		"longName": "Socialist Republic of Viet Nam",
+		"iso31661": {
+			"alpha2": "VN",
+			"alpha3": "VNM",
+			"numeric": "704",
+			"nameShort": "Viet Nam",
+			"nameLong": "Viet Nam"
+		},
+		"hasFlag": true,
+		"flagFile": "vn.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".vn"
+			}
+		]
+	},
+	{
+		"id": "8908325f-952b-4300-9994-5915b8c4e6c1",
+		"name": "Vanuatu",
+		"longName": "Vanuatu",
+		"iso31661": {
+			"alpha2": "VU",
+			"alpha3": "VUT",
+			"numeric": "548",
+			"nameShort": "Vanuatu",
+			"nameLong": "Vanuatu"
+		},
+		"hasFlag": true,
+		"flagFile": "vu.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".vu"
+			}
+		]
+	},
+	{
+		"id": "0fb0c12e-8160-4020-9e78-2d1a329b9da6",
+		"name": "Wallis and Futuna",
+		"longName": "Wallis and Futuna (French overseas collectivity)",
+		"iso31661": {
+			"alpha2": "WF",
+			"alpha3": "WLF",
+			"numeric": "876",
+			"nameShort": "Wallis and Futuna",
+			"nameLong": "Wallis and Futuna"
+		},
+		"hasFlag": true,
+		"flagFile": "wf.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".wf"
+			}
+		]
+	},
+	{
+		"id": "3e39d443-a241-40bb-ad1e-fa9cf2829c5a",
+		"name": "Samoa",
+		"longName": "Samoa",
+		"iso31661": {
+			"alpha2": "WS",
+			"alpha3": "WSM",
+			"numeric": "882",
+			"nameShort": "Samoa",
+			"nameLong": "Samoa"
+		},
+		"hasFlag": true,
+		"flagFile": "ws.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ws",
+				"note": "stands for Western Samoa, the former name of Samoa"
+			}
+		]
+	},
+	{
+		"id": "862419ac-e083-4852-afc4-c4576052d615",
+		"name": "Yemen",
+		"longName": "Yemen",
+		"iso31661": {
+			"alpha2": "YE",
+			"alpha3": "YEM",
+			"numeric": "887",
+			"nameShort": "Yemen",
+			"nameLong": "Yemen"
+		},
+		"hasFlag": true,
+		"flagFile": "ye.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".ye"
+			}
+		]
+	},
+	{
+		"id": "f7a4614d-5378-4190-ba2e-e0bd4e72f045",
+		"name": "Mayotte",
+		"longName": "Mayotte (French overseas department)",
+		"iso31661": {
+			"alpha2": "YT",
+			"alpha3": "MYT",
+			"numeric": "175",
+			"nameShort": "Mayotte",
+			"nameLong": "Mayotte"
+		},
+		"hasFlag": true,
+		"flagFile": "yt.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".yt"
+			}
+		]
+	},
+	{
+		"id": "dd81ee97-2686-46a3-b7fb-8bb49c53b40c",
+		"name": "South Africa",
+		"longName": "South Africa",
+		"iso31661": {
+			"alpha2": "ZA",
+			"alpha3": "ZAF",
+			"numeric": "710",
+			"nameShort": "South Africa",
+			"nameLong": "South Africa"
+		},
+		"hasFlag": true,
+		"flagFile": "za.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".za",
+				"note": "stands for Zuid-Afrika"
+			}
+		]
+	},
+	{
+		"id": "5ad030a3-df63-4c68-be1d-bc4545d584ba",
+		"name": "Zambia",
+		"longName": "Zambia",
+		"iso31661": {
+			"alpha2": "ZM",
+			"alpha3": "ZMB",
+			"numeric": "894",
+			"nameShort": "Zambia",
+			"nameLong": "Zambia"
+		},
+		"hasFlag": true,
+		"flagFile": "zm.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".zm"
+			}
+		]
+	},
+	{
+		"id": "bbf1488a-4d1f-4ebe-85df-15e979bf91ac",
+		"name": "Zimbabwe",
+		"longName": "Zimbabwe",
+		"iso31661": {
+			"alpha2": "ZW",
+			"alpha3": "ZWE",
+			"numeric": "716",
+			"nameShort": "Zimbabwe",
+			"nameLong": "Zimbabwe"
+		},
+		"hasFlag": true,
+		"flagFile": "zw.svg",
+		"hasArmorial": false,
+		"armorialType": null,
+		"armorialFile": null,
+		"tlds": [
+			{
+				"tld": ".zw"
+			}
+		]
+	}
+]

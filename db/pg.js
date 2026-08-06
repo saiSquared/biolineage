@@ -380,7 +380,10 @@ function pgDb(config, debug) {
 
 						const method = index.method ? `USING ${index.method}` : ''
 
-						await c.query(`CREATE INDEX "${indexName}" ON "${table.name}" ${method} (${fieldList})`)
+						debugSql = `CREATE INDEX "${indexName}" ON "${table.name}" ${method} (${fieldList})`
+						if (debug) console.log(debugSql)
+
+						await c.query(debugSql)
 					}
 				}
 
