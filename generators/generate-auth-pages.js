@@ -4,7 +4,7 @@ class AuthGenerators {
 	async login(message) {
 		const data = {
 			title: 'Sign In',
-			description: 'Sign in to the Norm App.',
+			description: 'Sign in to Biolineage.',
 			auth: [],
 			scripts: [{
 				type: 'inline',
