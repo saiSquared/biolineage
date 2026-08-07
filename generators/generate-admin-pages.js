@@ -3,7 +3,7 @@ const { generatePage } = require('./generate-page.js')
 class AdminGenerators {
 	async users(user) {
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title: 'Users',
 			description: 'Manage Norm App users.',
 			menus: [

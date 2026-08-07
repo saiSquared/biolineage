@@ -6,7 +6,7 @@ class AppGenerators {
 	async addPerson(user) {
 		/** @type {Page} */
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title: 'New Person',
 			description: 'Add a new person to the database',
 			breadcrumbs: [
@@ -27,7 +27,7 @@ class AppGenerators {
 	async browse(user) {
 		/** @type {Page} */
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title: 'Browse People',
 			description: 'Browse all People',
 			breadcrumbs: [
@@ -60,7 +60,7 @@ class AppGenerators {
 		const name = await getters.getPersonName(id)
 		/** @type {Page} */
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title: `${name} - Browse People`,
 			description: 'Browse all People',
 			breadcrumbs: [
@@ -97,7 +97,7 @@ class AppGenerators {
 		const uuid = await getters.getPersonUUID(id)
 		/** @type {Page} */
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title: `Personal Tree - ${name} - Browse People`,
 			description: 'Browse all People',
 			breadcrumbs: [
@@ -140,7 +140,7 @@ class AppGenerators {
 		if (which === 'death') title = 'Death Timeline'
 		/** @type {Page} */
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title,
 			description: 'Norm App Timeline Views',
 			breadcrumbs: [
