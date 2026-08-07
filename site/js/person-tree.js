@@ -191,6 +191,8 @@ async function getPersonTree() {
 	const pgResult = await fetch(`/api/person/${editorPackage.lookupUUID}/pg-personal-tree`).then(r => r.json())
 	console.log(groupByLevel(pgResult))
 	drawPgPersonTree(groupByLevel(pgResult))
+	const pgData = await fetch(`/api/person/${editorPackage.lookupUUID}/pg-family-chart`).then(r => r.json())
+	console.log(pgData)
 }
 
 function groupByLevel(rows) {

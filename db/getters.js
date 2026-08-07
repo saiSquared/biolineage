@@ -449,6 +449,116 @@ class Getters {
 		return tree
 	}
 
+	async getPgPersonFamilyChart(entityId) {
+		// 1. Get full connected component (all 633 people)
+		const connected = await biolineageDb.query(`
+        WITH RECURSIVE connected AS (
+
+			-- NON‑RECURSIVE TERM
+			SELECT id
+			FROM entities
+			WHERE id = $1
+
+			UNION ALL
+
+			-- RECURSIVE TERM: walk to parents
+			SELECT r.entity_id
+			FROM relationships r
+			JOIN connected c ON r.related_entity_id = c.id
+			WHERE r.relationship_type = 'parent'
+			AND r.direction = 'forward'
+
+			UNION ALL
+
+			-- RECURSIVE TERM: walk to children
+			SELECT r.related_entity_id
+			FROM relationships r
+			JOIN connected c ON r.entity_id = c.id
+			WHERE r.relationship_type = 'parent'
+			AND r.direction = 'forward'
+		)
+		SELECT DISTINCT id
+		FROM connected;`, [entityId])
+
+		const ids = connected.rows.map(r => r.id)
+
+		// 2. Load entity details
+		const rows = await biolineageDb.query(`
+        SELECT
+            ent.id,
+            ent.display_name,
+            ent.sex,
+            birth.year AS birth_year,
+            death.year AS death_year
+        FROM entities ent
+        LEFT JOIN events birth
+            ON birth.entity_id = ent.id
+           AND birth.event_type = 'birth'
+        LEFT JOIN events death
+            ON death.entity_id = ent.id
+           AND death.event_type = 'death'
+        WHERE ent.id = ANY($1);
+    `, [ids])
+
+		// 3. Build initial tree nodes
+		const tree = rows.rows.map(row => ({
+			id: String(row.id),
+			data: {
+				fn: '',
+				ln: '',
+				desc: `${row.birthYear || '~'} - ${row.deathYear || '~'}`,
+				label: row.display_name,
+				avatar: '',
+				gender: row.sex
+			},
+			rels: { spouses: [], children: [], mother: null, father: null },
+			main: row.id === entityId
+		}))
+
+		// 4. Fill in parent/child relationships
+		for (const person of tree) {
+			const rels = await biolineageDb.query(`
+            SELECT relationship_type, entity_id, related_entity_id
+            FROM relationships
+            WHERE relationship_type = 'parent'
+              AND direction = 'forward'
+              AND (entity_id = $1 OR related_entity_id = $1);
+        `, [person.id])
+
+			for (const r of rels.rows) {
+				if (r.related_entity_id === person.id) {
+					const parent = tree.find(t => t.id === String(r.entity_id))
+					if (parent) {
+						if (parent.data.gender === 'M') person.rels.father = parent.id
+						else person.rels.mother = parent.id
+					}
+				} else if (r.entity_id === person.id) {
+					person.rels.children.push(String(r.related_entity_id))
+				}
+			}
+		}
+
+		// 5. Infer spouses
+		for (const person of tree) {
+			for (const childId of person.rels.children) {
+				const child = tree.find(t => t.id === childId)
+				if (!child) continue
+
+				if (person.data.gender === 'M') {
+					if (child.rels.mother && !person.rels.spouses.includes(child.rels.mother)) {
+						person.rels.spouses.push(child.rels.mother)
+					}
+				} else {
+					if (child.rels.father && !person.rels.spouses.includes(child.rels.father)) {
+						person.rels.spouses.push(child.rels.father)
+					}
+				}
+			}
+		}
+
+		return tree
+	}
+
 	async getPersonName(id) {
 		const person = await dbNorm.get('SELECT FamilyName, GivenName, MiddleName, SuffixName, NickName FROM person WHERE keeNew = @id', { id })
 		return formatNameReverse(person)

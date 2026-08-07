@@ -40,6 +40,10 @@ async function apiServers(app) {
 		reply.send(await getters.getPersonFamilyChart(Number(request.params.id)))
 	})
 
+	app.get('/api/person/:id/pg-family-chart', async (request, reply) => {
+		reply.send(await getters.getPgPersonFamilyChart(request.params.id))
+	})
+
 	app.get('/api/timeline/birth', async (request, reply) => {
 		reply.send(await getters.getTimelineBirth())
 	})
