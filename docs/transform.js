@@ -330,7 +330,7 @@ async function initPg() {
 	await normPg.insert('trees', {
 		id: normTree,
 		ownerId: norm,
-		name: 'Norm Tree',
+		name: 'Norm',
 		slug: 'norm',
 		createdBy: norm,
 		modifiedBy: norm
@@ -339,7 +339,7 @@ async function initPg() {
 	await normPg.insert('trees', {
 		id: charlesTree,
 		ownerId: charles,
-		name: 'Charles Tree',
+		name: 'Charles',
 		slug: 'charles',
 		createdBy: norm,
 		modifiedBy: norm
@@ -348,8 +348,8 @@ async function initPg() {
 	await normPg.insert('trees', {
 		id: horseTree,
 		ownerId: norm,
-		name: 'Horse Tree',
-		slug: 'horses',
+		name: 'Norm Horses',
+		slug: 'norm-horses',
 		createdBy: norm,
 		modifiedBy: norm
 	})
