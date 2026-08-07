@@ -12,7 +12,7 @@ dotenv.config({
 
 const env = Object.freeze({ ...process.env })
 const dbNorm = new sqliteDb('/home/biolineage.app/db/norm.db')
-const pgNorm = pgDb({
+const biolineageDb = pgDb({
 	host: env.PG_HOST,
 	port: Number(env.PG_PORT),
 	user: env.PG_USER,
@@ -30,5 +30,5 @@ async function hashPassword(text) {
 }
 
 module.exports = {
-	env, dbNorm, pgNorm, hashPassword
+	env, dbNorm, biolineageDb, hashPassword
 }

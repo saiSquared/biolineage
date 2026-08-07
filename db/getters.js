@@ -1,5 +1,5 @@
 const { removeIndent } = require('../modules/clubside-utils')
-const { dbNorm, pgNorm } = require('../modules/globals')
+const { dbNorm, biolineageDb } = require('../modules/globals')
 // const { removeIndent, smartify } = require('../modules/clubside-utils')
 
 const formatLifespan = (data) => {
@@ -482,7 +482,7 @@ class Getters {
 	}
 
 	async getPgPersonTree(id) {
-		return await pgNorm.query('select * from get_entity_tree($1)', [id])
+		return await biolineageDb.query('select * from get_entity_tree($1)', [id])
 	}
 
 	async getTimelineBirth() {
@@ -501,11 +501,11 @@ class Getters {
 	}
 
 	async getUser(email) {
-		return await dbNorm.get('SELECT * FROM users WHERE email = @email', { email })
+		return await biolineageDb.get('SELECT * FROM users WHERE email = $1', [email])
 	}
 
 	async users() {
-		return await dbNorm.query('SELECT * FROM users')
+		return await biolineageDb.query('SELECT * FROM users')
 	}
 }
 const getters = new Getters()
