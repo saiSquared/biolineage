@@ -84,7 +84,7 @@ async function standardServers(app) {
 	})
 
 	app.get('/users', async (request, reply) => {
-		if (request.user.role === 'admin') {
+		if (request.user.role === 'super') {
 			const q = request.query.q || null
 			if (q) {
 				const editUserPage = await adminGenerators.user(request.user, q)

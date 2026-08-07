@@ -335,6 +335,15 @@ main.home {
 	background-color: var(--color-hover);
 }
 
+.flex-button-list {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1rem;
+	margin: 1rem 0 2rem;
+	padding: 0;
+}
+
 .cdn-files {
 	margin: 1rem 0 0;
 }
@@ -947,6 +956,11 @@ a.big-button {
 
 a.big-button img {
 	height: 96px;
+}
+
+a.big-button:focus,
+a.big-button:hover {
+	border-color: var(--color-accent);
 }
 
 #family-chart {

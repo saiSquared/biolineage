@@ -610,12 +610,20 @@ class Getters {
 		return await dbNorm.query(removeIndent(sql))
 	}
 
+	async superTrees(id) {
+		return await biolineageDb.query('select name, slug, (select count(*) from entities where tree_id = trees.id) c from trees where owner_id <> $1 order by name;', [id])
+	}
+
 	async user(email) {
 		return await biolineageDb.get('SELECT * FROM users WHERE email = $1', [email])
 	}
 
 	async users() {
 		return await biolineageDb.query('SELECT * FROM users')
+	}
+
+	async userTrees(id) {
+		return await biolineageDb.query('select name, slug, (select count(*) from entities where tree_id = trees.id) c from trees where owner_id = $1 order by name;', [id])
 	}
 }
 const getters = new Getters()

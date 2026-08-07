@@ -20,6 +20,35 @@ const biolineageDb = pgDb({
 	database: env.PG_DATABASE
 }, true)
 
+function formatWordNumber(number) {
+	switch (number) {
+		case 0:
+			return 'No'
+		case 1:
+			return 'One'
+		case 2:
+			return 'Two'
+		case 3:
+			return 'Three'
+		case 4:
+			return 'Four'
+		case 5:
+			return 'Five'
+		case 6:
+			return 'Six'
+		case 7:
+			return 'Seven'
+		case 8:
+			return 'Eight'
+		case 9:
+			return 'Nine'
+		case 10:
+			return 'Ten'
+		default:
+			return new Intl.NumberFormat('en-us').format(number)
+	}
+}
+
 async function hashPassword(text) {
 	return await argon2.hash(text, {
 		type: argon2.argon2id,
@@ -30,5 +59,5 @@ async function hashPassword(text) {
 }
 
 module.exports = {
-	env, dbNorm, biolineageDb, hashPassword
+	env, dbNorm, biolineageDb, hashPassword, formatWordNumber
 }

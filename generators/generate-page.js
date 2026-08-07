@@ -337,6 +337,19 @@ function handleReplacements(match, object, debug) {
 						break
 					}
 
+					case 'flex-link-list':
+						html += '<ul class="flex-button-list">\n'
+						for (const button of slotItem.content) {
+							html += `\t<li><a class="${slotItem.buttonClass}" href="${button.link}">`
+							html += `<img src="${button.icon}">`
+							for (const text of button.text) {
+								html += `<span>${text}</span>`
+							}
+							html += '</a></li>\n'
+						}
+						html += '</ul>\n'
+						break
+
 					case 'form': {
 						html += `<form${slotItem.class ? ` class="${slotItem.class}"` : ''} method="${slotItem.method}" action="${slotItem.action}">\n`
 						for (const field of slotItem.fields) {
