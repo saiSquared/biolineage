@@ -3,9 +3,9 @@ const { generatePage } = require('./generate-page')
 
 class UserGenerators {
 	async account(user, message) {
-		const userRecord = await getters.getUser(user.email)
+		const userRecord = await getters.user(user.email)
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title: 'Account',
 			description: 'Edit Norm App user.',
 			menus: [

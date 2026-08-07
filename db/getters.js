@@ -610,7 +610,7 @@ class Getters {
 		return await dbNorm.query(removeIndent(sql))
 	}
 
-	async getUser(email) {
+	async user(email) {
 		return await biolineageDb.get('SELECT * FROM users WHERE email = $1', [email])
 	}
 

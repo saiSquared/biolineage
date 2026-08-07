@@ -54,7 +54,7 @@ async function apiServers(app) {
 
 	app.post('/api/admin/users/validate-email', async (request, reply) => {
 		const userRecord = request.body
-		const existing = await getters.getUser(userRecord.email)
+		const existing = await getters.user(userRecord.email)
 		// console.log({ userRecord, existing })
 		if (!existing) {
 			reply.send({ ok: true })

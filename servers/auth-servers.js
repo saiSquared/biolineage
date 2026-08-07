@@ -15,7 +15,7 @@ async function authServers(app) {
 		const email = request.body.email?.trim().toLowerCase()
 		const password = request.body.password?.trim()
 
-		const user = await getters.getUser(email)
+		const user = await getters.user(email)
 
 		// User not found
 		if (!user) {
