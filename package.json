@@ -53,7 +53,8 @@
   "nodemonConfig": {
     "ignore": [
       "site/*",
-      "util/*"
+      "util/*",
+      "docs/*"
     ]
   }
 }
