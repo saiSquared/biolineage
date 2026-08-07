@@ -4,7 +4,7 @@ const { smartify } = require('../modules/clubside-utils.js')
 class StandardGenerators {
 	async error404(user) {
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			breadcrumbs: [
 				{ text: 'Home' }
 			],
@@ -29,7 +29,7 @@ class StandardGenerators {
 	async home(user) {
 		/** @type {Page} */
 		const data = {
-			avatar: user.avatar === 1 ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			breadcrumbs: [
 				{ text: 'Home' }
 			],
