@@ -226,11 +226,35 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
+	entityTypes: {
+		name: 'entity_types',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'key', type: 'TEXT', nulls: false, unique: true },
+			{ name: 'label', type: 'TEXT', nulls: false },
+			{ name: 'description', type: 'TEXT' },
+			{ name: 'created_by', type: 'UUID', nulls: false },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_by', type: 'UUID', nulls: false },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
+		],
+		foreignKeys: [
+			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
+		],
+		indexes: [
+			{ fields: ['created_by'] },
+			{ fields: ['modified_by'] }
+		]
+	},
+
+	/** @type {PGTable} */
 	trees: {
 		name: 'trees',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'owner_id', type: 'UUID', nulls: false },
+			{ name: 'entity_type_id', type: 'UUID', nulls: false },
 			{ name: 'name', type: 'TEXT', nulls: false },
 			{ name: 'slug', type: 'TEXT', nulls: false, unique: true },
 			{ name: 'description', type: 'TEXT' },
@@ -242,11 +266,13 @@ const pgTables = {
 		],
 		foreignKeys: [
 			{ fields: ['owner_id'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['entity_type_id'], refTable: 'entity_types', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		indexes: [
 			{ fields: ['owner_id'] },
+			{ fields: ['entity_type_id'] },
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
 		]
@@ -287,29 +313,6 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
-	entityTypes: {
-		name: 'entity_types',
-		fields: [
-			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'key', type: 'TEXT', nulls: false, unique: true },
-			{ name: 'label', type: 'TEXT', nulls: false },
-			{ name: 'description', type: 'TEXT' },
-			{ name: 'created_by', type: 'UUID', nulls: false },
-			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
-			{ name: 'modified_by', type: 'UUID', nulls: false },
-			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
-		],
-		foreignKeys: [
-			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
-			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
-		],
-		indexes: [
-			{ fields: ['created_by'] },
-			{ fields: ['modified_by'] }
-		]
-	},
-
-	/** @type {PGTable} */
 	entityNames: {
 		name: 'entity_names',
 		fields: [
@@ -324,7 +327,7 @@ const pgTables = {
 			{ name: 'family_name', type: 'TEXT' },
 			{ name: 'suffix_name', type: 'TEXT' },
 			{ name: 'nick_name', type: 'TEXT' },
-			{ name: 'preferred_name', type: 'TEXT' },
+			{ name: 'display_name', type: 'TEXT', nulls: false },
 			{ name: 'description', type: 'TEXT' },
 			{ name: 'created_by', type: 'UUID', nulls: false },
 			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
@@ -339,6 +342,9 @@ const pgTables = {
 		indexes: [
 			{ fields: ['tree_id'] },
 			{ fields: ['entity_id'] },
+			{ fields: ['name_type'] },
+			{ fields: ['family_name'] },
+			{ fields: ['display_name'] },
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
 		],
@@ -353,10 +359,16 @@ const pgTables = {
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'tree_id', type: 'UUID', nulls: false },
-			{ name: 'entity_type_id', type: 'UUID', nulls: false },
-			{ name: 'canonical_name_id', type: 'UUID' },
+			{ name: 'canonical_name_id', type: 'UUID', nulls: false },
 			{ name: 'display_name', type: 'TEXT', nulls: false },
+			{ name: 'family_name', type: 'TEXT' },
+			{ name: 'search_name', type: 'TEXT', nulls: false },
 			{ name: 'sex', type: 'TEXT' },
+			{ name: 'birth_year', type: 'INTEGER' },
+			{ name: 'death_year', type: 'INTEGER' },
+			{ name: 'parent_count', type: 'INTEGER', nulls: false, default: '0' },
+			{ name: 'child_count', type: 'INTEGER', nulls: false, default: '0' },
+			{ name: 'spouse_count', type: 'INTEGER', nulls: false, default: '0' },
 			{ name: 'notes', type: 'TEXT' },
 			{ name: 'created_by', type: 'UUID', nulls: false },
 			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
@@ -365,23 +377,36 @@ const pgTables = {
 		],
 		foreignKeys: [
 			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
-			{ fields: ['entity_type_id'], refTable: 'entity_types', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['canonical_name_id'], refTable: 'entity_names', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		indexes: [
 			{ fields: ['tree_id'] },
-			{ fields: ['entity_type_id'] },
 			{ fields: ['canonical_name_id'] },
-			{ fields: ['created_by'] },
-			{ fields: ['modified_by'] },
+			{ fields: ['display_name'] },
+			{ fields: ['family_name'] },
 			{
 				name: 'entities_display_name_fts_idx',
 				method: 'gin',
 				expressions: [
 					'to_tsvector(\'english\', display_name)'
 				]
-			}
+			},
+			{
+				name: 'entities_search_name_fts_idx',
+				method: 'gin',
+				expressions: [
+					'to_tsvector(\'english\', search_name)'
+				]
+			},
+			{ fields: ['sex'] },
+			{ fields: ['birth_year'] },
+			{ fields: ['death_year'] },
+			{ fields: ['parent_count'] },
+			{ fields: ['child_count'] },
+			{ fields: ['spouse_count'] },
+			{ fields: ['modified_by'] }
 		],
 		checks: [
 			{ expression: 'sex IN (\'M\',\'F\') OR sex IS NULL' }
@@ -451,6 +476,7 @@ const pgTables = {
 		]
 	},
 
+	// TODO explore cascading events like marriage -> spouse dies -> set fact "Marital Status" = "Widowed" and other derived facts for beta
 	/** @type {PGTable} */
 	facts: {
 		name: 'facts',
@@ -606,6 +632,66 @@ const pgTables = {
 			{ expression: 'hour BETWEEN 0 AND 23' },
 			{ expression: 'minute BETWEEN 0 AND 59' },
 			{ expression: 'second BETWEEN 0 AND 59' }
+		]
+	},
+
+	/** @type {PGTable} */
+	roleTypes: {
+		name: 'role_types',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'name', type: 'TEXT', nulls: false, unique: true },
+			{ name: 'description', type: 'TEXT' },
+			{ name: 'created_by', type: 'UUID', nulls: false },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_by', type: 'UUID', nulls: false },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
+		],
+		foreignKeys: [
+			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
+		],
+		indexes: [
+			{ fields: ['name'] },
+			{ fields: ['created_by'] },
+			{ fields: ['modified_by'] }
+		]
+	},
+
+	/** @type {PGTable} */
+	eventRoles: {
+		name: 'event_roles',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'tree_id', type: 'UUID', nulls: false },
+			{ name: 'event_id', type: 'UUID', nulls: false },
+			{ name: 'entity_id', type: 'UUID', nulls: false },
+			{ name: 'role', type: 'TEXT', nulls: false },
+			{ name: 'role_type_id', type: 'UUID' },
+			{ name: 'notes', type: 'TEXT' },
+			{ name: 'created_by', type: 'UUID', nulls: false },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_by', type: 'UUID', nulls: false },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
+		],
+		foreignKeys: [
+			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['event_id'], refTable: 'events', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
+		],
+		indexes: [
+			{ fields: ['tree_id'] },
+			{ fields: ['event_id'] },
+			{ fields: ['entity_id'] },
+			{ fields: ['role'] },
+			{ fields: ['role_type_id'] },
+			{ fields: ['created_by'] },
+			{ fields: ['modified_by'] }
+		],
+		unique: [
+			{ fields: ['tree_id', 'event_id', 'entity_id', 'role', 'role_type_id'] }
 		]
 	},
 
@@ -893,6 +979,40 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
+	relationshipTypes: {
+		name: 'relationship_types',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'type', type: 'TEXT', nulls: false }, // canonical type
+			{ name: 'direction', type: 'TEXT', nulls: false }, // 'forward' or 'parallel'
+			{ name: 'main', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
+			{ name: 'name', type: 'TEXT', nulls: false }, // human-readable variant
+			{ name: 'left_output', type: 'JSONB', nulls: false }, // { male, female, unknown }
+			{ name: 'right_output', type: 'JSONB', nulls: false }, // { male, female, unknown }
+			{ name: 'created_by', type: 'UUID', nulls: false },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_by', type: 'UUID', nulls: false },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
+		],
+		foreignKeys: [
+			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
+		],
+		checks: [
+			{ expression: 'type ~ \'^[a-z][a-z_]*$\'' },
+			{ expression: 'direction IN (\'forward\', \'parallel\')' }
+		],
+		unique: [
+			{ fields: ['type', 'name'] }
+		],
+		indexes: [
+			{ fields: ['type'] },
+			{ fields: ['created_by'] },
+			{ fields: ['modified_by'] }
+		]
+	},
+
+	/** @type {PGTable} */
 	relationships: {
 		name: 'relationships',
 		fields: [
@@ -900,10 +1020,7 @@ const pgTables = {
 			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'entity_id', type: 'UUID', nulls: false },
 			{ name: 'related_entity_id', type: 'UUID', nulls: false },
-			{ name: 'relationship_type', type: 'TEXT', nulls: false },
-			{ name: 'direction', type: 'TEXT', nulls: false },
-			{ name: 'event_id', type: 'UUID' },
-			{ name: 'place_id', type: 'UUID' },
+			{ name: 'relationship_type_id', type: 'UUID', nulls: false }, // FIXED
 			{ name: 'created_by', type: 'UUID', nulls: false },
 			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
 			{ name: 'modified_by', type: 'UUID', nulls: false },
@@ -913,77 +1030,27 @@ const pgTables = {
 			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['related_entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
-			{ fields: ['event_id'], refTable: 'events', refFields: ['id'], onDelete: 'CASCADE' },
-			{ fields: ['place_id'], refTable: 'places', refFields: ['id'], onDelete: 'CASCADE' },
+			{ fields: ['relationship_type_id'], refTable: 'relationship_types', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		checks: [
-			{ expression: 'relationship_type ~ \'^[a-z][a-z_]*$\'' },
-			{ expression: 'direction IN (\'forward\', \'symmetric\', \'reverse\')' },
-			{ expression: 'entity_id <> related_entity_id' },
-			{ expression: '(direction <> \'symmetric\' OR entity_id < related_entity_id)' }
+			{ expression: 'entity_id <> related_entity_id' }
 		],
 		unique: [
-			{ fields: ['tree_id', 'entity_id', 'related_entity_id', 'relationship_type'] }
+			{ fields: ['tree_id', 'entity_id', 'related_entity_id', 'relationship_type_id'] } // FIXED
 		],
 		indexes: [
 			{ fields: ['tree_id'] },
 			{ fields: ['entity_id'] },
 			{ fields: ['related_entity_id'] },
-			{ fields: ['event_id'] },
-			{ fields: ['place_id'] },
+			{ fields: ['relationship_type_id'] }, // ADDED
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
 		]
 	}
 
 }
-
-const pgForeignKeys = [
-	{ table: 'entity_names', fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
-	{ table: 'entities', fields: ['canonical_name_id'], refTable: 'entity_names', refFields: ['id'], onDelete: 'CASCADE' }
-]
-
-const pgTriggers = [
-	{
-		name: 'relationships_tree_consistency_trigger',
-		function:
-`CREATE OR REPLACE FUNCTION relationships_tree_consistency()
-RETURNS trigger AS $$
-BEGIN
-    PERFORM 1
-    FROM entities e
-    WHERE e.id = NEW.entity_id
-      AND e.tree_id = NEW.tree_id;
-
-    IF NOT FOUND THEN
-        RAISE EXCEPTION
-            'entity_id % does not belong to tree_id %',
-            NEW.entity_id, NEW.tree_id;
-    END IF;
-
-    PERFORM 1
-    FROM entities e
-    WHERE e.id = NEW.related_entity_id
-      AND e.tree_id = NEW.tree_id;
-
-    IF NOT FOUND THEN
-        RAISE EXCEPTION
-            'related_entity_id % does not belong to tree_id %',
-            NEW.related_entity_id, NEW.tree_id;
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;`,
-		timing: 'BEFORE',
-		events: ['INSERT', 'UPDATE'],
-		table: 'relationships',
-		forEach: 'ROW',
-		functionName: 'relationships_tree_consistency()'
-	}
-]
 
 const pgFunctions = [
 	{
@@ -1002,24 +1069,28 @@ const pgFunctions = [
 			WITH RECURSIVE ancestors AS (
 				-- parents of root (level -1)
 				SELECT
-					r.entity_id AS id,          -- parent
+					r.entity_id AS id,      -- parent
 					-1 AS level
 				FROM relationships r
-				WHERE r.relationship_type = 'parent'
-				AND r.direction = 'forward'
-				AND r.related_entity_id = p_entity_id      -- child = root
+				JOIN relationship_types rt
+					ON rt.id = r.relationship_type_id
+				WHERE rt.type = 'parent'
+				AND rt.direction = 'forward'
+				AND r.related_entity_id = p_entity_id   -- child = root
 
 				UNION ALL
 
 				-- walk upward
 				SELECT
-					r.entity_id AS id,          -- parent
+					r.entity_id AS id,      -- parent
 					a.level - 1
 				FROM relationships r
+				JOIN relationship_types rt
+					ON rt.id = r.relationship_type_id
 				JOIN ancestors a
-				ON r.related_entity_id = a.id             -- child = current ancestor
-				WHERE r.relationship_type = 'parent'
-				AND r.direction = 'forward'
+					ON r.related_entity_id = a.id         -- child = current ancestor
+				WHERE rt.type = 'parent'
+				AND rt.direction = 'forward'
 			),
 
 			descendants AS (
@@ -1028,9 +1099,11 @@ const pgFunctions = [
 					r.related_entity_id AS id,  -- child
 					1 AS level
 				FROM relationships r
-				WHERE r.relationship_type = 'parent'
-				AND r.direction = 'forward'
-				AND r.entity_id = p_entity_id             -- parent = root
+				JOIN relationship_types rt
+					ON rt.id = r.relationship_type_id
+				WHERE rt.type = 'parent'
+				AND rt.direction = 'forward'
+				AND r.entity_id = p_entity_id           -- parent = root
 
 				UNION ALL
 
@@ -1039,10 +1112,12 @@ const pgFunctions = [
 					r.related_entity_id AS id,  -- child
 					d.level + 1
 				FROM relationships r
+				JOIN relationship_types rt
+					ON rt.id = r.relationship_type_id
 				JOIN descendants d
-				ON r.entity_id = d.id                         -- parent = current descendant
-				WHERE r.relationship_type = 'parent'
-				AND r.direction = 'forward'
+					ON r.entity_id = d.id                 -- parent = current descendant
+				WHERE rt.type = 'parent'
+				AND rt.direction = 'forward'
 			),
 
 			root AS (
@@ -1066,12 +1141,220 @@ const pgFunctions = [
 			JOIN entities ent ON ent.id = combined.id
 			LEFT JOIN events birth
 				ON birth.entity_id = ent.id
-				AND birth.event_type = 'birth'
+			AND birth.event_type = 'birth'
 			LEFT JOIN events death
 				ON death.entity_id = ent.id
-				AND death.event_type = 'death'
+			AND death.event_type = 'death'
 			ORDER BY combined.level, ent.id;
 			$$;`
+	},
+	{
+		code:
+			`CREATE OR REPLACE FUNCTION update_single_entity_counts(ent_id UUID)
+			RETURNS VOID AS $$
+			BEGIN
+				--------------------------------------------------------------------
+				-- Recalculate parent_count (how many parents this entity has)
+				--------------------------------------------------------------------
+				UPDATE entities e SET parent_count = (
+					SELECT COUNT(*)
+					FROM relationships r
+					JOIN relationship_types rt ON rt.id = r.relationship_type_id
+					WHERE r.related_entity_id = e.id
+					AND rt.type = 'parent'
+					AND rt.direction = 'forward'
+				)
+				WHERE e.id = ent_id;
+
+				--------------------------------------------------------------------
+				-- Recalculate child_count (how many children this entity has)
+				--------------------------------------------------------------------
+				UPDATE entities e SET child_count = (
+					SELECT COUNT(*)
+					FROM relationships r
+					JOIN relationship_types rt ON rt.id = r.relationship_type_id
+					WHERE r.entity_id = e.id
+					AND rt.type = 'parent'
+					AND rt.direction = 'forward'
+				)
+				WHERE e.id = ent_id;
+
+				--------------------------------------------------------------------
+				-- Recalculate spouse_count
+				--------------------------------------------------------------------
+				UPDATE entities e SET spouse_count = (
+					SELECT COUNT(*)
+					FROM relationships r
+					JOIN relationship_types rt ON rt.id = r.relationship_type_id
+					WHERE (r.entity_id = e.id OR r.related_entity_id = e.id)
+					AND rt.type = 'partner'
+					AND rt.direction = 'parallel'
+				)
+				WHERE e.id = ent_id;
+			END;
+			$$ LANGUAGE plpgsql;`
+	}
+]
+
+const pgTriggers = [
+	{
+		name: 'relationships_tree_consistency_trigger',
+		function:
+			`CREATE OR REPLACE FUNCTION relationships_tree_consistency()
+			RETURNS trigger AS $$
+			BEGIN
+				PERFORM 1
+				FROM entities e
+				WHERE e.id = NEW.entity_id
+				AND e.tree_id = NEW.tree_id;
+
+				IF NOT FOUND THEN
+					RAISE EXCEPTION
+						'entity_id % does not belong to tree_id %',
+						NEW.entity_id, NEW.tree_id;
+				END IF;
+
+				PERFORM 1
+				FROM entities e
+				WHERE e.id = NEW.related_entity_id
+				AND e.tree_id = NEW.tree_id;
+
+				IF NOT FOUND THEN
+					RAISE EXCEPTION
+						'related_entity_id % does not belong to tree_id %',
+						NEW.related_entity_id, NEW.tree_id;
+				END IF;
+
+				RETURN NEW;
+			END;
+			$$ LANGUAGE plpgsql;`,
+		timing: 'BEFORE',
+		events: ['INSERT', 'UPDATE'],
+		table: 'relationships',
+		forEach: 'ROW',
+		functionName: 'relationships_tree_consistency()'
+	},
+
+	{
+		name: 'update_birth_year_trigger',
+		function:
+			`CREATE OR REPLACE FUNCTION update_birth_year()
+			RETURNS TRIGGER AS $$
+			BEGIN
+				-- INSERT or UPDATE
+				IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+					IF NEW.event_type = 'birth' THEN
+						UPDATE entities
+						SET birth_year = NEW.year
+						WHERE id = NEW.entity_id;
+					END IF;
+
+					-- If event_type changed away from birth, clear the field
+					IF TG_OP = 'UPDATE' AND OLD.event_type = 'birth' AND NEW.event_type <> 'birth' THEN
+						UPDATE entities
+						SET birth_year = NULL
+						WHERE id = OLD.entity_id;
+					END IF;
+
+					RETURN NEW;
+				END IF;
+
+				-- DELETE
+				IF TG_OP = 'DELETE' THEN
+					IF OLD.event_type = 'birth' THEN
+						UPDATE entities
+						SET birth_year = NULL
+						WHERE id = OLD.entity_id;
+					END IF;
+
+					RETURN OLD;
+				END IF;
+
+				RETURN NULL;
+			END;
+			$$ LANGUAGE plpgsql;`,
+		timing: 'AFTER',
+		events: ['INSERT', 'UPDATE', 'DELETE'],
+		table: 'events',
+		forEach: 'ROW',
+		functionName: 'update_birth_year()'
+	},
+
+	{
+		name: 'update_death_year_trigger',
+		function:
+			`CREATE OR REPLACE FUNCTION update_death_year()
+			RETURNS TRIGGER AS $$
+			BEGIN
+				-- INSERT or UPDATE
+				IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+					IF NEW.event_type = 'death' THEN
+						UPDATE entities
+						SET death_year = NEW.year
+						WHERE id = NEW.entity_id;
+					END IF;
+
+					-- If event_type changed away from death, clear the field
+					IF TG_OP = 'UPDATE' AND OLD.event_type = 'death' AND NEW.event_type <> 'death' THEN
+						UPDATE entities
+						SET death_year = NULL
+						WHERE id = OLD.entity_id;
+					END IF;
+
+					RETURN NEW;
+				END IF;
+
+				-- DELETE
+				IF TG_OP = 'DELETE' THEN
+					IF OLD.event_type = 'death' THEN
+						UPDATE entities
+						SET death_year = NULL
+						WHERE id = OLD.entity_id;
+					END IF;
+
+					RETURN OLD;
+				END IF;
+
+				RETURN NULL;
+			END;
+			$$ LANGUAGE plpgsql;`,
+		timing: 'AFTER',
+		events: ['INSERT', 'UPDATE', 'DELETE'],
+		table: 'events',
+		forEach: 'ROW',
+		functionName: 'update_death_year()'
+	},
+
+	{
+		name: 'update_relationship_counts_trigger',
+		function:
+			`CREATE OR REPLACE FUNCTION update_relationship_counts()
+			RETURNS TRIGGER AS $$
+			BEGIN
+				--------------------------------------------------------------------
+				-- Determine the affected entities
+				--------------------------------------------------------------------
+				-- For INSERT/UPDATE: NEW contains entity_id and related_entity_id
+				-- For DELETE: OLD contains entity_id and related_entity_id
+
+				-- Parent (entity_id)
+				PERFORM update_single_entity_counts(
+					CASE WHEN TG_OP = 'DELETE' THEN OLD.entity_id ELSE NEW.entity_id END
+				);
+
+				-- Child (related_entity_id)
+				PERFORM update_single_entity_counts(
+					CASE WHEN TG_OP = 'DELETE' THEN OLD.related_entity_id ELSE NEW.related_entity_id END
+				);
+
+				RETURN COALESCE(NEW, OLD);
+			END;
+			$$ LANGUAGE plpgsql;`,
+		timing: 'AFTER',
+		events: ['INSERT', 'UPDATE', 'DELETE'],
+		table: 'relationships',
+		forEach: 'ROW',
+		functionName: 'update_relationship_counts()'
 	}
 ]
 
@@ -1155,4 +1438,4 @@ const pgViews = [
 	}
 ]
 
-module.exports = { pgTables, pgForeignKeys, pgTriggers, pgFunctions, pgViews }
+module.exports = { pgTables, pgFunctions, pgTriggers, pgViews }

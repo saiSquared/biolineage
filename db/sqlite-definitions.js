@@ -99,6 +99,25 @@ const sqliteTables = {
 			{ name: 'name', type: 'TEXT', nulls: false }
 		],
 		key: '"keeNew"'
+	},
+	children: {
+		name: 'children',
+		fields: [
+			{ name: 'id', type: 'INTEGER', nulls: false, skip: true },
+			{ name: 'parentId1', type: 'INTEGER', nulls: false },
+			{ name: 'parentUuid1', type: 'TEXT', nulls: false },
+			{ name: 'parentName1', type: 'TEXT', nulls: false },
+			{ name: 'parentSex1', type: 'TEXT' },
+			{ name: 'parentId2', type: 'INTEGER' },
+			{ name: 'parentUuid2', type: 'TEXT' },
+			{ name: 'parentName2', type: 'TEXT' },
+			{ name: 'parentSex2', type: 'TEXT' },
+			{ name: 'childId', type: 'INTEGER', nulls: false },
+			{ name: 'childUuid', type: 'TEXT', nulls: false },
+			{ name: 'childName', type: 'TEXT', nulls: false },
+			{ name: 'childSex', type: 'TEXT' }
+		],
+		key: '"id"  AUTOINCREMENT'
 	}
 }
 

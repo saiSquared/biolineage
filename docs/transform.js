@@ -3,8 +3,10 @@ const path = require('node:path')
 const { v4: uuidv4 } = require('uuid')
 const argon2 = require('argon2')
 const sqliteDb = require('../db/sqlite')
+const sqliteTables = require('../db/sqlite-definitions')
 const pgDb = require('../db/pg')
-const { pgTables, pgForeignKeys, pgTriggers, pgFunctions, pgViews } = require('../db/pg-definitions')
+const { pgTables, pgFunctions, pgTriggers, pgViews } = require('../db/pg-definitions')
+const { removeIndent } = require('../modules/clubside-utils')
 const dotenv = require('dotenv')
 
 dotenv.config({
@@ -12,7 +14,7 @@ dotenv.config({
 	quiet: true
 })
 
-const normPg = pgDb({
+const biolineageDb = pgDb({
 	host: process.env.PG_HOST,
 	port: Number(process.env.PG_PORT),
 	user: process.env.PG_USER,
@@ -217,6 +219,122 @@ const fixPlace = (data) => {
 	return match ? match.uuid : data.uuid
 }
 
+function buildName(data) {
+	const parts = []
+	if (data.GivenName) parts.push(data.GivenName)
+	if (data.MiddleName) parts.push(data.MiddleName)
+	if (data.FamilyName) parts.push(data.FamilyName)
+	let name = parts.join(' ')
+	if (data.SuffixName) name = `${name}, ${data.SuffixName}`
+	if (data.NickName) name = `${name} (${data.NickName})`
+	return name
+}
+
+function buildSearchName(data) {
+	let partsString = ''
+	if (data.GivenName) partsString += data.GivenName + ' '
+	if (data.MiddleName) partsString += data.MiddleName + ' '
+	if (data.FamilyName) partsString += data.FamilyName + ' '
+	if (data.SuffixName) partsString += data.SuffixName + ' '
+	if (data.NickName) partsString += data.NickName
+	const cleaned = partsString.trim().toLowerCase().replace(/[^\w\s]/g, '')
+	const parts = cleaned.split(/\s+/)
+	return [...new Set(parts)].join(' ')
+}
+
+async function buildSQLiteChildren() {
+	await normSQLite.createTable(sqliteTables.children)
+	const people = await normSQLite.query('SELECT * FROM person WHERE uuid IS NOT NULL')
+	for (const person of people) {
+		const sql = `
+			SELECT
+				person_1.keeNew as ChildKee,
+				person_1.uuid as ChildUUID,
+				person_1.FamilyName AS ChildFamilyName,
+				person_1.GivenName AS ChildGivenName,
+				person_1.MiddleName as ChildMiddleName,
+				person_1.SuffixName as ChildSuffixName,
+				person_1.NickName as ChildNickName,
+				person_1.DateOfBirth as ChildDateOfBirth,
+				person_1.DateOfDeath as ChildDateOfDeath,
+				person_1.GenderIsMale as ChildGenderIsMale,
+				person_2.keeNew as ParentKee,
+				person_2.uuid AS ParentUUID,
+				person_2.FamilyName AS ParentFamilyName,
+				person_2.GivenName AS ParentGivenName,
+				person_2.MiddleName as ParentMiddleName,
+				person_2.SuffixName as ParentSuffixName,
+				person_2.NickName as ParentNickName,
+				person_2.DateOfBirth as ParentDateOfBirth,
+				person_2.DateOfDeath as ParentDateOfDeath,
+				person_2.GenderIsMale as ParentGenderIsMale
+			FROM
+				(
+					SELECT
+						A.ChildPtrA, B.ParentPtrW
+					FROM
+						(SELECT ChildPtr AS ChildPtrA FROM parent WHERE ParentPtr = @id) A
+						LEFT JOIN (SELECT ChildPtr AS ChildPtrW, ParentPtr AS ParentPtrW FROM parent WHERE ParentPtr <> @id) B ON A.ChildPtrA = B.ChildPtrW
+				) childLyst
+				INNER JOIN person AS person_1 ON childLyst.ChildPtrA = person_1.keeNew
+				LEFT JOIN person AS person_2 ON childLyst.ParentPtrW = person_2.keeNew
+			ORDER BY
+				ChildDateOfBirth`
+		const children = await normSQLite.query(removeIndent(sql), { id: person.keeNew })
+		if (children.length > 0) {
+			const leftParentName = buildName(person)
+			for (const child of children) {
+				if (!child.ChildUUID) continue
+				const childName = buildName({
+					GivenName: child.ChildGivenName,
+					MiddleName: child.ChildMiddleName,
+					FamilyName: child.ChildFamilyName,
+					SuffixName: child.ChildSuffixName,
+					NickName: child.ChildNickName
+				})
+				const rightParentName = buildName({
+					GivenName: child.ParentGivenName,
+					MiddleName: child.ParentMiddleName,
+					FamilyName: child.ParentFamilyName,
+					SuffixName: child.ParentSuffixName,
+					NickName: child.ParentNickName
+				})
+				const data = {
+					parentId1: person.keeNew,
+					parentUuid1: person.uuid,
+					parentName1: leftParentName,
+					parentSex1: person.GenderIsMale ? person.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+					parentId2: child.ParentKee,
+					parentUuid2: child.ParentUUID,
+					parentName2: rightParentName,
+					parentSex2: child.ParentGenderIsMale ? child.ParentGenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+					childId: child.ChildKee,
+					childUuid: child.ChildUUID,
+					childName,
+					childSex: child.ChildGenderIsMale ? child.ChildGenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null
+				}
+				if (data.parentSex1 && !data.parentSex2) {
+					console.log(`Left parent has sex ${data.parentSex1}`)
+					if (data.parentSex1 === 'M') {
+						data.parentSex2 = 'F'
+					} else {
+						data.parentSex2 = 'M'
+					}
+				}
+				if (!data.parentSex1 && data.parentSex2) {
+					console.log(`Right parent has sex ${data.parentSex1}`)
+					if (data.parentSex2 === 'M') {
+						data.parentSex1 = 'F'
+					} else {
+						data.parentSex1 = 'M'
+					}
+				}
+				await normSQLite.insert(sqliteTables.children, data)
+			}
+		}
+	}
+}
+
 async function hashPassword(text) {
 	return await argon2.hash(text, {
 		type: argon2.argon2id,
@@ -227,15 +345,17 @@ async function hashPassword(text) {
 }
 
 async function initPg() {
+	// Initialize objects
 	for (const table of Object.keys(pgTables)) {
-		await normPg.createTable(pgTables[table])
+		await biolineageDb.createTable(pgTables[table])
 	}
-	await normPg.createForeignKeys(pgForeignKeys)
-	await normPg.createTriggers(pgTriggers)
-	await normPg.createFunctions(pgFunctions)
-	await normPg.createViews(pgViews)
+	await biolineageDb.createFunctions(pgFunctions)
+	await biolineageDb.createTriggers(pgTriggers)
+	await biolineageDb.createViews(pgViews)
+
+	// Create initial users
 	const clubside = uuidv4()
-	await normPg.insert('users', {
+	await biolineageDb.insert('users', {
 		id: clubside,
 		email: 'clubsidedev@hotmail.com',
 		password: await hashPassword('FuckSh!tC*nt69'),
@@ -244,7 +364,7 @@ async function initPg() {
 		role: 'super'
 	})
 	const norm = uuidv4()
-	await normPg.insert('users', {
+	await biolineageDb.insert('users', {
 		id: norm,
 		email: 'norman.eaddy@gmail.com',
 		password: await hashPassword('temp-password-2026'),
@@ -252,20 +372,22 @@ async function initPg() {
 		role: 'super'
 	})
 	const charles = uuidv4()
-	await normPg.insert('users', {
+	await biolineageDb.insert('users', {
 		id: charles,
 		email: 'visionarypragmatist@gmail.com',
 		password: await hashPassword('temp-password-2026'),
 		name: 'Charles Carroll',
 		role: 'super'
 	})
+
+	// Create Geography-related tables
 	const sovereignEntities = []
 	const countries = JSON.parse(fs.readFileSync('countries-final.json'))
 	for (const country of countries) {
 		country.type = 'COUNTRY'
 		country.iso31661 = JSON.stringify(country.iso31661)
 		country.tlds = JSON.stringify(country.tlds)
-		await normPg.insert('sovereign_entities', country)
+		await biolineageDb.insert('sovereign_entities', country)
 		sovereignEntities.push(country)
 	}
 	const subdivisions = []
@@ -275,7 +397,7 @@ async function initPg() {
 		subdivision.type = subdivision.iso31662.category
 		subdivision.iso31662 = JSON.stringify(subdivision.iso31662)
 		delete subdivision.countryId
-		await normPg.insert('subdivisions', subdivision)
+		await biolineageDb.insert('subdivisions', subdivision)
 		subdivisions.push(subdivision)
 	}
 	const administrativeDivisions = []
@@ -294,7 +416,7 @@ async function initPg() {
 			longitude: Number(administrativeDivision.lng),
 			meta: JSON.stringify({ population: administrativeDivision.population })
 		}
-		await normPg.insert('administrative_divisions', data)
+		await biolineageDb.insert('administrative_divisions', data)
 		administrativeDivisions.push(data)
 	}
 	const municipalitiesData = JSON.parse(fs.readFileSync('municipalities.json'))
@@ -323,38 +445,13 @@ async function initPg() {
 				longitude: Number(municipality.lng),
 				meta: JSON.stringify(meta)
 			}
-			await normPg.insert('municipalities', data)
+			await biolineageDb.insert('municipalities', data)
 		}
 	}
-	const normTree = uuidv4()
-	await normPg.insert('trees', {
-		id: normTree,
-		ownerId: norm,
-		name: 'Norm',
-		slug: 'norm',
-		createdBy: norm,
-		modifiedBy: norm
-	})
-	const charlesTree = uuidv4()
-	await normPg.insert('trees', {
-		id: charlesTree,
-		ownerId: charles,
-		name: 'Charles',
-		slug: 'charles',
-		createdBy: norm,
-		modifiedBy: norm
-	})
-	const horseTree = uuidv4()
-	await normPg.insert('trees', {
-		id: horseTree,
-		ownerId: norm,
-		name: 'Norm Horses',
-		slug: 'norm-horses',
-		createdBy: norm,
-		modifiedBy: norm
-	})
+
+	// Create initial entity types
 	const human = uuidv4()
-	await normPg.insert('entity_types', {
+	await biolineageDb.insert('entity_types', {
 		id: human,
 		key: 'human',
 		label: 'Human',
@@ -362,13 +459,311 @@ async function initPg() {
 		modifiedBy: clubside
 	})
 	const equine = uuidv4()
-	await normPg.insert('entity_types', {
+	await biolineageDb.insert('entity_types', {
 		id: equine,
 		key: 'equine',
 		label: 'Equine',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
+
+	// Create initial relationship types
+	const parent = uuidv4()
+	await biolineageDb.insert('relationship_types', {
+		id: parent,
+		type: 'parent',
+		direction: 'forward',
+		main: true,
+		name: 'Parent',
+		leftOutput: JSON.stringify({ male: 'Father', female: 'Mother', other: 'Parent' }),
+		rightOutput: JSON.stringify({ male: 'Son', female: 'Daughter', other: 'Child' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'parent',
+		direction: 'forward',
+		name: 'Adoptive Parent',
+		leftOutput: JSON.stringify({ male: 'Adoptive Father', female: 'Adoptive Mother', other: 'Adoptive Parent' }),
+		rightOutput: JSON.stringify({ male: 'Adopted Son', female: 'Adopted Daughter', other: 'Adopted Child' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'parent',
+		direction: 'forward',
+		name: 'Foster Parent',
+		leftOutput: JSON.stringify({ male: 'Foster Father', female: 'Foster Mother', other: 'Foster Parent' }),
+		rightOutput: JSON.stringify({ male: 'Foster Son', female: 'Foster Daughter', other: 'Foster Child' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'parent',
+		direction: 'forward',
+		name: 'Stepparent',
+		leftOutput: JSON.stringify({ male: 'Stepfather', female: 'Stepmother', other: 'Stepparent' }),
+		rightOutput: JSON.stringify({ male: 'Stepson', female: 'Stepdaughter', other: 'Stepchild' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'parent',
+		direction: 'forward',
+		name: 'Guardian',
+		leftOutput: JSON.stringify({ male: 'Guardian', female: 'Guardian', other: 'Guardian' }),
+		rightOutput: JSON.stringify({ male: 'Ward', female: 'Ward', other: 'Ward' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'partner',
+		direction: 'parallel',
+		main: true,
+		name: 'Spouse',
+		leftOutput: JSON.stringify({ male: 'Husband', female: 'Wife', other: 'Spouse' }),
+		rightOutput: JSON.stringify({ male: 'Husband', female: 'Wife', other: 'Spouse' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'partner',
+		direction: 'parallel',
+		name: 'Ex-spouse',
+		leftOutput: JSON.stringify({ male: 'Ex-husband', female: 'Ex-wife', other: 'Ex-spouse' }),
+		rightOutput: JSON.stringify({ male: 'Ex-husband', female: 'Ex-wife', other: 'Ex-spouse' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'partner',
+		direction: 'parallel',
+		name: 'Partner',
+		leftOutput: JSON.stringify({ male: 'Partner', female: 'Partner', other: 'Partner' }),
+		rightOutput: JSON.stringify({ male: 'Partner', female: 'Partner', other: 'Partner' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'partner',
+		direction: 'parallel',
+		name: 'Domestic Partner',
+		leftOutput: JSON.stringify({ male: 'Domestic Partner', female: 'Domestic Partner', other: 'Domestic Partner' }),
+		rightOutput: JSON.stringify({ male: 'Domestic Partner', female: 'Domestic Partner', other: 'Domestic Partner' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'partner',
+		direction: 'parallel',
+		name: 'Civil Union Partner',
+		leftOutput: JSON.stringify({ male: 'Civil Union Partner', female: 'Civil Union Partner', other: 'Civil Union Partner' }),
+		rightOutput: JSON.stringify({ male: 'Civil Union Partner', female: 'Civil Union Partner', other: 'Civil Union Partner' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'partner',
+		direction: 'parallel',
+		name: 'Common-law spouse',
+		leftOutput: JSON.stringify({ male: 'Common-law husband', female: 'Common-law wife', other: 'Common-law spouse' }),
+		rightOutput: JSON.stringify({ male: 'Common-law husband', female: 'Common-law wife', other: 'Common-law spouse' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Godparent',
+		leftOutput: JSON.stringify({ male: 'Godfather', female: 'Godmother', other: 'Godparent' }),
+		rightOutput: JSON.stringify({ male: 'Godson', female: 'Goddaughter', other: 'Godchild' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Household',
+		leftOutput: JSON.stringify({ male: 'Head of Household', female: 'Head of Household', other: 'Head of Household' }),
+		rightOutput: JSON.stringify({ male: 'Occupant', female: 'Occupant', other: 'Occupant' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Apprenticeship',
+		leftOutput: JSON.stringify({ male: 'Master', female: 'Mistress', other: 'Master' }),
+		rightOutput: JSON.stringify({ male: 'Apprentice', female: 'Apprentice', other: 'Apprentice' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Employment',
+		leftOutput: JSON.stringify({ male: 'Employer', female: 'Employer', other: 'Employer' }),
+		rightOutput: JSON.stringify({ male: 'Employee', female: 'Employee', other: 'Employee' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Enslavement',
+		leftOutput: JSON.stringify({ male: 'Slaveholder', female: 'Slaveholder', other: 'Slaveholder' }),
+		rightOutput: JSON.stringify({ male: 'Enslaved', female: 'Enslaved', other: 'Enslaved' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'parallel',
+		name: 'Relative',
+		leftOutput: JSON.stringify({ male: 'Relative', female: 'Relative', other: 'Relative' }),
+		rightOutput: JSON.stringify({ male: 'Relative', female: 'Relative', other: 'Relative' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'parallel',
+		name: 'Neighbor',
+		leftOutput: JSON.stringify({ male: 'Neighbor', female: 'Neighbor', other: 'Neighbor' }),
+		rightOutput: JSON.stringify({ male: 'Neighbor', female: 'Neighbor', other: 'Neighbor' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Mentor',
+		leftOutput: JSON.stringify({ male: 'Mentor', female: 'Mentor', other: 'Mentor' }),
+		rightOutput: JSON.stringify({ male: 'Mentee', female: 'Mentee', other: 'Mentee' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Caretaker',
+		leftOutput: JSON.stringify({ male: 'Caretaker', female: 'Caretaker', other: 'Caretaker' }),
+		rightOutput: JSON.stringify({ male: 'Dependent', female: 'Dependent', other: 'Dependent' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Landlord',
+		leftOutput: JSON.stringify({ male: 'Landlord', female: 'Landlord', other: 'Landlord' }),
+		rightOutput: JSON.stringify({ male: 'Tenant', female: 'Tenant', other: 'Tenant' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Liege',
+		leftOutput: JSON.stringify({ male: 'Liege', female: 'Liege', other: 'Liege' }),
+		rightOutput: JSON.stringify({ male: 'Vassal', female: 'Vassal', other: 'Vassal' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Lord',
+		leftOutput: JSON.stringify({ male: 'Lord', female: 'Lord', other: 'Lord' }),
+		rightOutput: JSON.stringify({ male: 'Subject', female: 'Subject', other: 'Subject' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Servitude',
+		leftOutput: JSON.stringify({ male: 'Master', female: 'Mistress', other: 'Master' }),
+		rightOutput: JSON.stringify({ male: 'Servant', female: 'Servant', other: 'Servant' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Knighthood',
+		leftOutput: JSON.stringify({ male: 'Knight', female: 'Knight', other: 'Knight' }),
+		rightOutput: JSON.stringify({ male: 'Squire', female: 'Squire', other: 'Squire' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'other',
+		direction: 'forward',
+		name: 'Tutor',
+		leftOutput: JSON.stringify({ male: 'Tutor', female: 'Tutor', other: 'Tutor' }),
+		rightOutput: JSON.stringify({ male: 'Student', female: 'Student', other: 'Student' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+
+	// Create initial trees
+	const normTree = uuidv4()
+	await biolineageDb.insert('trees', {
+		id: normTree,
+		ownerId: norm,
+		entityTypeId: human,
+		name: 'Norm',
+		slug: 'norm',
+		createdBy: norm,
+		modifiedBy: norm
+	})
+	const charlesTree = uuidv4()
+	await biolineageDb.insert('trees', {
+		id: charlesTree,
+		ownerId: charles,
+		entityTypeId: human,
+		name: 'Charles',
+		slug: 'charles',
+		createdBy: norm,
+		modifiedBy: norm
+	})
+	const horseTree = uuidv4()
+	await biolineageDb.insert('trees', {
+		id: horseTree,
+		ownerId: norm,
+		entityTypeId: equine,
+		name: 'Norm Horses',
+		slug: 'norm-horses',
+		createdBy: norm,
+		modifiedBy: norm
+	})
+
 	const used = []
 	const people = await normSQLite.query('SELECT * FROM person')
 	const horses = await normSQLite.query('SELECT * FROM person WHERE FamilyName LIKE \'%hors%\';')
@@ -377,18 +772,8 @@ async function initPg() {
 		const nameParts = []
 		if (horse.FamilyName) nameParts.push(horse.FamilyName)
 		if (horse.GivenName) nameParts.push(horse.GivenName)
-		await normPg.insert('entities', {
-			id,
-			treeId: horseTree,
-			entityTypeId: equine,
-			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
-			sex: horse.GenderIsMale ? horse.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
-			createdBy: norm,
-			modifiedBy: norm
-		})
-		await normSQLite.execute('UPDATE person SET uuid = @uuid WHERE keeNew = @id', { uuid: id, id: horse.keeNew })
 		const nameId = uuidv4()
-		await normPg.insert('entity_names', {
+		await biolineageDb.insert('entity_names', {
 			id: nameId,
 			treeId: horseTree,
 			entityId: id,
@@ -398,10 +783,22 @@ async function initPg() {
 			familyName: horse.FamilyName,
 			suffixName: horse.SuffixName,
 			nickName: horse.NickName,
+			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
 			createdBy: norm,
 			modifiedBy: norm
 		})
-		await normPg.update('entities', { canonicalNameId: nameId }, { id })
+		await biolineageDb.insert('entities', {
+			id,
+			treeId: horseTree,
+			canonicalNameId: nameId,
+			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
+			familyName: horse.FamilyName,
+			searchName: buildSearchName(horse),
+			sex: horse.GenderIsMale ? horse.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+			createdBy: norm,
+			modifiedBy: norm
+		})
+		await normSQLite.execute('UPDATE person SET uuid = @uuid WHERE keeNew = @id', { uuid: id, id: horse.keeNew })
 		used.push(horse.keeNew)
 	}
 	const charlesData = await normSQLite.query('SELECT * FROM charles')
@@ -412,18 +809,8 @@ async function initPg() {
 		if (person.GivenName) nameParts.push(person.GivenName)
 		if (person.FamilyName) nameParts.push(person.FamilyName)
 		if (person.SuffixName) nameParts.push(person.SuffixName)
-		await normPg.insert('entities', {
-			id,
-			treeId: charlesTree,
-			entityTypeId: human,
-			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
-			sex: person.GenderIsMale ? person.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
-			createdBy: charles,
-			modifiedBy: charles
-		})
-		await normSQLite.execute('UPDATE person SET uuid = @uuid WHERE keeNew = @id', { uuid: id, id: row.keeNew })
 		const nameId = uuidv4()
-		await normPg.insert('entity_names', {
+		await biolineageDb.insert('entity_names', {
 			id: nameId,
 			treeId: charlesTree,
 			entityId: id,
@@ -433,10 +820,22 @@ async function initPg() {
 			familyName: person.FamilyName,
 			suffixName: person.SuffixName,
 			nickName: person.NickName,
+			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
 			createdBy: charles,
 			modifiedBy: charles
 		})
-		await normPg.update('entities', { canonicalNameId: nameId }, { id })
+		await biolineageDb.insert('entities', {
+			id,
+			treeId: charlesTree,
+			canonicalNameId: nameId,
+			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
+			familyName: person.FamilyName,
+			searchName: buildSearchName(person),
+			sex: person.GenderIsMale ? person.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+			createdBy: charles,
+			modifiedBy: charles
+		})
+		await normSQLite.execute('UPDATE person SET uuid = @uuid WHERE keeNew = @id', { uuid: id, id: row.keeNew })
 		used.push(person.keeNew)
 	}
 	const normData = people.filter(data => !(data.GivenName === null && data.FamilyName === null))
@@ -447,18 +846,8 @@ async function initPg() {
 			if (row.GivenName) nameParts.push(row.GivenName)
 			if (row.FamilyName) nameParts.push(row.FamilyName)
 			if (row.SuffixName) nameParts.push(row.SuffixName)
-			await normPg.insert('entities', {
-				id,
-				treeId: normTree,
-				entityTypeId: human,
-				displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
-				sex: row.GenderIsMale ? row.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
-				createdBy: norm,
-				modifiedBy: norm
-			})
-			await normSQLite.execute('UPDATE person SET uuid = @uuid WHERE keeNew = @id', { uuid: id, id: row.keeNew })
 			const nameId = uuidv4()
-			await normPg.insert('entity_names', {
+			await biolineageDb.insert('entity_names', {
 				id: nameId,
 				treeId: normTree,
 				entityId: id,
@@ -468,10 +857,22 @@ async function initPg() {
 				familyName: row.FamilyName,
 				suffixName: row.SuffixName,
 				nickName: row.NickName,
+				displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
 				createdBy: norm,
 				modifiedBy: norm
 			})
-			await normPg.update('entities', { canonicalNameId: nameId }, { id })
+			await biolineageDb.insert('entities', {
+				id,
+				treeId: normTree,
+				canonicalNameId: nameId,
+				displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
+				familyName: row.FamilyName,
+				searchName: buildSearchName(row),
+				sex: row.GenderIsMale ? row.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+				createdBy: norm,
+				modifiedBy: norm
+			})
+			await normSQLite.execute('UPDATE person SET uuid = @uuid WHERE keeNew = @id', { uuid: id, id: row.keeNew })
 		}
 	}
 	const places = []
@@ -495,7 +896,7 @@ async function initPg() {
 		data.municipality = place.city
 		data.createdBy = clubside
 		data.modifiedBy = clubside
-		await normPg.insert('places', data)
+		await biolineageDb.insert('places', data)
 		data.ogName = place.ogName
 		data.ogCountry = place.ogCountry
 		data.ogRegion = place.ogRegion
@@ -503,7 +904,7 @@ async function initPg() {
 		places.push(data)
 	}
 	const personData = await normSQLite.query('SELECT * FROM person')
-	const entities = await normPg.query('SELECT * FROM entities')
+	const entities = await biolineageDb.query('SELECT * FROM entities')
 	for (const entity of entities) {
 		const person = personData.find(lookup => lookup.uuid === entity.id)
 		if (!person) console.log(entity)
@@ -526,7 +927,7 @@ async function initPg() {
 				createdBy: entity.createdBy,
 				modifiedBy: entity.modifiedBy
 			}
-			await normPg.insert('events', data)
+			await biolineageDb.insert('events', data)
 		}
 		if (person.DateOfDeath) {
 			const dateParts = person.DateOfDeath.split('-')
@@ -542,167 +943,231 @@ async function initPg() {
 				createdBy: entity.createdBy,
 				modifiedBy: entity.modifiedBy
 			}
-			await normPg.insert('events', data)
+			await biolineageDb.insert('events', data)
 		}
 	}
-	await transformRelationshipsAndGender()
+	await transformRelationshipsAndGender(parent)
+}
+
+async function resetPg() {
+	console.log('Resetting biolineage database:')
+	let sql
+
+	// Views
+	console.log('  Dropping views...')
+	sql = `
+    DO $$
+    DECLARE r RECORD;
+    BEGIN
+        FOR r IN (
+            SELECT schemaname, viewname
+            FROM pg_views
+            WHERE schemaname = 'public'
+        )
+        LOOP
+            EXECUTE 'DROP VIEW IF EXISTS public.' || quote_ident(r.viewname) || ' CASCADE';
+        END LOOP;
+    END$$;`
+	await biolineageDb.run(sql)
+
+	// Materialized Views
+	console.log('  Dropping materialized views...')
+	sql = `
+    DO $$
+    DECLARE r RECORD;
+    BEGIN
+        FOR r IN (
+            SELECT schemaname, matviewname
+            FROM pg_matviews
+            WHERE schemaname = 'public'
+        )
+        LOOP
+            EXECUTE 'DROP MATERIALIZED VIEW IF EXISTS public.' || quote_ident(r.matviewname) || ' CASCADE';
+        END LOOP;
+    END$$;`
+	await biolineageDb.run(sql)
+
+	// Functions
+	console.log('  Dropping functions...')
+	sql = `
+    DO $$
+	DECLARE r RECORD;
+	BEGIN
+		FOR r IN (
+			SELECT n.nspname AS schema,
+				p.proname AS name,
+				pg_get_function_identity_arguments(p.oid) AS args
+			FROM pg_proc p
+			JOIN pg_namespace n ON p.pronamespace = n.oid
+			WHERE n.nspname = 'public'
+			AND NOT EXISTS (
+				SELECT 1
+				FROM pg_depend d
+				WHERE d.objid = p.oid
+					AND d.deptype = 'e'   -- extension-owned
+			)
+		)
+		LOOP
+			EXECUTE 'DROP FUNCTION IF EXISTS public.' ||
+					quote_ident(r.name) || '(' || r.args || ') CASCADE';
+		END LOOP;
+	END$$;`
+	await biolineageDb.run(sql)
+
+	// Triggers
+	console.log('  Dropping triggers...')
+	sql = `
+    DO $$
+    DECLARE r RECORD;
+    BEGIN
+        FOR r IN (
+            SELECT event_object_table AS table_name,
+                   trigger_name
+            FROM information_schema.triggers
+            WHERE trigger_schema = 'public'
+        )
+        LOOP
+            EXECUTE 'DROP TRIGGER IF EXISTS ' || quote_ident(r.trigger_name) ||
+                    ' ON public.' || quote_ident(r.table_name) || ' CASCADE';
+        END LOOP;
+    END$$;`
+	await biolineageDb.run(sql)
+
+	// Foreign Keys
+	console.log('  Dropping foreign keys...')
+	sql = `
+    DO $$
+	DECLARE r RECORD;
+	BEGIN
+		FOR r IN (
+			SELECT conname,
+				conrelid::regclass::text AS table_name
+			FROM pg_constraint
+			WHERE contype = 'f'
+			AND connamespace = 'public'::regnamespace
+		)
+		LOOP
+			EXECUTE 'ALTER TABLE public.' || quote_ident(r.table_name) ||
+					' DROP CONSTRAINT ' || quote_ident(r.conname) || ';';
+		END LOOP;
+	END$$;`
+	await biolineageDb.run(sql)
+
+	// Tables
+	console.log('  Dropping tables...')
+	sql = `
+    DO $$
+    DECLARE r RECORD;
+    BEGIN
+        FOR r IN (
+            SELECT tablename
+            FROM pg_tables
+            WHERE schemaname = 'public'
+        )
+        LOOP
+            EXECUTE 'DROP TABLE IF EXISTS public.' || quote_ident(r.tablename) || ' CASCADE';
+        END LOOP;
+    END$$;`
+	await biolineageDb.run(sql)
+
+	// Sequences
+	console.log('  Dropping sequences...')
+	sql = `
+    DO $$
+    DECLARE r RECORD;
+    BEGIN
+        FOR r IN (
+            SELECT sequence_name
+            FROM information_schema.sequences
+            WHERE sequence_schema = 'public'
+        )
+        LOOP
+            EXECUTE 'DROP SEQUENCE IF EXISTS public.' || quote_ident(r.sequence_name) || ' CASCADE';
+        END LOOP;
+    END$$;`
+	await biolineageDb.run(sql)
 }
 
 async function run() {
+	await resetPg()
 	await initPg()
-	await normPg.close()
+	await biolineageDb.close()
 }
 
-async function transformRelationshipsAndGender() {
-	// 1. Load legacy data from SQLite
-	const personData = await normSQLite.query('SELECT * FROM person')
-	const parentData = await normSQLite.query('SELECT * FROM parent')
-
-	// 2. Build in-memory maps
-	const parentsOf = new Map() // childKee -> [parentKee, ...]
-	const childrenOf = new Map() // parentKee -> [childKee, ...]
-	const people = new Map() // keeNew -> personRow
-
-	for (const person of personData) {
-		people.set(person.keeNew, person)
-	}
-
-	for (const row of parentData) {
-		const parentKee = row.ParentPtr
-		const childKee = row.ChildPtr
-
-		if (!parentsOf.has(childKee)) parentsOf.set(childKee, [])
-		parentsOf.get(childKee).push(parentKee)
-
-		if (!childrenOf.has(parentKee)) childrenOf.set(parentKee, [])
-		childrenOf.get(parentKee).push(childKee)
-	}
-
-	// 3. Cache created_by and tree_id from PostgreSQL
-	const createdByCache = new Map()
-	const treeIdCache = new Map()
-
-	const getEntityMeta = async (entityId) => {
-		if (createdByCache.has(entityId) && treeIdCache.has(entityId)) {
-			return {
-				createdBy: createdByCache.get(entityId),
-				treeId: treeIdCache.get(entityId)
-			}
-		}
-
-		const row = await normPg.get(
-			'SELECT created_by, tree_id FROM entities WHERE id = $1',
-			[entityId]
-		)
-
-		const createdBy = row?.createdBy ?? null
-		const treeId = row?.treeId ?? null
-
-		createdByCache.set(entityId, createdBy)
-		treeIdCache.set(entityId, treeId)
-
-		return { createdBy, treeId }
-	}
-
-	// 4. Begin transaction
-	await normPg.begin()
+async function transformRelationshipsAndGender(parentId) {
+	await buildSQLiteChildren()
+	const children = await normSQLite.query('SELECT * FROM children')
+	await biolineageDb.begin()
 	try {
-		// 5. Insert relationships
-		for (const [childKee, parentList] of parentsOf.entries()) {
-			const child = people.get(childKee)
-			if (!child || !child.uuid) continue
+		for (const child of children) {
+			const childEntity = await biolineageDb.get('select tree_id, created_by from entities where id = $1', [child.childUuid])
+			const treeId = childEntity.treeId
+			const createdBy = childEntity.createdBy
 
-			const childEntityId = child.uuid
-			const childMeta = await getEntityMeta(childEntityId)
-			const childTreeId = childMeta.treeId
+			let relationshipRow = {
+				id: uuidv4(),
+				treeId,
+				entityId: child.parentUuid1,
+				relatedEntityId: child.childUuid,
+				relationshipTypeId: parentId,
+				createdBy,
+				modifiedBy: createdBy
+			}
 
-			for (const parentKee of parentList) {
-				const parent = people.get(parentKee)
-				if (!parent || !parent.uuid) continue
+			const exists = await biolineageDb.get(
+				`SELECT 1 FROM relationships
+				WHERE tree_id = $1
+					AND entity_id = $2
+					AND related_entity_id = $3
+					AND relationship_type_id = $4`,
+				[
+					relationshipRow.treeId,
+					relationshipRow.entityId,
+					relationshipRow.relatedEntityId,
+					relationshipRow.relationshipTypeId
+				]
+			)
 
-				const parentEntityId = parent.uuid
-				const parentMeta = await getEntityMeta(parentEntityId)
+			if (!exists) {
+				await biolineageDb.insert('relationships', relationshipRow)
+				await biolineageDb.update('entities', { sex: child.parentSex1 }, { id: child.parentUuid1 })
+			}
 
-				const createdBy = parentMeta.createdBy ?? childMeta.createdBy ?? null
-
-				const relationshipRow = {
+			if (child.parentUuid2) {
+				relationshipRow = {
 					id: uuidv4(),
-					treeId: childTreeId,
-					entityId: parentEntityId,
-					relatedEntityId: childEntityId,
-					relationshipType: 'parent',
-					direction: 'forward',
+					treeId,
+					entityId: child.parentUuid2,
+					relatedEntityId: child.childUuid,
+					relationshipTypeId: parentId,
 					createdBy,
 					modifiedBy: createdBy
 				}
 
-				const exists = await normPg.get(
+				const exists = await biolineageDb.get(
 					`SELECT 1 FROM relationships
 					WHERE tree_id = $1
 						AND entity_id = $2
 						AND related_entity_id = $3
-						AND relationship_type = $4`,
+						AND relationship_type_id = $4`,
 					[
 						relationshipRow.treeId,
 						relationshipRow.entityId,
 						relationshipRow.relatedEntityId,
-						relationshipRow.relationshipType
+						relationshipRow.relationshipTypeId
 					]
 				)
 
 				if (!exists) {
-					// console.log(parentMeta, relationshipRow)
-
-					await normPg.insert('relationships', relationshipRow)
+					await biolineageDb.insert('relationships', relationshipRow)
+					await biolineageDb.update('entities', { sex: child.parentSex2 }, { id: child.parentUuid2 })
 				}
 			}
 		}
-
-		// 6. Infer gender from parent couplings (in-memory)
-		for (const parentList of parentsOf.values()) {
-			if (parentList.length < 2) continue
-
-			const [p1, p2] = parentList
-			const person1 = people.get(p1)
-			const person2 = people.get(p2)
-			if (!person1 || !person2) continue
-
-			const g1 = person1.GenderIsMale
-			const g2 = person2.GenderIsMale
-
-			if (g1 != null && g2 == null) {
-				person2.GenderIsMale = !g1
-			} else if (g2 != null && g1 == null) {
-				person1.GenderIsMale = !g2
-			}
-		}
-
-		// 7. Write gender updates back to PostgreSQL
-		for (const person of people.values()) {
-			if (person.GenderIsMale !== null && person.uuid) {
-				// Normalize SQLite values: 'true'/'false' → boolean
-				const raw = person.GenderIsMale
-				const bool =
-					typeof raw === 'string'
-						? raw.toLowerCase() === 'true'
-						: !!raw
-
-				// Convert boolean → 'M' or 'F'
-				const sex = bool ? 'M' : 'F'
-
-				await normPg.update(
-					'entities',
-					{ sex },
-					{ id: person.uuid }
-				)
-			}
-		}
-
-		// 8. Commit transaction
-		await normPg.commit()
-	} catch (err) {
-		await normPg.rollback()
-		throw err
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		throw error
 	}
 }
 
