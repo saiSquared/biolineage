@@ -400,11 +400,20 @@ const pgTables = {
 					'to_tsvector(\'english\', search_name)'
 				]
 			},
+			{
+				method: 'gin',
+				fields: [
+					{ field: 'search_name', opclass: 'gin_trgm_ops' }
+				]
+			},
 			{ fields: ['sex'] },
 			{ fields: ['birth_year'] },
 			{ fields: ['death_year'] },
 			{ fields: ['parent_count'] },
 			{ fields: ['child_count'] },
+			{ fields: ['tree_id', 'search_name'] },
+			{ fields: ['tree_id', 'birth_year'] },
+			{ fields: ['tree_id', 'death_year'] },
 			{ fields: ['spouse_count'] },
 			{ fields: ['modified_by'] }
 		],
@@ -1193,6 +1202,84 @@ const pgFunctions = [
 				WHERE e.id = ent_id;
 			END;
 			$$ LANGUAGE plpgsql;`
+	},
+	{
+		code:
+			`CREATE OR REPLACE FUNCTION get_tree_entities(
+			p_tree_id     UUID,
+			p_filter_name TEXT DEFAULT NULL,
+			p_start_year  INTEGER DEFAULT NULL,
+			p_end_year    INTEGER DEFAULT NULL,
+			p_page        INTEGER DEFAULT 1
+		)
+		RETURNS JSONB
+		LANGUAGE plpgsql AS $$
+		DECLARE
+			v_offset INTEGER := (p_page - 1) * 40;
+			v_total INTEGER;
+			v_pages INTEGER;
+			v_items JSONB;
+		BEGIN
+			-- total count
+			SELECT COUNT(*) INTO v_total
+			FROM entities
+			WHERE tree_id = p_tree_id
+			AND (p_filter_name IS NULL OR search_name LIKE '%' || p_filter_name || '%')
+			AND (
+					(p_start_year IS NOT NULL AND p_end_year IS NOT NULL AND
+						birth_year <= p_end_year AND
+						(death_year IS NULL OR death_year >= p_start_year)
+					)
+					OR
+					(p_start_year IS NOT NULL AND p_end_year IS NULL AND
+						birth_year >= p_start_year
+					)
+					OR
+					(p_end_year IS NOT NULL AND p_start_year IS NULL AND
+						birth_year <= p_end_year
+					)
+					OR
+					(p_start_year IS NULL AND p_end_year IS NULL)
+			);
+
+			v_pages := CEIL(v_total / 40.0);
+
+			-- items
+			SELECT jsonb_agg(to_jsonb(t))
+			INTO v_items
+			FROM (
+				SELECT id, display_name, sex, birth_year, death_year,
+					parent_count, child_count
+				FROM entities
+				WHERE tree_id = p_tree_id
+				AND (p_filter_name IS NULL OR search_name LIKE '%' || p_filter_name || '%')
+				AND (
+						(p_start_year IS NOT NULL AND p_end_year IS NOT NULL AND
+							birth_year <= p_end_year AND
+							(death_year IS NULL OR death_year >= p_start_year)
+						)
+						OR
+						(p_start_year IS NOT NULL AND p_end_year IS NULL AND
+							birth_year >= p_start_year
+						)
+						OR
+						(p_end_year IS NOT NULL AND p_start_year IS NULL AND
+							birth_year <= p_end_year
+						)
+						OR
+						(p_start_year IS NULL AND p_end_year IS NULL)
+				)
+				ORDER BY family_name, display_name
+				OFFSET v_offset LIMIT 40
+			) t;
+
+			RETURN jsonb_build_object(
+				'total', v_total,
+				'pages', v_pages,
+				'items', COALESCE(v_items, '[]'::jsonb)
+			);
+		END;
+		$$;`
 	}
 ]
 

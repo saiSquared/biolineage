@@ -17,7 +17,8 @@ module.exports = [
 				...globals.browser,
 				TL: 'readonly',
 				editorPackage: 'readonly',
-				f3: 'readonly'
+				f3: 'readonly',
+				dataPackage: 'readonly'
 			}
 		},
 		plugins: { '@stylistic': stylistic },

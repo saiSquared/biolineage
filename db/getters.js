@@ -34,6 +34,28 @@ const formatShortDate = (dateString) => {
 	}).format(birth)
 }
 
+/**
+ * Convert row fields from snake_case to camelCase
+ * @param {PGRowObject} obj - object with key/value pairs
+ * @returns {PGRowObject}
+ */
+const pgToJs = (obj) => {
+	const ret = {}
+	for (const [key, value] of Object.entries(obj)) {
+		ret[snakeCaseToCamelCase(key)] = value
+	}
+	return ret
+}
+
+/**
+ * Convert snake_case to camelCase
+ * @param {String} str - string to convert
+ * @returns {String}
+ */
+const snakeCaseToCamelCase = (str) => {
+	return str.replace(/_([a-z])/g, (g) => g[1].toUpperCase())
+}
+
 async function getAncestors(tree, level, id) {
 	const sql = `
 			SELECT
@@ -608,6 +630,12 @@ class Getters {
 			ORDER BY
 				person.DateOfBirth`
 		return await dbNorm.query(removeIndent(sql))
+	}
+
+	async getTreeEntities(data) {
+		const results = await biolineageDb.get('select * from get_tree_entities($1, $2, $3, $4, $5);', [data.tree, data.filter, data.startYear, data.endYear, data.page])
+		const resultData = results.getTreeEntities
+		return { total: resultData.total, pages: resultData.pages, items: resultData.items.map(data => pgToJs(data)) }
 	}
 
 	async superTrees(id) {

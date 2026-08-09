@@ -1,5 +1,6 @@
 const getters = require('../db/getters')
 const { generatePage } = require('./generate-page')
+const { formatWordNumber, trees } = require('../modules/globals')
 // const { smartify } = require('../modules/clubside-utils')
 
 class AppGenerators {
@@ -162,6 +163,96 @@ class AppGenerators {
 		}
 		data.full.push({ type: 'header', content: `<img src="/img/timeline.svg"> ${title}`, level: 1 })
 		data.full.push({ type: 'raw', content: '<div class="timeline-holder"><div id="timeline-embed"></div></div>' })
+		return generatePage(data, 'standard.html', true)
+	}
+
+	async treeBrowse(user, slug) {
+		const tree = trees.find(lookup => lookup.slug === slug)
+		if (!tree) return null
+		if (!tree.ownerId === user.userId && !user.role === 'super') return null
+		let icon, text
+		switch (tree.entityTypeId) {
+			case 'd4780b1f-3764-491d-9942-dc814c3750b4':
+				icon = '/img/person.svg'
+				text = 'Add Person'
+				break
+			case '409a8c4f-1167-4039-b298-f46ce7bcf7fd':
+				icon = '/img/horse.svg'
+				text = 'Add Horse'
+		}
+		/** @type {Page} */
+		const data = {
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			title: tree.name,
+			description: `Browse people in tree ${tree.name}`,
+			breadcrumbs: [
+				{ link: '/', text: 'Home' },
+				{ link: '/trees', text: 'Trees' },
+				{ text: tree.name }
+			],
+			full: [],
+			menus: [
+				{ file: 'account-menu.html' },
+				{ file: 'theme-menu.html' }
+			],
+			scripts: []
+		}
+		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 1 })
+		data.full.push({
+			type: 'filter-bar',
+			method: 'POST',
+			action: '/browse',
+			fields: [
+				{ name: 'filter-text', label: 'Filter', placeholder: 'Filter by name', type: 'text', autocomplete: true, nospellcheck: true },
+				{ name: 'filter-start-year', label: 'Start Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
+				{ name: 'filter-end-year', label: 'End Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
+				{ name: 'add-entity', label: '&nbsp;', fixed: true, type: 'button', icon, text }
+			]
+		})
+		const dataPackage = {
+			treeId: tree.id,
+			treeType: tree.entityTypeId,
+			userId: user.userId,
+			role: user.role
+		}
+		data.scripts.push(
+			{
+				type: 'inline',
+				content: [
+						`const dataPackage = JSON.parse(\`${JSON.stringify(dataPackage)}\`)`
+				]
+			}
+		)
+		data.scripts.push({ type: 'link', content: '/js/tree-browse.js', module: true })
+		return generatePage(data, 'standard.html', true)
+	}
+
+	async trees(user) {
+		/** @type {Page} */
+		const data = {
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			title: 'Home',
+			breadcrumbs: [
+				{ link: '/', text: 'Home' },
+				{ text: 'Trees' }
+			],
+			full: [],
+			menus: [
+				{ file: 'account-menu.html' },
+				{ file: 'theme-menu.html' }
+			],
+			scripts: [
+				{ type: 'link', content: '/js/home.js' }
+			]
+		}
+		data.full.push({ type: 'header', content: 'My Trees', level: 1 })
+		const ownTreesButtons = []
+		const ownTrees = await getters.userTrees(user.userId)
+		for (const ownTree of ownTrees) {
+			ownTreesButtons.push({ link: `/trees/${ownTree.slug}`, icon: '/img/tree.svg', text: [ownTree.name, `(${formatWordNumber(ownTree.c)} member${ownTree.c === 1 ? '' : 's'})`] })
+		}
+		ownTreesButtons.push({ link: '/add-tree', icon: '/img/plus.svg', text: ['Add New Tree', '&nbsp;'] })
+		data.full.push({ type: 'flex-link-list', buttonClass: 'big-button', content: ownTreesButtons })
 		return generatePage(data, 'standard.html', true)
 	}
 }

@@ -426,6 +426,13 @@ function handleReplacements(match, object, debug) {
 										html += `\t\t<option value="${value.value}"${value.value === field.value ? ' selected' : ''}>${value.text}</option>\n`
 									}
 									html += '\t</select>\n'
+									break
+								}
+								case 'button': {
+									html += `\t<button name="${field.name}" id="${field.name}" class="button" type="button">`
+									if (field.icon) html += `<img src="${field.icon}">`
+									html += `<span>${field.text}</span></button>\n`
+									break
 								}
 							}
 							html += '\t</label>\n'

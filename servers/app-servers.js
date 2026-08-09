@@ -39,6 +39,19 @@ async function appServers(app) {
 	app.get('/timeline/birth', async (request, reply) => {
 		handleStandardPage(reply, request.user, await appGenerators.timeline(request.user, 'birth'))
 	})
+
+	app.get('/trees', async (request, reply) => {
+		return handleStandardPage(reply, request.user, await appGenerators.trees(request.user))
+	})
+
+	app.get('/trees/:slug', async (request, reply) => {
+		const treeBrowser = await appGenerators.treeBrowse(request.user, request.params.slug)
+		if (treeBrowser) {
+			return handleStandardPage(reply, request.user, treeBrowser)
+		} else {
+			return handle404Page(reply, request.user)
+		}
+	})
 }
 
 module.exports = appServers

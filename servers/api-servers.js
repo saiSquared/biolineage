@@ -102,6 +102,10 @@ async function apiServers(app) {
 			reply.send({ ok: false })
 		}
 	})
+
+	app.post('/api/tree/browse', async (request, reply) => {
+		reply.send(await getters.getTreeEntities(request.body))
+	})
 }
 
 module.exports = apiServers

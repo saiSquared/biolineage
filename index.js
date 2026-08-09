@@ -6,7 +6,7 @@ const fastifyHelmet = require('@fastify/helmet')
 const fastifyRedis = require('@fastify/redis')
 const fastifyCookie = require('@fastify/cookie')
 const registerApacheLogger = require('./modules/apache-log-writer')
-const { env } = require('./modules/globals')
+const { env, loadTrees } = require('./modules/globals')
 
 const standardServers = require('./servers/standard-servers.js')
 const appServers = require('./servers/app-servers.js')
@@ -103,6 +103,7 @@ async function shutdown(signal) {
 
 async function startup() {
 	try {
+		await loadTrees()
 		app.listen({ port: 3452 }, (err) => {
 			if (err) throw err
 		})

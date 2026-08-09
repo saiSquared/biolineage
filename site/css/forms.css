@@ -382,7 +382,8 @@ input:read-only:hover {
 	max-width: 40ch;
 }
 
-#filter-year {
+#filter-start-year,
+#filter-end-year {
 	max-width: 10ch;
 }
 
