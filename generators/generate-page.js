@@ -340,7 +340,7 @@ function handleReplacements(match, object, debug) {
 					case 'flex-link-list':
 						html += '<ul class="flex-button-list">\n'
 						for (const button of slotItem.content) {
-							html += `\t<li><a class="${slotItem.buttonClass}" href="${button.link}">`
+							html += `\t<li><a${button.id ? ` id="${button.id}"` : ''} class="${slotItem.buttonClass}" href="${button.link}">`
 							html += `<img src="${button.icon}">`
 							for (const text of button.text) {
 								html += `<span>${text}</span>`

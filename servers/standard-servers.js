@@ -43,7 +43,7 @@ async function standardServers(app) {
 
 		// DB update
 		if (!errorMessage) {
-			const result = await setters.updateUser(userRecord)
+			const result = await setters.userUpdate(userRecord)
 			if (!result) errorMessage = 'Failed to update'
 		}
 

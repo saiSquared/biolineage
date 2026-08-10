@@ -1,5 +1,7 @@
 'use strict'
 
+import entityModal from '/js/entity-modal.js'
+
 const filterPackage = {
 	tree: null,
 	filter: null,
@@ -14,6 +16,7 @@ const filterNav = document.querySelector('.filter-nav')
 const filterText = document.getElementById('filter-text')
 const filterStartYear = document.getElementById('filter-start-year')
 const filterEndYear = document.getElementById('filter-end-year')
+const addEntity = document.getElementById('add-entity')
 const cols = [
 	{ width: '1%', align: 'left', header: '&nbsp;', headerAlign: 'left', field: 'sex' },
 	{ width: '44%', align: 'left', header: 'Name', headerAlign: 'left', field: 'displayName' },
@@ -119,16 +122,20 @@ function drawCell(item, col) {
 	switch (col.field) {
 		case 'dates': {
 			let text = ''
-			if (item.birthYear) {
-				text += item.birthYear
-			} else {
+			if (!item.birthYear && !item.deathYear) {
 				text += '<em>Unknown</em>'
-			}
-			text += '-'
-			if (item.deathYear) {
-				text += item.deathYear
 			} else {
-				text += 'Living'
+				if (item.birthYear) {
+					text += item.birthYear
+				} else {
+					text += '<em>Unknown</em>'
+				}
+				text += '-'
+				if (item.deathYear) {
+					text += item.deathYear
+				} else {
+					text += 'Living'
+				}
 			}
 			td.innerHTML = text
 			break
@@ -274,6 +281,15 @@ filterEndYear.addEventListener('input', () => {
 
 	// 5. trigger debounced API call
 	debouncedBirthYearAndUpdate()
+})
+
+addEntity.addEventListener('click', async () => {
+	const modal = entityModal(dataPackage.treeId, dataPackage.treeType)
+	const id = await modal.show()
+	if (id) {
+		console.log(`New id = ${id}`)
+		updateEntities()
+	}
 })
 
 document.addEventListener('DOMContentLoaded', () => {

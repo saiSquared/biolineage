@@ -121,4 +121,4 @@ class Modal {
 	}
 }
 
-window.UX.Modal = new Modal()
+// window.UX.Modal = new Modal()

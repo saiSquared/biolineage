@@ -42,7 +42,9 @@ class StandardGenerators {
 				{ file: 'theme-menu.html' }
 			],
 			scripts: [
-				{ type: 'link', content: '/js/home.js' }
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' },
+				{ type: 'link', content: '/js/home.js', module: true }
 			]
 		}
 		data.full.push({ type: 'header', content: 'Trees', level: 1 })
@@ -52,7 +54,7 @@ class StandardGenerators {
 		for (const ownTree of ownTrees) {
 			ownTreesButtons.push({ link: `/trees/${ownTree.slug}`, icon: '/img/tree.svg', text: [ownTree.name, `(${formatWordNumber(ownTree.c)} member${ownTree.c === 1 ? '' : 's'})`] })
 		}
-		ownTreesButtons.push({ link: '/add-tree', icon: '/img/plus.svg', text: ['Add New Tree', '&nbsp;'] })
+		ownTreesButtons.push({ id: 'add-tree', link: '/add-tree', icon: '/img/plus.svg', text: ['Add New Tree', '&nbsp;'] })
 		data.full.push({ type: 'flex-link-list', buttonClass: 'big-button', content: ownTreesButtons })
 		if (user.role === 'super') {
 			data.full.push({ type: 'header', content: 'Other Trees', level: 2 })

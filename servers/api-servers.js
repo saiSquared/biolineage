@@ -65,7 +65,7 @@ async function apiServers(app) {
 
 	app.post('/api/admin/users/update', async (request, reply) => {
 		const userRecord = request.body
-		const update = await setters.updateUser(userRecord)
+		const update = await setters.userUpdate(userRecord)
 		// console.log({ update })
 		if (update.changes === 1) {
 			if (request.user.userId === userRecord.id) {
@@ -94,7 +94,7 @@ async function apiServers(app) {
 
 	app.post('/api/admin/users/add', async (request, reply) => {
 		const userRecord = request.body
-		const insert = await setters.addUser(userRecord)
+		const insert = await setters.userAdd(userRecord)
 		// console.log({ insert })
 		if (insert) {
 			reply.send({ ok: true })
@@ -103,8 +103,20 @@ async function apiServers(app) {
 		}
 	})
 
+	app.post('/api/entity/add', async (request, reply) => {
+		reply.send(await setters.entityAdd(request.user, request.body))
+	})
+
+	app.post('/api/tree/add', async (request, reply) => {
+		reply.send(await setters.treeAdd(request.user, request.body))
+	})
+
+	app.post('/api/tree/get', async (request, reply) => {
+		reply.send(await getters.tree(request.body))
+	})
+
 	app.post('/api/tree/browse', async (request, reply) => {
-		reply.send(await getters.getTreeEntities(request.body))
+		reply.send(await getters.treeEntities(request.body))
 	})
 }
 

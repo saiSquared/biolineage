@@ -195,7 +195,11 @@ class AppGenerators {
 				{ file: 'account-menu.html' },
 				{ file: 'theme-menu.html' }
 			],
-			scripts: []
+			stylesheets: [],
+			scripts: [
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' }
+			]
 		}
 		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 1 })
 		data.full.push({
@@ -251,7 +255,7 @@ class AppGenerators {
 		for (const ownTree of ownTrees) {
 			ownTreesButtons.push({ link: `/trees/${ownTree.slug}`, icon: '/img/tree.svg', text: [ownTree.name, `(${formatWordNumber(ownTree.c)} member${ownTree.c === 1 ? '' : 's'})`] })
 		}
-		ownTreesButtons.push({ link: '/add-tree', icon: '/img/plus.svg', text: ['Add New Tree', '&nbsp;'] })
+		ownTreesButtons.push({ id: 'add-tree', link: '/add-tree', icon: '/img/plus.svg', text: ['Add New Tree', '&nbsp;'] })
 		data.full.push({ type: 'flex-link-list', buttonClass: 'big-button', content: ownTreesButtons })
 		return generatePage(data, 'standard.html', true)
 	}

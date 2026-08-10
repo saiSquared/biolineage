@@ -1,11 +1,11 @@
-const { generate404Page } = require('../generators/generate-standard-pages.js')
+const standardGenerators = require('../generators/generate-standard-pages.js')
 const appGenerators = require('../generators/generate-app-pages.js')
 
 async function handle404Page(reply, user) {
 	return reply
 		.code(404)
 		.type('text/html; charset=utf-8')
-		.send(await generate404Page(user))
+		.send(await standardGenerators.error404(user))
 }
 
 async function handleStandardPage(reply, user, content) {

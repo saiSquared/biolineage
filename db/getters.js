@@ -1,6 +1,6 @@
 const { removeIndent } = require('../modules/clubside-utils')
 const { dbNorm, biolineageDb } = require('../modules/globals')
-// const { removeIndent, smartify } = require('../modules/clubside-utils')
+const { slugify } = require('../modules/clubside-utils')
 
 const formatLifespan = (data) => {
 	if (data.DateOfBirth && data.DateOfDeath) {
@@ -632,14 +632,19 @@ class Getters {
 		return await dbNorm.query(removeIndent(sql))
 	}
 
-	async getTreeEntities(data) {
+	async superTrees(id) {
+		return await biolineageDb.query('select name, slug, (select count(*) from entities where tree_id = trees.id) c from trees where owner_id <> $1 order by name;', [id])
+	}
+
+	async tree(data) {
+		const slug = slugify(data.name)
+		return await biolineageDb.get('select * from trees where slug = $1;', [slug])
+	}
+
+	async treeEntities(data) {
 		const results = await biolineageDb.get('select * from get_tree_entities($1, $2, $3, $4, $5);', [data.tree, data.filter, data.startYear, data.endYear, data.page])
 		const resultData = results.getTreeEntities
 		return { total: resultData.total, pages: resultData.pages, items: resultData.items.map(data => pgToJs(data)) }
-	}
-
-	async superTrees(id) {
-		return await biolineageDb.query('select name, slug, (select count(*) from entities where tree_id = trees.id) c from trees where owner_id <> $1 order by name;', [id])
 	}
 
 	async user(email) {
