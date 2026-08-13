@@ -52,6 +52,24 @@ async function appServers(app) {
 			return handle404Page(reply, request.user)
 		}
 	})
+
+	app.get('/trees/:slug/entities', async (request, reply) => {
+		const treeBrowser = await appGenerators.treeEntities(request.user, request.params.slug)
+		if (treeBrowser) {
+			return handleStandardPage(reply, request.user, treeBrowser)
+		} else {
+			return handle404Page(reply, request.user)
+		}
+	})
+
+	app.get('/trees/:slug/entities/:id', async (request, reply) => {
+		const entityPage = await appGenerators.treeEntity(request.user, request.params.slug, request.params.id)
+		if (entityPage) {
+			return handleStandardPage(reply, request.user, entityPage)
+		} else {
+			return handle404Page(reply, request.user)
+		}
+	})
 }
 
 module.exports = appServers

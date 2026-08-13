@@ -219,7 +219,106 @@ const fixPlace = (data) => {
 	return match ? match.uuid : data.uuid
 }
 
-function buildName(data) {
+const buildName = (data) => {
+	const namePartCodes = [
+		'PrefixTitle', 'Primary', 'Moniker', 'Secondary', 'Middle', 'Familiar',
+		'Religious', 'Geographic', 'Family', 'Maiden', 'Patronymic',
+		'Matronymic', 'Occupational', 'Characteristic', 'Postnom',
+		'Particle', 'RootName'
+	]
+
+	const displayNamePartCodes = ['PrefixTitle', 'Primary', 'Family', 'Particle']
+
+	const searchNamePartCodes = [
+		'PrefixTitle', 'Primary', 'Moniker', 'Secondary', 'Middle', 'Familiar',
+		'Religious', 'Geographic', 'Family', 'Maiden', 'Patronymic',
+		'Matronymic', 'Occupational', 'Characteristic', 'Postnom',
+		'Particle', 'RootName', 'SuffixTitle'
+	]
+
+	const ignores = ['Test  horse', 'Test article 13', 'Test horse']
+	const familiars = ['Jimmie', 'Tony']
+	const prefixTitles = ['Capt.']
+	const suffixTitles = ['MD', 'Ph.D.', 'Ed.D.', 'Jr.', 'Jr. or II', 'Jr.?', 'Sr.', 'Sr.?']
+	const particles = ['II', 'III', '2B']
+	const patronymics = ['Son of Abraham', 'son of Johannes']
+	const matronymics = ['dau of Johannes']
+
+	const nameParts = {}
+
+	// Primary fields
+	if (data.GivenName) nameParts.Primary = data.GivenName
+	if (data.MiddleName) nameParts.Middle = data.MiddleName
+	if (data.FamilyName) nameParts.Family = data.FamilyName
+	if (data.NickName) {
+		if (data.NickName !== 'This is edited data.') {
+			if (data.NickName === 'blau gen 2' || data.NickName === 'blay gen 2') {
+				nameParts.RootName = 'Blau'
+			} else {
+				nameParts.Moniker = data.NickName.replaceAll('"', '')
+			}
+		}
+	}
+
+	// SuffixName classification
+	const sfx = data.SuffixName
+
+	if (sfx && !ignores.includes(sfx)) {
+		if (familiars.includes(sfx)) nameParts.Familiar = sfx
+		else if (prefixTitles.includes(sfx)) nameParts.PrefixTitle = sfx
+		else if (suffixTitles.includes(sfx)) nameParts.SuffixTitle = sfx
+		else if (particles.includes(sfx)) nameParts.Particle = sfx
+		else if (patronymics.includes(sfx)) nameParts.Patronymic = sfx
+		else if (matronymics.includes(sfx)) nameParts.Matronymic = sfx
+	}
+
+	// Build fullName
+	const parts = []
+	for (const code of namePartCodes) {
+		if (nameParts[code]) {
+			if (code === 'Moniker') {
+				parts.push(`"${nameParts[code]}"`)
+			} else if (code === 'RootName') {
+				parts.push(`[root: ${nameParts[code]}]`)
+			} else {
+				parts.push(nameParts[code])
+			}
+		}
+	}
+
+	let fullName = parts.join(' ')
+	if (nameParts.SuffixTitle) fullName += `, ${nameParts.SuffixTitle}`
+
+	// Build displayName
+	const displayParts = []
+	for (const code of displayNamePartCodes) {
+		if (nameParts[code]) displayParts.push(nameParts[code])
+	}
+
+	let displayName = displayParts.join(' ')
+	if (nameParts.SuffixTitle) displayName += `, ${nameParts.SuffixTitle}`
+
+	// Build searchName
+	const searchParts = []
+	for (const code of searchNamePartCodes) {
+		if (nameParts[code]) searchParts.push(nameParts[code])
+	}
+
+	let searchName = searchParts.join(' ')
+	const cleaned = searchName.trim().toLowerCase().replace(/[^\w\s]/g, '')
+	const cleanedParts = cleaned.split(/\s+/)
+	searchName = [...new Set(cleanedParts)].join(' ')
+
+	return {
+		fullName,
+		displayName,
+		familyName: nameParts.Family || null,
+		searchName,
+		nameParts
+	}
+}
+
+function mapName(data) {
 	const parts = []
 	if (data.GivenName) parts.push(data.GivenName)
 	if (data.MiddleName) parts.push(data.MiddleName)
@@ -228,18 +327,6 @@ function buildName(data) {
 	if (data.SuffixName) name = `${name}, ${data.SuffixName}`
 	if (data.NickName) name = `${name} (${data.NickName})`
 	return name
-}
-
-function buildSearchName(data) {
-	let partsString = ''
-	if (data.GivenName) partsString += data.GivenName + ' '
-	if (data.MiddleName) partsString += data.MiddleName + ' '
-	if (data.FamilyName) partsString += data.FamilyName + ' '
-	if (data.SuffixName) partsString += data.SuffixName + ' '
-	if (data.NickName) partsString += data.NickName
-	const cleaned = partsString.trim().toLowerCase().replace(/[^\w\s]/g, '')
-	const parts = cleaned.split(/\s+/)
-	return [...new Set(parts)].join(' ')
 }
 
 async function buildSQLiteChildren() {
@@ -282,17 +369,17 @@ async function buildSQLiteChildren() {
 				ChildDateOfBirth`
 		const children = await normSQLite.query(removeIndent(sql), { id: person.keeNew })
 		if (children.length > 0) {
-			const leftParentName = buildName(person)
+			const leftParentName = mapName(person)
 			for (const child of children) {
 				if (!child.ChildUUID) continue
-				const childName = buildName({
+				const childName = mapName({
 					GivenName: child.ChildGivenName,
 					MiddleName: child.ChildMiddleName,
 					FamilyName: child.ChildFamilyName,
 					SuffixName: child.ChildSuffixName,
 					NickName: child.ChildNickName
 				})
-				const rightParentName = buildName({
+				const rightParentName = mapName({
 					GivenName: child.ParentGivenName,
 					MiddleName: child.ParentMiddleName,
 					FamilyName: child.ParentFamilyName,
@@ -303,30 +390,30 @@ async function buildSQLiteChildren() {
 					parentId1: person.keeNew,
 					parentUuid1: person.uuid,
 					parentName1: leftParentName,
-					parentSex1: person.GenderIsMale ? person.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+					parentSex1: person.GenderIsMale ? person.GenderIsMale.toLowerCase() === 'true' ? 'Male' : 'Female' : null,
 					parentId2: child.ParentKee,
 					parentUuid2: child.ParentUUID,
 					parentName2: rightParentName,
-					parentSex2: child.ParentGenderIsMale ? child.ParentGenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+					parentSex2: child.ParentGenderIsMale ? child.ParentGenderIsMale.toLowerCase() === 'true' ? 'Male' : 'Female' : null,
 					childId: child.ChildKee,
 					childUuid: child.ChildUUID,
 					childName,
-					childSex: child.ChildGenderIsMale ? child.ChildGenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null
+					childSex: child.ChildGenderIsMale ? child.ChildGenderIsMale.toLowerCase() === 'true' ? 'Male' : 'Female' : null
 				}
 				if (data.parentSex1 && !data.parentSex2) {
 					console.log(`Left parent has sex ${data.parentSex1}`)
-					if (data.parentSex1 === 'M') {
-						data.parentSex2 = 'F'
+					if (data.parentSex1 === 'Male') {
+						data.parentSex2 = 'Female'
 					} else {
-						data.parentSex2 = 'M'
+						data.parentSex2 = 'Male'
 					}
 				}
 				if (!data.parentSex1 && data.parentSex2) {
 					console.log(`Right parent has sex ${data.parentSex1}`)
-					if (data.parentSex2 === 'M') {
-						data.parentSex1 = 'F'
+					if (data.parentSex2 === 'Male') {
+						data.parentSex1 = 'Female'
 					} else {
-						data.parentSex1 = 'M'
+						data.parentSex1 = 'Male'
 					}
 				}
 				await normSQLite.insert(sqliteTables.children, data)
@@ -449,6 +536,191 @@ async function initPg() {
 		}
 	}
 
+	// create initial entity_name_parts
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Display',
+		label: 'Display Name',
+		surface: true,
+		exclude: true,
+		placeholder: 'ex. Mike Jones',
+		description: 'The main name shown in trees, lists, search results, and relationship panels. This should be the name most commonly associated with the person.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'PrefixTitle',
+		label: 'Title (Prefix)',
+		surface: true,
+		placeholder: 'ex. Dr.',
+		description: 'Honorifics, ranks, or positions that appear <em>before</em> the name (e.g., Dr., Rev., Colonel, Count, Haji).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Primary',
+		label: 'Given Name',
+		surface: true,
+		placeholder: 'ex. Michael',
+		description: 'The primary given name used to identify the person.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Moniker',
+		label: 'Nickname',
+		surface: true,
+		placeholder: 'ex. Buddy',
+		format: '"{v}"',
+		description: 'An informal or familiar name used socially or colloquially.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Secondary',
+		label: 'Additional Given Name',
+		placeholder: 'ex. Otto',
+		description: 'A secondary given name that is not the primary name.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Middle',
+		label: 'Middle Name',
+		surface: true,
+		placeholder: 'ex. Montgomery',
+		description: 'A name placed between given and family names in cultures that use middle names.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Familiar',
+		label: 'Familiar Name',
+		placeholder: 'ex. Mike',
+		description: 'A familiar or shortened form of a given name (e.g., Mike for Michael).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Religious',
+		label: 'Religious Name',
+		placeholder: 'ex. Luther',
+		description: 'A name given or adopted for religious purposes.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Geographic',
+		label: 'Geographic Name',
+		surface: true,
+		placeholder: 'ex. van der',
+		description: 'A name part derived from geography or place association (e.g., van, von, de, del, di, la).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Family',
+		label: 'Family Name',
+		surface: true,
+		placeholder: 'ex. Jones',
+		description: 'A surname or clan name identifying family or lineage.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Maiden',
+		label: 'Maiden Name',
+		placeholder: 'ex. Smith',
+		format: '(formerly {v})',
+		description: 'A person\'s original family name prior to adopting a new surname (commonly at marriage).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Patronymic',
+		label: 'Patronymic',
+		placeholder: 'ex. Abrahams',
+		description: 'A name derived from a father or paternal ancestor (e.g., Abrahams meaning "son of Abraham").',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Matronymic',
+		label: 'Matronymic',
+		placeholder: 'ex. Mariadottir',
+		description: 'A name derived from a mother or maternal ancestor.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Occupational',
+		label: 'Occupational Name',
+		placeholder: 'ex. Smith',
+		description: 'A name derived from an occupation (e.g., Smith, Miller, Cooper).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Characteristic',
+		label: 'Characteristic Name',
+		placeholder: 'ex. the Elder',
+		description: 'A name derived from a personal trait or descriptor (e.g., the Elder, the Silent).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Postnom',
+		label: 'Postnom',
+		placeholder: 'ex. Kabila',
+		description: 'A legally mandated name part used in Congo Free State / Belgian Congo / Congo / Democratic Republic of Congo.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'Particle',
+		label: 'Particle',
+		placeholder: 'ex. III',
+		description: 'A grammatical element such as articles (the, el), prepositions (of, von), ordinals (III), comparators (Jr., Sr.), or descendancy markers (ben, ibn, bat).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'RootName',
+		label: 'Root Name',
+		placeholder: 'ex. Wilk',
+		description: 'The root of a name part, distinct from prefixes or suffixes (e.g., Wilk is the root of Wilkówna).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('entity_name_parts', {
+		id: uuidv4(),
+		code: 'SuffixTitle',
+		label: 'Title (Suffix)',
+		surface: true,
+		placeholder: 'ex. PhD',
+		format: ', {v}',
+		description: 'Titles, degrees, or credentials that appear <em>after</em> the name (e.g., PhD, MD, Esq.).',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+
 	// Create initial entity types
 	const human = uuidv4()
 	await biolineageDb.insert('entity_types', {
@@ -463,6 +735,784 @@ async function initPg() {
 		id: equine,
 		key: 'equine',
 		label: 'Equine',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+
+	// Create initial fact types
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Adoption',
+		name: 'Adoption',
+		description: "A fact of a person's adoption. In the context of a parent-child relationship, it describes a fact of the adoption of a child by a parent.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'AdoptiveParent',
+		name: 'Adoptive Parent',
+		description: 'A fact about an adoptive relationship between a parent an a child.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'AdultChristening',
+		name: 'Adult Christening',
+		description: "A fact of a person's christening as an adult.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Amnesty',
+		name: 'Amnesty',
+		description: "A fact of a person's amnesty.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'AncestralHall',
+		name: 'Ancestral Hall',
+		description: "A fact of a person's ancestral hall. An ancestral hall refers to a location where the early ancestors of the person originated. It may also refer to the name of an early ancestor. Family clans are often distinguished one from another by the ancestral hall. Clans that cannot prove direct relationships to other clans with the same surname can assume a direct relationship if they share the same ancestral hall.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'AncestralPoem',
+		name: 'Ancestral Poem',
+		description: "A fact of a person's ancestral poem. An ancestral poem (or generation poem) is composed of the \"generation characters\" that are to be used when choosing names for the members of different generations of an extended family. Ancestral poems are prominent in Asian countries, particularly China.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Annulment',
+		name: 'Annulment',
+		description: 'The fact of an annulment of a marriage.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Apprenticeship',
+		name: 'Apprenticeship',
+		description: "A fact of a person's apprenticeship.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Arrest',
+		name: 'Arrest',
+		description: "A fact of a person's arrest.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Baptism',
+		name: 'Baptism',
+		description: "A fact of a person's baptism.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'BarMitzvah',
+		name: 'Bar Mitzvah',
+		description: "A fact of a person's bar mitzvah.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'BatMitzvah',
+		name: 'Bat Mitzvah',
+		description: "A fact of a person's bat mitzvah.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'BiologicalParent',
+		name: 'Biological Parent',
+		description: 'A fact the biological relationship between a parent and a child.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Birth',
+		name: 'Birth',
+		description: "A fact of a person's birth.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'BirthNotice',
+		name: 'BirthNotice',
+		description: "A fact of a person's birth notice, such as posted in a newspaper or other publishing medium.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Blessing',
+		name: 'Blessing',
+		description: 'A fact of an official blessing received by a person, such as at the hands of a clergy member or at another religious rite.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Branch',
+		name: 'Branch',
+		description: "A fact of a person's branch within an extended clan.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Burial',
+		name: 'Burial',
+		description: "A fact of the burial of person's body after death.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Caste',
+		name: 'Caste',
+		description: "A fact of a person's caste.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Census',
+		name: 'Census',
+		description: "A fact of a person's participation in a census.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'ChildOrder',
+		name: 'ChildOrder',
+		description: 'A fact about the child order between a parent and a child.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Christening',
+		name: 'Christening',
+		description: "A fact of a person's christening *at birth*. Note: use `AdultChristening` for the christening as an adult.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Circumcision',
+		name: 'Circumcision',
+		description: "A fact of a person's circumcision.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'CivilUnion',
+		name: 'CivilUnion',
+		description: 'The fact of a civil union.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Clan',
+		name: 'Clan',
+		description: "A fact of a person's clan.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'CommonLawMarriage',
+		name: 'Common Law Marriage',
+		description: 'The fact of a marriage by common law.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Confirmation',
+		name: 'Confirmation',
+		description: "A fact of a person's confirmation (or other rite of initiation) in a church or religion.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Court',
+		name: 'Court',
+		description: 'A fact of the appearance of a person in a court proceeding.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Cremation',
+		name: 'Cremation',
+		description: "A fact of the cremation of person's body after death.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Death',
+		name: 'Death',
+		description: 'A fact of the death of a person.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Divorce',
+		name: 'Divorce',
+		description: 'The fact of a divorce of a couple.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'DivorceFiling',
+		name: 'Divorce Filing',
+		description: 'The fact of a filing for divorce.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'DomesticPartnership',
+		name: 'Domestic Partnership',
+		description: 'The fact of a domestic partnership.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Education',
+		name: 'Education',
+		description: 'A fact of an education of a person.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'EducationEnrollment',
+		name: 'Education Enrollment',
+		description: "A fact of a person's enrollment in an educational program or institution.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Emigration',
+		name: 'Emigration',
+		description: 'A fact of the emigration of a person.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Engagement',
+		name: 'Engagement',
+		description: 'The fact of an engagement to be married.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'EnteringHeir',
+		name: 'EnteringHeir',
+		description: 'A fact about an entering heir relationship between a parent and a child. An entering heir is received from another parent as an "exiting heir" for designation of inheritance.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Ethnicity',
+		name: 'Ethnicity',
+		description: "A fact of a person's ethnicity or race.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Excommunication',
+		name: 'Excommunication',
+		description: "A fact of a person's excommunication from a church.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'ExitingHeir',
+		name: 'Exiting Heir',
+		description: 'A fact about an exiting heir relationship between a parent and a child. An exiting heir is given as an "entering heir" to another parent for designation of inheritance.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'FirstCommunion',
+		name: 'First Communion',
+		description: "A fact of a person's first communion in a church.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'FosterParent',
+		name: 'Foster Parent',
+		description: 'A fact about a foster relationship between a foster parent and a child.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Funeral',
+		name: 'Funeral',
+		description: "A fact of a person's funeral.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'GenderChange',
+		name: 'Gender Change',
+		description: "A fact of a person's gender change.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'GenerationNumber',
+		name: 'Generation Number',
+		description: "A fact of a person's generation number, indicating the number of generations the person is removed from a known \"first\" ancestor.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Graduation',
+		name: 'Graduation',
+		description: "A fact of a person's graduation from a scholastic institution.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'GuardianParent',
+		name: 'Guardian Parent',
+		description: 'A fact about a legal guardianship between a parent and a child.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Immigration',
+		name: 'Immigration',
+		description: "A fact of a person's immigration.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Imprisonment',
+		name: 'Imprisonment',
+		description: "A fact of a person's imprisonment.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Inquest',
+		name: 'Inquest',
+		description: 'A legal inquest. Inquests usually only occur when there’s something suspicious about the death. Inquests might in some instances lead to a murder investigation. Most people that die have a death certificate wherein a doctor indicates the cause of death and often indicates when the decedent was last seen by that physician; these require no inquest.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'LandTransaction',
+		name: 'Land Transaction',
+		description: 'A fact of a land transaction enacted by a person.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Language',
+		name: 'Language',
+		description: 'A fact of a language spoken by a person.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Living',
+		name: 'Living',
+		description: "A fact of a record of a person's living for a specific period. This is designed to include \"flourish\", defined to mean the time period in an adult's life where he was most productive, perhaps as a writer or member of the state assembly. It does not reflect the person's birth and death dates.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MaritalStatus',
+		name: 'Marital Status',
+		description: "A fact of a person's marital status.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Marriage',
+		name: 'Marriage',
+		description: 'The fact of a marriage.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MarriageBanns',
+		name: 'Marriage Banns',
+		description: 'The fact of a marriage banns.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MarriageContract',
+		name: 'Marriage Contract',
+		description: 'The fact of a marriage contract.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MarriageLicense',
+		name: 'Marriage License',
+		description: 'The fact of a marriage license.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MarriageNotice',
+		name: 'Marriage Notice',
+		description: 'The fact of a marriage notice.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Medical',
+		name: 'Medical',
+		description: "A fact of a person's medical record, such as for an illness or hospital stay.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MilitaryAward',
+		name: 'Military Award',
+		description: "A fact of a person's military award.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MilitaryDischarge',
+		name: 'Military Discharge',
+		description: "A fact of a person's military discharge.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MilitaryDraftRegistration',
+		name: 'Military Draft Registration',
+		description: "A fact of a person's registration for a military draft.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MilitaryInduction',
+		name: 'Military Induction',
+		description: "A fact of a person's military induction.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MilitaryService',
+		name: 'MilitaryService',
+		description: "A fact of a person's militray service.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Mission',
+		name: 'Mission',
+		description: "A fact of a person's church mission.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MoveFrom',
+		name: 'Move From',
+		description: "A fact of a person's move (i.e. change of residence) from a location.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MoveTo',
+		name: 'Move To',
+		description: "A fact of a person's move (i.e. change of residence) to a new location.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'MultipleBirth',
+		name: 'Multiple Birth',
+		description: 'A fact that a person was born as part of a multiple birth (e.g. twin, triplet, etc.)',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'NationalId',
+		name: 'National ID',
+		description: "A fact of a person's national id (e.g. social security number).",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Nationality',
+		name: 'Nationality',
+		description: "A fact of a person's nationality.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Naturalization',
+		name: 'Naturalization',
+		description: "A fact of a person's naturalization (i.e. acquisition of citizenship and nationality).",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'NumberOfChildren',
+		name: 'Number of Children',
+		description: 'A fact of the number of children of a person or relationship.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'NumberOfMarriages',
+		name: 'Number of Marriages',
+		description: "A fact of a person's number of marriages.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Obituary',
+		name: 'Obituary',
+		description: "A fact of a person's obituary.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Occupation',
+		name: 'Occupation',
+		description: "A fact of a person's occupation or employment.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'OfficialPosition',
+		name: 'Official Position',
+		description: "A fact of a person's official (government) position.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Ordination',
+		name: 'Ordination',
+		description: "A fact of a person's ordination to a stewardship in a church.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Pardon',
+		name: 'Pardon',
+		description: "A fact of a person's legal pardon.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'PhysicalDescription',
+		name: 'Physical Description',
+		description: "A fact of a person's physical description.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Probate',
+		name: 'Probate',
+		description: "A fact of a receipt of probate of a person's property.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Property',
+		name: 'Property',
+		description: "A fact of a person's property or possessions.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Religion',
+		name: 'Religion',
+		description: "A fact of a person's religion.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Residence',
+		name: 'Residence',
+		description: "A fact of a person's residence.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Retirement',
+		name: 'Retirement',
+		description: "A fact of a person's retirement.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Separation',
+		name: 'Separation',
+		description: "A fact of a couple's separation.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'SociologicalParent',
+		name: 'Sociological Parent',
+		description: 'A fact about a sociological relationship between a parent and a child, but not definable in typical legal or biological term',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'StepParent',
+		name: 'Step Parent',
+		description: 'A fact about the step relationship between a parent and a child.',
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Stillbirth',
+		name: 'Stillbirth',
+		description: "A fact of a person's stillbirth.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'TaxAssessment',
+		name: 'Tax Assessment',
+		description: "A fact of a person's tax assessment.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Visit',
+		name: 'Visit',
+		description: "A fact of a person's visit to a place different from the person's residence.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Will',
+		name: 'Will',
+		description: "A fact of a person's will.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: human,
+		code: 'Yahrzeit',
+		name: 'Yahrzeit',
+		description: "A fact of a person's _yahrzeit_ date. A person's yahzeit is the anniversary of their death as measured by the Hebrew calendar.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: equine,
+		code: 'Birth',
+		name: 'Birth',
+		description: "A fact of a equine's birth.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: equine,
+		code: 'Burial',
+		name: 'Burial',
+		description: "A fact of the burial of equine's body after death.",
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('fact_types', {
+		entityTypeId: equine,
+		code: 'Death',
+		name: 'Death',
+		description: 'A fact of the death of an equine.',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -769,21 +1819,14 @@ async function initPg() {
 	const horses = await normSQLite.query('SELECT * FROM person WHERE FamilyName LIKE \'%hors%\';')
 	for (const horse of horses) {
 		const id = uuidv4()
-		const nameParts = []
-		if (horse.FamilyName) nameParts.push(horse.FamilyName)
-		if (horse.GivenName) nameParts.push(horse.GivenName)
+		const names = buildName(horse)
 		const nameId = uuidv4()
 		await biolineageDb.insert('entity_names', {
 			id: nameId,
 			treeId: horseTree,
 			entityId: id,
 			nameType: 'Ingestion',
-			givenName: horse.GivenName,
-			middleName: horse.MiddleName,
-			familyName: horse.FamilyName,
-			suffixName: horse.SuffixName,
-			nickName: horse.NickName,
-			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
+			nameParts: JSON.stringify(names.nameParts),
 			createdBy: norm,
 			modifiedBy: norm
 		})
@@ -791,10 +1834,11 @@ async function initPg() {
 			id,
 			treeId: horseTree,
 			canonicalNameId: nameId,
-			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
-			familyName: horse.FamilyName,
-			searchName: buildSearchName(horse),
-			sex: horse.GenderIsMale ? horse.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+			fullName: names.fullName,
+			displayName: names.displayName,
+			familyName: names.familyName,
+			searchName: names.searchName,
+			sex: horse.GenderIsMale ? horse.GenderIsMale.toLowerCase() === 'true' ? 'Male' : 'Female' : null,
 			createdBy: norm,
 			modifiedBy: norm
 		})
@@ -805,22 +1849,14 @@ async function initPg() {
 	for (const row of charlesData) {
 		const person = people.find(data => data.keeNew === row.keeNew)
 		const id = uuidv4()
-		const nameParts = []
-		if (person.GivenName) nameParts.push(person.GivenName)
-		if (person.FamilyName) nameParts.push(person.FamilyName)
-		if (person.SuffixName) nameParts.push(person.SuffixName)
+		const names = buildName(row)
 		const nameId = uuidv4()
 		await biolineageDb.insert('entity_names', {
 			id: nameId,
 			treeId: charlesTree,
 			entityId: id,
 			nameType: 'Ingestion',
-			givenName: person.GivenName,
-			middleName: person.MiddleName,
-			familyName: person.FamilyName,
-			suffixName: person.SuffixName,
-			nickName: person.NickName,
-			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
+			nameParts: JSON.stringify(names.nameParts),
 			createdBy: charles,
 			modifiedBy: charles
 		})
@@ -828,10 +1864,11 @@ async function initPg() {
 			id,
 			treeId: charlesTree,
 			canonicalNameId: nameId,
-			displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
-			familyName: person.FamilyName,
-			searchName: buildSearchName(person),
-			sex: person.GenderIsMale ? person.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+			fullName: names.fullName,
+			displayName: names.displayName,
+			familyName: names.familyName,
+			searchName: names.searchName,
+			sex: person.GenderIsMale ? person.GenderIsMale.toLowerCase() === 'true' ? 'Male' : 'Female' : null,
 			createdBy: charles,
 			modifiedBy: charles
 		})
@@ -842,22 +1879,14 @@ async function initPg() {
 	for (const row of normData) {
 		if (!used.includes(row.keeNew)) {
 			const id = uuidv4()
-			const nameParts = []
-			if (row.GivenName) nameParts.push(row.GivenName)
-			if (row.FamilyName) nameParts.push(row.FamilyName)
-			if (row.SuffixName) nameParts.push(row.SuffixName)
+			const names = buildName(row)
 			const nameId = uuidv4()
 			await biolineageDb.insert('entity_names', {
 				id: nameId,
 				treeId: normTree,
 				entityId: id,
 				nameType: 'Ingestion',
-				givenName: row.GivenName,
-				middleName: row.MiddleName,
-				familyName: row.FamilyName,
-				suffixName: row.SuffixName,
-				nickName: row.NickName,
-				displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
+				nameParts: JSON.stringify(names.nameParts),
 				createdBy: norm,
 				modifiedBy: norm
 			})
@@ -865,10 +1894,11 @@ async function initPg() {
 				id,
 				treeId: normTree,
 				canonicalNameId: nameId,
-				displayName: nameParts.length > 0 ? nameParts.join(' ') : 'Unknown',
-				familyName: row.FamilyName,
-				searchName: buildSearchName(row),
-				sex: row.GenderIsMale ? row.GenderIsMale.toLowerCase() === 'true' ? 'M' : 'F' : null,
+				fullName: names.fullName,
+				displayName: names.displayName,
+				familyName: names.familyName,
+				searchName: names.searchName,
+				sex: row.GenderIsMale ? row.GenderIsMale.toLowerCase() === 'true' ? 'Male' : 'Female' : null,
 				createdBy: norm,
 				modifiedBy: norm
 			})
@@ -904,7 +1934,7 @@ async function initPg() {
 		places.push(data)
 	}
 	const personData = await normSQLite.query('SELECT * FROM person')
-	const entities = await biolineageDb.query('SELECT * FROM entities')
+	const entities = await biolineageDb.query('SELECT entities.*, trees.entity_type_id FROM entities join trees on trees.id = entities.tree_id')
 	for (const entity of entities) {
 		const person = personData.find(lookup => lookup.uuid === entity.id)
 		if (!person) console.log(entity)
@@ -917,8 +1947,10 @@ async function initPg() {
 			const data = {
 				id: uuidv4(),
 				treeId: entity.treeId,
+				entityTypeId: entity.entityTypeId,
+				code: 'Birth',
 				entityId: entity.id,
-				eventType: 'birth',
+				role: 'Ingestion',
 				epoch: 'AD',
 				year: dateParts[0],
 				month: dateParts[1],
@@ -927,15 +1959,17 @@ async function initPg() {
 				createdBy: entity.createdBy,
 				modifiedBy: entity.modifiedBy
 			}
-			await biolineageDb.insert('events', data)
+			await biolineageDb.insert('facts', data)
 		}
 		if (person.DateOfDeath) {
 			const dateParts = person.DateOfDeath.split('-')
 			const data = {
 				id: uuidv4(),
 				treeId: entity.treeId,
+				entityTypeId: entity.entityTypeId,
+				code: 'Death',
 				entityId: entity.id,
-				eventType: 'death',
+				role: 'Ingestion',
 				epoch: 'AD',
 				year: dateParts[0],
 				month: dateParts[1],
@@ -943,7 +1977,30 @@ async function initPg() {
 				createdBy: entity.createdBy,
 				modifiedBy: entity.modifiedBy
 			}
-			await biolineageDb.insert('events', data)
+			await biolineageDb.insert('facts', data)
+			if (person.BurialCemetary || person.BurialCountry || person.BurialState || person.BurialCity) {
+				const d = new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
+				d.setDate(d.getDate() + 7)
+				let placeId = null
+				const place = places.find(lookup => lookup.ogName === person.BurialCemetary && lookup.ogCountry === person.BurialCountry && lookup.ogRegion === person.BurialState && lookup.ogCity === person.BurialCity)
+				if (place) placeId = place.id
+				const data = {
+					id: uuidv4(),
+					treeId: entity.treeId,
+					entityTypeId: entity.entityTypeId,
+					code: 'Burial',
+					entityId: entity.id,
+					role: 'Ingestion',
+					epoch: 'AD',
+					year: d.getFullYear(),
+					month: d.getMonth() + 1,
+					day: d.getDate(),
+					placeId,
+					createdBy: entity.createdBy,
+					modifiedBy: entity.modifiedBy
+				}
+				await biolineageDb.insert('facts', data)
+			}
 		}
 	}
 	await transformRelationshipsAndGender(parent)

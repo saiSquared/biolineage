@@ -103,6 +103,10 @@ async function apiServers(app) {
 		}
 	})
 
+	app.get('/api/entity/graph/:id', async (request, reply) => {
+		reply.send(await getters.entityGraph(request.params.id))
+	})
+
 	app.post('/api/entity/add', async (request, reply) => {
 		reply.send(await setters.entityAdd(request.user, request.body))
 	})

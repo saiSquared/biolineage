@@ -95,7 +95,7 @@ function buildPaginationItem(page, text) {
 		li.innerHTML = page
 	} else {
 		const a = document.createElement('a')
-		a.href = `/sos/items?page=${page}`
+		a.href = `/trees/${dataPackage.treeSlug}?page=${page}`
 		a.addEventListener('click', (event) => {
 			event.preventDefault()
 			filterPackage.page = page
@@ -196,7 +196,7 @@ function drawTable(items) {
 			tr.appendChild(drawCell(item, col))
 		}
 		tr.addEventListener('click', () => {
-			window.location.href = `/person/${item.id}`
+			window.location.href = `/trees/${dataPackage.treeSlug}/entities/${item.id}`
 		})
 		tbody.appendChild(tr)
 	}

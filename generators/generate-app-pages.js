@@ -183,7 +183,7 @@ class AppGenerators {
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
-			title: tree.name,
+			title: `${tree.name} - Trees`,
 			description: `Browse people in tree ${tree.name}`,
 			breadcrumbs: [
 				{ link: '/', text: 'Home' },
@@ -215,6 +215,7 @@ class AppGenerators {
 		})
 		const dataPackage = {
 			treeId: tree.id,
+			treeSlug: slug,
 			treeType: tree.entityTypeId,
 			userId: user.userId,
 			role: user.role
@@ -231,11 +232,129 @@ class AppGenerators {
 		return generatePage(data, 'standard.html', true)
 	}
 
+	async treeEntities(user, slug) {
+		const tree = trees.find(lookup => lookup.slug === slug)
+		if (!tree) return null
+		if (!tree.ownerId === user.userId && !user.role === 'super') return null
+		let icon, text
+		switch (tree.entityTypeId) {
+			case 'd4780b1f-3764-491d-9942-dc814c3750b4':
+				icon = '/img/person.svg'
+				text = 'Add Person'
+				break
+			case '409a8c4f-1167-4039-b298-f46ce7bcf7fd':
+				icon = '/img/horse.svg'
+				text = 'Add Horse'
+		}
+		/** @type {Page} */
+		const data = {
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			title: `Entities - ${tree.name} - Trees`,
+			description: `Browse people in tree ${tree.name}`,
+			breadcrumbs: [
+				{ link: '/', text: 'Home' },
+				{ link: '/trees', text: 'Trees' },
+				{ link: `/trees/${tree.slug}`, text: tree.name },
+				{ text: 'Entities' }
+			],
+			full: [],
+			menus: [
+				{ file: 'account-menu.html' },
+				{ file: 'theme-menu.html' }
+			],
+			stylesheets: [],
+			scripts: [
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' }
+			]
+		}
+		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 1 })
+		data.full.push({
+			type: 'filter-bar',
+			method: 'POST',
+			action: '/browse',
+			fields: [
+				{ name: 'filter-text', label: 'Filter', placeholder: 'Filter by name', type: 'text', autocomplete: true, nospellcheck: true },
+				{ name: 'filter-start-year', label: 'Start Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
+				{ name: 'filter-end-year', label: 'End Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
+				{ name: 'add-entity', label: '&nbsp;', fixed: true, type: 'button', icon, text }
+			]
+		})
+		const dataPackage = {
+			treeId: tree.id,
+			treeSlug: slug,
+			treeType: tree.entityTypeId,
+			userId: user.userId,
+			role: user.role
+		}
+		data.scripts.push(
+			{
+				type: 'inline',
+				content: [
+						`const dataPackage = JSON.parse(\`${JSON.stringify(dataPackage)}\`)`
+				]
+			}
+		)
+		data.scripts.push({ type: 'link', content: '/js/tree-browse.js', module: true })
+		return generatePage(data, 'standard.html', true)
+	}
+
+	async treeEntity(user, slug, id) {
+		const tree = trees.find(lookup => lookup.slug === slug)
+		if (!tree) return null
+		if (!tree.ownerId === user.userId && !user.role === 'super') return null
+		const entity = await getters.entity(id)
+		if (!entity) return null
+		/** @type {Page} */
+		const data = {
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			title: `${entity.displayName} - Entities - ${tree.name} - Trees`,
+			description: `Browse people in tree ${tree.name}`,
+			breadcrumbs: [
+				{ link: '/', text: 'Home' },
+				{ link: '/trees', text: 'Trees' },
+				{ link: `/trees/${tree.slug}`, text: tree.name },
+				{ link: `/trees/${tree.slug}/entities`, text: 'Entities' },
+				{ text: entity.displayName }
+			],
+			full: [],
+			menus: [
+				{ file: 'account-menu.html' },
+				{ file: 'theme-menu.html' }
+			],
+			stylesheets: ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'],
+			scripts: [
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' },
+				{ type: 'link', content: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' }
+			]
+		}
+		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 2 })
+		const dataPackage = {
+			treeId: tree.id,
+			treeSlug: slug,
+			treeType: tree.key,
+			entityId: entity.id,
+			userId: user.userId,
+			role: user.role
+		}
+		data.scripts.push(
+			{
+				type: 'inline',
+				content: [
+						`const dataPackage = JSON.parse(\`${JSON.stringify(dataPackage)}\`)`
+				]
+			}
+		)
+		data.scripts.push({ type: 'link', content: '/js/tree-entity.js', module: true })
+		return generatePage(data, 'standard.html', true)
+	}
+
 	async trees(user) {
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
-			title: 'Home',
+			title: 'Trees',
 			breadcrumbs: [
 				{ link: '/', text: 'Home' },
 				{ text: 'Trees' }

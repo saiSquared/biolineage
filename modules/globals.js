@@ -42,7 +42,7 @@ async function hashPassword(text) {
 
 async function loadTrees() {
 	trees.length = 0
-	const treeData = await biolineageDb.query('select * from trees')
+	const treeData = await biolineageDb.query('select t.*, et.key from trees t join entity_types et on et.id = t.entity_type_id')
 	for (const tree of treeData) {
 		trees.push(tree)
 	}

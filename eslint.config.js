@@ -18,7 +18,8 @@ module.exports = [
 				TL: 'readonly',
 				editorPackage: 'readonly',
 				f3: 'readonly',
-				dataPackage: 'readonly'
+				dataPackage: 'readonly',
+				L: 'readonly'
 			}
 		},
 		plugins: { '@stylistic': stylistic },

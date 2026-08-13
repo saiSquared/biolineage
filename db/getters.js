@@ -632,6 +632,191 @@ class Getters {
 		return await dbNorm.query(removeIndent(sql))
 	}
 
+	async entity(id) {
+		return await biolineageDb.get('select * from entities where id = $1;', [id])
+	}
+
+	async entityGraph(id) {
+		let sql
+
+		// root entity
+		sql =
+			`select
+				e.id, e.full_name, e.display_name, e.sex, e.notes, en.name_type, en.name_parts, u."name" modified_by, e.modified_date, u2."name" created_by, e.created_date
+			from
+				entities e
+				join entity_names en on en.id = e.canonical_name_id
+				join users u on u.id = e.modified_by
+				join users u2 on u2.id = e.created_by
+			where
+				e.id = $1;`
+		const entity = await biolineageDb.get(sql, [id])
+
+		// names
+		sql =
+			`select
+				id, name_type, name_parts
+			from
+				entity_names
+			where
+				entity_id = $1
+			order by modified_date;`
+		const entityNames = await biolineageDb.query(sql, [id])
+
+		// events
+		sql =
+			`select
+				f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second" ,
+				p.id place_id, p.place_type, p."name" place_name, p.enclosed_by, p2."name" enclosed_by_name, p.sovereign_entity, se."name" sovereign_entity_name,
+				p.subdivision, s."name" subdivision_name , p.administrative_division, ad."name" administrative_division_name,
+				ad.longitude administrative_division_longitude, ad.latitude administrative_division_latitude, p.municipality, m."name" municipality_name,
+				m.longitude municipality_longitude, m.latitude municipality_latitude
+			from
+				facts f
+				left join places p on p.id = f.place_id
+				left join places p2 on p2.id = p.enclosed_by
+				left join sovereign_entities se on se.id = p.sovereign_entity_id
+				left join subdivisions s on s.id = p.subdivision_id
+				left join administrative_divisions ad on ad.id = p.administrative_division_id
+				left join municipalities m on m.id = p.municipality_id
+			where
+				f.entity_id = $1
+			order by
+				f."year", f."month", f."day", f."hour", f."minute", f."second";`
+		const facts = await biolineageDb.query(sql, [id])
+
+		// parents
+		const parentSql =
+			`select
+				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.left_output
+			from
+				relationships r
+				join entities e on e.id = r.entity_id
+				join relationship_types rt on rt.id = r.relationship_type_id
+			where
+				r.related_entity_id  = $1
+				and rt."type" = 'parent'
+				and rt.direction = 'forward'
+			order by
+				e.birth_year, e.family_name, e.display_name;`
+		const parents = await biolineageDb.query(parentSql, [id])
+		const parentIds = parents.map(data => data.id)
+
+		// children
+		const childSql =
+			`select
+				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.right_output
+			from
+				relationships r
+				join entities e on e.id = r.related_entity_id
+				join relationship_types rt on rt.id = r.relationship_type_id
+			where
+				r.entity_id = $1
+				and rt."type" = 'parent'
+				and rt.direction = 'forward'
+			order by
+				e.birth_year, e.family_name, e.display_name;`
+		const rawChildren = await biolineageDb.query(childSql, [id])
+		const spouses = []
+		for (const child of rawChildren) {
+			const childParents = await biolineageDb.query(parentSql, [child.id])
+			const otherParents = childParents.filter(data => data.id !== id)
+			if (otherParents.length > 1) {
+				// TODO ingestion data is for "normal" parents, assembly requires discussion on adoptive/biological/etc additional returned records
+			} else {
+				if (otherParents.length === 0) {
+					const unknownSpouse = spouses.find(lookup => lookup.id === null)
+					if (unknownSpouse) {
+						unknownSpouse.children.push(child)
+					} else {
+						spouses.push({
+							id: null,
+							fullName: '<em>Unknown</em>',
+							displayName: '<em>Unknown</em>',
+							sex: null,
+							birthYear: null,
+							deathYear: null,
+							children: [child]
+						})
+					}
+				} else {
+					const otherParent = otherParents[0]
+					// TODO confirm other parent is a primary name === 'Parent' otherwise group with unknown, other `parent` types are only visible on the child's page
+					const existingSpouse = spouses.find(lookup => lookup.id === otherParent.id)
+					if (existingSpouse) {
+						existingSpouse.children.push(child)
+					} else {
+						spouses.push({
+							id: otherParent.id,
+							fullName: otherParent.fullName,
+							displayName: otherParent.displayName,
+							sex: otherParent.sex,
+							birthYear: otherParent.birthYear,
+							deathYear: otherParent.deathYear,
+							children: [child]
+						})
+					}
+				}
+			}
+		}
+
+		// siblings
+		const siblings = []
+
+		if (parentIds.length > 0) {
+			const sortedSelfParents = parentIds.slice().sort((a, b) => a - b)
+			const selfKey = JSON.stringify(sortedSelfParents)
+
+			const allChildren = new Map() // child.id → child
+			const parentGroups = []
+			const parentGroupKeys = new Map() // key → group
+
+			// STEP 1: Collect all children across all parents
+			for (const parent of parentIds) {
+				const parentChildren = await biolineageDb.query(childSql, [parent])
+				for (const child of parentChildren) {
+					if (!allChildren.has(child.id)) {
+						allChildren.set(child.id, child)
+					}
+				}
+			}
+
+			// STEP 2: Process each unique child
+			for (const child of allChildren.values()) {
+				// Skip self
+				if (child.id === id) continue
+
+				const childParents = await biolineageDb.query(parentSql, [child.id])
+				const childParentIds = childParents.map(p => p.id)
+
+				// Sort parent IDs for stable grouping
+				const sortedChildParents = childParentIds.slice().sort((a, b) => a - b)
+				const key = JSON.stringify(sortedChildParents)
+
+				// STEP 3: Deduplicate parent groups
+				let group = parentGroupKeys.get(key)
+				if (!group) {
+					group = {
+						parents: key,
+						parentDetails: childParents,
+						children: [],
+						full: key === selfKey
+					}
+					parentGroupKeys.set(key, group)
+					parentGroups.push(group)
+				}
+
+				group.children.push(child)
+			}
+
+			siblings.push(...parentGroups)
+		}
+
+		// assembly
+		const graph = { ...entity, names: entityNames, facts, parents, children: spouses, siblings }
+		return graph
+	}
+
 	async superTrees(id) {
 		return await biolineageDb.query('select name, slug, (select count(*) from entities where tree_id = trees.id) c from trees where owner_id <> $1 order by name;', [id])
 	}
