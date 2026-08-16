@@ -134,6 +134,7 @@ const pgTables = {
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'sovereign_entity_id', type: 'UUID', nulls: false },
 			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'long_name', type: 'TEXT' },
 			{ name: 'type', type: 'TEXT', nulls: false },
 			{ name: 'iso31662', type: 'JSONB' },
 			{ name: 'has_flag', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
@@ -708,7 +709,7 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
-	factPlaces: {
+	factAddPlaces: {
 		name: 'fact_add_places',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
@@ -751,7 +752,7 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
-	factDates: {
+	factAddDates: {
 		name: 'fact_add_dates',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
@@ -1387,6 +1388,47 @@ const pgFunctions = [
 					'pages', v_pages,
 					'items', COALESCE(v_items, '[]'::jsonb)
 				);
+			END;
+			$$;`
+	},
+	{
+		code:
+			`CREATE OR REPLACE FUNCTION get_entity_facts(
+				p_entity_id UUID
+			)
+			RETURNS JSONB
+			LANGUAGE plpgsql AS $$
+			DECLARE
+				v_facts JSONB;
+			BEGIN
+				SELECT jsonb_agg(to_jsonb(t))
+				INTO v_facts
+				FROM (
+					SELECT
+						f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second",
+						p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude, p.latitude place_latitude,
+						p.enclosed_by, p2."name" enclosed_by_name, p.sovereign_entity, se."name" sovereign_entity_name,
+						p.subdivision, s."name" subdivision_name,
+						p.administrative_division, ad."name" administrative_division_name,
+						ad.longitude administrative_division_longitude, ad.latitude administrative_division_latitude,
+						p.municipality, m."name" municipality_name,
+						m.longitude municipality_longitude, m.latitude municipality_latitude
+					FROM
+						facts f
+						LEFT JOIN places p ON p.id = f.place_id
+						LEFT JOIN places p2 ON p2.id = p.enclosed_by
+						LEFT JOIN sovereign_entities se ON se.id = p.sovereign_entity_id
+						LEFT JOIN subdivisions s ON s.id = p.subdivision_id
+						LEFT JOIN administrative_divisions ad ON ad.id = p.administrative_division_id
+						LEFT JOIN municipalities m ON m.id = p.municipality_id
+					WHERE
+						f.entity_id = p_entity_id
+						AND f.code IN ('Birth', 'Death')
+					ORDER BY
+						f."year", f."month", f."day", f."hour", f."minute", f."second"
+				) t;
+
+				RETURN COALESCE(v_facts, '[]'::jsonb);
 			END;
 			$$;`
 	}

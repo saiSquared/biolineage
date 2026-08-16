@@ -1,4 +1,3 @@
-const fs = require('node:fs')
 const path = require('node:path')
 const { v4: uuidv4 } = require('uuid')
 const argon2 = require('argon2')
@@ -297,6 +296,7 @@ const buildName = (data) => {
 
 	let displayName = displayParts.join(' ')
 	if (nameParts.SuffixTitle) displayName += `, ${nameParts.SuffixTitle}`
+	nameParts.displayName = displayName
 
 	// Build searchName
 	const searchParts = []
@@ -468,72 +468,53 @@ async function initPg() {
 	})
 
 	// Create Geography-related tables
-	const sovereignEntities = []
-	const countries = JSON.parse(fs.readFileSync('countries-final.json'))
-	for (const country of countries) {
-		country.type = 'COUNTRY'
-		country.iso31661 = JSON.stringify(country.iso31661)
-		country.tlds = JSON.stringify(country.tlds)
-		await biolineageDb.insert('sovereign_entities', country)
-		sovereignEntities.push(country)
-	}
-	const subdivisions = []
-	const subdivisionsData = JSON.parse(fs.readFileSync('subdivisions-final.json'))
-	for (const subdivision of subdivisionsData) {
-		subdivision.sovereignEntityId = subdivision.countryId
-		subdivision.type = subdivision.iso31662.category
-		subdivision.iso31662 = JSON.stringify(subdivision.iso31662)
-		delete subdivision.countryId
-		await biolineageDb.insert('subdivisions', subdivision)
-		subdivisions.push(subdivision)
-	}
-	const administrativeDivisions = []
-	const administrativeDivisionsData = JSON.parse(fs.readFileSync('administrative_divisions.json'))
-	for (const administrativeDivision of administrativeDivisionsData) {
-		const subdivision = subdivisions.find(lookup => lookup.name === administrativeDivision.state_name)
-		const data = {
-			id: uuidv4(),
-			sovereignEntityId: subdivision.sovereignEntityId,
-			subdivisionId: subdivision.id,
-			name: administrativeDivision.county,
-			longName: administrativeDivision.county_full,
-			type: 'COUNTY',
-			fips: Number(administrativeDivision.county_fips),
-			latitude: Number(administrativeDivision.lat),
-			longitude: Number(administrativeDivision.lng),
-			meta: JSON.stringify({ population: administrativeDivision.population })
+	biolineageDb.begin()
+	try {
+		const sovereignEntities = await normSQLite.query('select * from sovereign_entities')
+		for (const sovereignEnity of sovereignEntities) {
+			await biolineageDb.insert('sovereign_entities', sovereignEnity)
 		}
-		await biolineageDb.insert('administrative_divisions', data)
-		administrativeDivisions.push(data)
+		await biolineageDb.commit()
+	} catch (error) {
+		biolineageDb.rollback()
+		console.log('FAILED TO INSERT sovereign_entities')
+		process.exit()
 	}
-	const municipalitiesData = JSON.parse(fs.readFileSync('municipalities.json'))
-	for (const municipality of municipalitiesData) {
-		if (municipality.state_id !== 'PR') {
-			const administrativeDivision = administrativeDivisions.find(lookup => lookup.fips === Number(municipality.county_fips))
-			if (!administrativeDivision) console.log(municipality)
-			const meta = {
-				population: Number(municipality.population),
-				density: Number(municipality.density),
-				source: municipality.source,
-				military: municipality.military === 'TRUE',
-				incorporated: municipality.incorporated === 'TRUE',
-				timezone: municipality.timezone,
-				ranking: Number(municipality.ranking),
-				zips: JSON.stringify(municipality.zips.split(' '))
-			}
-			const data = {
-				id: uuidv4(),
-				sovereignEntityId: administrativeDivision.sovereignEntityId,
-				subdivisionId: administrativeDivision.subdivisionId,
-				administrativeDivisionId: administrativeDivision.id,
-				name: municipality.city,
-				type: 'CITY',
-				latitude: Number(municipality.lat),
-				longitude: Number(municipality.lng),
-				meta: JSON.stringify(meta)
-			}
-			await biolineageDb.insert('municipalities', data)
+	biolineageDb.begin()
+	try {
+		const subdivisions = await normSQLite.query('select * from subdivisions')
+		for (const subdivision of subdivisions) {
+			await biolineageDb.insert('subdivisions', subdivision)
 		}
+		await biolineageDb.commit()
+	} catch (error) {
+		biolineageDb.rollback()
+		console.log('FAILED TO INSERT subdivisions')
+		process.exit()
+	}
+	biolineageDb.begin()
+	try {
+		const administrativeDivisions = await normSQLite.query('select * from administrative_divisions')
+		for (const administrativeDivision of administrativeDivisions) {
+			await biolineageDb.insert('administrative_divisions', administrativeDivision)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		biolineageDb.rollback()
+		console.log('FAILED TO INSERT administrative_divisions')
+		process.exit()
+	}
+	biolineageDb.begin()
+	try {
+		const municipalities = await normSQLite.query('select * from municipalities')
+		for (const municipality of municipalities) {
+			await biolineageDb.insert('municipalities', municipality)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		biolineageDb.rollback()
+		console.log('FAILED TO INSERT municipalities')
+		process.exit()
 	}
 
 	// create initial entity_name_parts
@@ -1525,6 +1506,7 @@ async function initPg() {
 		direction: 'forward',
 		main: true,
 		name: 'Parent',
+		description: 'A biological parent–child relationship indicating direct lineage.',
 		leftOutput: JSON.stringify({ male: 'Father', female: 'Mother', other: 'Parent' }),
 		rightOutput: JSON.stringify({ male: 'Son', female: 'Daughter', other: 'Child' }),
 		createdBy: clubside,
@@ -1535,6 +1517,7 @@ async function initPg() {
 		type: 'parent',
 		direction: 'forward',
 		name: 'Adoptive Parent',
+		description: 'A legal parent–child relationship established through adoption rather than biology.',
 		leftOutput: JSON.stringify({ male: 'Adoptive Father', female: 'Adoptive Mother', other: 'Adoptive Parent' }),
 		rightOutput: JSON.stringify({ male: 'Adopted Son', female: 'Adopted Daughter', other: 'Adopted Child' }),
 		createdBy: clubside,
@@ -1545,6 +1528,7 @@ async function initPg() {
 		type: 'parent',
 		direction: 'forward',
 		name: 'Foster Parent',
+		description: 'A temporary caregiving relationship where an adult provides state-authorized care for a child.',
 		leftOutput: JSON.stringify({ male: 'Foster Father', female: 'Foster Mother', other: 'Foster Parent' }),
 		rightOutput: JSON.stringify({ male: 'Foster Son', female: 'Foster Daughter', other: 'Foster Child' }),
 		createdBy: clubside,
@@ -1555,6 +1539,7 @@ async function initPg() {
 		type: 'parent',
 		direction: 'forward',
 		name: 'Stepparent',
+		description: 'A relationship formed when a parent marries someone who is not the child’s biological parent.',
 		leftOutput: JSON.stringify({ male: 'Stepfather', female: 'Stepmother', other: 'Stepparent' }),
 		rightOutput: JSON.stringify({ male: 'Stepson', female: 'Stepdaughter', other: 'Stepchild' }),
 		createdBy: clubside,
@@ -1565,6 +1550,7 @@ async function initPg() {
 		type: 'parent',
 		direction: 'forward',
 		name: 'Guardian',
+		description: 'A legally appointed caretaker responsible for the welfare of a ward.',
 		leftOutput: JSON.stringify({ male: 'Guardian', female: 'Guardian', other: 'Guardian' }),
 		rightOutput: JSON.stringify({ male: 'Ward', female: 'Ward', other: 'Ward' }),
 		createdBy: clubside,
@@ -1576,6 +1562,7 @@ async function initPg() {
 		direction: 'parallel',
 		main: true,
 		name: 'Spouse',
+		description: 'A marital relationship recognized by law, ceremony, or tradition.',
 		leftOutput: JSON.stringify({ male: 'Husband', female: 'Wife', other: 'Spouse' }),
 		rightOutput: JSON.stringify({ male: 'Husband', female: 'Wife', other: 'Spouse' }),
 		createdBy: clubside,
@@ -1586,6 +1573,7 @@ async function initPg() {
 		type: 'partner',
 		direction: 'parallel',
 		name: 'Ex-spouse',
+		description: 'A former marital relationship dissolved through divorce or annulment.',
 		leftOutput: JSON.stringify({ male: 'Ex-husband', female: 'Ex-wife', other: 'Ex-spouse' }),
 		rightOutput: JSON.stringify({ male: 'Ex-husband', female: 'Ex-wife', other: 'Ex-spouse' }),
 		createdBy: clubside,
@@ -1596,6 +1584,7 @@ async function initPg() {
 		type: 'partner',
 		direction: 'parallel',
 		name: 'Partner',
+		description: 'A committed relationship without formal marriage requirements.',
 		leftOutput: JSON.stringify({ male: 'Partner', female: 'Partner', other: 'Partner' }),
 		rightOutput: JSON.stringify({ male: 'Partner', female: 'Partner', other: 'Partner' }),
 		createdBy: clubside,
@@ -1606,6 +1595,7 @@ async function initPg() {
 		type: 'partner',
 		direction: 'parallel',
 		name: 'Domestic Partner',
+		description: 'A household-sharing partnership recognized socially or legally.',
 		leftOutput: JSON.stringify({ male: 'Domestic Partner', female: 'Domestic Partner', other: 'Domestic Partner' }),
 		rightOutput: JSON.stringify({ male: 'Domestic Partner', female: 'Domestic Partner', other: 'Domestic Partner' }),
 		createdBy: clubside,
@@ -1616,6 +1606,7 @@ async function initPg() {
 		type: 'partner',
 		direction: 'parallel',
 		name: 'Civil Union Partner',
+		description: 'A legally recognized partnership granting rights similar to marriage.',
 		leftOutput: JSON.stringify({ male: 'Civil Union Partner', female: 'Civil Union Partner', other: 'Civil Union Partner' }),
 		rightOutput: JSON.stringify({ male: 'Civil Union Partner', female: 'Civil Union Partner', other: 'Civil Union Partner' }),
 		createdBy: clubside,
@@ -1626,6 +1617,7 @@ async function initPg() {
 		type: 'partner',
 		direction: 'parallel',
 		name: 'Common-law spouse',
+		description: 'A marital relationship recognized through cohabitation and social acknowledgment rather than ceremony.',
 		leftOutput: JSON.stringify({ male: 'Common-law husband', female: 'Common-law wife', other: 'Common-law spouse' }),
 		rightOutput: JSON.stringify({ male: 'Common-law husband', female: 'Common-law wife', other: 'Common-law spouse' }),
 		createdBy: clubside,
@@ -1636,6 +1628,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Godparent',
+		description: 'A ceremonial relationship where an adult sponsors a child’s religious or moral upbringing.',
 		leftOutput: JSON.stringify({ male: 'Godfather', female: 'Godmother', other: 'Godparent' }),
 		rightOutput: JSON.stringify({ male: 'Godson', female: 'Goddaughter', other: 'Godchild' }),
 		createdBy: clubside,
@@ -1646,6 +1639,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Household',
+		description: 'A relationship between a head of household and an occupant living under the same roof.',
 		leftOutput: JSON.stringify({ male: 'Head of Household', female: 'Head of Household', other: 'Head of Household' }),
 		rightOutput: JSON.stringify({ male: 'Occupant', female: 'Occupant', other: 'Occupant' }),
 		createdBy: clubside,
@@ -1656,6 +1650,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Apprenticeship',
+		description: 'A vocational relationship where a master trains an apprentice.',
 		leftOutput: JSON.stringify({ male: 'Master', female: 'Mistress', other: 'Master' }),
 		rightOutput: JSON.stringify({ male: 'Apprentice', female: 'Apprentice', other: 'Apprentice' }),
 		createdBy: clubside,
@@ -1666,6 +1661,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Employment',
+		description: 'A work relationship between employer and employee.',
 		leftOutput: JSON.stringify({ male: 'Employer', female: 'Employer', other: 'Employer' }),
 		rightOutput: JSON.stringify({ male: 'Employee', female: 'Employee', other: 'Employee' }),
 		createdBy: clubside,
@@ -1676,6 +1672,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Enslavement',
+		description: 'A historical relationship where a slaveholder exerts ownership and control over an enslaved person.',
 		leftOutput: JSON.stringify({ male: 'Slaveholder', female: 'Slaveholder', other: 'Slaveholder' }),
 		rightOutput: JSON.stringify({ male: 'Enslaved', female: 'Enslaved', other: 'Enslaved' }),
 		createdBy: clubside,
@@ -1686,6 +1683,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'parallel',
 		name: 'Relative',
+		description: 'A non-specific familial relationship between two related individuals.',
 		leftOutput: JSON.stringify({ male: 'Relative', female: 'Relative', other: 'Relative' }),
 		rightOutput: JSON.stringify({ male: 'Relative', female: 'Relative', other: 'Relative' }),
 		createdBy: clubside,
@@ -1696,6 +1694,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'parallel',
 		name: 'Neighbor',
+		description: 'A proximity-based relationship between individuals living near one another.',
 		leftOutput: JSON.stringify({ male: 'Neighbor', female: 'Neighbor', other: 'Neighbor' }),
 		rightOutput: JSON.stringify({ male: 'Neighbor', female: 'Neighbor', other: 'Neighbor' }),
 		createdBy: clubside,
@@ -1706,6 +1705,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Mentor',
+		description: 'A guidance relationship where a mentor provides instruction or support to a mentee.',
 		leftOutput: JSON.stringify({ male: 'Mentor', female: 'Mentor', other: 'Mentor' }),
 		rightOutput: JSON.stringify({ male: 'Mentee', female: 'Mentee', other: 'Mentee' }),
 		createdBy: clubside,
@@ -1716,6 +1716,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Caretaker',
+		description: 'A caregiving relationship where a caretaker supports a dependent.',
 		leftOutput: JSON.stringify({ male: 'Caretaker', female: 'Caretaker', other: 'Caretaker' }),
 		rightOutput: JSON.stringify({ male: 'Dependent', female: 'Dependent', other: 'Dependent' }),
 		createdBy: clubside,
@@ -1726,6 +1727,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Landlord',
+		description: 'A property relationship where a landlord leases space to a tenant.',
 		leftOutput: JSON.stringify({ male: 'Landlord', female: 'Landlord', other: 'Landlord' }),
 		rightOutput: JSON.stringify({ male: 'Tenant', female: 'Tenant', other: 'Tenant' }),
 		createdBy: clubside,
@@ -1736,6 +1738,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Liege',
+		description: 'A feudal relationship where a liege grants protection or land to a vassal.',
 		leftOutput: JSON.stringify({ male: 'Liege', female: 'Liege', other: 'Liege' }),
 		rightOutput: JSON.stringify({ male: 'Vassal', female: 'Vassal', other: 'Vassal' }),
 		createdBy: clubside,
@@ -1746,6 +1749,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Lord',
+		description: 'A hierarchical relationship where a lord holds authority over a subject.',
 		leftOutput: JSON.stringify({ male: 'Lord', female: 'Lord', other: 'Lord' }),
 		rightOutput: JSON.stringify({ male: 'Subject', female: 'Subject', other: 'Subject' }),
 		createdBy: clubside,
@@ -1756,6 +1760,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Servitude',
+		description: 'A service-based relationship where a master directs the labor of a servant.',
 		leftOutput: JSON.stringify({ male: 'Master', female: 'Mistress', other: 'Master' }),
 		rightOutput: JSON.stringify({ male: 'Servant', female: 'Servant', other: 'Servant' }),
 		createdBy: clubside,
@@ -1766,6 +1771,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Knighthood',
+		description: 'A medieval relationship where a knight trains or oversees a squire.',
 		leftOutput: JSON.stringify({ male: 'Knight', female: 'Knight', other: 'Knight' }),
 		rightOutput: JSON.stringify({ male: 'Squire', female: 'Squire', other: 'Squire' }),
 		createdBy: clubside,
@@ -1776,6 +1782,7 @@ async function initPg() {
 		type: 'other',
 		direction: 'forward',
 		name: 'Tutor',
+		description: 'An educational relationship where a tutor instructs a student.',
 		leftOutput: JSON.stringify({ male: 'Tutor', female: 'Tutor', other: 'Tutor' }),
 		rightOutput: JSON.stringify({ male: 'Student', female: 'Student', other: 'Student' }),
 		createdBy: clubside,
@@ -1849,7 +1856,7 @@ async function initPg() {
 	for (const row of charlesData) {
 		const person = people.find(data => data.keeNew === row.keeNew)
 		const id = uuidv4()
-		const names = buildName(row)
+		const names = buildName(person)
 		const nameId = uuidv4()
 		await biolineageDb.insert('entity_names', {
 			id: nameId,
@@ -1913,17 +1920,26 @@ async function initPg() {
 			placeType: place.type,
 			name: place.name
 		}
-		if (place.countryId) {
-			data.sovereignEntityId = place.countryId
+		if (place.sovereignEntityId) {
+			data.sovereignEntityId = place.sovereignEntityId
 		} else {
-			data.sovereignEntity = place.country
+			data.sovereignEntity = place.sovereignEntity
 		}
-		if (place.regionId) {
-			data.subdivisionId = place.regionId
+		if (place.subdivisionId) {
+			data.subdivisionId = place.subdivisionId
 		} else {
-			data.subdivision = place.region
+			data.subdivision = place.subdivision
 		}
-		data.municipality = place.city
+		if (place.administrativeDivisionId) {
+			data.administrativeDivisionId = place.administrativeDivisionId
+		} else {
+			data.administrativeDivision = place.administrativeDivision
+		}
+		if (place.municipalityId) {
+			data.municipalityId = place.municipalityId
+		} else {
+			data.municipality = place.municipality
+		}
 		data.createdBy = clubside
 		data.modifiedBy = clubside
 		await biolineageDb.insert('places', data)
@@ -2146,8 +2162,11 @@ async function resetPg() {
 }
 
 async function run() {
+	console.log('Resetting...')
 	await resetPg()
+	console.log('Initializing...')
 	await initPg()
+	console.log('Closing up...')
 	await biolineageDb.close()
 }
 
@@ -2221,6 +2240,7 @@ async function transformRelationshipsAndGender(parentId) {
 				}
 			}
 		}
+		console.log('Committing transformRelationshipsAndGender...')
 		await biolineageDb.commit()
 	} catch (error) {
 		await biolineageDb.rollback()

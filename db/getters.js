@@ -642,7 +642,7 @@ class Getters {
 		// root entity
 		sql =
 			`select
-				e.id, e.full_name, e.display_name, e.sex, e.notes, en.name_type, en.name_parts, u."name" modified_by, e.modified_date, u2."name" created_by, e.created_date
+				e.id, e.full_name, e.display_name, e.sex, e.birth_year, e.death_year, e.notes, en.name_type, en.name_parts, u."name" modified_by, e.modified_date, u2."name" created_by, e.created_date
 			from
 				entities e
 				join entity_names en on en.id = e.canonical_name_id
@@ -667,9 +667,10 @@ class Getters {
 		sql =
 			`select
 				f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second" ,
-				p.id place_id, p.place_type, p."name" place_name, p.enclosed_by, p2."name" enclosed_by_name, p.sovereign_entity, se."name" sovereign_entity_name,
-				p.subdivision, s."name" subdivision_name , p.administrative_division, ad."name" administrative_division_name,
-				ad.longitude administrative_division_longitude, ad.latitude administrative_division_latitude, p.municipality, m."name" municipality_name,
+				p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude, p.latitude place_latitude, p.enclosed_by,
+				p2."name" enclosed_by_name, p.sovereign_entity, se."name" sovereign_entity_name, p.subdivision, s."name" subdivision_name,
+				p.administrative_division, ad."name" administrative_division_name, ad.longitude administrative_division_longitude,
+				ad.latitude administrative_division_latitude, p.municipality, m."name" municipality_name,
 				m.longitude municipality_longitude, m.latitude municipality_latitude
 			from
 				facts f
@@ -688,7 +689,8 @@ class Getters {
 		// parents
 		const parentSql =
 			`select
-				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.left_output
+				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.left_output,
+				rt."type", r.entity_id, r.related_entity_id, get_entity_facts(e.id) facts
 			from
 				relationships r
 				join entities e on e.id = r.entity_id
@@ -700,12 +702,55 @@ class Getters {
 			order by
 				e.birth_year, e.family_name, e.display_name;`
 		const parents = await biolineageDb.query(parentSql, [id])
+		for (const parent of parents) {
+			parent.facts = parent.facts.map(data => pgToJs(data))
+		}
 		const parentIds = parents.map(data => data.id)
+
+		// partners
+		sql =
+			`select
+				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.left_output,
+				rt."type", r.entity_id, r.related_entity_id, get_entity_facts(e.id) facts
+			from
+				relationships r
+				join entities e on e.id = r.entity_id
+				join relationship_types rt on rt.id = r.relationship_type_id
+			where
+				(r.entity_id = $1 or r.related_entity_id  = $2)
+				and rt."type" = 'partner'
+				and rt.direction = 'parallel'
+			order by
+				e.birth_year, e.family_name, e.display_name;`
+		const partners = await biolineageDb.query(sql, [id, id])
+		for (const partner of partners) {
+			partner.facts = partner.facts.map(data => pgToJs(data))
+		}
+
+		// other relationships
+		sql =
+			`select
+				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.left_output,
+				rt."type", r.entity_id, r.related_entity_id, get_entity_facts(e.id) facts
+			from
+				relationships r
+				join entities e on e.id = r.entity_id
+				join relationship_types rt on rt.id = r.relationship_type_id
+			where
+				(r.entity_id = $1 or r.related_entity_id  = $2)
+				and rt."type" = 'other'
+			order by
+				e.birth_year, e.family_name, e.display_name;`
+		const others = await biolineageDb.query(sql, [id, id])
+		for (const other of others) {
+			other.facts = other.facts.map(data => pgToJs(data))
+		}
 
 		// children
 		const childSql =
 			`select
-				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.right_output
+				e.id, e.full_name, e.display_name, e.family_name, e.sex, e.birth_year, e.death_year, rt."name", rt.right_output,
+				rt."type", r.entity_id, r.related_entity_id, get_entity_facts(e.id) facts
 			from
 				relationships r
 				join entities e on e.id = r.related_entity_id
@@ -717,6 +762,9 @@ class Getters {
 			order by
 				e.birth_year, e.family_name, e.display_name;`
 		const rawChildren = await biolineageDb.query(childSql, [id])
+		for (const child of rawChildren) {
+			child.facts = child.facts.map(data => pgToJs(data))
+		}
 		const spouses = []
 		for (const child of rawChildren) {
 			const childParents = await biolineageDb.query(parentSql, [child.id])
@@ -731,11 +779,24 @@ class Getters {
 					} else {
 						spouses.push({
 							id: null,
-							fullName: '<em>Unknown</em>',
-							displayName: '<em>Unknown</em>',
-							sex: null,
-							birthYear: null,
-							deathYear: null,
+							parents: [
+								{
+									id: entity.id,
+									fullName: entity.fullName,
+									displayName: entity.displayName,
+									sex: entity.sex,
+									birthYear: entity.birthYear,
+									deathYear: entity.deathYear
+								},
+								{
+									id: null,
+									fullName: '<em>Unknown</em>',
+									displayName: '<em>Unknown</em>',
+									sex: null,
+									birthYear: null,
+									deathYear: null
+								}
+							],
 							children: [child]
 						})
 					}
@@ -748,11 +809,24 @@ class Getters {
 					} else {
 						spouses.push({
 							id: otherParent.id,
-							fullName: otherParent.fullName,
-							displayName: otherParent.displayName,
-							sex: otherParent.sex,
-							birthYear: otherParent.birthYear,
-							deathYear: otherParent.deathYear,
+							parents: [
+								{
+									id: entity.id,
+									fullName: entity.fullName,
+									displayName: entity.displayName,
+									sex: entity.sex,
+									birthYear: entity.birthYear,
+									deathYear: entity.deathYear
+								},
+								{
+									id: otherParent.id,
+									fullName: otherParent.fullName,
+									displayName: otherParent.displayName,
+									sex: otherParent.sex,
+									birthYear: otherParent.birthYear,
+									deathYear: otherParent.deathYear
+								}
+							],
 							children: [child]
 						})
 					}
@@ -813,7 +887,7 @@ class Getters {
 		}
 
 		// assembly
-		const graph = { ...entity, names: entityNames, facts, parents, children: spouses, siblings }
+		const graph = { ...entity, names: entityNames, facts, parents, partners, others, children: spouses, siblings }
 		return graph
 	}
 

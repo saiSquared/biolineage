@@ -76,7 +76,7 @@ const sqliteTables = {
 		name: 'places',
 		fields: [
 			{ name: 'id', type: 'INTEGER', nulls: false, skip: true },
-			{ name: 'uuid', type: 'TEXT', nulls: false },
+			{ name: 'TEXT', type: 'TEXT', nulls: false },
 			{ name: 'type', type: 'TEXT' },
 			{ name: 'name', type: 'TEXT' },
 			{ name: 'country', type: 'TEXT' },
@@ -118,6 +118,83 @@ const sqliteTables = {
 			{ name: 'childSex', type: 'TEXT' }
 		],
 		key: '"id"  AUTOINCREMENT'
+	},
+	sovereignEntities: {
+		name: 'sovereign_entities',
+		fields: [
+			{ name: 'id', type: 'TEXT', nulls: false },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'longName', type: 'TEXT' },
+			{ name: 'type', type: 'TEXT', nulls: false },
+			{ name: 'iso31661', type: 'TEXT' },
+			{ name: 'hasFlag', type: 'INTEGER', nulls: false },
+			{ name: 'flagFile', type: 'TEXT' },
+			{ name: 'hasArmorial', type: 'INTEGER', nulls: false },
+			{ name: 'armorialType', type: 'TEXT' },
+			{ name: 'armorialFile', type: 'TEXT' },
+			{ name: 'tlds', type: 'TEXT' }
+		],
+		key: '"id"'
+	},
+	subdivisions: {
+		name: 'subdivisions',
+		fields: [
+			{ name: 'id', type: 'TEXT', nulls: false },
+			{ name: 'sovereignEntityId', type: 'TEXT', nulls: false },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'longName', type: 'TEXT' },
+			{ name: 'type', type: 'TEXT', nulls: false },
+			{ name: 'iso31662', type: 'TEXT' },
+			{ name: 'hasFlag', type: 'INTEGER', nulls: false },
+			{ name: 'flagFile', type: 'TEXT' },
+			{ name: 'hasArmorial', type: 'INTEGER', nulls: false },
+			{ name: 'armorialType', type: 'TEXT' },
+			{ name: 'armorialFile', type: 'TEXT' }
+		],
+		key: '"id"'
+	},
+	administrativeDivisions: {
+		name: 'administrative_divisions',
+		fields: [
+			{ name: 'id', type: 'TEXT', nulls: false },
+			{ name: 'sovereignEntityId', type: 'TEXT', nulls: false },
+			{ name: 'subdivisionId', type: 'TEXT' },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'longName', type: 'TEXT' },
+			{ name: 'type', type: 'TEXT', nulls: false },
+			{ name: 'fips', type: 'INTEGER' },
+			{ name: 'latitude', type: 'TEXT' },
+			{ name: 'longitude', type: 'TEXT' },
+			{ name: 'iso31662', type: 'TEXT' },
+			{ name: 'meta', type: 'TEXT' },
+			{ name: 'hasFlag', type: 'INTEGER', nulls: false },
+			{ name: 'flagFile', type: 'TEXT' },
+			{ name: 'hasArmorial', type: 'INTEGER', nulls: false },
+			{ name: 'armorialType', type: 'TEXT' },
+			{ name: 'armorialFile', type: 'TEXT' }
+		],
+		key: '"id"'
+	},
+	municipalities: {
+		name: 'municipalities',
+		fields: [
+			{ name: 'id', type: 'TEXT', nulls: false },
+			{ name: 'sovereignEntityId', type: 'TEXT', nulls: false },
+			{ name: 'subdivisionId', type: 'TEXT' },
+			{ name: 'administrativeDivisionId', type: 'TEXT' },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'longName', type: 'TEXT' },
+			{ name: 'type', type: 'TEXT', nulls: false },
+			{ name: 'latitude', type: 'TEXT' },
+			{ name: 'longitude', type: 'TEXT' },
+			{ name: 'meta', type: 'TEXT' },
+			{ name: 'hasFlag', type: 'INTEGER', nulls: false },
+			{ name: 'flagFile', type: 'TEXT' },
+			{ name: 'hasArmorial', type: 'INTEGER', nulls: false },
+			{ name: 'armorialType', type: 'TEXT' },
+			{ name: 'armorialFile', type: 'TEXT' }
+		],
+		key: '"id"'
 	}
 }
 

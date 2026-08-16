@@ -1,6 +1,6 @@
 :root {
 	--color-accent: #0ab69f;
-	--color-bg: #FDFFFD;
+	--color-bg: #dceeea;
 	--color-bg-alt: #fff;
 	--color-text: #0c0d0e;
 	--color-text-muted: #65686c;
@@ -964,6 +964,7 @@ a.big-button {
 	align-items: center;
 	gap: 0.25rem;
 	padding: 0.5rem;
+	background-color: var(--color-bg-alt);
 	border: 1px solid var(--color-border);
 	box-shadow: 0 3px 5px rgba(0 0 0 / 18%);
 	border-radius: 0.5rem;
@@ -1042,8 +1043,19 @@ a.big-button:hover {
 }
 
 .entity-profile-card h2,
-.entity-profile-card h3 {
+.entity-profile-card h3,
+.entity-profile-card h4 {
 	margin: 0;
+}
+
+.entity-proifile-name-parts {
+	display: flex;
+	gap: 0.5rem 1em;
+	margin-left: 1em;
+}
+
+.entity-proifile-name-parts strong {
+	font-weight: 500;
 }
 
 .entity-profile-card-item {
@@ -1053,7 +1065,8 @@ a.big-button:hover {
 	align-items: center;
 }
 
-.entity-profile-card-item button {
+.entity-profile-card-item button,
+.entity-profile-couple-card a button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1068,42 +1081,154 @@ a.big-button:hover {
 	cursor: pointer;
 }
 
-.entity-profile-card-item button:focus {
+.entity-profile-card-item button:focus,
+.entity-profile-couple-card a button:focus,
+.entity-profile-inner-card a:focus,
+.facts-holder section.facts-year section > div a:focus {
     border-color: var(--color-bg);
     box-shadow: 0 0 0 2px var(--color-accent);
     outline: 2px solid transparent;
 }
 
-.entity-profile-card-item button:hover {
+.entity-profile-card-item button:hover,
+.entity-profile-couple-card a button:hover,
+.entity-profile-inner-card a:hover,
+.facts-holder section.facts-year section > div a:hover {
     border-color: var(--color-accent);
 }
 
-.entity-profile-card-item button img {
+.entity-profile-card-item button img,
+.entity-profile-couple-card a button img {
 	width: 16px;
 	height: 16px;
+}
+
+.entity-profile-inner-card {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem 0;
+	padding: 0.5rem;
+    transition: 220ms all ease-in-out;
+}
+
+.entity-profile-inner-card a {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	background-color: var(--color-bg-alt);
+	padding: var(--card-corner-radius);
+    border: 2px solid transparent;
+	border-radius: var(--card-corner-radius);
+	box-shadow: var(--card-shadow);
+}
+
+.entity-profile-inner-card a img {
+	width: 44px;
+	height: 44px;
+	border-radius: calc(infinity * 1px);
+}
+
+.entity-profile-inner-card .inner-indent {
+	margin-left: 2rem;
 }
 
 .entity-profile-timeline {
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-template-rows: 80vh 80vh;
+	grid-template-rows: 600px 600px;
 	gap: 1rem;
 }
 
 .entity-profile-timeline article {
 	display: grid;
-	grid-template-rows: auto 1fr;
-	gap: 1rem;
+	grid-template-rows: 36px 1fr 36px;
+	gap: 0.5rem;
 }
 
-.entity-profile-timeline article div {
-	height: 100%;
+.facts {
+	height: calc(600px - 36px - 36px - var(--card-corner-radius) - var(--card-corner-radius) - 16px);
 	overflow-y: auto;
+}
+
+.facts-holder {
+	position: relative;
+	display: table;
+}
+
+.facts-holder div::after {
+	content: "";
+	width: 2px;
+	position: absolute;
+	top: 0.5rem;
+	bottom: 0;
+	left: 60px;
+	z-index: 1;
+	background: var(--oklab-15);
+}
+
+.facts-holder h3 {
+	position: sticky;
+	top: 0;
+	color: var(--oklab-20);
+	margin: 0;
+	font-size: 1em;
+	font-weight: 400;
+}
+
+.facts-holder section.facts-year {
+	position: relative;
+}
+
+.facts-holder section.facts-year:first-child section {
+	margin-top: -1.3em;
+	padding-bottom: 0;
+}
+
+.facts-holder section.facts-year section {
+	position: relative;
+	padding-bottom: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+.facts-holder section.facts-year section > div {
+	padding: 0 0 0 75px;
+	margin: -1.35rem 0 1em;
+}
+
+.facts-holder section.facts-year section > div:last-child {
+	margin-bottom: 0;
+}
+
+.facts-holder section.facts-year section > div:first-of-type::after {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: var(--oklab-15);
+	border: 2px solid var(--color-bg-alt);
+	border-radius: calc(infinity * 1px);
+	position: absolute;
+	left: 53px;
+	top: 10px;
+	z-index: 2;
+}
+
+.facts-holder section.facts-year section > div a {
+	display: flex;
+	flex-direction: column;
+	padding: 4px 8px;
+    border: 2px solid transparent;
+	border-radius: 4px;
+	box-shadow: var(--card-shadow);
+}
+
+.entity-profile-card #tree {
+	width: 100%;
+	aspect-ratio: 16 / 9;
 }
 
 .theme-light {
 	--color-accent: #0ab69f;
-	--color-bg: #FDFFFD;
+	--color-bg: #dceeea;
 	--color-bg-alt: #fff;
 	--color-text: #0c0d0e;
 	--color-text-muted: #65686c;
@@ -1151,7 +1276,7 @@ a.big-button:hover {
 
 .theme-dark {
 	--color-accent: #0ab69f;
-	--color-bg: #000500;
+	--color-bg: #002012;
 	--color-bg-alt: #000;
 	--color-text: #f5f6f7;
 	--color-text-muted: #a89bab;
@@ -1279,6 +1404,10 @@ a.big-button:hover {
 		height: 80vh;
 		max-height: 1200px;
 	}
+
+	.facts {
+		height: calc(1200px - 36px - 36px - var(--card-corner-radius) - var(--card-corner-radius) - 16px);
+	}
 }
 
 @media (min-width: 1280px) {
@@ -1295,7 +1424,7 @@ a.big-button:hover {
 @media (prefers-color-scheme: dark) {
 	:root {
 		--color-accent: #0ab69f;
-		--color-bg: #000500;
+		--color-bg: #002012;
 		--color-bg-alt: #000;
 		--color-text: #f5f6f7;
 		--color-text-muted: #a89bab;

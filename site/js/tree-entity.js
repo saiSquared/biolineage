@@ -1,3 +1,4 @@
+/// <reference path=".familytree.d.ts" />
 'use strict'
 
 // TODO revisit pre-alpha naming documentation as noted in Obsidian > Biolineage > Names
@@ -6,7 +7,108 @@ import { smartify } from '/js/clubside-utils.js'
 
 const main = document.querySelector('main')
 
-let entity, map
+let entity, facts, map, nameParts
+
+const cardButton = (id, icon, text, classes) => {
+	const div = document.createElement('div')
+	if (classes) div.className = classes
+	const button = document.createElement('button')
+	button.id = id
+	button.className = 'button'
+	button.type = 'button'
+	const img = document.createElement('img')
+	img.src = icon
+	button.appendChild(img)
+	const span = document.createElement('span')
+	span.innerHTML = text
+	button.appendChild(span)
+	div.appendChild(button)
+	return div
+}
+
+const cardEntity = (data, def, classes) => {
+	const a = document.createElement('a')
+	if (classes) a.className = classes
+	a.href = `/trees/${dataPackage.treeSlug}/entities/${data.id}`
+	const img = document.createElement('img')
+	img.src = getIcon(data.sex)
+	a.appendChild(img)
+	const div = document.createElement('div')
+	div.appendChild(cardName(smartify(data.fullName)))
+	div.appendChild(cardLifespan(data))
+	div.appendChild(cardRelationship(typeof def === 'object' ? def : data[def], data.sex))
+	a.appendChild(div)
+	return a
+}
+
+const cardLifespan = (data) => {
+	const div = document.createElement('div')
+	if (!data.birthYear && !data.deathYear) {
+		div.innerHTML = '<em>Unknown</em>'
+		return div
+	}
+	let lifespan = ''
+	if (data.birthYear) {
+		lifespan += data.birthYear
+	} else {
+		lifespan += '<em>Unknown</em>'
+	}
+	lifespan += '-'
+	if (data.deathYear) {
+		lifespan += data.deathYear
+	} else {
+		lifespan += '<em>Living</em>'
+	}
+	div.innerHTML = lifespan
+	return div
+}
+
+const cardName = (name) => {
+	const h4 = document.createElement('h4')
+	h4.innerHTML = name
+	return h4
+}
+
+const cardRelationship = (def, sex) => {
+	const div = document.createElement('div')
+	switch (sex) {
+		case 'Male':
+			div.innerHTML = def.male
+			break
+		case 'Female':
+			div.innerHTML = def.female
+			break
+		default:
+			div.innerHTML = def.other
+	}
+	return div
+}
+
+// TODO include birth and death events of parents, siblings and children
+const drawFact = (fact, birth) => {
+	const section = document.createElement('section')
+	const div = document.createElement('div')
+	const a = document.createElement('a')
+	a.href = `/trees/${dataPackage.treeSlug}/entities/${dataPackage.entityId}/facts/${fact.factId}`
+	a.dataset.fact = fact.factId
+	const factName = document.createElement('div')
+	factName.innerHTML = `<strong>${fact.code}</strong> (Age ${yearDiff(fact, birth)})`
+	factName.style.marginBottom = '0.25rem'
+	a.appendChild(factName)
+	if (fact.entityName) {
+		const factEntity = document.createElement('div')
+		factEntity.innerHTML = `<strong>${fact.entityName}</strong>`
+		a.appendChild(factEntity)
+	}
+	const factDate = document.createElement('div')
+	factDate.innerHTML = formatGenealogyDate(fact.year, fact.month, fact.day)
+	a.appendChild(factDate)
+	showLocation(a, fact)
+	a.addEventListener('click', handleFact)
+	div.appendChild(a)
+	section.appendChild(div)
+	return section
+}
 
 const formatGenealogyDate = (year, month, day) => {
 	if (!month && !day) return year
@@ -25,63 +127,34 @@ const formatGenealogyDate = (year, month, day) => {
 	return `${formattedDay} ${formattedMonth} ${formattedYear}`
 }
 
-const formatName = (data) => {
-	const parts = []
-	const fields = ['prefixName', 'givenName', 'nickName', 'middleName', 'prefixFamilyName', 'familyName']
-	for (const field of fields) {
-		if (data[field]) {
-			if (field === 'nickName') {
-				parts.push(`"${data.nickName}"`)
-			} else {
-				parts.push(data[field])
+const getIcon = (sex) => {
+	switch (dataPackage.treeType) {
+		case 'human':
+			switch (sex) {
+				case 'Male':
+					return '/img/man.svg'
+				case 'Female':
+					return '/img/woman.svg'
+				default:
+					return '/img/person.svg'
 			}
-		}
+		case 'equine':
+			return '/img/horse.svg'
 	}
-	let name = parts.join(' ')
-	if (data.suffixName) name += formatSuffix(data.suffixName)
-	return smartify(name)
 }
 
-const formatSuffix = (raw) => {
-	if (!raw) return ''
+const massageDate = (data) => {
+	let year = data.year
 
-	const original = raw.trim()
-	const suffix = original.toLowerCase()
-
-	// --- Roman numeral detection ---
-	const romanRegex = /^(m{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3}))$/i
-	if (romanRegex.test(suffix)) {
-		return ' ' + original // no comma
+	if (data.epoch === 'BC') {
+		year = -(year - 1) // convert to astronomical year
 	}
 
-	// --- Linguistic ordinal / epithet ---
-	if (
-		/^the\s+\w+/.test(suffix) || // "the Elder", "the First"
-        /^(son|dau|daughter)\s+of\s+.+$/.test(suffix) || // "son of Johannes"
-        /^\w+\s+the\s+\w+$/.test(suffix) // "William the Silent"
-	) {
-		return ' ' + original // no comma
-	}
-
-	// --- Professional / academic suffixes ---
-	const professional = new Set([
-		'md', 'm.d.', 'ph.d.', 'ed.d.', 'esq.', 'capt.', 'rev.', 'dr.', 'prof.'
-	])
-	if (professional.has(suffix)) {
-		return ', ' + original // comma
-	}
-
-	// --- Generational appositives ---
-	const generational = new Set([
-		'jr.', 'sr.', 'jr.?', 'sr.?', 'jr. or ii'
-	])
-	if (generational.has(suffix)) {
-		return ', ' + original // comma
-	}
-
-	// --- Everything else: treat as part of name (no comma) ---
-	// Examples: "2B", "Tony", "Test horse"
-	return ' ' + original
+	return new Date(
+		year,
+		data.month ? data.month - 1 : 0,
+		data.day || 1
+	)
 }
 
 const showLocation = (ele, data) => {
@@ -106,24 +179,21 @@ const showLocation = (ele, data) => {
 	}
 }
 
-function drawEntity() {
-	let icon, h2, h3, cardItem, section, header, div, button, img
-	switch (dataPackage.treeType) {
-		case 'human':
-			switch (entity.sex) {
-				case 'Male':
-					icon = '/img/man.svg'
-					break
-				case 'Female':
-					icon = '/img/woman.svg'
-					break
-				default:
-					icon = '/img/person.svg'
-			}
-			break
-		case 'equine':
-			icon = '/img/horse.svg'
+const yearDiff = (startData, endData) => {
+	const startDate = massageDate(startData)
+	const endDate = massageDate(endData)
+	let years = endDate.getFullYear() - startDate.getFullYear()
+	const monthDiff = endDate.getMonth() - startDate.getMonth()
+	const dayDiff = endDate.getDate() - startDate.getDate()
+	if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+		years--
 	}
+	return Math.abs(years)
+}
+
+function drawEntity() {
+	let h2, h3, cardItem, section, header, div, button, img
+	const icon = getIcon(entity.sex)
 	const birth = entity.facts.find(lookup => lookup.code === 'Birth')
 	const death = entity.facts.find(lookup => lookup.code === 'Death')
 
@@ -140,7 +210,7 @@ function drawEntity() {
 	profileHeader.appendChild(profileHeaderImage)
 	const profileHeaderTitle = document.createElement('div')
 	const h1 = document.createElement('h1')
-	h1.innerHTML = entity.fullName
+	h1.innerHTML = smartify(entity.fullName)
 	profileHeaderTitle.appendChild(h1)
 	const lifespan = document.createElement('div')
 	if (!birth && !death) {
@@ -233,21 +303,40 @@ function drawEntity() {
 	vitals.appendChild(cardItem)
 	profile.appendChild(vitals)
 
-	// timeline
-	const timeline = document.createElement('section')
-	timeline.className = 'entity-profile-timeline'
-	cardItem = document.createElement('article')
-	cardItem.className = 'entity-profile-card'
+	// names
+	const names = document.createElement('section')
+	names.className = 'entity-profile-card'
 	h2 = document.createElement('h2')
-	h2.innerHTML = 'Timeline'
-	cardItem.appendChild(h2)
-	div = document.createElement('div')
-	cardItem.appendChild(div)
-	timeline.appendChild(cardItem)
-	div = document.createElement('div')
-	div.id = 'map'
-	timeline.appendChild(div)
-	profile.appendChild(timeline)
+	h2.innerHTML = 'Names'
+	names.appendChild(h2)
+	for (const entityName of entity.names) {
+		cardItem = document.createElement('article')
+		cardItem.className = 'entity-profile-card-item'
+		section = document.createElement('section')
+		header = document.createElement('header')
+		header.innerHTML = `<strong>${entityName.nameType}</strong> (No Sources)`
+		section.appendChild(header)
+		div = document.createElement('div')
+		div.className = 'entity-proifile-name-parts'
+		for (const part of nameParts) {
+			if (entityName.nameParts[part.code]) {
+				const span = document.createElement('span')
+				span.innerHTML = `<strong>${part.label}</strong>: ${entityName.nameParts[part.code]}`
+				div.appendChild(span)
+			}
+		}
+		section.appendChild(div)
+		cardItem.appendChild(section)
+		button = document.createElement('button')
+		button.dataset.id = entityName.id
+		img = document.createElement('img')
+		img.src = '/img/pencil.svg'
+		button.appendChild(img)
+		cardItem.appendChild(button)
+		names.appendChild(cardItem)
+	}
+	names.appendChild(cardButton('add-entity-name', '/img/plus.svg', 'Add Name'))
+	profile.appendChild(names)
 
 	// family members
 	const familyMembers = document.createElement('section')
@@ -255,9 +344,75 @@ function drawEntity() {
 	h2 = document.createElement('h2')
 	h2.innerHTML = 'Family Members'
 	familyMembers.appendChild(h2)
-	h3 = document.createElement('h3')
-	h3.innerHTML = 'Parents'
-	familyMembers.appendChild(h3)
+	if (entity.parents.length > 0) {
+		h3 = document.createElement('h3')
+		h3.innerHTML = 'Parents'
+		familyMembers.appendChild(h3)
+		cardItem = document.createElement('article')
+		cardItem.className = 'entity-profile-inner-card'
+		for (const parent of entity.parents) {
+			cardItem.appendChild(cardEntity(parent, 'leftOutput'))
+		}
+		cardItem.appendChild(cardButton('add-parent', '/img/plus.svg', 'Add Parent'))
+		familyMembers.appendChild(cardItem)
+	}
+	if (entity.siblings.length > 0) {
+		const fullSiblings = entity.siblings.find(lookup => lookup.full === true)
+		if (fullSiblings) {
+			h3 = document.createElement('h3')
+			h3.innerHTML = 'Siblings'
+			familyMembers.appendChild(h3)
+			cardItem = document.createElement('article')
+			cardItem.className = 'entity-profile-inner-card'
+			for (const parent of fullSiblings.parentDetails) {
+				cardItem.appendChild(cardEntity(parent, 'leftOutput'))
+			}
+			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Relationship'))
+			for (const child of fullSiblings.children) {
+				cardItem.appendChild(cardEntity(child, 'rightOutput', 'inner-indent'))
+			}
+			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Child', 'inner-indent'))
+			familyMembers.appendChild(cardItem)
+		}
+		const halfSiblings = entity.siblings.filter(lookup => lookup.full === false)
+		if (halfSiblings.length > 0) {
+			h3 = document.createElement('h3')
+			h3.innerHTML = 'Half Siblings'
+			familyMembers.appendChild(h3)
+			for (const parentGroup of halfSiblings) {
+				cardItem = document.createElement('article')
+				cardItem.className = 'entity-profile-inner-card'
+				for (const parent of parentGroup.parentDetails) {
+					cardItem.appendChild(cardEntity(parent, 'leftOutput'))
+				}
+				cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Relationship'))
+				for (const child of parentGroup.children) {
+					cardItem.appendChild(cardEntity(child, 'rightOutput', 'inner-indent'))
+				}
+				cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Child', 'inner-indent'))
+				familyMembers.appendChild(cardItem)
+			}
+		}
+	}
+	if (entity.children.length > 0) {
+		h3 = document.createElement('h3')
+		h3.innerHTML = 'Children'
+		familyMembers.appendChild(h3)
+		for (const parentGroup of entity.children) {
+			cardItem = document.createElement('article')
+			cardItem.className = 'entity-profile-inner-card'
+			// TODO return left/right output on root entity and each child parent
+			for (const parent of parentGroup.parents) {
+				cardItem.appendChild(cardEntity(parent, { male: 'Father', other: 'Parent', female: 'Mother' }))
+			}
+			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Relationship'))
+			for (const child of parentGroup.children) {
+				cardItem.appendChild(cardEntity(child, 'rightOutput', 'inner-indent'))
+			}
+			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Child', 'inner-indent'))
+			familyMembers.appendChild(cardItem)
+		}
+	}
 	profile.appendChild(familyMembers)
 
 	// other relationships
@@ -266,7 +421,60 @@ function drawEntity() {
 	h2 = document.createElement('h2')
 	h2.innerHTML = 'Other Relationships'
 	otherRelationships.appendChild(h2)
+	otherRelationships.appendChild(cardButton('add-other-relationship', '/img/plus.svg', 'Add Relationship'))
 	profile.appendChild(otherRelationships)
+
+	// timeline
+	const timeline = document.createElement('section')
+	timeline.className = 'entity-profile-timeline'
+	cardItem = document.createElement('article')
+	cardItem.className = 'entity-profile-card'
+	div = document.createElement('div')
+	h2 = document.createElement('h2')
+	h2.innerHTML = 'Timeline'
+	div.appendChild(h2)
+	cardItem.appendChild(div)
+	div = document.createElement('div')
+	div.className = 'facts'
+	const factsHolder = document.createElement('div')
+	factsHolder.className = 'facts-holder'
+	const factsInner = document.createElement('div')
+	let currentYear, currentSection
+	for (const fact of facts) {
+		if (fact.year !== currentYear) {
+			if (currentSection) factsInner.appendChild(currentSection)
+			currentYear = fact.year
+			currentSection = document.createElement('section')
+			currentSection.className = 'facts-year'
+			h3 = document.createElement('h3')
+			h3.innerHTML = fact.year
+			currentSection.appendChild(h3)
+		}
+		currentSection.appendChild(drawFact(fact, birth))
+	}
+	if (currentSection) factsInner.appendChild(currentSection)
+	factsHolder.appendChild(factsInner)
+	div.appendChild(factsHolder)
+	cardItem.appendChild(div)
+	div = document.createElement('div')
+	div.appendChild(cardButton('add-fact', '/img/plus.svg', 'Add Fact'))
+	cardItem.appendChild(div)
+	timeline.appendChild(cardItem)
+	div = document.createElement('div')
+	div.id = 'map'
+	timeline.appendChild(div)
+	profile.appendChild(timeline)
+
+	// other relationships
+	const familyTree = document.createElement('section')
+	familyTree.className = 'entity-profile-card'
+	h2 = document.createElement('h2')
+	h2.innerHTML = 'Tree'
+	familyTree.appendChild(h2)
+	div = document.createElement('div')
+	div.id = 'tree'
+	familyTree.appendChild(div)
+	profile.appendChild(familyTree)
 
 	main.appendChild(profile)
 
@@ -278,12 +486,147 @@ function drawEntity() {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map)
+
+	const nodes = []
+	const root = { id: entity.id, pids: [], name: entity.displayName, gender: entity.sex.toLowerCase(), lifespan: cardLifespan(entity).innerHTML, img: getIcon(entity.sex) }
+	try {
+		if (entity.parents.length > 0) {
+			if (entity.parents.length === 1) {
+				const parent1 = { id: entity.parents[0].id, name: entity.parents[0].displayName, gender: entity.parents[0].sex.toLowerCase(), lifespan: cardLifespan(entity.parents[0]).innerHTML, img: getIcon(entity.parents[0].sex) }
+				nodes.push(parent1)
+				if (parent1.gender === 'male') {
+					root.fid = parent1.id
+				} else {
+					root.mid = parent1.id
+				}
+			} else if (entity.parents.length === 2) {
+				const parent1 = { id: entity.parents[0].id, name: entity.parents[0].displayName, gender: entity.parents[0].sex.toLowerCase(), lifespan: cardLifespan(entity.parents[0]).innerHTML, img: getIcon(entity.parents[0].sex) }
+				const parent2 = { id: entity.parents[1].id, name: entity.parents[1].displayName, gender: entity.parents[1].sex.toLowerCase(), lifespan: cardLifespan(entity.parents[1]).innerHTML, img: getIcon(entity.parents[1].sex) }
+				parent1.pids = [parent2.id]
+				parent2.pids = [parent1.id]
+				nodes.push(parent1)
+				nodes.push(parent2)
+				if (parent1.gender === 'male') {
+					root.fid = parent1.id
+					root.mid = parent2.id
+				} else {
+					root.mid = parent1.id
+					root.fid = parent2.id
+				}
+			}
+		}
+		nodes.push(root)
+		if (entity.children.length > 0) {
+			for (const childGroup of entity.children) {
+				if (childGroup.parents.length === 1) {
+					for (const child of childGroup.children) {
+						const childData = { id: child.id, name: child.displayName, gender: child.sex.toLowerCase(), lifespan: cardLifespan(child).innerHTML, img: getIcon(child.sex) }
+						if (childGroup.parents[0].sex === 'Male') {
+							childData.fid = childGroup.parents[0].id
+						}
+						nodes.push(childData)
+					}
+				} else if (childGroup.parents.length === 2) {
+					const parent1 = childGroup.parents.find(lookup => lookup.id === entity.id)
+					const parent2 = childGroup.parents.filter(data => data.id !== entity.id)[0]
+					console.log({ parent1, parent2 })
+					nodes.push({ id: parent2.id, pids: [parent1.id], name: parent2.displayName, gender: parent2.sex.toLowerCase(), lifespan: cardLifespan(parent2).innerHTML, img: getIcon(parent2.sex) })
+					root.pids.push(parent2.id)
+					const fid = parent1.sex === 'Male' ? parent1.id : parent2.id
+					const mid = parent1.sex === 'Female' ? parent1.id : parent2.id
+					for (const child of childGroup.children) {
+						const childData = { id: child.id, fid, mid, name: child.displayName, gender: child.sex.toLowerCase(), lifespan: cardLifespan(child).innerHTML, img: getIcon(child.sex) }
+						nodes.push(childData)
+					}
+				}
+			}
+		}
+	} catch (error) {
+		console.error('Unable to build node list', error)
+	}
+	console.log(nodes)
+	/** @type {FamilyTree} */
+	new FamilyTree('#tree', {
+		nodeBinding: {
+			field_0: 'name',
+			field_1: 'lifespan',
+			img_0: 'img'
+		},
+		nodes,
+		template: 'hugo'
+	})
 }
 
 async function getEntity() {
+	nameParts = await fetch('/data/entity-name-parts.json').then(r => r.json())
 	entity = await fetch(`/api/entity/graph/${dataPackage.entityId}`).then(r => r.json())
-	console.log(entity)
+	facts = structuredClone(entity.facts)
+	if (facts.length > 0 && entity.facts.find(lookup => lookup.code === 'Birth')) {
+		const birth = entity.facts.find(lookup => lookup.code === 'Birth')
+		const birthDate = massageDate(birth)
+		const death = entity.facts.find(lookup => lookup.code === 'Death')
+		const deathDate = death ? massageDate(death) : null
+		if (entity.parents.length > 0) {
+			for (const parent of entity.parents) {
+				for (const fact of parent.facts) {
+					const factDate = massageDate(fact)
+					if (factDate >= birthDate && (deathDate === null || factDate < deathDate)) {
+						const parentFact = structuredClone(fact)
+						parentFact.code = parentFact.code === 'Birth' ? 'Birth of Parent' : 'Death of Parent'
+						parentFact.entityName = parent.fullName
+						parentFact.entityId = parent.id
+						facts.push(parentFact)
+					}
+				}
+			}
+		}
+		if (entity.children.length > 0) {
+			for (const parentGroup of entity.children) {
+				for (const child of parentGroup.children) {
+					for (const fact of child.facts) {
+						const factDate = massageDate(fact)
+						if (factDate >= birthDate && (deathDate === null || factDate < deathDate)) {
+							const childFact = structuredClone(fact)
+							childFact.code = childFact.code === 'Birth' ? 'Birth of Child' : 'Death of Child'
+							childFact.entityName = child.fullName
+							childFact.entityId = child.id
+							facts.push(childFact)
+						}
+					}
+				}
+			}
+		}
+		if (entity.siblings.length > 0) {
+			for (const parentGroup of entity.siblings) {
+				let relText = 'Sibling'
+				if (!parentGroup.full) relText = 'Half-Sibling'
+				for (const child of parentGroup.children) {
+					for (const fact of child.facts) {
+						const factDate = massageDate(fact)
+						if (factDate >= birthDate && (deathDate === null || factDate < deathDate)) {
+							const childFact = structuredClone(fact)
+							childFact.code = childFact.code === 'Birth' ? `Birth of ${relText}` : `Death of ${relText}`
+							childFact.entityName = child.fullName
+							childFact.entityId = child.id
+							facts.push(childFact)
+						}
+					}
+				}
+			}
+		}
+		facts.sort((a, b) => massageDate(a) - massageDate(b))
+	}
+	console.log({ nameParts, entity, facts })
 	drawEntity()
+}
+
+function handleFact(event) {
+	event.preventDefault()
+	let ele = event.target
+	while (ele.tagName !== 'A') {
+		ele = ele.parentElement
+	}
+	console.log(ele.dataset.fact)
 }
 
 document.addEventListener('DOMContentLoaded', () => {

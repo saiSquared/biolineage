@@ -1,3 +1,4 @@
+const fs = require('node:fs')
 const path = require('node:path')
 const argon2 = require('argon2')
 const dotenv = require('dotenv')
@@ -18,7 +19,7 @@ const biolineageDb = pgDb({
 	user: env.PG_USER,
 	password: env.PG_PASSWORD,
 	database: env.PG_DATABASE
-}, true)
+}, false)
 
 const trees = []
 
@@ -47,6 +48,13 @@ async function loadTrees() {
 		trees.push(tree)
 	}
 }
+
+async function startup() {
+	const entityNameParts = await biolineageDb.query('select * from entity_name_parts')
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-name-parts.json'), JSON.stringify(entityNameParts, null, '\t'))
+}
+
+startup()
 
 module.exports = {
 	env, dbNorm, biolineageDb, formatWordNumber, hashPassword, loadTrees, trees

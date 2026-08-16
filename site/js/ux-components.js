@@ -122,3 +122,12 @@ class Modal {
 }
 
 // window.UX.Modal = new Modal()
+
+fetch('/img/sprites.svg')
+	.then(r => r.text())
+	.then(svg => {
+		const div = document.createElement('div')
+		div.style.display = 'none'
+		div.innerHTML = svg
+		document.body.prepend(div)
+	})

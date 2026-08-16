@@ -171,12 +171,12 @@ class AppGenerators {
 		if (!tree) return null
 		if (!tree.ownerId === user.userId && !user.role === 'super') return null
 		let icon, text
-		switch (tree.entityTypeId) {
-			case 'd4780b1f-3764-491d-9942-dc814c3750b4':
+		switch (tree.key) {
+			case 'human':
 				icon = '/img/person.svg'
 				text = 'Add Person'
 				break
-			case '409a8c4f-1167-4039-b298-f46ce7bcf7fd':
+			case 'equine':
 				icon = '/img/horse.svg'
 				text = 'Add Horse'
 		}
@@ -326,7 +326,8 @@ class AppGenerators {
 			scripts: [
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' },
-				{ type: 'link', content: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' }
+				{ type: 'link', content: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' },
+				{ type: 'link', content: '/js/familytree.js' }
 			]
 		}
 		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 2 })
