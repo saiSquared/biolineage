@@ -468,7 +468,7 @@ async function initPg() {
 	})
 
 	// Create Geography-related tables
-	biolineageDb.begin()
+	await biolineageDb.begin()
 	try {
 		const sovereignEntities = await normSQLite.query('select * from sovereign_entities')
 		for (const sovereignEnity of sovereignEntities) {
@@ -476,11 +476,11 @@ async function initPg() {
 		}
 		await biolineageDb.commit()
 	} catch (error) {
-		biolineageDb.rollback()
+		await biolineageDb.rollback()
 		console.log('FAILED TO INSERT sovereign_entities')
 		process.exit()
 	}
-	biolineageDb.begin()
+	await biolineageDb.begin()
 	try {
 		const subdivisions = await normSQLite.query('select * from subdivisions')
 		for (const subdivision of subdivisions) {
@@ -488,11 +488,11 @@ async function initPg() {
 		}
 		await biolineageDb.commit()
 	} catch (error) {
-		biolineageDb.rollback()
+		await biolineageDb.rollback()
 		console.log('FAILED TO INSERT subdivisions')
 		process.exit()
 	}
-	biolineageDb.begin()
+	await biolineageDb.begin()
 	try {
 		const administrativeDivisions = await normSQLite.query('select * from administrative_divisions')
 		for (const administrativeDivision of administrativeDivisions) {
@@ -500,11 +500,11 @@ async function initPg() {
 		}
 		await biolineageDb.commit()
 	} catch (error) {
-		biolineageDb.rollback()
+		await biolineageDb.rollback()
 		console.log('FAILED TO INSERT administrative_divisions')
 		process.exit()
 	}
-	biolineageDb.begin()
+	await biolineageDb.begin()
 	try {
 		const municipalities = await normSQLite.query('select * from municipalities')
 		for (const municipality of municipalities) {
@@ -512,7 +512,7 @@ async function initPg() {
 		}
 		await biolineageDb.commit()
 	} catch (error) {
-		biolineageDb.rollback()
+		await biolineageDb.rollback()
 		console.log('FAILED TO INSERT municipalities')
 		process.exit()
 	}
@@ -523,9 +523,9 @@ async function initPg() {
 		code: 'Display',
 		label: 'Display Name',
 		surface: true,
-		exclude: true,
+		required: true,
 		placeholder: 'ex. Mike Jones',
-		description: 'The main name shown in trees, lists, search results, and relationship panels. This should be the name most commonly associated with the person.',
+		description: 'The main name shown in trees, lists, search results, and relationship panels. This should be the name most commonly associated with the entity.',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -545,7 +545,7 @@ async function initPg() {
 		label: 'Given Name',
 		surface: true,
 		placeholder: 'ex. Michael',
-		description: 'The primary given name used to identify the person.',
+		description: 'The primary given name used to identify the entity.',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -623,7 +623,7 @@ async function initPg() {
 		label: 'Maiden Name',
 		placeholder: 'ex. Smith',
 		format: '(formerly {v})',
-		description: 'A person\'s original family name prior to adopting a new surname (commonly at marriage).',
+		description: 'An entity\'s original family name prior to adopting a new surname (commonly at marriage).',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -659,7 +659,7 @@ async function initPg() {
 		code: 'Characteristic',
 		label: 'Characteristic Name',
 		placeholder: 'ex. the Elder',
-		description: 'A name derived from a personal trait or descriptor (e.g., the Elder, the Silent).',
+		description: 'A name derived from a trait or descriptor (e.g., the Elder, the Silent).',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1506,7 +1506,7 @@ async function initPg() {
 		direction: 'forward',
 		main: true,
 		name: 'Parent',
-		description: 'A biological parent–child relationship indicating direct lineage.',
+		description: 'A recognized parent–child relationship representing the individuals who raised the child, regardless of biological origin.',
 		leftOutput: JSON.stringify({ male: 'Father', female: 'Mother', other: 'Parent' }),
 		rightOutput: JSON.stringify({ male: 'Son', female: 'Daughter', other: 'Child' }),
 		createdBy: clubside,
@@ -1519,6 +1519,17 @@ async function initPg() {
 		name: 'Adoptive Parent',
 		description: 'A legal parent–child relationship established through adoption rather than biology.',
 		leftOutput: JSON.stringify({ male: 'Adoptive Father', female: 'Adoptive Mother', other: 'Adoptive Parent' }),
+		rightOutput: JSON.stringify({ male: 'Adopted Son', female: 'Adopted Daughter', other: 'Adopted Child' }),
+		createdBy: clubside,
+		modifiedBy: clubside
+	})
+	await biolineageDb.insert('relationship_types', {
+		id: uuidv4(),
+		type: 'parent',
+		direction: 'forward',
+		name: 'Biological Parent',
+		description: 'A genetic parent–child relationship indicating biological lineage without implying active parenting or guardianship.',
+		leftOutput: JSON.stringify({ male: 'Biological Father', female: 'Biological Mother', other: 'Biological Parent' }),
 		rightOutput: JSON.stringify({ male: 'Adopted Son', female: 'Adopted Daughter', other: 'Adopted Child' }),
 		createdBy: clubside,
 		modifiedBy: clubside

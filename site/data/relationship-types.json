@@ -1,0 +1,461 @@
+[
+	{
+		"id": "35efdd6d-f50e-4b1e-9f3d-8a6239d3cc20",
+		"type": "other",
+		"direction": "forward",
+		"name": "Apprenticeship",
+		"description": "A vocational relationship where a master trains an apprentice.",
+		"leftOutput": {
+			"male": "Master",
+			"other": "Master",
+			"female": "Mistress"
+		},
+		"rightOutput": {
+			"male": "Apprentice",
+			"other": "Apprentice",
+			"female": "Apprentice"
+		}
+	},
+	{
+		"id": "0e40dbe1-0c31-495b-bf6b-5a75fe466f1c",
+		"type": "other",
+		"direction": "forward",
+		"name": "Caretaker",
+		"description": "A caregiving relationship where a caretaker supports a dependent.",
+		"leftOutput": {
+			"male": "Caretaker",
+			"other": "Caretaker",
+			"female": "Caretaker"
+		},
+		"rightOutput": {
+			"male": "Dependent",
+			"other": "Dependent",
+			"female": "Dependent"
+		}
+	},
+	{
+		"id": "56699190-53a0-4d66-b077-1311e1a05b73",
+		"type": "other",
+		"direction": "forward",
+		"name": "Employment",
+		"description": "A work relationship between employer and employee.",
+		"leftOutput": {
+			"male": "Employer",
+			"other": "Employer",
+			"female": "Employer"
+		},
+		"rightOutput": {
+			"male": "Employee",
+			"other": "Employee",
+			"female": "Employee"
+		}
+	},
+	{
+		"id": "2aee856c-3f25-4251-9ff2-eaf3a026c39e",
+		"type": "other",
+		"direction": "forward",
+		"name": "Enslavement",
+		"description": "A historical relationship where a slaveholder exerts ownership and control over an enslaved person.",
+		"leftOutput": {
+			"male": "Slaveholder",
+			"other": "Slaveholder",
+			"female": "Slaveholder"
+		},
+		"rightOutput": {
+			"male": "Enslaved",
+			"other": "Enslaved",
+			"female": "Enslaved"
+		}
+	},
+	{
+		"id": "3d1245db-7a96-4a82-a939-6baa35374b4a",
+		"type": "other",
+		"direction": "forward",
+		"name": "Godparent",
+		"description": "A ceremonial relationship where an adult sponsors a child’s religious or moral upbringing.",
+		"leftOutput": {
+			"male": "Godfather",
+			"other": "Godparent",
+			"female": "Godmother"
+		},
+		"rightOutput": {
+			"male": "Godson",
+			"other": "Godchild",
+			"female": "Goddaughter"
+		}
+	},
+	{
+		"id": "cc0a2edd-2a71-4e50-811d-8a2f8eb27f4f",
+		"type": "other",
+		"direction": "forward",
+		"name": "Household",
+		"description": "A relationship between a head of household and an occupant living under the same roof.",
+		"leftOutput": {
+			"male": "Head of Household",
+			"other": "Head of Household",
+			"female": "Head of Household"
+		},
+		"rightOutput": {
+			"male": "Occupant",
+			"other": "Occupant",
+			"female": "Occupant"
+		}
+	},
+	{
+		"id": "0afbf208-c23b-4d8b-8337-8ab536f47325",
+		"type": "other",
+		"direction": "forward",
+		"name": "Knighthood",
+		"description": "A medieval relationship where a knight trains or oversees a squire.",
+		"leftOutput": {
+			"male": "Knight",
+			"other": "Knight",
+			"female": "Knight"
+		},
+		"rightOutput": {
+			"male": "Squire",
+			"other": "Squire",
+			"female": "Squire"
+		}
+	},
+	{
+		"id": "b91d226d-bbc2-4797-9045-d70762e73349",
+		"type": "other",
+		"direction": "forward",
+		"name": "Landlord",
+		"description": "A property relationship where a landlord leases space to a tenant.",
+		"leftOutput": {
+			"male": "Landlord",
+			"other": "Landlord",
+			"female": "Landlord"
+		},
+		"rightOutput": {
+			"male": "Tenant",
+			"other": "Tenant",
+			"female": "Tenant"
+		}
+	},
+	{
+		"id": "7ab28d13-89b5-433b-a026-a3d610bce311",
+		"type": "other",
+		"direction": "forward",
+		"name": "Liege",
+		"description": "A feudal relationship where a liege grants protection or land to a vassal.",
+		"leftOutput": {
+			"male": "Liege",
+			"other": "Liege",
+			"female": "Liege"
+		},
+		"rightOutput": {
+			"male": "Vassal",
+			"other": "Vassal",
+			"female": "Vassal"
+		}
+	},
+	{
+		"id": "1a43c5e5-e5bb-4737-8f1b-19ac9ca00ac6",
+		"type": "other",
+		"direction": "forward",
+		"name": "Lord",
+		"description": "A hierarchical relationship where a lord holds authority over a subject.",
+		"leftOutput": {
+			"male": "Lord",
+			"other": "Lord",
+			"female": "Lord"
+		},
+		"rightOutput": {
+			"male": "Subject",
+			"other": "Subject",
+			"female": "Subject"
+		}
+	},
+	{
+		"id": "8b28bbf9-3129-43ae-b2f0-ed6db4d17986",
+		"type": "other",
+		"direction": "forward",
+		"name": "Mentor",
+		"description": "A guidance relationship where a mentor provides instruction or support to a mentee.",
+		"leftOutput": {
+			"male": "Mentor",
+			"other": "Mentor",
+			"female": "Mentor"
+		},
+		"rightOutput": {
+			"male": "Mentee",
+			"other": "Mentee",
+			"female": "Mentee"
+		}
+	},
+	{
+		"id": "8b1a1a58-b3cd-4708-b08a-28b7736438a8",
+		"type": "other",
+		"direction": "parallel",
+		"name": "Neighbor",
+		"description": "A proximity-based relationship between individuals living near one another.",
+		"leftOutput": {
+			"male": "Neighbor",
+			"other": "Neighbor",
+			"female": "Neighbor"
+		},
+		"rightOutput": {
+			"male": "Neighbor",
+			"other": "Neighbor",
+			"female": "Neighbor"
+		}
+	},
+	{
+		"id": "d913d819-1e31-4a38-8831-a9abeb615fe6",
+		"type": "other",
+		"direction": "parallel",
+		"name": "Relative",
+		"description": "A non-specific familial relationship between two related individuals.",
+		"leftOutput": {
+			"male": "Relative",
+			"other": "Relative",
+			"female": "Relative"
+		},
+		"rightOutput": {
+			"male": "Relative",
+			"other": "Relative",
+			"female": "Relative"
+		}
+	},
+	{
+		"id": "48f70752-c07a-480f-9285-b18440298293",
+		"type": "other",
+		"direction": "forward",
+		"name": "Servitude",
+		"description": "A service-based relationship where a master directs the labor of a servant.",
+		"leftOutput": {
+			"male": "Master",
+			"other": "Master",
+			"female": "Mistress"
+		},
+		"rightOutput": {
+			"male": "Servant",
+			"other": "Servant",
+			"female": "Servant"
+		}
+	},
+	{
+		"id": "a36f254b-959b-439a-a7b7-f2f34416d8bc",
+		"type": "other",
+		"direction": "forward",
+		"name": "Tutor",
+		"description": "An educational relationship where a tutor instructs a student.",
+		"leftOutput": {
+			"male": "Tutor",
+			"other": "Tutor",
+			"female": "Tutor"
+		},
+		"rightOutput": {
+			"male": "Student",
+			"other": "Student",
+			"female": "Student"
+		}
+	},
+	{
+		"id": "cc3dd101-ede9-4c33-b285-67b8a42e6fec",
+		"type": "parent",
+		"direction": "forward",
+		"name": "Parent",
+		"description": "A recognized parent–child relationship representing the individuals who raised the child, regardless of biological origin.",
+		"leftOutput": {
+			"male": "Father",
+			"other": "Parent",
+			"female": "Mother"
+		},
+		"rightOutput": {
+			"male": "Son",
+			"other": "Child",
+			"female": "Daughter"
+		}
+	},
+	{
+		"id": "8339ed2d-6364-4cb6-a966-1f6f004c923d",
+		"type": "parent",
+		"direction": "forward",
+		"name": "Adoptive Parent",
+		"description": "A legal parent–child relationship established through adoption rather than biology.",
+		"leftOutput": {
+			"male": "Adoptive Father",
+			"other": "Adoptive Parent",
+			"female": "Adoptive Mother"
+		},
+		"rightOutput": {
+			"male": "Adopted Son",
+			"other": "Adopted Child",
+			"female": "Adopted Daughter"
+		}
+	},
+	{
+		"id": "38be8309-b014-4f22-8a31-7982b8a50cc9",
+		"type": "parent",
+		"direction": "forward",
+		"name": "Biological Parent",
+		"description": "A genetic parent–child relationship indicating biological lineage without implying active parenting or guardianship.",
+		"leftOutput": {
+			"male": "Biological Father",
+			"other": "Biological Parent",
+			"female": "Biological Mother"
+		},
+		"rightOutput": {
+			"male": "Adopted Son",
+			"other": "Adopted Child",
+			"female": "Adopted Daughter"
+		}
+	},
+	{
+		"id": "6c5857f6-aedc-43b1-ac8d-3215edde9dcd",
+		"type": "parent",
+		"direction": "forward",
+		"name": "Foster Parent",
+		"description": "A temporary caregiving relationship where an adult provides state-authorized care for a child.",
+		"leftOutput": {
+			"male": "Foster Father",
+			"other": "Foster Parent",
+			"female": "Foster Mother"
+		},
+		"rightOutput": {
+			"male": "Foster Son",
+			"other": "Foster Child",
+			"female": "Foster Daughter"
+		}
+	},
+	{
+		"id": "c8c5f221-e1fb-4ddc-a181-2c034600fa51",
+		"type": "parent",
+		"direction": "forward",
+		"name": "Guardian",
+		"description": "A legally appointed caretaker responsible for the welfare of a ward.",
+		"leftOutput": {
+			"male": "Guardian",
+			"other": "Guardian",
+			"female": "Guardian"
+		},
+		"rightOutput": {
+			"male": "Ward",
+			"other": "Ward",
+			"female": "Ward"
+		}
+	},
+	{
+		"id": "436d9a95-d55d-4617-a349-c569e646891e",
+		"type": "parent",
+		"direction": "forward",
+		"name": "Stepparent",
+		"description": "A relationship formed when a parent marries someone who is not the child’s biological parent.",
+		"leftOutput": {
+			"male": "Stepfather",
+			"other": "Stepparent",
+			"female": "Stepmother"
+		},
+		"rightOutput": {
+			"male": "Stepson",
+			"other": "Stepchild",
+			"female": "Stepdaughter"
+		}
+	},
+	{
+		"id": "1bb751b8-0e15-4e05-b6ed-72a554329ae8",
+		"type": "partner",
+		"direction": "parallel",
+		"name": "Spouse",
+		"description": "A marital relationship recognized by law, ceremony, or tradition.",
+		"leftOutput": {
+			"male": "Husband",
+			"other": "Spouse",
+			"female": "Wife"
+		},
+		"rightOutput": {
+			"male": "Husband",
+			"other": "Spouse",
+			"female": "Wife"
+		}
+	},
+	{
+		"id": "ae878074-454b-4f2d-9a64-7082664d54ae",
+		"type": "partner",
+		"direction": "parallel",
+		"name": "Civil Union Partner",
+		"description": "A legally recognized partnership granting rights similar to marriage.",
+		"leftOutput": {
+			"male": "Civil Union Partner",
+			"other": "Civil Union Partner",
+			"female": "Civil Union Partner"
+		},
+		"rightOutput": {
+			"male": "Civil Union Partner",
+			"other": "Civil Union Partner",
+			"female": "Civil Union Partner"
+		}
+	},
+	{
+		"id": "6b226e78-c310-42e7-b59a-09e700dad97d",
+		"type": "partner",
+		"direction": "parallel",
+		"name": "Common-law spouse",
+		"description": "A marital relationship recognized through cohabitation and social acknowledgment rather than ceremony.",
+		"leftOutput": {
+			"male": "Common-law husband",
+			"other": "Common-law spouse",
+			"female": "Common-law wife"
+		},
+		"rightOutput": {
+			"male": "Common-law husband",
+			"other": "Common-law spouse",
+			"female": "Common-law wife"
+		}
+	},
+	{
+		"id": "374c62fa-d6d6-4fa8-8604-ed1e272dc18e",
+		"type": "partner",
+		"direction": "parallel",
+		"name": "Domestic Partner",
+		"description": "A household-sharing partnership recognized socially or legally.",
+		"leftOutput": {
+			"male": "Domestic Partner",
+			"other": "Domestic Partner",
+			"female": "Domestic Partner"
+		},
+		"rightOutput": {
+			"male": "Domestic Partner",
+			"other": "Domestic Partner",
+			"female": "Domestic Partner"
+		}
+	},
+	{
+		"id": "2e44a6cf-7b5a-454a-b445-758ada18dbf6",
+		"type": "partner",
+		"direction": "parallel",
+		"name": "Ex-spouse",
+		"description": "A former marital relationship dissolved through divorce or annulment.",
+		"leftOutput": {
+			"male": "Ex-husband",
+			"other": "Ex-spouse",
+			"female": "Ex-wife"
+		},
+		"rightOutput": {
+			"male": "Ex-husband",
+			"other": "Ex-spouse",
+			"female": "Ex-wife"
+		}
+	},
+	{
+		"id": "e97ca8df-4b81-4370-a7ab-d3e785478bc7",
+		"type": "partner",
+		"direction": "parallel",
+		"name": "Partner",
+		"description": "A committed relationship without formal marriage requirements.",
+		"leftOutput": {
+			"male": "Partner",
+			"other": "Partner",
+			"female": "Partner"
+		},
+		"rightOutput": {
+			"male": "Partner",
+			"other": "Partner",
+			"female": "Partner"
+		}
+	}
+]

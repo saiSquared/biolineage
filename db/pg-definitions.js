@@ -321,7 +321,7 @@ const pgTables = {
 			{ name: 'code', type: 'TEXT', nulls: false, unique: true },
 			{ name: 'label', type: 'TEXT', nulls: false },
 			{ name: 'surface', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
-			{ name: 'exclude', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
+			{ name: 'required', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
 			{ name: 'placeholder', type: 'TEXT' },
 			{ name: 'format', type: 'TEXT' },
 			{ name: 'description', type: 'TEXT' },
@@ -1106,6 +1106,7 @@ const pgTables = {
 			{ name: 'direction', type: 'TEXT', nulls: false }, // 'forward' or 'parallel'
 			{ name: 'main', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
 			{ name: 'name', type: 'TEXT', nulls: false }, // human-readable variant
+			{ name: 'description', type: 'TEXT' },
 			{ name: 'left_output', type: 'JSONB', nulls: false }, // { male, female, unknown }
 			{ name: 'right_output', type: 'JSONB', nulls: false }, // { male, female, unknown }
 			{ name: 'created_by', type: 'UUID', nulls: false },

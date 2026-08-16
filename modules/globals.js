@@ -50,8 +50,12 @@ async function loadTrees() {
 }
 
 async function startup() {
-	const entityNameParts = await biolineageDb.query('select * from entity_name_parts')
+	const entityNameParts = await biolineageDb.query('select id, code, label, surface, required, placeholder, format, description from entity_name_parts')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-name-parts.json'), JSON.stringify(entityNameParts, null, '\t'))
+	const relationshipTypes = await biolineageDb.query('select id, type, direction, name, description, left_output, right_output from relationship_types order by type, main desc, name')
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'relationship-types.json'), JSON.stringify(relationshipTypes, null, '\t'))
+	const factTypes = await biolineageDb.query('select entity_type_id, code, name, description from fact_types order by entity_type_id, code')
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'fact-types.json'), JSON.stringify(factTypes, null, '\t'))
 }
 
 startup()
