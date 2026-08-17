@@ -642,7 +642,8 @@ class Getters {
 		// root entity
 		sql =
 			`select
-				e.id, e.full_name, e.display_name, e.sex, e.birth_year, e.death_year, e.notes, en.name_type, en.name_parts, u."name" modified_by, e.modified_date, u2."name" created_by, e.created_date
+				e.id, e.canonical_name_id, e.full_name, e.display_name, e.sex, e.birth_year, e.death_year, e.notes, en.name_type,
+				en.name_parts, u."name" modified_by, e.modified_date, u2."name" created_by, e.created_date
 			from
 				entities e
 				join entity_names en on en.id = e.canonical_name_id
@@ -655,7 +656,7 @@ class Getters {
 		// names
 		sql =
 			`select
-				id, name_type, name_parts
+				id, name_type, name_parts, description
 			from
 				entity_names
 			where
@@ -901,7 +902,7 @@ class Getters {
 	}
 
 	async treeEntities(data) {
-		const results = await biolineageDb.get('select * from get_tree_entities($1, $2, $3, $4, $5);', [data.tree, data.filter, data.startYear, data.endYear, data.page])
+		const results = await biolineageDb.get('select * from get_tree_entities($1, $2, $3, $4, $5);', [data.tree, data.filter ? data.filter.toLowerCase() : null, data.startYear, data.endYear, data.page])
 		const resultData = results.getTreeEntities
 		return { total: resultData.total, pages: resultData.pages, items: resultData.items.map(data => pgToJs(data)) }
 	}

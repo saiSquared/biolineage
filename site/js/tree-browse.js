@@ -244,7 +244,7 @@ async function setup() {
 		name: 'treeId',
 		id: 'tree-id',
 		type: 'text',
-		hidden: true,
+		labelHidden: true,
 		value: dataPackage.treeId
 	})
 	fields.push({

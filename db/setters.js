@@ -161,6 +161,20 @@ class Setters {
 		}
 	}
 
+	async entityEdit(user, editor, data) {
+		try {
+			switch (editor) {
+				case 'sex': {
+					await biolineageDb.update('entities', { sex: data.sex, modifiedBy: user.userId, modifiedDate: new Date() }, { id: data.entityId })
+					return { ok: true, id: data.entityId }
+				}
+			}
+		} catch (error) {
+			console.log('Failed to edit entity', editor, data, error)
+			return { ok: false }
+		}
+	}
+
 	async treeAdd(user, data) {
 		try {
 			const id = uuidv4()

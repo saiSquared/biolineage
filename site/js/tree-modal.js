@@ -1,79 +1,76 @@
 'use strict'
 
-// import Autocomplete from '/js/autocomplete/autocomplete.esm.min.js'
-
 const floatingUI = window.FloatingUIDOM
 
 /**
- * @typedef {Object} ModalFormGroup
+ * @typedef {Object} SelectOption
  * @property {String} value - value for the option
  * @property {String} text - text for the option
  */
 
 /**
- * @typedef {Object} ModalFormSelectOption
- * @property {String} value - value for the option
- * @property {String} text - text for the option
- */
-
-/**
- * @typedef {Object} ModalFormHandler
- * @property {String} event - event to bind
- * @property {function(): void} handler - function to execute when event is triggered
- */
-
-/**
- * @typedef {Object} ModalFormDataAttribute
- * @property {String} attribute - slug for attribute i.e. data-{attribute}
- * @property {String} value - value for the attribute
- */
-
-/**
- * @typedef {Object} ModalFormField
+ * @typedef {Object} EntityField
  * @property {String} group - group the field belongs to
  * @property {String} label - text for the field's label
- * @property {String} [labelClass] - CSS class(es) fr the label
- * @property {Boolean} [labelHidden] - whether the field is hidden
  * @property {String} name - database name of the field
  * @property {String} id - for id for the field
- * @property {text|textarea|select|combo|autocomplete|toggle} type - type of field
- * @property {String} [fieldClass] - CSS class(es) fr the field
+ * @property {text|textarea|select} type - type of field
+ * @property {String} [class] - CSS class(es) fr the field
  * @property {String} [placeholder] - placeholder text for text fields
- * @property {Boolean} [hidden] - whether the field is hidden
- * @property {Boolean} [ignore] - whether to exclude the field from the data
- * @property {Boolean} [autofocus] - whether the field should automatically be focused
  * @property {Boolean} [required] - whether the field is required
  * @property {Boolean} [disabled] - whether the field is disabled
  * @property {String} [pattern] - pattern attribute for text inputs
  * @property {String} [width] - width for the field
+ * @property {Number} [grow] - flex grow property for the field
  * @property {String} [tip] - FloatingUI tooltip
- * @property {ModalFormSelectOption[]} [options] - options for select fields
- * @property {ModalFormHandler[]} [handlers] - event handlers for the field
- * @property {ModalFormDataAttribute[]} [data] - odataset attributes
- * @property {any} [value] - value for the field
+ * @property {SelectOption[]} [options] - options for select fields
  */
 
 /**
  * Create a new entity modal for creating, picking and/or editing an enity
- * @param {add|edit} mode - mode the form is working in
- * @param {String} endpoint - API endpoint for the form to POST to
- * @param {String} header - header for the modal
- * @param {ModalFormField[]} fields - array of fields to use in the form
- * @param {ModalFormGroup[]} [groups] - optional groups to organize the fields
- * @param {Object} [validators] - functions to validate fields
+ * @param {Object} [treeData] - existing tree data for editing
  */
-export default function modalForm(mode, endpoint, header, fields, groups, validators) {
-	const dataPackage = {}
-	const sourcePackage = {}
-	for (const field of fields) {
-		if (!field.ignore) dataPackage[field.name] = field.value || null
-		if (!field.ignore) sourcePackage[field.name] = field.value || null
+export default function treeModal(treeData) {
+	/** @type {EntityField[]} */
+	const fields = [
+		{
+			group: 'tree',
+			label: 'Tree Name',
+			name: 'name',
+			id: 'tree-name',
+			type: 'text',
+			placeholder: 'Name',
+			required: true,
+			width: '100%',
+			tip: 'A unique name for your tree, will be checked against existing trees before creation.'
+		},
+		{
+			group: 'tree',
+			label: 'Entity Type',
+			name: 'entityTypeId',
+			id: 'tree-type',
+			type: 'select',
+			options: [
+				{ value: 'd4780b1f-3764-491d-9942-dc814c3750b4', text: 'Human' },
+				{ value: '409a8c4f-1167-4039-b298-f46ce7bcf7fd', text: 'Equine' }
+			],
+			tip: 'The type of entities you want to track in this tree.'
+		}
+	]
+	const dataPackage = {
+		treeId: null
 	}
+	const sourcePackage = treeData
+	for (const field of fields) {
+		if (treeData) field.value = treeData[field]
+		dataPackage[field] = treeData ? treeData[field] : null
+	}
+	const mode = treeData ? 'edit' : 'add'
+	const header = treeData ? 'Edit Tree' : 'Add Tree'
 
 	let modalOverlay, modalDialog, modalClose, modalCancel, modalSave, modalBody
 	let modalResolve
 	let isDirty = false
-	let autofocus = null
 
 	function checkDirty() {
 		const dirtyReasons = []
@@ -83,11 +80,9 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 			isDirty = false
 
 			for (const field of fields) {
-				if (!field.ignore) {
-					if (getValue(field.id) !== sourcePackage[field.name]) {
-						dirtyReasons.push({ field: field.id, old: sourcePackage[field.name], new: getValue(field.id) })
-						isDirty = true
-					}
+				if (getValue(field.id) !== sourcePackage[field.name]) {
+					dirtyReasons.push({ field: field.id, old: sourcePackage[field.name], new: getValue(field.id) })
+					isDirty = true
 				}
 			}
 		}
@@ -102,7 +97,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 
 	/**
 	 * Create a label and associated form field
-	 * @param {ModalFormField} labelInput - field definition
+	 * @param {EntityField} labelInput - field definition
 	 * @param {String} [labelClass] - CSS class for the label
 	 * @returns {HTMLElement}
 	 */
@@ -113,24 +108,17 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 		const span = document.createElement('span')
 		span.innerHTML = labelInput.label
 		label.appendChild(span)
-		if (labelInput.labelHidden) label.style.display = 'none'
-
 		let ele
-
 		switch (labelInput.type) {
 			case 'text': {
 				ele = document.createElement('input')
 				ele.id = labelInput.id
 				ele.type = labelInput.type
 				ele.setAttribute('placeholder', labelInput.placeholder)
-				if (labelInput.hidden) ele.setAttribute('hidden', '')
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
-				if (labelInput.autofocus) {
-					ele.setAttribute('autofocus', '')
-					autofocus = ele
-				}
 				if (labelInput.pattern) ele.setAttribute('pattern', labelInput.pattern)
+				if (labelInput.grow) ele.style.flexGrow = labelInput.grow
 				if (labelInput.value) ele.setAttribute('value', labelInput.value)
 				ele.addEventListener('input', event => {
 					event.target.setCustomValidity('')
@@ -144,10 +132,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 				ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
-				if (labelInput.autofocus) {
-					ele.setAttribute('autofocus', '')
-					autofocus = ele
-				}
+				if (labelInput.grow) ele.style.flexGrow = labelInput.grow
 				if (labelInput.value) ele.setAttribute('value', labelInput.value)
 				ele.addEventListener('input', event => {
 					event.target.setCustomValidity('')
@@ -159,10 +144,6 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 				ele = document.createElement('select')
 				ele.id = labelInput.id
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
-				if (labelInput.autofocus) {
-					ele.setAttribute('autofocus', '')
-					autofocus = ele
-				}
 				for (const opt of labelInput.options) {
 					const option = document.createElement('option')
 					option.value = opt.value
@@ -174,24 +155,8 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 					event.target.setCustomValidity('')
 					checkDirty()
 				})
-				break
-			}
-			case 'toggle': {
-				label.classList.add('toggle')
-				label.innerHTML = ''
-				ele = document.createElement('input')
-				ele.id = labelInput.id
-				ele.className = 'toggle-checkbox'
-				ele.type = 'checkbox'
-				if (labelInput.autofocus) {
-					ele.setAttribute('autofocus', '')
-					autofocus = ele
-				}
-				if (labelInput.value) ele.setAttribute('checked', '')
-				break
 			}
 		}
-
 		if (labelInput.tip) {
 			ele.addEventListener('focus', () => {
 				showFieldTooltip(ele, labelInput.tip)
@@ -200,40 +165,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 				hideFieldTooltip(ele)
 			})
 		}
-
-		if (labelInput.labelData) {
-			for (const item of labelInput.labelData) {
-				label.dataset[item.attribute] = item.value
-			}
-		}
-
-		if (labelInput.fieldData) {
-			for (const item of labelInput.fieldData) {
-				ele.dataset[item.attribute] = item.value
-			}
-		}
-
-		if (labelInput.handlers) {
-			for (const handler of labelInput.handlers) {
-				ele.addEventListener(handler.event, () => { handler.handler() })
-			}
-		}
-
 		label.appendChild(ele)
-
-		switch (labelInput.type) {
-			case 'toggle': {
-				const toggleSwitch = document.createElement('div')
-				toggleSwitch.className = 'toggle-switch'
-				label.appendChild(toggleSwitch)
-				const toggleLabel = document.createElement('span')
-				toggleLabel.className = 'toggle-label'
-				toggleLabel.innerHTML = labelInput.label
-				label.appendChild(toggleLabel)
-				break
-			}
-		}
-
 		return label
 	}
 
@@ -293,19 +225,33 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 
 	async function handleModalSave(event) {
 		event.preventDefault()
-
-		for (const key in validators) {
-			await validators[key](getValue)
+		if (getValue('tree-name')) {
+			const result = await fetch('/api/tree/get', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ name: getValue('tree-name') })
+			}).then(r => r.json())
+			console.log(result)
+			if (result) {
+				document.getElementById('tree-name').setCustomValidity('Tree name already taken')
+			} else {
+				document.getElementById('tree-name').setCustomValidity('')
+			}
+		} else {
+			document.getElementById('tree-name').setCustomValidity('')
 		}
-
 		const valid = modalBody.reportValidity()
 		console.log({ valid })
 		if (!valid) return
 
 		for (const field of fields) {
-			if (!field.ignore) {
-				dataPackage[field.name] = getValue(field.id)
-			}
+			dataPackage[field.name] = getValue(field.id)
+		}
+		let endpoint
+		if (mode === 'add') {
+			endpoint = '/api/tree/add'
+		} else {
+			endpoint = '/api/tree/update'
 		}
 
 		console.log({ endpoint, dataPackage, sourcePackage })
@@ -320,7 +266,11 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 
 		if (response.ok) {
 			handleModalClose()
-			modalResolve(response.id)
+			if (mode === 'add') {
+				location.href = `/trees/${response.id}`
+			} else {
+				location.reload()
+			}
 		}
 	}
 
@@ -345,7 +295,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 
 			modalDialog = document.createElement('div')
 			modalDialog.id = 'modal'
-			modalDialog.className = 'modal modal-entity'
+			modalDialog.className = 'modal modal-editor'
 			const modalDialogHeader = document.createElement('div')
 			modalDialogHeader.className = 'modal-header'
 			const modalDialogHeading = document.createElement('h2')
@@ -363,25 +313,8 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 			modalBody.className = 'modal-body modal-body-flex'
 			modalBody.noValidate = true
 
-			if (groups) {
-				for (const group of groups) {
-					if (group.header) {
-						const groupHeading = document.createElement('h3')
-						groupHeading.innerHTML = group.header
-						modalBody.appendChild(groupHeading)
-					}
-					const groupContainer = document.createElement('div')
-					groupContainer.className = 'modal-group'
-					const groupFields = fields.filter(data => data.group === group.slug)
-					for (const field of groupFields) {
-						groupContainer.appendChild(createLabel(field))
-					}
-					modalBody.appendChild(groupContainer)
-				}
-			} else {
-				for (const field of fields) {
-					modalBody.appendChild(createLabel(field))
-				}
+			for (const field of fields) {
+				modalBody.appendChild(createLabel(field))
 			}
 
 			modalBody.addEventListener('submit', handleModalSave)
@@ -418,7 +351,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 			requestAnimationFrame(() => {
 				modalOverlay.classList.add('is-visible')
 				modalDialog.classList.add('is-visible')
-				if (autofocus) autofocus.focus()
+				document.querySelector('form > :first-child').focus()
 			})
 		})
 	}
@@ -436,7 +369,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 		const cleanup = floatingUI.autoUpdate(fieldElement, tip, () => {
 			floatingUI.computePosition(fieldElement, tip, {
 				strategy: 'fixed',
-				placement: 'bottom',
+				placement: 'top',
 				middleware: [
 					floatingUI.offset(8),
 					floatingUI.flip(),

@@ -536,8 +536,8 @@ const pgTables = {
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'place_type', type: 'TEXT', nulls: false },
-			{ name: 'enclosed_by', type: 'UUID' },
 			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'description', type: 'TEXT' },
 			{ name: 'sovereign_entity', type: 'TEXT' },
 			{ name: 'sovereign_entity_id', type: 'UUID' },
 			{ name: 'subdivision', type: 'TEXT' },
@@ -546,9 +546,9 @@ const pgTables = {
 			{ name: 'administrative_division_id', type: 'UUID' },
 			{ name: 'municipality', type: 'TEXT' },
 			{ name: 'municipality_id', type: 'UUID' },
+			{ name: 'enclosed_by', type: 'UUID' },
 			{ name: 'latitude', type: 'DOUBLE PRECISION' },
 			{ name: 'longitude', type: 'DOUBLE PRECISION' },
-			{ name: 'description', type: 'TEXT' },
 			{ name: 'address', type: 'TEXT' },
 			{ name: 'google_place_id', type: 'TEXT' },
 			{ name: 'notes', type: 'TEXT' },
@@ -584,9 +584,6 @@ const pgTables = {
 					{ field: 'name', opclass: 'gin_trgm_ops' }
 				]
 			}
-		],
-		checks: [
-			{ expression: 'place_type ~ \'^[a-z][a-z_]*$\'' }
 		]
 	},
 

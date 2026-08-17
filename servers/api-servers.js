@@ -103,12 +103,16 @@ async function apiServers(app) {
 		}
 	})
 
-	app.get('/api/entity/graph/:id', async (request, reply) => {
-		reply.send(await getters.entityGraph(request.params.id))
-	})
-
 	app.post('/api/entity/add', async (request, reply) => {
 		reply.send(await setters.entityAdd(request.user, request.body))
+	})
+
+	app.post('/api/entity/edit/sex', async (request, reply) => {
+		reply.send(await setters.entityEdit(request.user, 'sex', request.body))
+	})
+
+	app.get('/api/entity/graph/:id', async (request, reply) => {
+		reply.send(await getters.entityGraph(request.params.id))
 	})
 
 	app.post('/api/tree/add', async (request, reply) => {
