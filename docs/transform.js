@@ -296,7 +296,7 @@ const buildName = (data) => {
 
 	let displayName = displayParts.join(' ')
 	if (nameParts.SuffixTitle) displayName += `, ${nameParts.SuffixTitle}`
-	nameParts.displayName = displayName
+	nameParts.Display = displayName
 
 	// Build searchName
 	const searchParts = []
@@ -441,7 +441,7 @@ async function initPg() {
 	await biolineageDb.createViews(pgViews)
 
 	// Create initial users
-	const clubside = uuidv4()
+	const clubside = '3c6b9263-0452-4163-a4d3-237d114cb591'
 	await biolineageDb.insert('users', {
 		id: clubside,
 		email: 'clubsidedev@hotmail.com',
@@ -450,7 +450,7 @@ async function initPg() {
 		avatar: true,
 		role: 'super'
 	})
-	const norm = uuidv4()
+	const norm = 'fedb5da9-af86-484d-be57-552a13869de2'
 	await biolineageDb.insert('users', {
 		id: norm,
 		email: 'norman.eaddy@gmail.com',
@@ -458,7 +458,7 @@ async function initPg() {
 		name: 'Norm Eaddy',
 		role: 'super'
 	})
-	const charles = uuidv4()
+	const charles = 'fbca8b6b-83dc-4b5f-b8b1-a820077476b4'
 	await biolineageDb.insert('users', {
 		id: charles,
 		email: 'visionarypragmatist@gmail.com',
@@ -521,183 +521,241 @@ async function initPg() {
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Display',
-		label: 'Display Name',
+		slug: 'display',
+		label: 'Display',
 		surface: true,
 		required: true,
 		placeholder: 'ex. Mike Jones',
 		description: 'The main name shown in trees, lists, search results, and relationship panels. This should be the name most commonly associated with the entity.',
+		width: '100%',
+		sort: 1,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'PrefixTitle',
+		slug: 'prefix-title',
 		label: 'Title (Prefix)',
 		surface: true,
 		placeholder: 'ex. Dr.',
 		description: 'Honorifics, ranks, or positions that appear <em>before</em> the name (e.g., Dr., Rev., Colonel, Count, Haji).',
+		width: '14ch',
+		sort: 2,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Primary',
-		label: 'Given Name',
+		slug: 'primary',
+		label: 'Given',
 		surface: true,
 		placeholder: 'ex. Michael',
 		description: 'The primary given name used to identify the entity.',
+		width: '20ch',
+		sort: 3,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Moniker',
+		slug: 'moniker',
 		label: 'Nickname',
 		surface: true,
 		placeholder: 'ex. Buddy',
 		format: '"{v}"',
 		description: 'An informal or familiar name used socially or colloquially.',
+		width: '20ch',
+		sort: 4,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Secondary',
-		label: 'Additional Given Name',
+		slug: 'secondary',
+		label: 'Additional Given',
 		placeholder: 'ex. Otto',
 		description: 'A secondary given name that is not the primary name.',
+		width: '20ch',
+		sort: 5,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Middle',
-		label: 'Middle Name',
+		slug: 'middle',
+		label: 'Middle',
 		surface: true,
 		placeholder: 'ex. Montgomery',
 		description: 'A name placed between given and family names in cultures that use middle names.',
+		width: '20ch',
+		sort: 6,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Familiar',
-		label: 'Familiar Name',
+		slug: 'familiar',
+		label: 'Familiar',
 		placeholder: 'ex. Mike',
 		description: 'A familiar or shortened form of a given name (e.g., Mike for Michael).',
+		width: '20ch',
+		sort: 7,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Religious',
-		label: 'Religious Name',
+		slug: 'religious',
+		label: 'Religious',
 		placeholder: 'ex. Luther',
 		description: 'A name given or adopted for religious purposes.',
+		width: '20ch',
+		sort: 8,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Geographic',
-		label: 'Geographic Name',
+		slug: 'geographic',
+		label: 'Geographic',
 		surface: true,
 		placeholder: 'ex. van der',
 		description: 'A name part derived from geography or place association (e.g., van, von, de, del, di, la).',
+		width: '14ch',
+		sort: 9,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Family',
-		label: 'Family Name',
+		slug: 'family',
+		label: 'Family',
 		surface: true,
 		placeholder: 'ex. Jones',
 		description: 'A surname or clan name identifying family or lineage.',
+		width: '20ch',
+		sort: 10,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Maiden',
-		label: 'Maiden Name',
+		slug: 'maiden',
+		label: 'Maiden',
 		placeholder: 'ex. Smith',
 		format: '(formerly {v})',
 		description: 'An entity\'s original family name prior to adopting a new surname (commonly at marriage).',
+		width: '20ch',
+		sort: 11,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Patronymic',
+		slug: 'patronymic',
 		label: 'Patronymic',
 		placeholder: 'ex. Abrahams',
 		description: 'A name derived from a father or paternal ancestor (e.g., Abrahams meaning "son of Abraham").',
+		width: '20ch',
+		sort: 12,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Matronymic',
+		slug: 'matronymic',
 		label: 'Matronymic',
 		placeholder: 'ex. Mariadottir',
 		description: 'A name derived from a mother or maternal ancestor.',
+		width: '20ch',
+		sort: 13,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Occupational',
-		label: 'Occupational Name',
+		slug: 'occupational',
+		label: 'Occupational',
 		placeholder: 'ex. Smith',
 		description: 'A name derived from an occupation (e.g., Smith, Miller, Cooper).',
+		width: '14ch',
+		sort: 14,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Characteristic',
-		label: 'Characteristic Name',
+		slug: 'characteristic',
+		label: 'Characteristic',
 		placeholder: 'ex. the Elder',
 		description: 'A name derived from a trait or descriptor (e.g., the Elder, the Silent).',
+		width: '20ch',
+		sort: 15,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Postnom',
+		slug: 'postnom',
 		label: 'Postnom',
 		placeholder: 'ex. Kabila',
 		description: 'A legally mandated name part used in Congo Free State / Belgian Congo / Congo / Democratic Republic of Congo.',
+		width: '14ch',
+		sort: 16,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'Particle',
+		slug: 'particle',
 		label: 'Particle',
+		surface: true,
 		placeholder: 'ex. III',
-		description: 'A grammatical element such as articles (the, el), prepositions (of, von), ordinals (III), comparators (Jr., Sr.), or descendancy markers (ben, ibn, bat).',
+		description: 'A post-name or relational qualifier such as ordinals (III), generational markers (Jr., Sr.), descriptive epithets (the Elder, the Younger), or descendancy markers (ben, ibn, bat) when they follow the main name.',
+		width: '14ch',
+		sort: 17,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'RootName',
-		label: 'Root Name',
+		slug: 'root-name',
+		label: 'Root',
 		placeholder: 'ex. Wilk',
 		description: 'The root of a name part, distinct from prefixes or suffixes (e.g., Wilk is the root of Wilkówna).',
+		width: '14ch',
+		sort: 18,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
 	await biolineageDb.insert('entity_name_parts', {
 		id: uuidv4(),
 		code: 'SuffixTitle',
+		slug: 'suffix-title',
 		label: 'Title (Suffix)',
 		surface: true,
 		placeholder: 'ex. PhD',
 		format: ', {v}',
 		description: 'Titles, degrees, or credentials that appear <em>after</em> the name (e.g., PhD, MD, Esq.).',
+		width: '14ch',
+		sort: 19,
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -707,7 +765,7 @@ async function initPg() {
 	await biolineageDb.insert('entity_types', {
 		id: human,
 		key: 'human',
-		label: 'Human',
+		label: 'Person',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -715,7 +773,7 @@ async function initPg() {
 	await biolineageDb.insert('entity_types', {
 		id: equine,
 		key: 'equine',
-		label: 'Equine',
+		label: 'Horse',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})

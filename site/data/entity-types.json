@@ -1,0 +1,14 @@
+[
+	{
+		"id": "1997db83-3696-4de3-8565-58064650e5bb",
+		"key": "human",
+		"label": "Person",
+		"description": null
+	},
+	{
+		"id": "abc48b36-24d8-44cb-a6a6-8b76d0deb7e5",
+		"key": "equine",
+		"label": "Horse",
+		"description": null
+	}
+]

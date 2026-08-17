@@ -217,6 +217,7 @@ class AppGenerators {
 			treeId: tree.id,
 			treeSlug: slug,
 			treeType: tree.entityTypeId,
+			treeLabel: tree.label,
 			userId: user.userId,
 			role: user.role
 		}
@@ -284,6 +285,7 @@ class AppGenerators {
 			treeId: tree.id,
 			treeSlug: slug,
 			treeType: tree.entityTypeId,
+			treeLabel: tree.label,
 			userId: user.userId,
 			role: user.role
 		}
@@ -322,12 +324,15 @@ class AppGenerators {
 				{ file: 'account-menu.html' },
 				{ file: 'theme-menu.html' }
 			],
-			stylesheets: ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'],
+			stylesheets: [
+				'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+				'/js/dhtmlx-diagram/diagram.min.css'
+			],
 			scripts: [
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' },
 				{ type: 'link', content: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' },
-				{ type: 'link', content: '/js/familytree.js' }
+				{ type: 'link', content: '/js/dhtmlx-diagram/diagram.min.js' }
 			]
 		}
 		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 2 })

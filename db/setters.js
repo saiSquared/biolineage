@@ -1,20 +1,79 @@
 const { v4: uuidv4 } = require('uuid')
-const { biolineageDb, hashPassword, loadTrees } = require('../modules/globals')
+const { biolineageDb, entityNameParts, hashPassword, loadTrees } = require('../modules/globals')
 const { slugify } = require('../modules/clubside-utils')
 
-const buildSearchName = (data) => {
-	let partsString = ''
-	if (data.prefixName) partsString += data.prefixName + ' '
-	if (data.givenName) partsString += data.givenName + ' '
-	if (data.middleName) partsString += data.middleName + ' '
-	if (data.prefixFamilyname) partsString += data.prefixFamilyname + ' '
-	if (data.familyName) partsString += data.familyName + ' '
-	if (data.suffixName) partsString += data.suffixName + ' '
-	if (data.nickName) partsString += data.nickName + ' '
-	if (data.displayName) partsString += data.displayName + ' '
-	const cleaned = partsString.trim().toLowerCase().replace(/[^\w\s]/g, '')
-	const parts = cleaned.split(/\s+/)
-	return [...new Set(parts)].join(' ')
+/**
+ * @typedef {Object} BiolineageEntityNameData
+ * @property {String} fullName - all name parts but Display joined
+ * @property {String} displayName - canonical required input field display_name
+ * @property {String|null} familyName - GEDCOM-X Family name part
+ * @property {String} searchName - all name parts combined and de-duplicated for search
+ * @property {Object} nameParts - all GEDCOM-X name parts plus extensions
+ */
+
+/**
+ * Build the necessary fields for entity_names and entities from form data
+ * @param {Object} data - source data
+ * @returns {BiolineageEntityNameData}
+ */
+const buildName = (data) => {
+	const namePartCodes = [
+		'PrefixTitle', 'Primary', 'Moniker', 'Secondary', 'Middle',
+		'Religious', 'Geographic', 'Family', 'Maiden', 'Patronymic',
+		'Matronymic', 'Occupational', 'Characteristic', 'Postnom',
+		'Particle', 'RootName'
+	]
+
+	const searchNamePartCodes = [
+		'Display', 'PrefixTitle', 'Primary', 'Moniker', 'Secondary', 'Middle', 'Familiar',
+		'Religious', 'Geographic', 'Family', 'Maiden', 'Patronymic',
+		'Matronymic', 'Occupational', 'Characteristic', 'Postnom',
+		'Particle', 'RootName', 'SuffixTitle'
+	]
+
+	/** @type {BiolineageEntityNameParts} */
+	const nameParts = {}
+
+	for (const part of entityNameParts) {
+		if (data[part.code]) nameParts[part.code] = data[part.code]
+	}
+
+	// Build fullName
+	const parts = []
+	for (const code of namePartCodes) {
+		if (nameParts[code]) {
+			if (code === 'Moniker') {
+				parts.push(`"${nameParts[code]}"`)
+			} else if (code === 'RootName') {
+				parts.push(`[root: ${nameParts[code]}]`)
+			} else {
+				parts.push(nameParts[code])
+			}
+		}
+	}
+
+	let fullName = parts.join(' ')
+	if (nameParts.SuffixTitle) fullName += `, ${nameParts.SuffixTitle}`
+	if (fullName === '') fullName = nameParts.Display
+
+	// Build searchName
+	const searchParts = []
+	for (const code of searchNamePartCodes) {
+		if (nameParts[code]) searchParts.push(nameParts[code])
+	}
+
+	let searchName = searchParts.join(' ')
+	const cleaned = searchName.trim().toLowerCase().replace(/[^\w\s]/g, '')
+	const cleanedParts = cleaned.split(/\s+/)
+	searchName = [...new Set(cleanedParts)].join(' ')
+
+	return {
+		fullName,
+		displayName: nameParts.Display,
+		familyName: nameParts.Family || null,
+		searchName,
+		nameParts
+	}
 }
 
 const massageNumber = (num) => {
@@ -32,6 +91,9 @@ const massageNumber = (num) => {
 
 class Setters {
 	async entityAdd(user, data) {
+		console.log(data)
+		const name = buildName(data)
+		console.log(name)
 		biolineageDb.begin()
 		try {
 			const id = uuidv4()
@@ -41,14 +103,7 @@ class Setters {
 				treeId: data.treeId,
 				entityId: id,
 				nameType: data.nameType,
-				prefixName: data.prefixName,
-				givenName: data.givenName,
-				middleName: data.middleName,
-				prefixFamilyName: data.prefixFamilyName,
-				familyName: data.familyName,
-				suffixName: data.suffixName,
-				nickName: data.nickName,
-				displayName: data.displayName,
+				nameParts: name.nameParts,
 				description: data.description,
 				createdBy: user.userId,
 				modifiedBy: user.userId
@@ -58,9 +113,10 @@ class Setters {
 				id,
 				treeId: data.treeId,
 				canonicalNameId: nameId,
-				displayName: data.displayName,
-				familyName: data.familyName,
-				searchName: buildSearchName(data),
+				fullName: name.fullName,
+				displayName: name.displayName,
+				familyName: name.familyName,
+				searchName: name.searchName,
 				sex: data.sex,
 				createdBy: user.userId,
 				modifiedBy: user.userId
@@ -110,7 +166,7 @@ class Setters {
 			const id = uuidv4()
 			await biolineageDb.insert('trees', { id, name: data.name, slug: slugify(data.name), entityTypeId: data.entityTypeId, ownerId: user.userId, createdBy: user.userId, modifiedBy: user.userId })
 			await loadTrees()
-			return { ok: true, id }
+			return { ok: true, id: slugify(data.name) }
 		} catch (error) {
 			console.log('Failed to add tree', error)
 			return { ok: false }

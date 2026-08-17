@@ -21,7 +21,12 @@ const biolineageDb = pgDb({
 	database: env.PG_DATABASE
 }, false)
 
+/** @type {BiolineageTree[]} */
 const trees = []
+/** @type {BiolineageEntityNameParts[]} */
+const entityNameParts = []
+/** @type {BiolineageEntityType[]} */
+const entityTypes = []
 
 function formatWordNumber(number) {
 	const words = [
@@ -43,15 +48,23 @@ async function hashPassword(text) {
 
 async function loadTrees() {
 	trees.length = 0
-	const treeData = await biolineageDb.query('select t.*, et.key from trees t join entity_types et on et.id = t.entity_type_id')
+	const treeData = await biolineageDb.query('select t.*, et.key, et.label from trees t join entity_types et on et.id = t.entity_type_id')
 	for (const tree of treeData) {
 		trees.push(tree)
 	}
 }
 
 async function startup() {
-	const entityNameParts = await biolineageDb.query('select id, code, label, surface, required, placeholder, format, description from entity_name_parts')
-	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-name-parts.json'), JSON.stringify(entityNameParts, null, '\t'))
+	const entityTypesData = await biolineageDb.query('select id, key, label, description from entity_types')
+	for (const row of entityTypesData) {
+		entityTypes.push(row)
+	}
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-types.json'), JSON.stringify(entityTypesData, null, '\t'))
+	const entityNamePartsData = await biolineageDb.query('select id, code, slug, label, surface, required, placeholder, format, description, width from entity_name_parts order by sort')
+	for (const row of entityNamePartsData) {
+		entityNameParts.push(row)
+	}
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-name-parts.json'), JSON.stringify(entityNamePartsData, null, '\t'))
 	const relationshipTypes = await biolineageDb.query('select id, type, direction, name, description, left_output, right_output from relationship_types order by type, main desc, name')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'relationship-types.json'), JSON.stringify(relationshipTypes, null, '\t'))
 	const factTypes = await biolineageDb.query('select entity_type_id, code, name, description from fact_types order by entity_type_id, code')
@@ -61,5 +74,5 @@ async function startup() {
 startup()
 
 module.exports = {
-	env, dbNorm, biolineageDb, formatWordNumber, hashPassword, loadTrees, trees
+	env, dbNorm, biolineageDb, entityNameParts, entityTypes, formatWordNumber, hashPassword, loadTrees, trees
 }

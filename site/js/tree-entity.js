@@ -1,4 +1,4 @@
-/// <reference path=".familytree.d.ts" />
+/// <reference path="../dhtmlx-diagram/diagram.d.ts" />
 'use strict'
 
 // TODO revisit pre-alpha naming documentation as noted in Obsidian > Biolineage > Names
@@ -488,31 +488,29 @@ function drawEntity() {
 	}).addTo(map)
 
 	const nodes = []
-	const root = { id: entity.id, pids: [], name: entity.displayName, gender: entity.sex.toLowerCase(), lifespan: cardLifespan(entity).innerHTML, img: getIcon(entity.sex) }
+	const nodeColor = (sex) => {
+		switch (sex) {
+			case 'Male':
+				return '#69ffff'
+			case 'Female':
+				return '#f4c2c2'
+			default:
+				return '#ccc'
+		}
+	}
+	const root = { id: entity.id, text: cardLifespan(entity).innerHTML, title: entity.displayName, img: getIcon(entity.sex), headerColor: nodeColor(entity.sex) }
 	try {
 		if (entity.parents.length > 0) {
 			if (entity.parents.length === 1) {
-				const parent1 = { id: entity.parents[0].id, name: entity.parents[0].displayName, gender: entity.parents[0].sex.toLowerCase(), lifespan: cardLifespan(entity.parents[0]).innerHTML, img: getIcon(entity.parents[0].sex) }
+				const parent1 = { id: entity.parents[0].id, text: cardLifespan(entity.parents[0]).innerHTML, title: entity.parents[0].displayName, img: getIcon(entity.parents[0].sex), headerColor: nodeColor(entity.parents[0].sex) }
 				nodes.push(parent1)
-				if (parent1.gender === 'male') {
-					root.fid = parent1.id
-				} else {
-					root.mid = parent1.id
-				}
+				root.parent = parent1.id
 			} else if (entity.parents.length === 2) {
-				const parent1 = { id: entity.parents[0].id, name: entity.parents[0].displayName, gender: entity.parents[0].sex.toLowerCase(), lifespan: cardLifespan(entity.parents[0]).innerHTML, img: getIcon(entity.parents[0].sex) }
-				const parent2 = { id: entity.parents[1].id, name: entity.parents[1].displayName, gender: entity.parents[1].sex.toLowerCase(), lifespan: cardLifespan(entity.parents[1]).innerHTML, img: getIcon(entity.parents[1].sex) }
-				parent1.pids = [parent2.id]
-				parent2.pids = [parent1.id]
+				const parent1 = { id: entity.parents[0].id, text: cardLifespan(entity.parents[0]).innerHTML, title: entity.parents[0].displayName, img: getIcon(entity.parents[0].sex), headerColor: nodeColor(entity.parents[0].sex) }
+				const parent2 = { id: entity.parents[1].id, text: cardLifespan(entity.parents[1]).innerHTML, title: entity.parents[1].displayName, img: getIcon(entity.parents[1].sex), parent: parent1.id, partner: true, headerColor: nodeColor(entity.parents[1].sex) }
+				root.parent = parent1.id
 				nodes.push(parent1)
 				nodes.push(parent2)
-				if (parent1.gender === 'male') {
-					root.fid = parent1.id
-					root.mid = parent2.id
-				} else {
-					root.mid = parent1.id
-					root.fid = parent2.id
-				}
 			}
 		}
 		nodes.push(root)
@@ -520,22 +518,25 @@ function drawEntity() {
 			for (const childGroup of entity.children) {
 				if (childGroup.parents.length === 1) {
 					for (const child of childGroup.children) {
-						const childData = { id: child.id, name: child.displayName, gender: child.sex.toLowerCase(), lifespan: cardLifespan(child).innerHTML, img: getIcon(child.sex) }
-						if (childGroup.parents[0].sex === 'Male') {
-							childData.fid = childGroup.parents[0].id
-						}
+						const childData = { id: child.id, text: cardLifespan(child).innerHTML, title: child.displayName, img: getIcon(child.sex), parent: childGroup.parents[0].id, headerColor: nodeColor(child.sex) }
 						nodes.push(childData)
 					}
 				} else if (childGroup.parents.length === 2) {
 					const parent1 = childGroup.parents.find(lookup => lookup.id === entity.id)
 					const parent2 = childGroup.parents.filter(data => data.id !== entity.id)[0]
-					console.log({ parent1, parent2 })
-					nodes.push({ id: parent2.id, pids: [parent1.id], name: parent2.displayName, gender: parent2.sex.toLowerCase(), lifespan: cardLifespan(parent2).innerHTML, img: getIcon(parent2.sex) })
-					root.pids.push(parent2.id)
-					const fid = parent1.sex === 'Male' ? parent1.id : parent2.id
-					const mid = parent1.sex === 'Female' ? parent1.id : parent2.id
+					nodes.push({ id: parent2.id, text: cardLifespan(parent2).innerHTML, title: parent2.displayName, img: getIcon(parent2.sex), parent: parent1.id, partner: true, headerColor: nodeColor(parent2.sex) })
 					for (const child of childGroup.children) {
-						const childData = { id: child.id, fid, mid, name: child.displayName, gender: child.sex.toLowerCase(), lifespan: cardLifespan(child).innerHTML, img: getIcon(child.sex) }
+						const childData = { id: child.id, text: cardLifespan(child).innerHTML, title: child.displayName, img: getIcon(child.sex), parent: parent1.id, headerColor: nodeColor(child.sex) }
+						nodes.push(childData)
+					}
+				}
+			}
+		}
+		if (entity.siblings.length > 0) {
+			for (const parentGroup of entity.siblings) {
+				if (parentGroup.full) {
+					for (const child of parentGroup.children) {
+						const childData = { id: child.id, text: cardLifespan(child).innerHTML, title: child.displayName, img: getIcon(child.sex), parent: root.parent, headerColor: nodeColor(child.sex) }
 						nodes.push(childData)
 					}
 				}
@@ -546,15 +547,38 @@ function drawEntity() {
 	}
 	console.log(nodes)
 	/** @type {FamilyTree} */
-	new FamilyTree('#tree', {
-		nodeBinding: {
-			field_0: 'name',
-			field_1: 'lifespan',
-			img_0: 'img'
+	const editor = new dhx.DiagramEditor(document.getElementById('tree'), {
+		type: 'org',
+		shapeType: 'img-card',
+		defaults: {
+			'img-card': {
+				width: 250,
+				height: 90,
+				title: 'Name',
+				text: 'Born'
+			}
 		},
-		nodes,
-		template: 'hugo'
+		view: {
+			editbar: {
+				properties: {
+					$shape: [
+						{
+							type: 'fieldset',
+							label: 'Family member',
+							rows: [
+								{ type: 'avatar', key: 'img', size: 240 },
+								{ type: 'input', key: 'title', label: 'Name' },
+								{ type: 'input', key: 'text', label: 'Born' }
+							]
+						},
+						{ type: 'colorpicker', label: 'Header color', key: 'headerColor', wrap: true }
+					]
+				}
+			}
+		}
 	})
+	// loading data into the editor
+	editor.parse(nodes)
 }
 
 async function getEntity() {

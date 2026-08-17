@@ -1,192 +1,230 @@
 [
 	{
-		"id": "9f7713fa-c3cb-41a5-81e4-ff39f36cd3be",
+		"id": "d17cd6bf-53d0-4cbb-a65c-fbd53d4cb012",
 		"code": "Display",
-		"label": "Display Name",
+		"slug": "display",
+		"label": "Display",
 		"surface": true,
 		"required": true,
 		"placeholder": "ex. Mike Jones",
 		"format": null,
-		"description": "The main name shown in trees, lists, search results, and relationship panels. This should be the name most commonly associated with the entity."
+		"description": "The main name shown in trees, lists, search results, and relationship panels. This should be the name most commonly associated with the entity.",
+		"width": "100%"
 	},
 	{
-		"id": "62f850a5-2942-4ee7-9368-311e4e679444",
+		"id": "e29dd73c-9e4b-4485-906b-69d28800cd05",
 		"code": "PrefixTitle",
+		"slug": "prefix-title",
 		"label": "Title (Prefix)",
 		"surface": true,
 		"required": false,
 		"placeholder": "ex. Dr.",
 		"format": null,
-		"description": "Honorifics, ranks, or positions that appear <em>before</em> the name (e.g., Dr., Rev., Colonel, Count, Haji)."
+		"description": "Honorifics, ranks, or positions that appear <em>before</em> the name (e.g., Dr., Rev., Colonel, Count, Haji).",
+		"width": "14ch"
 	},
 	{
-		"id": "91f18d05-1c74-4e08-901e-f992fc4cdb7f",
+		"id": "47b6cf59-a1a0-491a-80fd-d2378efa9762",
 		"code": "Primary",
-		"label": "Given Name",
+		"slug": "primary",
+		"label": "Given",
 		"surface": true,
 		"required": false,
 		"placeholder": "ex. Michael",
 		"format": null,
-		"description": "The primary given name used to identify the entity."
+		"description": "The primary given name used to identify the entity.",
+		"width": "20ch"
 	},
 	{
-		"id": "207e908f-98d2-457e-8d1c-a451c341bc82",
+		"id": "ca9ee6b7-3ab7-4b9d-a47c-8e058b1b5f56",
 		"code": "Moniker",
+		"slug": "moniker",
 		"label": "Nickname",
 		"surface": true,
 		"required": false,
 		"placeholder": "ex. Buddy",
 		"format": "\"{v}\"",
-		"description": "An informal or familiar name used socially or colloquially."
+		"description": "An informal or familiar name used socially or colloquially.",
+		"width": "20ch"
 	},
 	{
-		"id": "6500384c-93f3-416e-9414-fed003abb1be",
+		"id": "f39db602-5bad-4db5-9997-064d76eeb607",
 		"code": "Secondary",
-		"label": "Additional Given Name",
+		"slug": "secondary",
+		"label": "Additional Given",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Otto",
 		"format": null,
-		"description": "A secondary given name that is not the primary name."
+		"description": "A secondary given name that is not the primary name.",
+		"width": "20ch"
 	},
 	{
-		"id": "47d7d126-f750-467d-94e1-094ea6dc49d3",
+		"id": "bc3250fe-f849-45f0-a566-71c66517ab6c",
 		"code": "Middle",
-		"label": "Middle Name",
+		"slug": "middle",
+		"label": "Middle",
 		"surface": true,
 		"required": false,
 		"placeholder": "ex. Montgomery",
 		"format": null,
-		"description": "A name placed between given and family names in cultures that use middle names."
+		"description": "A name placed between given and family names in cultures that use middle names.",
+		"width": "20ch"
 	},
 	{
-		"id": "7f7caa7e-83a0-44bf-bf5a-a70b943076d9",
+		"id": "bf4d7084-7064-4d74-adfe-60388bfbd8a3",
 		"code": "Familiar",
-		"label": "Familiar Name",
+		"slug": "familiar",
+		"label": "Familiar",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Mike",
 		"format": null,
-		"description": "A familiar or shortened form of a given name (e.g., Mike for Michael)."
+		"description": "A familiar or shortened form of a given name (e.g., Mike for Michael).",
+		"width": "20ch"
 	},
 	{
-		"id": "0b9e9b8a-c9ee-414d-b153-a54fd2896be5",
+		"id": "4f8c66bd-8494-444e-b8db-5e91de41fcc6",
 		"code": "Religious",
-		"label": "Religious Name",
+		"slug": "religious",
+		"label": "Religious",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Luther",
 		"format": null,
-		"description": "A name given or adopted for religious purposes."
+		"description": "A name given or adopted for religious purposes.",
+		"width": "20ch"
 	},
 	{
-		"id": "a7ddb78f-c172-44d2-baf5-b2f8a68033a3",
+		"id": "b5e6ee12-61ff-4070-bb29-055d92dd31b5",
 		"code": "Geographic",
-		"label": "Geographic Name",
+		"slug": "geographic",
+		"label": "Geographic",
 		"surface": true,
 		"required": false,
 		"placeholder": "ex. van der",
 		"format": null,
-		"description": "A name part derived from geography or place association (e.g., van, von, de, del, di, la)."
+		"description": "A name part derived from geography or place association (e.g., van, von, de, del, di, la).",
+		"width": "14ch"
 	},
 	{
-		"id": "3508ce71-66fc-4e20-b786-34cd8a8e6e52",
+		"id": "88b78109-9f60-4192-a439-c42ac9a1dd42",
 		"code": "Family",
-		"label": "Family Name",
+		"slug": "family",
+		"label": "Family",
 		"surface": true,
 		"required": false,
 		"placeholder": "ex. Jones",
 		"format": null,
-		"description": "A surname or clan name identifying family or lineage."
+		"description": "A surname or clan name identifying family or lineage.",
+		"width": "20ch"
 	},
 	{
-		"id": "49e3d2cb-42ca-473e-a6a1-d228eae96a25",
+		"id": "6e0c2e40-7015-4fd2-aae5-4421b6c399bf",
 		"code": "Maiden",
-		"label": "Maiden Name",
+		"slug": "maiden",
+		"label": "Maiden",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Smith",
 		"format": "(formerly {v})",
-		"description": "An entity's original family name prior to adopting a new surname (commonly at marriage)."
+		"description": "An entity's original family name prior to adopting a new surname (commonly at marriage).",
+		"width": "20ch"
 	},
 	{
-		"id": "49dde767-d012-4de3-baa2-8836f39c4308",
+		"id": "9d8b8e77-ca2a-4bd8-a005-835016ff6d2b",
 		"code": "Patronymic",
+		"slug": "patronymic",
 		"label": "Patronymic",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Abrahams",
 		"format": null,
-		"description": "A name derived from a father or paternal ancestor (e.g., Abrahams meaning \"son of Abraham\")."
+		"description": "A name derived from a father or paternal ancestor (e.g., Abrahams meaning \"son of Abraham\").",
+		"width": "20ch"
 	},
 	{
-		"id": "ba0e39b9-20a8-4775-a70b-19585ad47b67",
+		"id": "76a999f4-71ec-4fa0-b869-a5e115720ca0",
 		"code": "Matronymic",
+		"slug": "matronymic",
 		"label": "Matronymic",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Mariadottir",
 		"format": null,
-		"description": "A name derived from a mother or maternal ancestor."
+		"description": "A name derived from a mother or maternal ancestor.",
+		"width": "20ch"
 	},
 	{
-		"id": "1ae5c983-6e05-42cf-9c99-75ef19de3e1b",
+		"id": "f3e5d517-b6d0-46f1-b0fe-2e89293d1937",
 		"code": "Occupational",
-		"label": "Occupational Name",
+		"slug": "occupational",
+		"label": "Occupational",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Smith",
 		"format": null,
-		"description": "A name derived from an occupation (e.g., Smith, Miller, Cooper)."
+		"description": "A name derived from an occupation (e.g., Smith, Miller, Cooper).",
+		"width": "14ch"
 	},
 	{
-		"id": "a005b66a-cfe2-4306-aa0a-8008bed10658",
+		"id": "588200a6-660d-4dfc-951e-e86ced62d43b",
 		"code": "Characteristic",
-		"label": "Characteristic Name",
+		"slug": "characteristic",
+		"label": "Characteristic",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. the Elder",
 		"format": null,
-		"description": "A name derived from a trait or descriptor (e.g., the Elder, the Silent)."
+		"description": "A name derived from a trait or descriptor (e.g., the Elder, the Silent).",
+		"width": "20ch"
 	},
 	{
-		"id": "41bd3207-7794-4b92-8f83-ad210d49df8e",
+		"id": "d05fbd34-a23a-4ef5-b022-a0d6e8e9ef48",
 		"code": "Postnom",
+		"slug": "postnom",
 		"label": "Postnom",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Kabila",
 		"format": null,
-		"description": "A legally mandated name part used in Congo Free State / Belgian Congo / Congo / Democratic Republic of Congo."
+		"description": "A legally mandated name part used in Congo Free State / Belgian Congo / Congo / Democratic Republic of Congo.",
+		"width": "14ch"
 	},
 	{
-		"id": "7624b04d-8975-4ddd-ae6b-be158963822d",
+		"id": "ddd7411f-4f1a-47ea-bb06-381c3e96bea8",
 		"code": "Particle",
+		"slug": "particle",
 		"label": "Particle",
-		"surface": false,
+		"surface": true,
 		"required": false,
 		"placeholder": "ex. III",
 		"format": null,
-		"description": "A grammatical element such as articles (the, el), prepositions (of, von), ordinals (III), comparators (Jr., Sr.), or descendancy markers (ben, ibn, bat)."
+		"description": "A post-name or relational qualifier such as ordinals (III), generational markers (Jr., Sr.), descriptive epithets (the Elder, the Younger), or descendancy markers (ben, ibn, bat) when they follow the main name.",
+		"width": "14ch"
 	},
 	{
-		"id": "685d9a12-252a-42c6-8db0-3af2f673ea4c",
+		"id": "c288291c-d910-466c-9fe0-d2c9ac9d7f3e",
 		"code": "RootName",
-		"label": "Root Name",
+		"slug": "root-name",
+		"label": "Root",
 		"surface": false,
 		"required": false,
 		"placeholder": "ex. Wilk",
 		"format": null,
-		"description": "The root of a name part, distinct from prefixes or suffixes (e.g., Wilk is the root of Wilkówna)."
+		"description": "The root of a name part, distinct from prefixes or suffixes (e.g., Wilk is the root of Wilkówna).",
+		"width": "14ch"
 	},
 	{
-		"id": "701c4946-e03c-45e7-950b-eac561afeb78",
+		"id": "d99b530e-967d-4e57-9141-c5135904458f",
 		"code": "SuffixTitle",
+		"slug": "suffix-title",
 		"label": "Title (Suffix)",
 		"surface": true,
 		"required": false,
 		"placeholder": "ex. PhD",
 		"format": ", {v}",
-		"description": "Titles, degrees, or credentials that appear <em>after</em> the name (e.g., PhD, MD, Esq.)."
+		"description": "Titles, degrees, or credentials that appear <em>after</em> the name (e.g., PhD, MD, Esq.).",
+		"width": "14ch"
 	}
 ]

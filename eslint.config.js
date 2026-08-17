@@ -20,7 +20,7 @@ module.exports = [
 				f3: 'readonly',
 				dataPackage: 'readonly',
 				L: 'readonly',
-				FamilyTree: 'readonly'
+				dhx: 'readonly'
 			}
 		},
 		plugins: { '@stylistic': stylistic },

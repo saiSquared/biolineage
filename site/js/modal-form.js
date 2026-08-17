@@ -5,238 +5,75 @@
 const floatingUI = window.FloatingUIDOM
 
 /**
- * @typedef {Object} SelectOption
+ * @typedef {Object} ModalFormGroup
  * @property {String} value - value for the option
  * @property {String} text - text for the option
  */
 
 /**
- * @typedef {Object} EntityField
+ * @typedef {Object} ModalFormSelectOption
+ * @property {String} value - value for the option
+ * @property {String} text - text for the option
+ */
+
+/**
+ * @typedef {Object} ModalFormHandler
+ * @property {String} event - event to bind
+ * @property {function(): void} handler - function to execute when event is triggered
+ */
+
+/**
+ * @typedef {Object} ModalFormDataAttribute
+ * @property {String} attribute - slug for attribute i.e. data-{attribute}
+ * @property {String} value - value for the attribute
+ */
+
+/**
+ * @typedef {Object} ModalFormField
  * @property {String} group - group the field belongs to
  * @property {String} label - text for the field's label
+ * @property {String} [labelClass] - CSS class(es) fr the label
+ * @property {Boolean} [labelHidden] - whether the field is hidden
  * @property {String} name - database name of the field
  * @property {String} id - for id for the field
- * @property {text|textarea|select} type - type of field
- * @property {String} [class] - CSS class(es) fr the field
+ * @property {text|textarea|select|combo|autocomplete|toggle} type - type of field
+ * @property {String} [fieldClass] - CSS class(es) fr the field
  * @property {String} [placeholder] - placeholder text for text fields
+ * @property {Boolean} [hidden] - whether the field is hidden
+ * @property {Boolean} [ignore] - whether to exclude the field from the data
+ * @property {Boolean} [autofocus] - whether the field should automatically be focused
  * @property {Boolean} [required] - whether the field is required
  * @property {Boolean} [disabled] - whether the field is disabled
  * @property {String} [pattern] - pattern attribute for text inputs
  * @property {String} [width] - width for the field
- * @property {Number} [grow] - flex grow property for the field
  * @property {String} [tip] - FloatingUI tooltip
- * @property {SelectOption[]} [options] - options for select fields
+ * @property {ModalFormSelectOption[]} [options] - options for select fields
+ * @property {ModalFormHandler[]} [handlers] - event handlers for the field
+ * @property {ModalFormDataAttribute[]} [data] - odataset attributes
+ * @property {any} [value] - value for the field
  */
 
 /**
  * Create a new entity modal for creating, picking and/or editing an enity
- * @param {String} treeId - tree UUID
- * @param {String} entityTypeId - entity type UUID
- * @param {Object} [entityData] - existing entity data for editing
- * @param {Boolean} [showPicker] - whether the user should have the option to choose an existing entity
+ * @param {add|edit} mode - mode the form is working in
+ * @param {String} endpoint - API endpoint for the form to POST to
+ * @param {String} header - header for the modal
+ * @param {ModalFormField[]} fields - array of fields to use in the form
+ * @param {ModalFormGroup[]} [groups] - optional groups to organize the fields
+ * @param {Object} [validators] - functions to validate fields
  */
-export default function modalForm(treeId, entityTypeId, entityData, showPicker) {
-	/** @type {EntityField[]} */
-	const fields = [
-		{
-			group: 'name',
-			label: 'Name Type',
-			name: 'nameType',
-			id: 'name-type',
-			type: 'text',
-			placeholder: 'Type',
-			required: true,
-			width: '100%',
-			tip: 'Identifies which version of this person’s name this record represents (birth, married, adopted, professional, religious, imported, etc.). Each person may have multiple names, but only one of each type.'
-		},
-		{
-			group: 'name',
-			label: 'Display Name',
-			name: 'displayName',
-			id: 'display-name',
-			type: 'text',
-			placeholder: 'Display name',
-			required: true,
-			width: '100%',
-			tip: 'The main name shown in trees, lists, search results, and relationship panels. This should be the name most commonly associated with the person.'
-		},
-		{
-			group: 'name',
-			label: 'Prefix',
-			name: 'prefixName',
-			id: 'prefix-name',
-			type: 'text',
-			placeholder: 'ex. Dr.',
-			width: '14ch',
-			tip: 'Honorific or name prefix, such as <em>Dr.</em>, <em>Rev.</em>, <em>Hon.</em>, or cultural prefixes used before given names.'
-		},
-		{
-			group: 'name',
-			label: 'Given Name',
-			name: 'givenName',
-			id: 'given-name',
-			type: 'text',
-			placeholder: 'ex. Henry',
-			width: '20ch',
-			tip: 'The person’s given name or first name as recorded in historical documents.'
-		},
-		{
-			group: 'name',
-			label: 'Middle Name',
-			name: 'middleName',
-			id: 'middle-name',
-			type: 'text',
-			placeholder: 'ex. David',
-			width: '20ch',
-			tip: 'Any middle name or additional given name. Many cultures use multiple given names; include all of them here.'
-		},
-		{
-			group: 'name',
-			label: 'Prefix',
-			name: 'prefixFamilyName',
-			id: 'prefix-family-name',
-			type: 'text',
-			placeholder: 'ex. van',
-			width: '14ch',
-			tip: 'A family‑name prefix such as <em>van</em>, <em>de</em>, <em>der</em>, <em>ten</em>, <em>von</em>, or other cultural surname particles.'
-		},
-		{
-			group: 'name',
-			label: 'Family Name',
-			name: 'familyName',
-			id: 'family-name',
-			type: 'text',
-			placeholder: 'ex. Thoreau',
-			width: '20ch',
-			tip: 'The family name, surname, or last name. Include all parts of the surname except prefixes and suffixes.'
-		},
-		{
-			group: 'name',
-			label: 'Suffix',
-			name: 'suffixName',
-			id: 'suffix-name',
-			type: 'text',
-			placeholder: 'ex. III',
-			width: '14ch',
-			tip: 'A name suffix such as <em>Jr.</em>, <em>Sr.</em>, <em>III</em>, or similar. Do not include commas; formatting is handled automatically.'
-		},
-		{
-			group: 'name',
-			label: 'Nickname',
-			name: 'nickName',
-			id: 'nick-name',
-			type: 'text',
-			placeholder: 'ex. Scooter',
-			width: '20ch',
-			tip: 'A commonly used informal name, alias, or nickname found in records or family usage.'
-		},
-		{
-			group: 'name',
-			label: 'Description',
-			name: 'description',
-			id: 'description',
-			type: 'textarea',
-			placeholder: 'Additional information',
-			width: '100%',
-			tip: 'Optional notes or context about this name record, such as spelling variations, transcription notes, or cultural naming details.'
-		},
-		{
-			group: 'sex',
-			label: 'Sex',
-			name: 'sex',
-			id: 'sex',
-			type: 'select',
-			options: [
-				{ value: '', text: 'Choose' },
-				{ value: 'M', text: 'Male' },
-				{ value: 'F', text: 'Female' }
-			],
-			tip: 'Biological sex as recorded in historical documents. Leave blank if unknown or not stated in available sources.'
-		},
-		{
-			group: 'birth',
-			label: 'Year',
-			name: 'birthYear',
-			id: 'birth-year',
-			type: 'text',
-			placeholder: 'yyyy',
-			pattern: '^-?[0-9]+$',
-			tip: 'Year of birth. Partial dates are allowed; enter the year even if the month or day is unknown.'
-		},
-		{
-			group: 'birth',
-			label: 'Month',
-			name: 'birthMonth',
-			id: 'birth-month',
-			type: 'text',
-			placeholder: 'mm',
-			pattern: '^\\d{1,2}$',
-			tip: 'Month of birth (1–12). Leave blank if the exact month is not known.'
-		},
-		{
-			group: 'birth',
-			label: 'Day',
-			name: 'birthDay',
-			id: 'birth-day',
-			type: 'text',
-			placeholder: 'dd',
-			pattern: '^\\d{1,2}$',
-			tip: 'Day of birth (1–31). Leave blank if the exact day is not known.'
-		},
-		{
-			group: 'death',
-			label: 'Year',
-			name: 'deathYear',
-			id: 'death-year',
-			type: 'text',
-			placeholder: 'yyyy',
-			pattern: '^-?[0-9]+$',
-			tip: 'Year of death. Partial dates are allowed; enter the year even if the month or day is unknown.'
-		},
-		{
-			group: 'death',
-			label: 'Month',
-			name: 'deathMonth',
-			id: 'death-month',
-			type: 'text',
-			placeholder: 'mm',
-			pattern: '^\\d{1,2}$',
-			tip: 'Month of death (1–12). Leave blank if the exact month is not known.'
-		},
-		{
-			group: 'death',
-			label: 'Day',
-			name: 'deathDay',
-			id: 'death-day',
-			type: 'text',
-			placeholder: 'dd',
-			pattern: '^\\d{1,2}$',
-			tip: 'Day of death (1–31). Leave blank if the exact day is not known.'
-		}
-	]
-	const dataPackage = {
-		treeId,
-		entityTypeId,
-		entityId: null
-	}
-	const sourcePackage = entityData
+export default function modalForm(mode, endpoint, header, fields, groups, validators) {
+	const dataPackage = {}
+	const sourcePackage = {}
 	for (const field of fields) {
-		if (entityData) field.value = entityData[field]
-		dataPackage[field] = entityData ? entityData[field] : null
+		if (!field.ignore) dataPackage[field.name] = field.value || null
+		if (!field.ignore) sourcePackage[field.name] = field.value || null
 	}
-	const mode = entityData ? 'edit' : 'add'
 
 	let modalOverlay, modalDialog, modalClose, modalCancel, modalSave, modalBody
 	let modalResolve
 	let isDirty = false
-	let header = null
-	switch (entityTypeId) {
-		case '409a8c4f-1167-4039-b298-f46ce7bcf7fd':
-			header = mode === 'add' ? 'Add Horse' : 'Edit Horse'
-			break
-		default:
-			header = mode === 'add' ? 'Add Person' : 'Edit Person'
-	}
+	let autofocus = null
 
 	function checkDirty() {
 		const dirtyReasons = []
@@ -246,9 +83,11 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 			isDirty = false
 
 			for (const field of fields) {
-				if (getValue(field.id) !== sourcePackage[field.name]) {
-					dirtyReasons.push({ field: field.id, old: sourcePackage[field.name], new: getValue(field.id) })
-					isDirty = true
+				if (!field.ignore) {
+					if (getValue(field.id) !== sourcePackage[field.name]) {
+						dirtyReasons.push({ field: field.id, old: sourcePackage[field.name], new: getValue(field.id) })
+						isDirty = true
+					}
 				}
 			}
 		}
@@ -263,7 +102,7 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 
 	/**
 	 * Create a label and associated form field
-	 * @param {EntityField} labelInput - field definition
+	 * @param {ModalFormField} labelInput - field definition
 	 * @param {String} [labelClass] - CSS class for the label
 	 * @returns {HTMLElement}
 	 */
@@ -274,17 +113,24 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 		const span = document.createElement('span')
 		span.innerHTML = labelInput.label
 		label.appendChild(span)
+		if (labelInput.labelHidden) label.style.display = 'none'
+
 		let ele
+
 		switch (labelInput.type) {
 			case 'text': {
 				ele = document.createElement('input')
 				ele.id = labelInput.id
 				ele.type = labelInput.type
 				ele.setAttribute('placeholder', labelInput.placeholder)
+				if (labelInput.hidden) ele.setAttribute('hidden', '')
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
+				if (labelInput.autofocus) {
+					ele.setAttribute('autofocus', '')
+					autofocus = ele
+				}
 				if (labelInput.pattern) ele.setAttribute('pattern', labelInput.pattern)
-				if (labelInput.grow) ele.style.flexGrow = labelInput.grow
 				if (labelInput.value) ele.setAttribute('value', labelInput.value)
 				ele.addEventListener('input', event => {
 					event.target.setCustomValidity('')
@@ -298,7 +144,10 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 				ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
-				if (labelInput.grow) ele.style.flexGrow = labelInput.grow
+				if (labelInput.autofocus) {
+					ele.setAttribute('autofocus', '')
+					autofocus = ele
+				}
 				if (labelInput.value) ele.setAttribute('value', labelInput.value)
 				ele.addEventListener('input', event => {
 					event.target.setCustomValidity('')
@@ -310,6 +159,10 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 				ele = document.createElement('select')
 				ele.id = labelInput.id
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
+				if (labelInput.autofocus) {
+					ele.setAttribute('autofocus', '')
+					autofocus = ele
+				}
 				for (const opt of labelInput.options) {
 					const option = document.createElement('option')
 					option.value = opt.value
@@ -321,8 +174,24 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 					event.target.setCustomValidity('')
 					checkDirty()
 				})
+				break
+			}
+			case 'toggle': {
+				label.classList.add('toggle')
+				label.innerHTML = ''
+				ele = document.createElement('input')
+				ele.id = labelInput.id
+				ele.className = 'toggle-checkbox'
+				ele.type = 'checkbox'
+				if (labelInput.autofocus) {
+					ele.setAttribute('autofocus', '')
+					autofocus = ele
+				}
+				if (labelInput.value) ele.setAttribute('checked', '')
+				break
 			}
 		}
+
 		if (labelInput.tip) {
 			ele.addEventListener('focus', () => {
 				showFieldTooltip(ele, labelInput.tip)
@@ -331,7 +200,40 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 				hideFieldTooltip(ele)
 			})
 		}
+
+		if (labelInput.labelData) {
+			for (const item of labelInput.labelData) {
+				label.dataset[item.attribute] = item.value
+			}
+		}
+
+		if (labelInput.fieldData) {
+			for (const item of labelInput.fieldData) {
+				ele.dataset[item.attribute] = item.value
+			}
+		}
+
+		if (labelInput.handlers) {
+			for (const handler of labelInput.handlers) {
+				ele.addEventListener(handler.event, () => { handler.handler() })
+			}
+		}
+
 		label.appendChild(ele)
+
+		switch (labelInput.type) {
+			case 'toggle': {
+				const toggleSwitch = document.createElement('div')
+				toggleSwitch.className = 'toggle-switch'
+				label.appendChild(toggleSwitch)
+				const toggleLabel = document.createElement('span')
+				toggleLabel.className = 'toggle-label'
+				toggleLabel.innerHTML = labelInput.label
+				label.appendChild(toggleLabel)
+				break
+			}
+		}
+
 		return label
 	}
 
@@ -392,17 +294,8 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 	async function handleModalSave(event) {
 		event.preventDefault()
 
-		if (getValue('birth-day') && !getValue('birth-month')) {
-			document.getElementById('birth-month').setCustomValidity('Month required if day is set')
-		}
-		if (getValue('birth-month') && !getValue('birth-year')) {
-			document.getElementById('birth-year').setCustomValidity('Year required if month is set')
-		}
-		if (getValue('death-day') && !getValue('death-month')) {
-			document.getElementById('death-month').setCustomValidity('Month required if day is set')
-		}
-		if (getValue('death-month') && !getValue('death-year')) {
-			document.getElementById('death-year').setCustomValidity('Year required if month is set')
+		for (const key in validators) {
+			await validators[key](getValue)
 		}
 
 		const valid = modalBody.reportValidity()
@@ -410,13 +303,9 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 		if (!valid) return
 
 		for (const field of fields) {
-			dataPackage[field.name] = getValue(field.id)
-		}
-		let endpoint
-		if (mode === 'add') {
-			endpoint = '/api/entity/add'
-		} else {
-			endpoint = '/api/entity/update'
+			if (!field.ignore) {
+				dataPackage[field.name] = getValue(field.id)
+			}
 		}
 
 		console.log({ endpoint, dataPackage, sourcePackage })
@@ -478,23 +367,23 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 			modalBody.className = 'modal-body modal-body-flex'
 			modalBody.noValidate = true
 
-			const groups = [
-				{ header: 'Name', slug: 'name' },
-				{ header: 'Sex', slug: 'sex' },
-				{ header: 'Birth', slug: 'birth' },
-				{ header: 'Death', slug: 'death' }
-			]
-			for (const group of groups) {
-				const groupHeading = document.createElement('h3')
-				groupHeading.innerHTML = group.header
-				modalBody.appendChild(groupHeading)
-				const groupContainer = document.createElement('div')
-				groupContainer.className = 'modal-group'
-				const groupFields = fields.filter(data => data.group === group.slug)
-				for (const field of groupFields) {
-					groupContainer.appendChild(createLabel(field))
+			if (groups) {
+				for (const group of groups) {
+					const groupHeading = document.createElement('h3')
+					groupHeading.innerHTML = group.header
+					modalBody.appendChild(groupHeading)
+					const groupContainer = document.createElement('div')
+					groupContainer.className = 'modal-group'
+					const groupFields = fields.filter(data => data.group === group.slug)
+					for (const field of groupFields) {
+						groupContainer.appendChild(createLabel(field))
+					}
+					modalBody.appendChild(groupContainer)
 				}
-				modalBody.appendChild(groupContainer)
+			} else {
+				for (const field of fields) {
+					modalBody.appendChild(createLabel(field))
+				}
 			}
 
 			modalBody.addEventListener('submit', handleModalSave)
@@ -531,6 +420,7 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 			requestAnimationFrame(() => {
 				modalOverlay.classList.add('is-visible')
 				modalDialog.classList.add('is-visible')
+				if (autofocus) autofocus.focus()
 			})
 		})
 	}
@@ -548,7 +438,7 @@ export default function modalForm(treeId, entityTypeId, entityData, showPicker) 
 		const cleanup = floatingUI.autoUpdate(fieldElement, tip, () => {
 			floatingUI.computePosition(fieldElement, tip, {
 				strategy: 'fixed',
-				placement: 'top',
+				placement: 'bottom',
 				middleware: [
 					floatingUI.offset(8),
 					floatingUI.flip(),
