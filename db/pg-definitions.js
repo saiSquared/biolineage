@@ -531,11 +531,35 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
+	placeTypes: {
+		name: 'place_types',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'name', type: 'TEXT', nulls: false, unique: true },
+			{ name: 'description', type: 'TEXT' },
+			{ name: 'created_by', type: 'UUID', nulls: false },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_by', type: 'UUID', nulls: false },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
+		],
+		foreignKeys: [
+			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
+			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
+		],
+		indexes: [
+			{ fields: ['name'] },
+			{ fields: ['created_by'] },
+			{ fields: ['modified_by'] }
+		]
+	},
+
+	/** @type {PGTable} */
 	places: {
 		name: 'places',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'place_type', type: 'TEXT', nulls: false },
+			{ name: 'place_type_id', type: 'UUID' },
 			{ name: 'name', type: 'TEXT', nulls: false },
 			{ name: 'description', type: 'TEXT' },
 			{ name: 'sovereign_entity', type: 'TEXT' },
@@ -546,7 +570,6 @@ const pgTables = {
 			{ name: 'administrative_division_id', type: 'UUID' },
 			{ name: 'municipality', type: 'TEXT' },
 			{ name: 'municipality_id', type: 'UUID' },
-			{ name: 'enclosed_by', type: 'UUID' },
 			{ name: 'latitude', type: 'DOUBLE PRECISION' },
 			{ name: 'longitude', type: 'DOUBLE PRECISION' },
 			{ name: 'address', type: 'TEXT' },
@@ -558,7 +581,7 @@ const pgTables = {
 			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
 		],
 		foreignKeys: [
-			{ fields: ['enclosed_by'], refTable: 'places', refFields: ['id'] },
+			{ fields: ['place_type_id'], refTable: 'place_types', refFields: ['id'] },
 			{ fields: ['sovereign_entity_id'], refTable: 'sovereign_entities', refFields: ['id'] },
 			{ fields: ['subdivision_id'], refTable: 'subdivisions', refFields: ['id'] },
 			{ fields: ['administrative_division_id'], refTable: 'administrative_divisions', refFields: ['id'] },
@@ -571,7 +594,7 @@ const pgTables = {
 			{ fields: ['name', 'sovereign_entity_id', 'subdivision_id', 'administrative_division_id', 'municipality_id'] }
 		],
 		indexes: [
-			{ fields: ['enclosed_by'] },
+			{ fields: ['place_type_id'] },
 			{ fields: ['sovereign_entity_id'] },
 			{ fields: ['subdivision_id'] },
 			{ fields: ['administrative_division_id'] },
@@ -594,7 +617,6 @@ const pgTables = {
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'tree_id', type: 'UUID', nulls: false },
-			{ name: 'entity_type_id', type: 'UUID', nulls: false },
 			{ name: 'code', type: 'TEXT', nulls: false },
 			{ name: 'entity_id', type: 'UUID', nulls: false },
 
@@ -630,7 +652,6 @@ const pgTables = {
 
 		foreignKeys: [
 			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
-			{ fields: ['entity_type_id', 'code'], refTable: 'fact_types', refFields: ['entity_type_id', 'code'], onDelete: 'CASCADE' },
 			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['place_id'], refTable: 'places', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
@@ -639,7 +660,6 @@ const pgTables = {
 
 		indexes: [
 			{ fields: ['tree_id'] },
-			{ fields: ['entity_type_id'] },
 			{ fields: ['code'] },
 			{ fields: ['entity_id'] },
 			{ fields: ['place_id'] },
@@ -648,7 +668,7 @@ const pgTables = {
 		],
 
 		unique: [
-			{ fields: ['tree_id', 'entity_type_id', 'code', 'entity_id', 'role'] }
+			{ fields: ['tree_id', 'code', 'entity_id', 'role'] }
 		],
 
 		checks: [
@@ -1408,7 +1428,7 @@ const pgFunctions = [
 					SELECT
 						f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second",
 						p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude, p.latitude place_latitude,
-						p.enclosed_by, p2."name" enclosed_by_name, p.sovereign_entity, se."name" sovereign_entity_name,
+						p.sovereign_entity, se."name" sovereign_entity_name,
 						p.subdivision, s."name" subdivision_name,
 						p.administrative_division, ad."name" administrative_division_name,
 						ad.longitude administrative_division_longitude, ad.latitude administrative_division_latitude,
@@ -1417,7 +1437,6 @@ const pgFunctions = [
 					FROM
 						facts f
 						LEFT JOIN places p ON p.id = f.place_id
-						LEFT JOIN places p2 ON p2.id = p.enclosed_by
 						LEFT JOIN sovereign_entities se ON se.id = p.sovereign_entity_id
 						LEFT JOIN subdivisions s ON s.id = p.subdivision_id
 						LEFT JOIN administrative_divisions ad ON ad.id = p.administrative_division_id

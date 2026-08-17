@@ -21,9 +21,7 @@ import modalForm from '/js/modal-form.js'
  * @property {String|null} placeType - type of place
  * @property {String|null} placeName - name of place
  * @property {String|null} placeLatitude - latitude of place
- * @property {String|null} placeLongitude - longitude of place
- * @property {String|null} enclosedBy - UUID of enclosing place
- * @property {String|null} enclosedByName - name of enclosing place
+ * @property {String|null} placeLongitude - longitude of place1
  * @property {String|null} sovereignEntity - UUID of sovereign_entity
  * @property {String|null} sovereignEntityName - name of sovereign entity
  * @property {String|null} subdivision - UUID of subdivision
@@ -386,7 +384,7 @@ function drawEntity() {
 	button.id = 'vitals-birth'
 	button.dataset.type = 'fact'
 	button.dataset.action = birth ? 'edit' : 'add'
-	button.dataset.id = birth.id
+	button.dataset.id = birth ? birth.id : ''
 	img = document.createElement('img')
 	img.src = '/img/pencil.svg'
 	button.appendChild(img)
@@ -408,7 +406,7 @@ function drawEntity() {
 		header.innerHTML = '<strong>Death</strong>'
 		section.appendChild(header)
 		div = document.createElement('div')
-		div.innerHTML = '<em>Unknown</em>'
+		div.innerHTML = '<em>Living</em>'
 		section.appendChild(div)
 	}
 	cardItem.appendChild(section)
@@ -416,7 +414,7 @@ function drawEntity() {
 	button.id = 'vitals-birth'
 	button.dataset.type = 'fact'
 	button.dataset.action = death ? 'edit' : 'add'
-	button.dataset.id = death.id
+	button.dataset.id = death ? death.id : ''
 	img = document.createElement('img')
 	img.src = '/img/pencil.svg'
 	button.appendChild(img)

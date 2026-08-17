@@ -668,15 +668,14 @@ class Getters {
 		sql =
 			`select
 				f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second" ,
-				p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude, p.latitude place_latitude, p.enclosed_by,
-				p2."name" enclosed_by_name, p.sovereign_entity, se."name" sovereign_entity_name, p.subdivision, s."name" subdivision_name,
+				p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude, p.latitude place_latitude,
+				p.sovereign_entity, se."name" sovereign_entity_name, p.subdivision, s."name" subdivision_name,
 				p.administrative_division, ad."name" administrative_division_name, ad.longitude administrative_division_longitude,
 				ad.latitude administrative_division_latitude, p.municipality, m."name" municipality_name,
 				m.longitude municipality_longitude, m.latitude municipality_latitude
 			from
 				facts f
 				left join places p on p.id = f.place_id
-				left join places p2 on p2.id = p.enclosed_by
 				left join sovereign_entities se on se.id = p.sovereign_entity_id
 				left join subdivisions s on s.id = p.subdivision_id
 				left join administrative_divisions ad on ad.id = p.administrative_division_id

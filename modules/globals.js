@@ -22,6 +22,95 @@ const biolineageDb = pgDb({
 	database: env.PG_DATABASE
 }, false)
 
+const placeFields = [
+	{
+		field: 'placeType',
+		slug: 'place-type',
+		label: 'Type',
+		tip: 'The kind of place this is (Farm, Cemetery, Church, Municipality, etc.). The type determines which geographical fields apply.',
+		width: '100%'
+	},
+	{
+		field: 'name',
+		slug: 'name',
+		label: 'Name',
+		tip: 'The official or commonly used name for this place.',
+		width: '100%'
+	},
+	{
+		field: 'description',
+		slug: 'description',
+		label: 'Description',
+		tip: 'Contextual or historical details that help identify or describe this place.',
+		width: '100%'
+	},
+
+	// 🌍 Geography fields (meaning-focused, not UI-focused)
+	{
+		field: 'sovereignEntity',
+		slug: 'sovereign-entity',
+		label: 'Country',
+		tip: 'Current or historical country this place belongs to. This is the top‑level geographical unit.',
+		width: '100%'
+	},
+	{
+		field: 'subdivision',
+		slug: 'subdivision',
+		label: 'Subdivision',
+		tip: 'State, province, or region within the country.',
+		width: '100%'
+	},
+	{
+		field: 'administrativeDivision',
+		slug: 'administrative-division',
+		label: 'County/District',
+		tip: 'County, district, or equivalent mid‑level geographical unit.',
+		width: '100%'
+	},
+	{
+		field: 'municipality',
+		slug: 'municipality',
+		label: 'Municipality',
+		tip: 'City, town, township, or local governing unit.'
+	},
+
+	// 📍 Coordinates & address
+	{
+		field: 'latitude',
+		slug: 'latitude',
+		label: 'Latitude',
+		tip: 'Latitude in decimal degrees. Positive for north, negative for south.'
+	},
+	{
+		field: 'longitude',
+		slug: 'longitude',
+		label: 'Longitude',
+		tip: 'Longitude in decimal degrees. Positive for east, negative for west.'
+	},
+	{
+		field: 'address',
+		slug: 'address',
+		label: 'Address',
+		tip: 'Street or mailing address, if available. Useful for precise geolocation.'
+	},
+
+	// 🔗 External reference
+	{
+		field: 'googlePlaceId',
+		slug: 'google-place-id',
+		label: 'Google Place ID',
+		tip: 'Identifier from Google Places. Paste the HTML embed code from the Google Maps share interface to link this place with Google’s location services.'
+	},
+
+	// 📝 Misc
+	{
+		field: 'notes',
+		slug: 'notes',
+		label: 'Notes',
+		tip: 'Extra information or annotations relevant to this place.'
+	}
+]
+
 /** @type {BiolineageTree[]} */
 const trees = []
 /** @type {BiolineageEntityNameParts[]} */
@@ -70,6 +159,9 @@ async function startup() {
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'relationship-types.json'), JSON.stringify(relationshipTypes, null, '\t'))
 	const factTypes = await biolineageDb.query('select entity_type_id, code, name, description from fact_types order by entity_type_id, code')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'fact-types.json'), JSON.stringify(factTypes, null, '\t'))
+	const placeTypes = await biolineageDb.query('select id, name, description from place_types order by name')
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'place-types.json'), JSON.stringify(placeTypes, null, '\t'))
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'places-fields.json'), JSON.stringify(placeFields, null, '\t'))
 }
 
 startup()

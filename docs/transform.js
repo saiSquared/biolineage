@@ -1858,6 +1858,64 @@ async function initPg() {
 		modifiedBy: clubside
 	})
 
+	const placeTypes = [
+		{ name: 'Country', description: 'A national-level sovereign entity.' },
+		{ name: 'State', description: 'A primary subdivision within a country.' },
+		{ name: 'Province', description: 'A major regional subdivision within a country.' },
+		{ name: 'Region', description: 'A broad geographical or administrative area.' },
+		{ name: 'District', description: 'A mid-level administrative area within a region or state.' },
+		{ name: 'County', description: 'A common mid-level administrative division.' },
+		{ name: 'Municipality', description: 'A city, town, township, or local governing unit.' },
+		{ name: 'Township', description: 'A local administrative or survey-based division.' },
+		{ name: 'Commune', description: 'A local administrative unit common in parts of Europe and Africa.' },
+		{ name: 'Canton', description: 'A regional administrative unit, especially in Switzerland.' },
+		{ name: 'Prefecture', description: 'An administrative jurisdiction used in several countries.' },
+		{ name: 'Ward', description: 'A subdivision of a city or municipality.' },
+		{ name: 'Precinct', description: 'A voting, police, or administrative subdivision.' },
+
+		// Settlements
+		{ name: 'City', description: 'A large, incorporated urban settlement.' },
+		{ name: 'Town', description: 'A mid-sized urban settlement.' },
+		{ name: 'Village', description: 'A small settlement, typically rural.' },
+		{ name: 'Hamlet', description: 'A very small settlement, often without its own government.' },
+		{ name: 'Neighborhood', description: 'A defined area within a city or town.' },
+
+		// Religious / Burial
+		{ name: 'Church', description: 'A religious building or congregation location.' },
+		{ name: 'Parish', description: 'A religious or civil administrative area.' },
+		{ name: 'Churchyard', description: 'A burial or gathering area adjacent to a church.' },
+		{ name: 'Cemetery', description: 'A designated burial ground.' },
+		{ name: 'Burial Ground', description: 'A historical or informal burial site.' },
+		{ name: 'Monastery', description: 'A religious community or complex.' },
+
+		// Land / Property
+		{ name: 'Farm', description: 'An agricultural property or homestead.' },
+		{ name: 'Estate', description: 'A large property, manor, or plantation.' },
+		{ name: 'Residence', description: 'A home, dwelling, or living place.' },
+
+		// Infrastructure / Public
+		{ name: 'Hospital', description: 'A medical facility providing care.' },
+		{ name: 'School', description: 'An educational institution.' },
+		{ name: 'School District', description: 'An administrative area for public schools.' },
+		{ name: 'Workplace', description: 'A location where people are employed.' },
+		{ name: 'Industrial Site', description: 'A factory, mill, foundry, or similar facility.' },
+		{ name: 'Rail Station', description: 'A train station or railway stop.' },
+		{ name: 'Port', description: 'A harbor or maritime facility.' },
+		{ name: 'Military Base', description: 'A fort, camp, or military installation.' },
+
+		// Historical / Special
+		{ name: 'Historic Site', description: 'A location of historical significance.' }
+	]
+	for (const placeType of placeTypes) {
+		await biolineageDb.insert('place_types', {
+			id: uuidv4(),
+			name: placeType.name,
+			description: placeType.description,
+			createdBy: clubside,
+			modifiedBy: clubside
+		})
+	}
+
 	// Create initial trees
 	const normTree = uuidv4()
 	await biolineageDb.insert('trees', {
@@ -2032,7 +2090,6 @@ async function initPg() {
 			const data = {
 				id: uuidv4(),
 				treeId: entity.treeId,
-				entityTypeId: entity.entityTypeId,
 				code: 'Birth',
 				entityId: entity.id,
 				role: 'Ingestion',
@@ -2051,7 +2108,6 @@ async function initPg() {
 			const data = {
 				id: uuidv4(),
 				treeId: entity.treeId,
-				entityTypeId: entity.entityTypeId,
 				code: 'Death',
 				entityId: entity.id,
 				role: 'Ingestion',
@@ -2072,7 +2128,6 @@ async function initPg() {
 				const data = {
 					id: uuidv4(),
 					treeId: entity.treeId,
-					entityTypeId: entity.entityTypeId,
 					code: 'Burial',
 					entityId: entity.id,
 					role: 'Ingestion',
