@@ -1,582 +1,582 @@
 [
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Adoption",
 		"name": "Adoption",
 		"description": "A fact of a person's adoption. In the context of a parent-child relationship, it describes a fact of the adoption of a child by a parent."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "AdoptiveParent",
 		"name": "Adoptive Parent",
 		"description": "A fact about an adoptive relationship between a parent an a child."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "AdultChristening",
 		"name": "Adult Christening",
 		"description": "A fact of a person's christening as an adult."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Amnesty",
 		"name": "Amnesty",
 		"description": "A fact of a person's amnesty."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "AncestralHall",
 		"name": "Ancestral Hall",
 		"description": "A fact of a person's ancestral hall. An ancestral hall refers to a location where the early ancestors of the person originated. It may also refer to the name of an early ancestor. Family clans are often distinguished one from another by the ancestral hall. Clans that cannot prove direct relationships to other clans with the same surname can assume a direct relationship if they share the same ancestral hall."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "AncestralPoem",
 		"name": "Ancestral Poem",
 		"description": "A fact of a person's ancestral poem. An ancestral poem (or generation poem) is composed of the \"generation characters\" that are to be used when choosing names for the members of different generations of an extended family. Ancestral poems are prominent in Asian countries, particularly China."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Annulment",
 		"name": "Annulment",
 		"description": "The fact of an annulment of a marriage."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Apprenticeship",
 		"name": "Apprenticeship",
 		"description": "A fact of a person's apprenticeship."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Arrest",
 		"name": "Arrest",
 		"description": "A fact of a person's arrest."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Baptism",
 		"name": "Baptism",
 		"description": "A fact of a person's baptism."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "BarMitzvah",
 		"name": "Bar Mitzvah",
 		"description": "A fact of a person's bar mitzvah."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "BatMitzvah",
 		"name": "Bat Mitzvah",
 		"description": "A fact of a person's bat mitzvah."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "BiologicalParent",
 		"name": "Biological Parent",
 		"description": "A fact the biological relationship between a parent and a child."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Birth",
 		"name": "Birth",
 		"description": "A fact of a person's birth."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "BirthNotice",
 		"name": "BirthNotice",
 		"description": "A fact of a person's birth notice, such as posted in a newspaper or other publishing medium."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Blessing",
 		"name": "Blessing",
 		"description": "A fact of an official blessing received by a person, such as at the hands of a clergy member or at another religious rite."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Branch",
 		"name": "Branch",
 		"description": "A fact of a person's branch within an extended clan."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Burial",
 		"name": "Burial",
 		"description": "A fact of the burial of person's body after death."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Caste",
 		"name": "Caste",
 		"description": "A fact of a person's caste."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Census",
 		"name": "Census",
 		"description": "A fact of a person's participation in a census."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "ChildOrder",
 		"name": "ChildOrder",
 		"description": "A fact about the child order between a parent and a child."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Christening",
 		"name": "Christening",
 		"description": "A fact of a person's christening *at birth*. Note: use `AdultChristening` for the christening as an adult."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Circumcision",
 		"name": "Circumcision",
 		"description": "A fact of a person's circumcision."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "CivilUnion",
 		"name": "CivilUnion",
 		"description": "The fact of a civil union."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Clan",
 		"name": "Clan",
 		"description": "A fact of a person's clan."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "CommonLawMarriage",
 		"name": "Common Law Marriage",
 		"description": "The fact of a marriage by common law."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Confirmation",
 		"name": "Confirmation",
 		"description": "A fact of a person's confirmation (or other rite of initiation) in a church or religion."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Court",
 		"name": "Court",
 		"description": "A fact of the appearance of a person in a court proceeding."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Cremation",
 		"name": "Cremation",
 		"description": "A fact of the cremation of person's body after death."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Death",
 		"name": "Death",
 		"description": "A fact of the death of a person."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Divorce",
 		"name": "Divorce",
 		"description": "The fact of a divorce of a couple."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "DivorceFiling",
 		"name": "Divorce Filing",
 		"description": "The fact of a filing for divorce."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "DomesticPartnership",
 		"name": "Domestic Partnership",
 		"description": "The fact of a domestic partnership."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Education",
 		"name": "Education",
 		"description": "A fact of an education of a person."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "EducationEnrollment",
 		"name": "Education Enrollment",
 		"description": "A fact of a person's enrollment in an educational program or institution."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Emigration",
 		"name": "Emigration",
 		"description": "A fact of the emigration of a person."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Engagement",
 		"name": "Engagement",
 		"description": "The fact of an engagement to be married."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "EnteringHeir",
 		"name": "EnteringHeir",
 		"description": "A fact about an entering heir relationship between a parent and a child. An entering heir is received from another parent as an \"exiting heir\" for designation of inheritance."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Ethnicity",
 		"name": "Ethnicity",
 		"description": "A fact of a person's ethnicity or race."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Excommunication",
 		"name": "Excommunication",
 		"description": "A fact of a person's excommunication from a church."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "ExitingHeir",
 		"name": "Exiting Heir",
 		"description": "A fact about an exiting heir relationship between a parent and a child. An exiting heir is given as an \"entering heir\" to another parent for designation of inheritance."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "FirstCommunion",
 		"name": "First Communion",
 		"description": "A fact of a person's first communion in a church."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "FosterParent",
 		"name": "Foster Parent",
 		"description": "A fact about a foster relationship between a foster parent and a child."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Funeral",
 		"name": "Funeral",
 		"description": "A fact of a person's funeral."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "GenderChange",
 		"name": "Gender Change",
 		"description": "A fact of a person's gender change."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "GenerationNumber",
 		"name": "Generation Number",
 		"description": "A fact of a person's generation number, indicating the number of generations the person is removed from a known \"first\" ancestor."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Graduation",
 		"name": "Graduation",
 		"description": "A fact of a person's graduation from a scholastic institution."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "GuardianParent",
 		"name": "Guardian Parent",
 		"description": "A fact about a legal guardianship between a parent and a child."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Immigration",
 		"name": "Immigration",
 		"description": "A fact of a person's immigration."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Imprisonment",
 		"name": "Imprisonment",
 		"description": "A fact of a person's imprisonment."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Inquest",
 		"name": "Inquest",
 		"description": "A legal inquest. Inquests usually only occur when there’s something suspicious about the death. Inquests might in some instances lead to a murder investigation. Most people that die have a death certificate wherein a doctor indicates the cause of death and often indicates when the decedent was last seen by that physician; these require no inquest."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "LandTransaction",
 		"name": "Land Transaction",
 		"description": "A fact of a land transaction enacted by a person."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Language",
 		"name": "Language",
 		"description": "A fact of a language spoken by a person."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Living",
 		"name": "Living",
 		"description": "A fact of a record of a person's living for a specific period. This is designed to include \"flourish\", defined to mean the time period in an adult's life where he was most productive, perhaps as a writer or member of the state assembly. It does not reflect the person's birth and death dates."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MaritalStatus",
 		"name": "Marital Status",
 		"description": "A fact of a person's marital status."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Marriage",
 		"name": "Marriage",
 		"description": "The fact of a marriage."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MarriageBanns",
 		"name": "Marriage Banns",
 		"description": "The fact of a marriage banns."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MarriageContract",
 		"name": "Marriage Contract",
 		"description": "The fact of a marriage contract."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MarriageLicense",
 		"name": "Marriage License",
 		"description": "The fact of a marriage license."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MarriageNotice",
 		"name": "Marriage Notice",
 		"description": "The fact of a marriage notice."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Medical",
 		"name": "Medical",
 		"description": "A fact of a person's medical record, such as for an illness or hospital stay."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MilitaryAward",
 		"name": "Military Award",
 		"description": "A fact of a person's military award."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MilitaryDischarge",
 		"name": "Military Discharge",
 		"description": "A fact of a person's military discharge."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MilitaryDraftRegistration",
 		"name": "Military Draft Registration",
 		"description": "A fact of a person's registration for a military draft."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MilitaryInduction",
 		"name": "Military Induction",
 		"description": "A fact of a person's military induction."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MilitaryService",
 		"name": "MilitaryService",
 		"description": "A fact of a person's militray service."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Mission",
 		"name": "Mission",
 		"description": "A fact of a person's church mission."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MoveFrom",
 		"name": "Move From",
 		"description": "A fact of a person's move (i.e. change of residence) from a location."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MoveTo",
 		"name": "Move To",
 		"description": "A fact of a person's move (i.e. change of residence) to a new location."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "MultipleBirth",
 		"name": "Multiple Birth",
 		"description": "A fact that a person was born as part of a multiple birth (e.g. twin, triplet, etc.)"
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "NationalId",
 		"name": "National ID",
 		"description": "A fact of a person's national id (e.g. social security number)."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Nationality",
 		"name": "Nationality",
 		"description": "A fact of a person's nationality."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Naturalization",
 		"name": "Naturalization",
 		"description": "A fact of a person's naturalization (i.e. acquisition of citizenship and nationality)."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "NumberOfChildren",
 		"name": "Number of Children",
 		"description": "A fact of the number of children of a person or relationship."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "NumberOfMarriages",
 		"name": "Number of Marriages",
 		"description": "A fact of a person's number of marriages."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Obituary",
 		"name": "Obituary",
 		"description": "A fact of a person's obituary."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Occupation",
 		"name": "Occupation",
 		"description": "A fact of a person's occupation or employment."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "OfficialPosition",
 		"name": "Official Position",
 		"description": "A fact of a person's official (government) position."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Ordination",
 		"name": "Ordination",
 		"description": "A fact of a person's ordination to a stewardship in a church."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Pardon",
 		"name": "Pardon",
 		"description": "A fact of a person's legal pardon."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "PhysicalDescription",
 		"name": "Physical Description",
 		"description": "A fact of a person's physical description."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Probate",
 		"name": "Probate",
 		"description": "A fact of a receipt of probate of a person's property."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Property",
 		"name": "Property",
 		"description": "A fact of a person's property or possessions."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Religion",
 		"name": "Religion",
 		"description": "A fact of a person's religion."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Residence",
 		"name": "Residence",
 		"description": "A fact of a person's residence."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Retirement",
 		"name": "Retirement",
 		"description": "A fact of a person's retirement."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Separation",
 		"name": "Separation",
 		"description": "A fact of a couple's separation."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "SociologicalParent",
 		"name": "Sociological Parent",
 		"description": "A fact about a sociological relationship between a parent and a child, but not definable in typical legal or biological term"
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "StepParent",
 		"name": "Step Parent",
 		"description": "A fact about the step relationship between a parent and a child."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Stillbirth",
 		"name": "Stillbirth",
 		"description": "A fact of a person's stillbirth."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "TaxAssessment",
 		"name": "Tax Assessment",
 		"description": "A fact of a person's tax assessment."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Visit",
 		"name": "Visit",
 		"description": "A fact of a person's visit to a place different from the person's residence."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Will",
 		"name": "Will",
 		"description": "A fact of a person's will."
 	},
 	{
-		"entityTypeId": "103a7d21-5fba-4edf-b135-07b21f26a339",
+		"entityTypeId": "20bd5f4c-15b9-49fc-a706-d253e7bae5be",
 		"code": "Yahrzeit",
 		"name": "Yahrzeit",
 		"description": "A fact of a person's _yahrzeit_ date. A person's yahzeit is the anniversary of their death as measured by the Hebrew calendar."
 	},
 	{
-		"entityTypeId": "6e2e8841-e5eb-4af9-9a06-be48fa38eace",
+		"entityTypeId": "8830b172-8f8c-4537-9fec-a7e1f5549005",
 		"code": "Birth",
 		"name": "Birth",
 		"description": "A fact of a equine's birth."
 	},
 	{
-		"entityTypeId": "6e2e8841-e5eb-4af9-9a06-be48fa38eace",
+		"entityTypeId": "8830b172-8f8c-4537-9fec-a7e1f5549005",
 		"code": "Burial",
 		"name": "Burial",
 		"description": "A fact of the burial of equine's body after death."
 	},
 	{
-		"entityTypeId": "6e2e8841-e5eb-4af9-9a06-be48fa38eace",
+		"entityTypeId": "8830b172-8f8c-4537-9fec-a7e1f5549005",
 		"code": "Death",
 		"name": "Death",
 		"description": "A fact of the death of an equine."

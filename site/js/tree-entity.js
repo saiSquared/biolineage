@@ -154,6 +154,35 @@ const cardRelationship = (def, sex) => {
 	return div
 }
 
+const chartGender = (data) => {
+	switch (data.sex) {
+		case 'Male':
+			return 'M'
+		case 'Female':
+			return 'F'
+		default:
+			return ''
+	}
+}
+
+const chartLifespan = (data) => {
+	if (!data.birthYear && !data.deathYear) {
+		return 'Unknown'
+	}
+	let lifespan = ''
+	if (data.birthYear) {
+		lifespan += data.birthYear
+	} else {
+		lifespan += ' ? '
+	}
+	lifespan += '-'
+	if (data.deathYear) {
+		lifespan += data.deathYear
+	} else {
+		lifespan += 'Living'
+	}
+	return lifespan
+}
 /**
  * Add a fact to the timeline
  * @param {Object} fact - data about the fact
@@ -558,28 +587,28 @@ function drawEntity() {
 			}
 		}
 	}
-	if (entity.children.length > 0) {
-		h3 = document.createElement('h3')
-		h3.innerHTML = 'Children'
-		familyMembers.appendChild(h3)
-		for (const parentGroup of entity.children) {
-			cardItem = document.createElement('article')
-			cardItem.className = 'entity-profile-inner-card'
-			// TODO return left/right output on root entity and each child parent
-			section = document.createElement('section')
-			for (const parent of parentGroup.parents) {
-				section.appendChild(cardEntity(parent, { male: 'Father', other: 'Parent', female: 'Mother' }))
-			}
-			cardItem.appendChild(section)
-			section = document.createElement('section')
-			section.className = 'children'
-			for (const child of parentGroup.children) {
-				section.appendChild(cardEntity(child, 'rightOutput'))
-			}
-			cardItem.appendChild(section)
-			familyMembers.appendChild(cardItem)
+	h3 = document.createElement('h3')
+	h3.innerHTML = 'Children'
+	familyMembers.appendChild(h3)
+	for (const parentGroup of entity.children) {
+		cardItem = document.createElement('article')
+		cardItem.className = 'entity-profile-inner-card'
+		// TODO return left/right output on root entity and each child parent
+		section = document.createElement('section')
+		for (const parent of parentGroup.parents) {
+			section.appendChild(cardEntity(parent, { male: 'Father', other: 'Parent', female: 'Mother' }))
 		}
+		cardItem.appendChild(section)
+		section = document.createElement('section')
+		section.className = 'children'
+		for (const child of parentGroup.children) {
+			section.appendChild(cardEntity(child, 'rightOutput'))
+		}
+		cardItem.appendChild(section)
+		familyMembers.appendChild(cardItem)
+		familyMembers.appendChild(cardButton('add-entity-child', '/img/plus.svg', 'Add Child', 'add-child', 'child'))
 	}
+	familyMembers.appendChild(cardButton('add-entity-partner', '/img/plus.svg', 'Add Partner', null, 'partner'))
 	profile.appendChild(familyMembers)
 
 	// other relationships
@@ -636,7 +665,8 @@ function drawEntity() {
 	h2.innerHTML = 'Tree'
 	familyTree.appendChild(h2)
 	div = document.createElement('div')
-	div.id = 'tree'
+	div.id = 'family-chart'
+	div.className = 'f3'
 	familyTree.appendChild(div)
 	profile.appendChild(familyTree)
 
@@ -652,97 +682,122 @@ function drawEntity() {
 	}).addTo(map)
 
 	const nodes = []
-	const nodeColor = (sex) => {
-		switch (sex) {
-			case 'Male':
-				return '#69ffff'
-			case 'Female':
-				return '#f4c2c2'
-			default:
-				return '#ccc'
-		}
-	}
-	const root = { id: entity.id, text: cardLifespan(entity).innerHTML, title: entity.displayName, img: getIcon(entity.sex), headerColor: nodeColor(entity.sex) }
-	try {
-		if (entity.parents.length > 0) {
-			if (entity.parents.length === 1) {
-				const parent1 = { id: entity.parents[0].id, text: cardLifespan(entity.parents[0]).innerHTML, title: entity.parents[0].displayName, img: getIcon(entity.parents[0].sex), headerColor: nodeColor(entity.parents[0].sex) }
-				nodes.push(parent1)
-				root.parent = parent1.id
-			} else if (entity.parents.length === 2) {
-				const parent1 = { id: entity.parents[0].id, text: cardLifespan(entity.parents[0]).innerHTML, title: entity.parents[0].displayName, img: getIcon(entity.parents[0].sex), headerColor: nodeColor(entity.parents[0].sex) }
-				const parent2 = { id: entity.parents[1].id, text: cardLifespan(entity.parents[1]).innerHTML, title: entity.parents[1].displayName, img: getIcon(entity.parents[1].sex), parent: parent1.id, partner: true, headerColor: nodeColor(entity.parents[1].sex) }
-				root.parent = parent1.id
-				nodes.push(parent1)
-				nodes.push(parent2)
-			}
-		}
-		nodes.push(root)
-		if (entity.children.length > 0) {
-			for (const childGroup of entity.children) {
-				if (childGroup.parents.length === 1) {
-					for (const child of childGroup.children) {
-						const childData = { id: child.id, text: cardLifespan(child).innerHTML, title: child.displayName, img: getIcon(child.sex), parent: childGroup.parents[0].id, headerColor: nodeColor(child.sex) }
-						nodes.push(childData)
-					}
-				} else if (childGroup.parents.length === 2) {
-					const parent1 = childGroup.parents.find(lookup => lookup.id === entity.id)
-					const parent2 = childGroup.parents.filter(data => data.id !== entity.id)[0]
-					nodes.push({ id: parent2.id, text: cardLifespan(parent2).innerHTML, title: parent2.displayName, img: getIcon(parent2.sex), parent: parent1.id, partner: true, headerColor: nodeColor(parent2.sex) })
-					for (const child of childGroup.children) {
-						const childData = { id: child.id, text: cardLifespan(child).innerHTML, title: child.displayName, img: getIcon(child.sex), parent: parent1.id, headerColor: nodeColor(child.sex) }
-						nodes.push(childData)
-					}
-				}
-			}
-		}
-		if (entity.siblings.length > 0) {
-			for (const parentGroup of entity.siblings) {
-				if (parentGroup.full) {
-					for (const child of parentGroup.children) {
-						const childData = { id: child.id, text: cardLifespan(child).innerHTML, title: child.displayName, img: getIcon(child.sex), parent: root.parent, headerColor: nodeColor(child.sex) }
-						nodes.push(childData)
-					}
-				}
-			}
-		}
-	} catch (error) {
-		console.error('Unable to build node list', error)
-	}
-	console.log(nodes)
-	/** @type {FamilyTree} */
-	const editor = new dhx.DiagramEditor(document.getElementById('tree'), {
-		type: 'org',
-		shapeType: 'img-card',
-		defaults: {
-			'img-card': {
-				width: 250,
-				height: 90,
-				title: 'Name',
-				text: 'Born'
-			}
+	let father, mother
+	const root = {
+		id: entity.id,
+		data: {
+			fn: '',
+			ln: '',
+			desc: chartLifespan(entity),
+			label: entity.displayName,
+			avatar: '',
+			gender: chartGender(entity)
 		},
-		view: {
-			editbar: {
-				properties: {
-					$shape: [
-						{
-							type: 'fieldset',
-							label: 'Family member',
-							rows: [
-								{ type: 'avatar', key: 'img', size: 240 },
-								{ type: 'input', key: 'title', label: 'Name' },
-								{ type: 'input', key: 'text', label: 'Born' }
-							]
-						},
-						{ type: 'colorpicker', label: 'Header color', key: 'headerColor', wrap: true }
-					]
+		rels: {
+			spouses: [],
+			children: []
+		},
+		main: true
+	}
+	nodes.push(root)
+	for (const parent of entity.parents) {
+		const parentData = {
+			id: parent.id,
+			data: {
+				fn: '',
+				ln: '',
+				desc: chartLifespan(parent),
+				label: parent.displayName,
+				avatar: '',
+				gender: chartGender(parent)
+			},
+			rels: {
+				spouses: [],
+				children: []
+			},
+			main: false
+		}
+		nodes.push(parentData)
+		if (parent.sex === 'Male') {
+			root.rels.father = parent.id
+			father = parent.id
+		} else {
+			root.rels.mother = parent.id
+			mother = parent.id
+		}
+	}
+	if (entity.siblings.length > 0) {
+		const fullSiblings = entity.siblings.find(lookup => lookup.full === true)
+		if (fullSiblings) {
+			for (const child of fullSiblings.children) {
+				const sibling = {
+					id: child.id,
+					data: {
+						fn: '',
+						ln: '',
+						desc: chartLifespan(child),
+						label: child.displayName,
+						avatar: '',
+						gender: chartGender(child)
+					},
+					rels: {
+						spouses: [],
+						children: []
+					},
+					main: false
 				}
+				if (father) sibling.rels.father = father
+				if (mother) sibling.rels.mother = mother
+				nodes.push(sibling)
 			}
 		}
-	})
-	// loading data into the editor
-	editor.parse(nodes)
+		/* const halfSiblings = entity.siblings.filter(lookup => lookup.full === false)
+		if (halfSiblings.length > 0) {
+			h3 = document.createElement('h3')
+			h3.innerHTML = 'Half Siblings'
+			familyMembers.appendChild(h3)
+			for (const parentGroup of halfSiblings) {
+				cardItem = document.createElement('article')
+				cardItem.className = 'entity-profile-inner-card'
+				section = document.createElement('section')
+				for (const parent of parentGroup.parentDetails) {
+					section.appendChild(cardEntity(parent, 'leftOutput'))
+				}
+				cardItem.appendChild(section)
+				section = document.createElement('section')
+				section.className = 'children'
+				for (const child of parentGroup.children) {
+					section.appendChild(cardEntity(child, 'rightOutput'))
+				}
+				cardItem.appendChild(section)
+				familyMembers.appendChild(cardItem)
+			}
+		} */
+	}
+	/* for (const person of data) {
+		if (person.rels.mother) {
+			const existing = data.find(lookup => lookup.id === person.rels.mother)
+			if (!existing) console.error('Missing mother', person.id, person.rels.mother)
+		}
+		if (person.rels.father) {
+			const existing = data.find(lookup => lookup.id === person.rels.father)
+			if (!existing) console.error('Missing father', person.id, person.rels.father)
+		}
+		if (person.rels.children.length > 0) {
+			for (const child of person.rels.children) {
+				const existing = data.find(lookup => lookup.id === child)
+				if (!existing) console.error('Missing child', person.id, child)
+			}
+		}
+	} */
+	console.log(nodes)
+	const f3Chart = f3.createChart('#family-chart', nodes)
+		.setTransitionTime(1000)
+		.setCardXSpacing(250)
+		.setCardYSpacing(150)
+	f3Chart.setCardHtml()
+		.setCardDisplay([d => d.data.label || '', d => d.data.desc || ''])
+	f3Chart.updateTree({ initial: true })
 }
 
 /**

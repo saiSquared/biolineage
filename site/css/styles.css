@@ -1145,7 +1145,8 @@ a.big-button:hover {
 	border-radius: calc(infinity * 1px);
 }
 
-.entity-profile-inner-card .inner-indent {
+.entity-profile-inner-card .inner-indent,
+.add-child {
 	margin-left: 2rem;
 }
 
@@ -1169,7 +1170,6 @@ a.big-button:hover {
 
 .facts-holder {
 	position: relative;
-	display: table;
 }
 
 .facts-holder div::after {
