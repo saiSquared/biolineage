@@ -552,14 +552,8 @@ function drawEntity() {
 			cardItem = document.createElement('article')
 			cardItem.className = 'entity-profile-inner-card'
 			section = document.createElement('section')
-			for (const parent of fullSiblings.parentDetails) {
-				section.appendChild(cardEntity(parent, 'leftOutput'))
-			}
-			cardItem.appendChild(section)
-			section = document.createElement('section')
-			section.className = 'children'
 			for (const child of fullSiblings.children) {
-				section.appendChild(cardEntity(child, 'rightOutput'))
+				section.appendChild(cardEntity(child, { male: 'Brother', female: 'Sister', other: 'Sibling' }))
 			}
 			cardItem.appendChild(section)
 			familyMembers.appendChild(cardItem)
@@ -580,7 +574,7 @@ function drawEntity() {
 				section = document.createElement('section')
 				section.className = 'children'
 				for (const child of parentGroup.children) {
-					section.appendChild(cardEntity(child, 'rightOutput'))
+					section.appendChild(cardEntity(child, { male: 'Half-Brother', female: 'Half-Sister', other: 'Half-Sibling' }))
 				}
 				cardItem.appendChild(section)
 				familyMembers.appendChild(cardItem)
@@ -596,7 +590,7 @@ function drawEntity() {
 		// TODO return left/right output on root entity and each child parent
 		section = document.createElement('section')
 		for (const parent of parentGroup.parents) {
-			section.appendChild(cardEntity(parent, { male: 'Father', other: 'Parent', female: 'Mother' }))
+			section.appendChild(cardEntity(parent, { male: 'Father', female: 'Mother', other: 'Parent' }))
 		}
 		cardItem.appendChild(section)
 		section = document.createElement('section')
@@ -682,49 +676,66 @@ function drawEntity() {
 	}).addTo(map)
 
 	const nodes = []
-	let father, mother
+	let father, mother, otherParent
 	const root = {
 		id: entity.id,
 		data: {
-			fn: '',
-			ln: '',
 			desc: chartLifespan(entity),
 			label: entity.displayName,
 			avatar: '',
 			gender: chartGender(entity)
 		},
 		rels: {
+			parents: [],
 			spouses: [],
 			children: []
 		},
-		main: true
+		main: false
 	}
 	nodes.push(root)
 	for (const parent of entity.parents) {
 		const parentData = {
 			id: parent.id,
 			data: {
-				fn: '',
-				ln: '',
 				desc: chartLifespan(parent),
 				label: parent.displayName,
 				avatar: '',
 				gender: chartGender(parent)
 			},
 			rels: {
+				parents: [],
 				spouses: [],
-				children: []
+				children: [entity.id]
 			},
 			main: false
 		}
 		nodes.push(parentData)
+		root.rels.parents.push(parent.id)
 		if (parent.sex === 'Male') {
-			root.rels.father = parent.id
-			father = parent.id
+			father = structuredClone(parentData)
 		} else {
-			root.rels.mother = parent.id
-			mother = parent.id
+			mother = structuredClone(parentData)
 		}
+	}
+	if (mother && father) {
+		let node
+		node = nodes.find(lookup => lookup.id === father.id)
+		node.rels.spouses.push(mother.id)
+		node.main = true
+		console.log('Father is main', node)
+		node = nodes.find(lookup => lookup.id === mother.id)
+		node.rels.spouses.push(father.id)
+	} else if (mother) {
+		const node = nodes.find(lookup => lookup.id === mother.id)
+		node.main = true
+		console.log('Mother is main', node)
+	} else if (father) {
+		const node = nodes.find(lookup => lookup.id === father.id)
+		node.main = true
+		console.log('Father is main', node)
+	} else {
+		root.main = true
+		console.log('Root is main', root)
 	}
 	if (entity.siblings.length > 0) {
 		const fullSiblings = entity.siblings.find(lookup => lookup.full === true)
@@ -733,63 +744,131 @@ function drawEntity() {
 				const sibling = {
 					id: child.id,
 					data: {
-						fn: '',
-						ln: '',
 						desc: chartLifespan(child),
 						label: child.displayName,
 						avatar: '',
 						gender: chartGender(child)
 					},
 					rels: {
+						parents: [],
 						spouses: [],
 						children: []
 					},
 					main: false
 				}
-				if (father) sibling.rels.father = father
-				if (mother) sibling.rels.mother = mother
+				if (father) sibling.rels.parents.push(father.id)
+				if (mother) sibling.rels.parents.push(mother.id)
 				nodes.push(sibling)
+				if (mother) {
+					const node = nodes.find(lookup => lookup.id === mother.id)
+					node.rels.children.push(sibling.id)
+				}
+				if (father) {
+					const node = nodes.find(lookup => lookup.id === father.id)
+					node.rels.children.push(sibling.id)
+				}
 			}
 		}
-		/* const halfSiblings = entity.siblings.filter(lookup => lookup.full === false)
+		const halfSiblings = entity.siblings.filter(lookup => lookup.full === false)
 		if (halfSiblings.length > 0) {
-			h3 = document.createElement('h3')
-			h3.innerHTML = 'Half Siblings'
-			familyMembers.appendChild(h3)
 			for (const parentGroup of halfSiblings) {
-				cardItem = document.createElement('article')
-				cardItem.className = 'entity-profile-inner-card'
-				section = document.createElement('section')
+				const parents = []
 				for (const parent of parentGroup.parentDetails) {
-					section.appendChild(cardEntity(parent, 'leftOutput'))
+					parents.push(parent.id)
+					const existingParent = nodes.find(lookup => lookup.id === parent.id)
+					if (!existingParent) {
+						const parentData = {
+							id: parent.id,
+							data: {
+								desc: chartLifespan(parent),
+								label: parent.displayName,
+								avatar: '',
+								gender: chartGender(parent)
+							},
+							rels: {
+								parents: [],
+								spouses: [],
+								children: []
+							},
+							main: false
+						}
+						nodes.push(parentData)
+					}
 				}
-				cardItem.appendChild(section)
-				section = document.createElement('section')
-				section.className = 'children'
+				for (const parent of parents) {
+					const node = nodes.find(lookup => lookup.id === parent)
+					const otherNode = nodes.find(lookup => lookup.id !== parent)
+					console.log({ parentId: parent.id, parents, node, otherNode, nodes })
+					node.rels.spouses.push(otherNode.id)
+				}
 				for (const child of parentGroup.children) {
-					section.appendChild(cardEntity(child, 'rightOutput'))
+					const childData = {
+						id: child.id,
+						data: {
+							desc: chartLifespan(child),
+							label: child.displayName,
+							avatar: '',
+							gender: chartGender(child)
+						},
+						rels: {
+							parents,
+							spouses: [],
+							children: []
+						},
+						main: false
+					}
+					nodes.push(childData)
 				}
-				cardItem.appendChild(section)
-				familyMembers.appendChild(cardItem)
 			}
-		} */
+		}
 	}
-	/* for (const person of data) {
-		if (person.rels.mother) {
-			const existing = data.find(lookup => lookup.id === person.rels.mother)
-			if (!existing) console.error('Missing mother', person.id, person.rels.mother)
-		}
-		if (person.rels.father) {
-			const existing = data.find(lookup => lookup.id === person.rels.father)
-			if (!existing) console.error('Missing father', person.id, person.rels.father)
-		}
-		if (person.rels.children.length > 0) {
-			for (const child of person.rels.children) {
-				const existing = data.find(lookup => lookup.id === child)
-				if (!existing) console.error('Missing child', person.id, child)
+	for (const parentGroup of entity.children) {
+		otherParent = null
+		for (const parent of parentGroup.parents) {
+			if (parent.id !== entity.id) {
+				otherParent = {
+					id: parent.id,
+					data: {
+						desc: chartLifespan(parent),
+						label: parent.displayName,
+						avatar: '',
+						gender: chartGender(parent)
+					},
+					rels: {
+						parents: [],
+						spouses: [entity.id],
+						children: []
+					},
+					main: false
+				}
+				nodes.push(otherParent)
+				root.rels.spouses.push(otherParent.id)
 			}
 		}
-	} */
+		for (const child of parentGroup.children) {
+			const childData = {
+				id: child.id,
+				data: {
+					desc: chartLifespan(child),
+					label: child.displayName,
+					avatar: '',
+					gender: chartGender(child)
+				},
+				rels: {
+					parents: [entity.id],
+					spouses: [],
+					children: []
+				},
+				main: false
+			}
+			root.rels.children.push(child.id)
+			if (otherParent) {
+				childData.rels.parents.push(otherParent.id)
+				otherParent.rels.children.push(child.id)
+			}
+			nodes.push(childData)
+		}
+	}
 	console.log(nodes)
 	const f3Chart = f3.createChart('#family-chart', nodes)
 		.setTransitionTime(1000)

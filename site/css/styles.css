@@ -1088,8 +1088,7 @@ a.big-button:hover {
 
 .entity-profile-card-item button:focus,
 .entity-profile-couple-card a button:focus,
-.entity-profile-inner-card a:focus,
-.facts-holder section.facts-year section > div a:focus {
+.entity-profile-inner-card a:focus {
     border-color: var(--color-bg);
     box-shadow: 0 0 0 2px var(--color-accent);
     outline: 2px solid transparent;
@@ -1097,8 +1096,7 @@ a.big-button:hover {
 
 .entity-profile-card-item button:hover,
 .entity-profile-couple-card a button:hover,
-.entity-profile-inner-card a:hover,
-.facts-holder section.facts-year section > div a:hover {
+.entity-profile-inner-card a:hover {
     border-color: var(--color-accent);
 }
 
@@ -1166,6 +1164,24 @@ a.big-button:hover {
 .facts {
 	height: calc(600px - 36px - var(--card-corner-radius) - var(--card-corner-radius) - 16px);
 	overflow-y: auto;
+}
+
+.facts::-webkit-scrollbar {
+    height: 8px;
+    width: 8px
+}
+
+.facts::-webkit-scrollbar-track {
+    background: var(--oklab-04)
+}
+
+.facts::-webkit-scrollbar-thumb {
+    background: var(--oklab-12);
+    border-radius: 4px
+}
+
+.facts::-webkit-scrollbar-thumb:hover {
+    background: var(--oklab-20)
 }
 
 .facts-holder {
@@ -1236,6 +1252,16 @@ a.big-button:hover {
     border: 2px solid transparent;
 	border-radius: 4px;
 	box-shadow: var(--card-shadow);
+}
+
+.facts-holder section.facts-year section > div a:focus {
+    border-color: var(--color-bg);
+    box-shadow: 0 0 0 2px var(--color-accent);
+    outline: 2px solid transparent;
+}
+
+.facts-holder section.facts-year section > div a:hover {
+    border-color: var(--color-accent);
 }
 
 .entity-profile-card #tree {
