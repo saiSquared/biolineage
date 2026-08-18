@@ -88,7 +88,7 @@ h6 img {
 	vertical-align: baseline;
 }
 
-body header {
+body > header {
 	width: 100%;
 	background-color: var(--color-bg-alt);
 	position: sticky;
@@ -1050,7 +1050,8 @@ a.big-button:hover {
 
 .entity-proifile-name-parts {
 	display: flex;
-	gap: 0.5rem 1em;
+	flex-wrap: wrap;
+	gap: 0.25rem 1em;
 	margin-left: 1em;
 }
 
@@ -1063,6 +1064,10 @@ a.big-button:hover {
 	grid-template-columns: 1fr 32px;
 	gap: 0.5rem;
 	align-items: center;
+}
+
+.entity-profile-card-item section header {
+	margin-bottom: 0.25rem;
 }
 
 .entity-profile-card-item button,
@@ -1106,12 +1111,24 @@ a.big-button:hover {
 .entity-profile-inner-card {
 	display: flex;
 	flex-direction: column;
+	gap: 0.25rem 0.5rem;
+}
+
+.entity-profile-inner-card section {
+	display: flex;
+	flex-wrap: wrap;
 	gap: 0.25rem 0;
 	padding: 0.5rem;
     transition: 220ms all ease-in-out;
 }
 
+.entity-profile-inner-card section.children {
+	margin-left: 2rem;
+	border-top: 1px solid var(--oklab-20);
+}
+
 .entity-profile-inner-card a {
+	width: 280px;
 	display: flex;
 	align-items: center;
 	gap: 1rem;
@@ -1141,12 +1158,12 @@ a.big-button:hover {
 
 .entity-profile-timeline article {
 	display: grid;
-	grid-template-rows: 36px 1fr 36px;
+	grid-template-rows: 36px 1fr;
 	gap: 0.5rem;
 }
 
 .facts {
-	height: calc(600px - 36px - 36px - var(--card-corner-radius) - var(--card-corner-radius) - 16px);
+	height: calc(600px - 36px - var(--card-corner-radius) - var(--card-corner-radius) - 16px);
 	overflow-y: auto;
 }
 
@@ -1401,12 +1418,11 @@ a.big-button:hover {
 		grid-template-columns: 1fr 2fr;
 		grid-template-rows: 1fr;
 		gap: 1rem;
-		height: 80vh;
-		max-height: 1200px;
+		height: 960px;
 	}
 
 	.facts {
-		height: calc(1200px - 36px - 36px - var(--card-corner-radius) - var(--card-corner-radius) - 16px);
+		height: calc(960px - 36px - var(--card-corner-radius) - var(--card-corner-radius) - 16px);
 	}
 }
 

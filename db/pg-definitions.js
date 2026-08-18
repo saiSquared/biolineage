@@ -349,7 +349,6 @@ const pgTables = {
 		name: 'entity_names',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'entity_id', type: 'UUID', nulls: false },
 			{ name: 'name_type', type: 'TEXT', nulls: false },
 			{ name: 'name_parts', type: 'JSONB', nulls: false },
@@ -360,19 +359,17 @@ const pgTables = {
 			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
 		],
 		foreignKeys: [
-			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		indexes: [
-			{ fields: ['tree_id'] },
 			{ fields: ['entity_id'] },
 			{ fields: ['name_type'] },
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
 		],
 		unique: [
-			{ fields: ['tree_id', 'entity_id', 'name_type'] }
+			{ fields: ['entity_id', 'name_type'] }
 		]
 	},
 
@@ -474,7 +471,6 @@ const pgTables = {
 		name: 'entity_identifiers',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'entity_id', type: 'UUID', nulls: false },
 			{ name: 'system', type: 'TEXT', nulls: false },
 			{ name: 'value', type: 'TEXT', nulls: false },
@@ -484,19 +480,17 @@ const pgTables = {
 			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
 		],
 		foreignKeys: [
-			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		indexes: [
-			{ fields: ['tree_id'] },
 			{ fields: ['entity_id'] },
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
 		],
 		unique: [
-			{ fields: ['tree_id', 'entity_id', 'value'] }
+			{ fields: ['entity_id', 'value'] }
 		]
 	},
 
@@ -616,7 +610,6 @@ const pgTables = {
 		name: 'facts',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'code', type: 'TEXT', nulls: false },
 			{ name: 'entity_id', type: 'UUID', nulls: false },
 
@@ -651,7 +644,6 @@ const pgTables = {
 		],
 
 		foreignKeys: [
-			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['place_id'], refTable: 'places', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
@@ -659,7 +651,6 @@ const pgTables = {
 		],
 
 		indexes: [
-			{ fields: ['tree_id'] },
 			{ fields: ['code'] },
 			{ fields: ['entity_id'] },
 			{ fields: ['place_id'] },
@@ -668,7 +659,7 @@ const pgTables = {
 		],
 
 		unique: [
-			{ fields: ['tree_id', 'code', 'entity_id', 'role'] }
+			{ fields: ['code', 'entity_id', 'role'] }
 		],
 
 		checks: [
@@ -686,7 +677,6 @@ const pgTables = {
 		name: 'fact_roles',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'fact_id', type: 'UUID', nulls: false },
 
 			// Either entity_id OR entity_name may be present
@@ -704,7 +694,6 @@ const pgTables = {
 		],
 
 		foreignKeys: [
-			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['fact_id'], refTable: 'facts', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'SET NULL' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
@@ -712,7 +701,6 @@ const pgTables = {
 		],
 
 		indexes: [
-			{ fields: ['tree_id'] },
 			{ fields: ['fact_id'] },
 			{ fields: ['entity_id'] },
 			{ fields: ['role'] },
@@ -724,7 +712,7 @@ const pgTables = {
 		// and a freeform entity_name can repeat. So we only enforce uniqueness on the
 		// combination of fact + role + entity_id/entity_name.
 		unique: [
-			{ fields: ['tree_id', 'fact_id', 'role', 'entity_id', 'entity_name'] }
+			{ fields: ['fact_id', 'role', 'entity_id', 'entity_name'] }
 		]
 	},
 
@@ -733,7 +721,6 @@ const pgTables = {
 		name: 'fact_add_places',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'fact_id', type: 'UUID', nulls: false },
 
 			// Required: must reference a canonical place
@@ -750,7 +737,6 @@ const pgTables = {
 		],
 
 		foreignKeys: [
-			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['fact_id'], refTable: 'facts', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['place_id'], refTable: 'places', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
@@ -758,7 +744,6 @@ const pgTables = {
 		],
 
 		indexes: [
-			{ fields: ['tree_id'] },
 			{ fields: ['fact_id'] },
 			{ fields: ['place_id'] },
 			{ fields: ['role'] },
@@ -767,7 +752,7 @@ const pgTables = {
 		],
 
 		unique: [
-			{ fields: ['tree_id', 'fact_id', 'place_id', 'role'] }
+			{ fields: ['fact_id', 'place_id', 'role'] }
 		]
 	},
 
@@ -776,7 +761,6 @@ const pgTables = {
 		name: 'fact_add_dates',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'fact_id', type: 'UUID', nulls: false },
 
 			// Default role for single-date facts
@@ -806,14 +790,12 @@ const pgTables = {
 		],
 
 		foreignKeys: [
-			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['fact_id'], refTable: 'facts', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['created_by'], refTable: 'users', refFields: ['id'] },
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 
 		indexes: [
-			{ fields: ['tree_id'] },
 			{ fields: ['fact_id'] },
 			{ fields: ['role'] },
 			{ fields: ['created_by'] },
@@ -821,7 +803,7 @@ const pgTables = {
 		],
 
 		unique: [
-			{ fields: ['tree_id', 'fact_id', 'role'] }
+			{ fields: ['fact_id', 'role'] }
 		],
 
 		checks: [
@@ -1157,7 +1139,6 @@ const pgTables = {
 		name: 'relationships',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
-			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'entity_id', type: 'UUID', nulls: false },
 			{ name: 'related_entity_id', type: 'UUID', nulls: false },
 			{ name: 'relationship_type_id', type: 'UUID', nulls: false }, // FIXED
@@ -1167,7 +1148,6 @@ const pgTables = {
 			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
 		],
 		foreignKeys: [
-			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['related_entity_id'], refTable: 'entities', refFields: ['id'], onDelete: 'CASCADE' },
 			{ fields: ['relationship_type_id'], refTable: 'relationship_types', refFields: ['id'], onDelete: 'CASCADE' },
@@ -1178,10 +1158,9 @@ const pgTables = {
 			{ expression: 'entity_id <> related_entity_id' }
 		],
 		unique: [
-			{ fields: ['tree_id', 'entity_id', 'related_entity_id', 'relationship_type_id'] } // FIXED
+			{ fields: ['entity_id', 'related_entity_id', 'relationship_type_id'] } // FIXED
 		],
 		indexes: [
-			{ fields: ['tree_id'] },
 			{ fields: ['entity_id'] },
 			{ fields: ['related_entity_id'] },
 			{ fields: ['relationship_type_id'] }, // ADDED
@@ -1455,44 +1434,6 @@ const pgFunctions = [
 ]
 
 const pgTriggers = [
-	{
-		name: 'relationships_tree_consistency_trigger',
-		function:
-			`CREATE OR REPLACE FUNCTION relationships_tree_consistency()
-			RETURNS trigger AS $$
-			BEGIN
-				PERFORM 1
-				FROM entities e
-				WHERE e.id = NEW.entity_id
-				AND e.tree_id = NEW.tree_id;
-
-				IF NOT FOUND THEN
-					RAISE EXCEPTION
-						'entity_id % does not belong to tree_id %',
-						NEW.entity_id, NEW.tree_id;
-				END IF;
-
-				PERFORM 1
-				FROM entities e
-				WHERE e.id = NEW.related_entity_id
-				AND e.tree_id = NEW.tree_id;
-
-				IF NOT FOUND THEN
-					RAISE EXCEPTION
-						'related_entity_id % does not belong to tree_id %',
-						NEW.related_entity_id, NEW.tree_id;
-				END IF;
-
-				RETURN NEW;
-			END;
-			$$ LANGUAGE plpgsql;`,
-		timing: 'BEFORE',
-		events: ['INSERT', 'UPDATE'],
-		table: 'relationships',
-		forEach: 'ROW',
-		functionName: 'relationships_tree_consistency()'
-	},
-
 	{
 		name: 'update_birth_year_trigger',
 		function:

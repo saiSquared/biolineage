@@ -100,7 +100,6 @@ class Setters {
 			const nameId = uuidv4()
 			const nameData = {
 				id: nameId,
-				treeId: data.treeId,
 				entityId: id,
 				nameType: data.nameType,
 				nameParts: name.nameParts,
@@ -123,7 +122,7 @@ class Setters {
 			}
 			await biolineageDb.insert('entities', entityData)
 			if (data.birthYear) {
-				const eventData = {
+				const factData = {
 					id: uuidv4(),
 					treeId: data.treeId,
 					entityId: id,
@@ -135,10 +134,10 @@ class Setters {
 					createdBy: user.userId,
 					modifiedBy: user.userId
 				}
-				await biolineageDb.insert('events', eventData)
+				await biolineageDb.insert('facts', factData)
 			}
 			if (data.deathYear) {
-				const eventData = {
+				const factData = {
 					id: uuidv4(),
 					treeId: data.treeId,
 					entityId: id,
@@ -150,28 +149,77 @@ class Setters {
 					createdBy: user.userId,
 					modifiedBy: user.userId
 				}
-				await biolineageDb.insert('events', eventData)
+				await biolineageDb.insert('facts', factData)
 			}
 			biolineageDb.commit()
 			return { ok: true, id }
 		} catch (error) {
 			biolineageDb.rollback()
-			console.log('Failed to add etity', error)
+			console.log('Failed to add entity', error)
 			return { ok: false }
 		}
 	}
 
-	async entityEdit(user, editor, data) {
-		try {
-			switch (editor) {
-				case 'sex': {
-					await biolineageDb.update('entities', { sex: data.sex, modifiedBy: user.userId, modifiedDate: new Date() }, { id: data.entityId })
-					return { ok: true, id: data.entityId }
+	/**
+	 * Edit aspect(s) on an entity
+	 * @param {Object} user - session user information
+	 * @param {add|edit} mode - edit mode
+	 * @param {String} editor - which editor
+	 * @param {Object} data - POSTed field data
+	 * @returns {Object}
+	 */
+	async entityEdit(user, mode, editor, data) {
+		switch (editor) {
+			case 'name': {
+				console.log(data)
+				const name = buildName(data)
+				console.log(name)
+				if (mode === 'edit') {
+					await biolineageDb.begin()
+					try {
+						await biolineageDb.update('entity_names', { nameType: data.nameType, nameParts: name.nameParts, description: data.description }, { id: data.nameId })
+						const entityData = { fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
+						if (data.canonical) entityData.canonicalNameId = data.nameId
+						await biolineageDb.update('entities', entityData, { id: data.entityId })
+						return { ok: true, id: data.entityId }
+					} catch (error) {
+						await biolineageDb.rollback()
+						console.log('Failed to edit name', mode, editor, data, error)
+						return { ok: false }
+					}
+				} else {
+					try {
+						const nameData = {
+							id: uuidv4(),
+							entityId: data.entityId,
+							nameType: data.nameType,
+							nameParts: name.nameParts,
+							description: data.description,
+							createdBy: user.userId,
+							modifiedBy: user.userId
+						}
+						await biolineageDb.insert('entity_names', nameData)
+						if (data.canonical) {
+							const entityData = { canonicalNameId: nameData.id, fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
+							await biolineageDb.update('entities', entityData, { id: data.entityId })
+						}
+						return { ok: true, id: data.entityId }
+					} catch (error) {
+						await biolineageDb.rollback()
+						console.log('Failed to add name', mode, editor, data, error)
+						return { ok: false }
+					}
 				}
 			}
-		} catch (error) {
-			console.log('Failed to edit entity', editor, data, error)
-			return { ok: false }
+			case 'sex': {
+				try {
+					await biolineageDb.update('entities', { sex: data.sex, modifiedBy: user.userId, modifiedDate: new Date() }, { id: data.entityId })
+					return { ok: true, id: data.entityId }
+				} catch (error) {
+					console.log('Failed to edit sex', mode, editor, data, error)
+					return { ok: false }
+				}
+			}
 		}
 	}
 

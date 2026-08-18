@@ -252,7 +252,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 	}
 
 	function getValue(field) {
-		const value = document.getElementById(field).value
+		const value = document.getElementById(field).type === 'checkbox' ? document.getElementById(field).checked : document.getElementById(field).value
 		return value === '' ? null : value
 	}
 

@@ -1,6 +1,6 @@
 [
 	{
-		"id": "558b2284-576c-43e2-8049-510db75aaeae",
+		"id": "771360f0-029a-4342-be76-aa534016f525",
 		"type": "other",
 		"direction": "forward",
 		"name": "Apprenticeship",
@@ -17,7 +17,7 @@
 		}
 	},
 	{
-		"id": "09d51a29-9ed5-4a39-b911-e9f07deabfca",
+		"id": "27f5ea12-a55a-4e22-b8a2-a07176800807",
 		"type": "other",
 		"direction": "forward",
 		"name": "Caretaker",
@@ -34,7 +34,7 @@
 		}
 	},
 	{
-		"id": "4e8b3f45-b01f-4aae-8e20-f3d0f188522c",
+		"id": "82aaa96e-1faf-43fd-99b8-412dbf32b113",
 		"type": "other",
 		"direction": "forward",
 		"name": "Employment",
@@ -51,7 +51,7 @@
 		}
 	},
 	{
-		"id": "1f4de8c3-2d3b-4737-b343-e58a188f53e2",
+		"id": "28894fe2-e776-4b24-8cea-5850d5c47c65",
 		"type": "other",
 		"direction": "forward",
 		"name": "Enslavement",
@@ -68,7 +68,7 @@
 		}
 	},
 	{
-		"id": "18e629a8-06c2-489d-a3a9-a685893cb609",
+		"id": "cdc093d3-5ca5-45b4-a39a-b4216d8fd437",
 		"type": "other",
 		"direction": "forward",
 		"name": "Godparent",
@@ -85,7 +85,7 @@
 		}
 	},
 	{
-		"id": "ed39ea20-47aa-4c20-8543-7cd371610f40",
+		"id": "b58becf2-5ef6-49e9-8a7e-bb17093f6ce0",
 		"type": "other",
 		"direction": "forward",
 		"name": "Household",
@@ -102,7 +102,7 @@
 		}
 	},
 	{
-		"id": "32f902e2-61d1-4f5f-8f8f-80c37a0b6563",
+		"id": "7e53c34b-5a98-4f57-b157-e0e2e3ad0415",
 		"type": "other",
 		"direction": "forward",
 		"name": "Knighthood",
@@ -119,7 +119,7 @@
 		}
 	},
 	{
-		"id": "64433923-7ace-4155-9105-4794f8817145",
+		"id": "dd4875e6-3305-4af6-8d29-316becab8efa",
 		"type": "other",
 		"direction": "forward",
 		"name": "Landlord",
@@ -136,7 +136,7 @@
 		}
 	},
 	{
-		"id": "fa25d432-3392-4cf7-9195-7cc0b3d5900c",
+		"id": "400f0457-af6e-4499-b698-84715c5d3df2",
 		"type": "other",
 		"direction": "forward",
 		"name": "Liege",
@@ -153,7 +153,7 @@
 		}
 	},
 	{
-		"id": "2dcea5d2-2f09-44c8-85ca-fdb8a895d184",
+		"id": "aa5c31e6-37ee-4e79-8287-6984b6fc8628",
 		"type": "other",
 		"direction": "forward",
 		"name": "Lord",
@@ -170,7 +170,7 @@
 		}
 	},
 	{
-		"id": "5f1980d8-4d2e-4e57-9ce0-4f8743862132",
+		"id": "fa6817e0-ec1d-4833-b87c-a1653e06949c",
 		"type": "other",
 		"direction": "forward",
 		"name": "Mentor",
@@ -187,7 +187,7 @@
 		}
 	},
 	{
-		"id": "e46acdf0-ecf5-490f-8a1c-008fb6c5ddfe",
+		"id": "0b8158a4-b71d-4510-a81a-10fc6f4f1541",
 		"type": "other",
 		"direction": "parallel",
 		"name": "Neighbor",
@@ -204,7 +204,7 @@
 		}
 	},
 	{
-		"id": "88f27f22-5f76-43d0-84ca-43ff814c3bfe",
+		"id": "f1bd26cd-7bd6-42e9-9096-ce8a8f080e33",
 		"type": "other",
 		"direction": "parallel",
 		"name": "Relative",
@@ -221,7 +221,7 @@
 		}
 	},
 	{
-		"id": "6783b9b9-47a9-41bf-8e6b-7c0850f4ec0c",
+		"id": "104a8d6a-d2c2-4215-907b-6e3ccb72ef1e",
 		"type": "other",
 		"direction": "forward",
 		"name": "Servitude",
@@ -238,7 +238,7 @@
 		}
 	},
 	{
-		"id": "cce7cb6d-83d5-4d53-9e2f-9ea179ca2405",
+		"id": "02cfc688-522a-43a2-b0da-00708375210f",
 		"type": "other",
 		"direction": "forward",
 		"name": "Tutor",
@@ -255,7 +255,7 @@
 		}
 	},
 	{
-		"id": "2c151266-e67b-4a8b-807a-9f42ae8f2933",
+		"id": "5410bc2a-41a7-459e-bc36-4bbf8b0dd367",
 		"type": "parent",
 		"direction": "forward",
 		"name": "Parent",
@@ -272,7 +272,7 @@
 		}
 	},
 	{
-		"id": "b66e0093-dcb4-4085-81ad-8d89ef255d2d",
+		"id": "c86829d1-8263-4535-807a-533c9fa3cba1",
 		"type": "parent",
 		"direction": "forward",
 		"name": "Adoptive Parent",
@@ -289,7 +289,7 @@
 		}
 	},
 	{
-		"id": "443af8c2-d4eb-4a64-9cf2-86ca21ae9025",
+		"id": "c010735c-2b9b-40ff-8583-42020bdd6d91",
 		"type": "parent",
 		"direction": "forward",
 		"name": "Biological Parent",
@@ -306,7 +306,7 @@
 		}
 	},
 	{
-		"id": "5526036f-37ec-4aba-903e-9e26b8ab06a0",
+		"id": "c0a8538b-5bac-4350-aa46-fa66cbd25ff9",
 		"type": "parent",
 		"direction": "forward",
 		"name": "Foster Parent",
@@ -323,7 +323,7 @@
 		}
 	},
 	{
-		"id": "771c8d20-2684-4047-b029-34a7d3d01c64",
+		"id": "988458ce-f3be-44e5-8d72-ca1d5a6e0992",
 		"type": "parent",
 		"direction": "forward",
 		"name": "Guardian",
@@ -340,7 +340,7 @@
 		}
 	},
 	{
-		"id": "490ab8a9-45f5-43c9-aa67-235f991bb743",
+		"id": "997cda1f-20d1-41fa-a841-1ccea9e1ef22",
 		"type": "parent",
 		"direction": "forward",
 		"name": "Stepparent",
@@ -357,7 +357,7 @@
 		}
 	},
 	{
-		"id": "e06b236d-a0be-40b8-a895-8d166b0e190f",
+		"id": "f41555f9-f493-46f3-af2e-94ab3dd7f18c",
 		"type": "partner",
 		"direction": "parallel",
 		"name": "Spouse",
@@ -374,7 +374,7 @@
 		}
 	},
 	{
-		"id": "31c06d73-b80c-4f5e-a3be-647b81accd5d",
+		"id": "12d4ce82-4ee8-4bcb-ac1b-ff7e82bdaf0f",
 		"type": "partner",
 		"direction": "parallel",
 		"name": "Civil Union Partner",
@@ -391,7 +391,7 @@
 		}
 	},
 	{
-		"id": "f390d15a-8822-4b0b-86e5-0bc5930e6261",
+		"id": "dfca229b-6fe0-4911-affe-d6023d7bf4be",
 		"type": "partner",
 		"direction": "parallel",
 		"name": "Common-law spouse",
@@ -408,7 +408,7 @@
 		}
 	},
 	{
-		"id": "3b78c40e-a0c5-4e60-91c3-47fcab457363",
+		"id": "8215e3d2-01e4-4ced-8671-27c756e215df",
 		"type": "partner",
 		"direction": "parallel",
 		"name": "Domestic Partner",
@@ -425,7 +425,7 @@
 		}
 	},
 	{
-		"id": "8da9b325-9241-4a0e-a919-efce829cf262",
+		"id": "9fa253ed-64cd-41fe-b27f-84565828222a",
 		"type": "partner",
 		"direction": "parallel",
 		"name": "Ex-spouse",
@@ -442,7 +442,7 @@
 		}
 	},
 	{
-		"id": "b0f1fcb1-7215-4c87-850b-4a7890b9e6ba",
+		"id": "f8c840bf-67ec-4cec-aa2e-0ee7b0dd0b87",
 		"type": "partner",
 		"direction": "parallel",
 		"name": "Partner",

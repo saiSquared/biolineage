@@ -1957,7 +1957,6 @@ async function initPg() {
 		const nameId = uuidv4()
 		await biolineageDb.insert('entity_names', {
 			id: nameId,
-			treeId: horseTree,
 			entityId: id,
 			nameType: 'Ingestion',
 			nameParts: JSON.stringify(names.nameParts),
@@ -1987,7 +1986,6 @@ async function initPg() {
 		const nameId = uuidv4()
 		await biolineageDb.insert('entity_names', {
 			id: nameId,
-			treeId: charlesTree,
 			entityId: id,
 			nameType: 'Ingestion',
 			nameParts: JSON.stringify(names.nameParts),
@@ -2017,7 +2015,6 @@ async function initPg() {
 			const nameId = uuidv4()
 			await biolineageDb.insert('entity_names', {
 				id: nameId,
-				treeId: normTree,
 				entityId: id,
 				nameType: 'Ingestion',
 				nameParts: JSON.stringify(names.nameParts),
@@ -2089,7 +2086,6 @@ async function initPg() {
 			if (place) placeId = place.id
 			const data = {
 				id: uuidv4(),
-				treeId: entity.treeId,
 				code: 'Birth',
 				entityId: entity.id,
 				role: 'Ingestion',
@@ -2107,7 +2103,6 @@ async function initPg() {
 			const dateParts = person.DateOfDeath.split('-')
 			const data = {
 				id: uuidv4(),
-				treeId: entity.treeId,
 				code: 'Death',
 				entityId: entity.id,
 				role: 'Ingestion',
@@ -2127,7 +2122,6 @@ async function initPg() {
 				if (place) placeId = place.id
 				const data = {
 					id: uuidv4(),
-					treeId: entity.treeId,
 					code: 'Burial',
 					entityId: entity.id,
 					role: 'Ingestion',
@@ -2301,12 +2295,10 @@ async function transformRelationshipsAndGender(parentId) {
 	try {
 		for (const child of children) {
 			const childEntity = await biolineageDb.get('select tree_id, created_by from entities where id = $1', [child.childUuid])
-			const treeId = childEntity.treeId
 			const createdBy = childEntity.createdBy
 
 			let relationshipRow = {
 				id: uuidv4(),
-				treeId,
 				entityId: child.parentUuid1,
 				relatedEntityId: child.childUuid,
 				relationshipTypeId: parentId,
@@ -2316,12 +2308,10 @@ async function transformRelationshipsAndGender(parentId) {
 
 			const exists = await biolineageDb.get(
 				`SELECT 1 FROM relationships
-				WHERE tree_id = $1
-					AND entity_id = $2
-					AND related_entity_id = $3
-					AND relationship_type_id = $4`,
+				WHERE entity_id = $1
+					AND related_entity_id = $2
+					AND relationship_type_id = $3`,
 				[
-					relationshipRow.treeId,
 					relationshipRow.entityId,
 					relationshipRow.relatedEntityId,
 					relationshipRow.relationshipTypeId
@@ -2336,7 +2326,6 @@ async function transformRelationshipsAndGender(parentId) {
 			if (child.parentUuid2) {
 				relationshipRow = {
 					id: uuidv4(),
-					treeId,
 					entityId: child.parentUuid2,
 					relatedEntityId: child.childUuid,
 					relationshipTypeId: parentId,
@@ -2346,12 +2335,10 @@ async function transformRelationshipsAndGender(parentId) {
 
 				const exists = await biolineageDb.get(
 					`SELECT 1 FROM relationships
-					WHERE tree_id = $1
-						AND entity_id = $2
-						AND related_entity_id = $3
-						AND relationship_type_id = $4`,
+					WHERE entity_id = $1
+						AND related_entity_id = $2
+						AND relationship_type_id = $3`,
 					[
-						relationshipRow.treeId,
 						relationshipRow.entityId,
 						relationshipRow.relatedEntityId,
 						relationshipRow.relationshipTypeId

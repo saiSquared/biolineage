@@ -434,7 +434,7 @@ function drawEntity() {
 		cardItem.className = 'entity-profile-card-item'
 		section = document.createElement('section')
 		header = document.createElement('header')
-		header.innerHTML = `<strong>${entityName.nameType}</strong> (No Sources)`
+		header.innerHTML = `<strong>${entityName.nameType}</strong> (No Sources)${entityName.id === entity.canonicalNameId ? ' <span style="font-weight: 500">[Canonical]</span>' : ''}`
 		section.appendChild(header)
 		div = document.createElement('div')
 		div.className = 'entity-proifile-name-parts'
@@ -507,10 +507,11 @@ function drawEntity() {
 		familyMembers.appendChild(h3)
 		cardItem = document.createElement('article')
 		cardItem.className = 'entity-profile-inner-card'
+		section = document.createElement('section')
 		for (const parent of entity.parents) {
-			cardItem.appendChild(cardEntity(parent, 'leftOutput'))
+			section.appendChild(cardEntity(parent, 'leftOutput'))
 		}
-		cardItem.appendChild(cardButton('add-parent', '/img/plus.svg', 'Add Parent', null, 'parent'))
+		cardItem.appendChild(section)
 		familyMembers.appendChild(cardItem)
 	}
 	if (entity.siblings.length > 0) {
@@ -521,14 +522,17 @@ function drawEntity() {
 			familyMembers.appendChild(h3)
 			cardItem = document.createElement('article')
 			cardItem.className = 'entity-profile-inner-card'
+			section = document.createElement('section')
 			for (const parent of fullSiblings.parentDetails) {
-				cardItem.appendChild(cardEntity(parent, 'leftOutput'))
+				section.appendChild(cardEntity(parent, 'leftOutput'))
 			}
-			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Relationship'))
+			cardItem.appendChild(section)
+			section = document.createElement('section')
+			section.className = 'children'
 			for (const child of fullSiblings.children) {
-				cardItem.appendChild(cardEntity(child, 'rightOutput', 'inner-indent'))
+				section.appendChild(cardEntity(child, 'rightOutput'))
 			}
-			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Child', 'inner-indent'))
+			cardItem.appendChild(section)
 			familyMembers.appendChild(cardItem)
 		}
 		const halfSiblings = entity.siblings.filter(lookup => lookup.full === false)
@@ -539,14 +543,17 @@ function drawEntity() {
 			for (const parentGroup of halfSiblings) {
 				cardItem = document.createElement('article')
 				cardItem.className = 'entity-profile-inner-card'
+				section = document.createElement('section')
 				for (const parent of parentGroup.parentDetails) {
-					cardItem.appendChild(cardEntity(parent, 'leftOutput'))
+					section.appendChild(cardEntity(parent, 'leftOutput'))
 				}
-				cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Relationship'))
+				cardItem.appendChild(section)
+				section = document.createElement('section')
+				section.className = 'children'
 				for (const child of parentGroup.children) {
-					cardItem.appendChild(cardEntity(child, 'rightOutput', 'inner-indent'))
+					section.appendChild(cardEntity(child, 'rightOutput'))
 				}
-				cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Child', 'inner-indent'))
+				cardItem.appendChild(section)
 				familyMembers.appendChild(cardItem)
 			}
 		}
@@ -559,14 +566,17 @@ function drawEntity() {
 			cardItem = document.createElement('article')
 			cardItem.className = 'entity-profile-inner-card'
 			// TODO return left/right output on root entity and each child parent
+			section = document.createElement('section')
 			for (const parent of parentGroup.parents) {
-				cardItem.appendChild(cardEntity(parent, { male: 'Father', other: 'Parent', female: 'Mother' }))
+				section.appendChild(cardEntity(parent, { male: 'Father', other: 'Parent', female: 'Mother' }))
 			}
-			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Relationship'))
+			cardItem.appendChild(section)
+			section = document.createElement('section')
+			section.className = 'children'
 			for (const child of parentGroup.children) {
-				cardItem.appendChild(cardEntity(child, 'rightOutput', 'inner-indent'))
+				section.appendChild(cardEntity(child, 'rightOutput'))
 			}
-			cardItem.appendChild(cardButton('add-child', '/img/plus.svg', 'Add Child', 'inner-indent'))
+			cardItem.appendChild(section)
 			familyMembers.appendChild(cardItem)
 		}
 	}
@@ -612,9 +622,6 @@ function drawEntity() {
 	if (currentSection) factsInner.appendChild(currentSection)
 	factsHolder.appendChild(factsInner)
 	div.appendChild(factsHolder)
-	cardItem.appendChild(div)
-	div = document.createElement('div')
-	div.appendChild(cardButton('add-fact', '/img/plus.svg', 'Add Fact'))
 	cardItem.appendChild(div)
 	timeline.appendChild(cardItem)
 	div = document.createElement('div')
