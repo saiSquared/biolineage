@@ -39,6 +39,7 @@ import modalForm from '/js/modal-form.js'
  */
 
 const main = document.querySelector('main')
+const factMarkers = new Map()
 
 let entity, map, entityNameParts
 /** @type {BiolineageTimelineFact[]} */
@@ -193,10 +194,25 @@ const drawFact = (fact, birth) => {
 	const section = document.createElement('section')
 	const div = document.createElement('div')
 	const a = document.createElement('a')
+	const lat = fact.latitude || fact.municipalityLatitude || fact.administrativeDivisionLatitude
+	const lng = fact.longitude || fact.municipalityLongitude || fact.administrativeDivisionLongitude
+	if (lat && lng) {
+		const placeId = fact.placeId
+
+		if (!factMarkers.has(placeId)) {
+			factMarkers.set(placeId, {
+				name: timelineLocation(fact),
+				lat,
+				lng
+			})
+		}
+
+		a.dataset.marker = placeId
+	}
 	a.href = `/trees/${dataPackage.treeSlug}/entities/${dataPackage.entityId}/facts/${fact.factId}`
 	a.dataset.fact = fact.factId
 	const factName = document.createElement('div')
-	factName.innerHTML = `<strong>${fact.code}</strong> (Age ${yearDiff(fact, birth)})`
+	factName.innerHTML = `<span style="font-weight: 500;">${fact.code}</span> (Age ${yearDiff(fact, birth)})`
 	factName.style.marginBottom = '0.25rem'
 	a.appendChild(factName)
 	if (fact.entityName) {
@@ -302,6 +318,28 @@ const showLocation = (ele, data) => {
 		const div = document.createElement('div')
 		div.innerHTML = parts.join(', ')
 		ele.appendChild(div)
+	}
+}
+
+const timelineLocation = (data) => {
+	const fields = ['sovereignEntity', 'sovereignEntityName', 'subdivision', 'subdivisionName', 'administrativeDivision', 'administrativeDivisionName', 'municipality', 'municipalityName']
+	let hasLocation = false
+	for (const field of fields) {
+		if (data[field]) {
+			hasLocation = true
+			break
+		}
+	}
+	if (hasLocation) {
+		const parts = []
+		if (data.address) parts.push(data.address)
+		if (data.municipality || data.municipalityName) parts.push(data.municipality || data.municipalityName)
+		if (data.administrativeDivision || data.administrativeDivisionName) parts.push(data.administrativeDivision || data.administrativeDivisionName)
+		if (data.subdivision || data.subdivisionName) parts.push(data.subdivision || data.subdivisionName)
+		if (data.sovereignEntity || data.sovereignEntityName) parts.push(data.sovereignEntity || data.sovereignEntityName)
+		return parts.join(', ')
+	} else {
+		return null
 	}
 }
 
@@ -413,7 +451,7 @@ function drawEntity() {
 	button.id = 'vitals-birth'
 	button.dataset.type = 'fact'
 	button.dataset.action = birth ? 'edit' : 'add'
-	button.dataset.id = birth ? birth.id : ''
+	button.dataset.id = birth ? birth.factId : ''
 	img = document.createElement('img')
 	img.src = '/img/pencil.svg'
 	button.appendChild(img)
@@ -443,7 +481,7 @@ function drawEntity() {
 	button.id = 'vitals-birth'
 	button.dataset.type = 'fact'
 	button.dataset.action = death ? 'edit' : 'add'
-	button.dataset.id = death ? death.id : ''
+	button.dataset.id = death ? death.factId : ''
 	img = document.createElement('img')
 	img.src = '/img/pencil.svg'
 	button.appendChild(img)
@@ -582,9 +620,10 @@ function drawEntity() {
 		}
 	}
 	h3 = document.createElement('h3')
-	h3.innerHTML = 'Children'
+	h3.innerHTML = 'Partners'
 	familyMembers.appendChild(h3)
-	for (const parentGroup of entity.children) {
+	const partnerChildren = entity.children.filter(data => data.parents.length > 1)
+	for (const parentGroup of partnerChildren) {
 		cardItem = document.createElement('article')
 		cardItem.className = 'entity-profile-inner-card'
 		// TODO return left/right output on root entity and each child parent
@@ -603,6 +642,22 @@ function drawEntity() {
 		familyMembers.appendChild(cardButton('add-entity-child', '/img/plus.svg', 'Add Child', 'add-child', 'child'))
 	}
 	familyMembers.appendChild(cardButton('add-entity-partner', '/img/plus.svg', 'Add Partner', null, 'partner'))
+	profile.appendChild(familyMembers)
+	h3 = document.createElement('h3')
+	h3.innerHTML = 'Children'
+	familyMembers.appendChild(h3)
+	const entityChildren = entity.children.filter(data => data.parents.length === 1)
+	for (const parentGroup of entityChildren) {
+		cardItem = document.createElement('article')
+		cardItem.className = 'entity-profile-inner-card'
+		section = document.createElement('section')
+		for (const child of parentGroup.children) {
+			section.appendChild(cardEntity(child, 'rightOutput'))
+		}
+		cardItem.appendChild(section)
+		familyMembers.appendChild(cardItem)
+	}
+	familyMembers.appendChild(cardButton('add-entity-child', '/img/plus.svg', 'Add Child', null, 'child'))
 	profile.appendChild(familyMembers)
 
 	// other relationships
@@ -675,8 +730,26 @@ function drawEntity() {
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map)
 
+	for (const [placeId, info] of factMarkers.entries()) {
+		const marker = L.marker([info.lat, info.lng]).addTo(map)
+
+		marker.bindPopup(`<strong>${info.name}</strong>`)
+
+		// Replace stored data with the actual marker instance
+		factMarkers.set(placeId, marker)
+	}
+
 	const nodes = []
+	const addNode = (data, context) => {
+		const existing = nodes.find(lookup => lookup.id === data.id)
+		if (existing) {
+			console.log({ message: 'Trying to add duplicate', context, data, nodes })
+		} else {
+			nodes.push(data)
+		}
+	}
 	let father, mother, otherParent
+	// console.log('Adding root')
 	const root = {
 		id: entity.id,
 		data: {
@@ -692,7 +765,8 @@ function drawEntity() {
 		},
 		main: false
 	}
-	nodes.push(root)
+	addNode(root, 'Root')
+	// console.log('Adding parents')
 	for (const parent of entity.parents) {
 		const parentData = {
 			id: parent.id,
@@ -709,7 +783,7 @@ function drawEntity() {
 			},
 			main: false
 		}
-		nodes.push(parentData)
+		addNode(parentData, 'Parent')
 		root.rels.parents.push(parent.id)
 		if (parent.sex === 'Male') {
 			father = structuredClone(parentData)
@@ -717,29 +791,33 @@ function drawEntity() {
 			mother = structuredClone(parentData)
 		}
 	}
+	// console.log('Updating parents')
 	if (mother && father) {
 		let node
 		node = nodes.find(lookup => lookup.id === father.id)
+		// console.log({ message: 'Adding spouse to father', node, mother })
 		node.rels.spouses.push(mother.id)
 		node.main = true
-		console.log('Father is main', node)
+		// console.log('Father is main', node)
 		node = nodes.find(lookup => lookup.id === mother.id)
+		// console.log({ mesage: 'Adding spouse to mother', node, father })
 		node.rels.spouses.push(father.id)
 	} else if (mother) {
 		const node = nodes.find(lookup => lookup.id === mother.id)
 		node.main = true
-		console.log('Mother is main', node)
+		// console.log('Mother is main', node)
 	} else if (father) {
 		const node = nodes.find(lookup => lookup.id === father.id)
 		node.main = true
-		console.log('Father is main', node)
+		// console.log('Father is main', node)
 	} else {
 		root.main = true
-		console.log('Root is main', root)
+		// console.log('Root is main', root)
 	}
 	if (entity.siblings.length > 0) {
 		const fullSiblings = entity.siblings.find(lookup => lookup.full === true)
 		if (fullSiblings) {
+			// console.log('Adding Full Siblings')
 			for (const child of fullSiblings.children) {
 				const sibling = {
 					id: child.id,
@@ -758,7 +836,7 @@ function drawEntity() {
 				}
 				if (father) sibling.rels.parents.push(father.id)
 				if (mother) sibling.rels.parents.push(mother.id)
-				nodes.push(sibling)
+				addNode(sibling, 'Sibling')
 				if (mother) {
 					const node = nodes.find(lookup => lookup.id === mother.id)
 					node.rels.children.push(sibling.id)
@@ -771,6 +849,7 @@ function drawEntity() {
 		}
 		const halfSiblings = entity.siblings.filter(lookup => lookup.full === false)
 		if (halfSiblings.length > 0) {
+			// console.log('Adding Half-Siblings')
 			for (const parentGroup of halfSiblings) {
 				const parents = []
 				for (const parent of parentGroup.parentDetails) {
@@ -792,15 +871,14 @@ function drawEntity() {
 							},
 							main: false
 						}
-						nodes.push(parentData)
+						addNode(parentData, 'Half-Sibling Parent')
 					}
 				}
-				for (const parent of parents) {
-					const node = nodes.find(lookup => lookup.id === parent)
-					const otherNode = nodes.find(lookup => lookup.id !== parent)
-					console.log({ parentId: parent.id, parents, node, otherNode, nodes })
-					node.rels.spouses.push(otherNode.id)
-				}
+				// console.log({ message: 'Setting spouses for half-sibling parents', parents })
+				const halfParent0 = nodes.find(lookup => lookup.id === parents[0])
+				const halfParent1 = nodes.find(lookup => lookup.id === parents[1])
+				halfParent0.rels.spouses.push(halfParent1.id)
+				halfParent1.rels.spouses.push(halfParent0.id)
 				for (const child of parentGroup.children) {
 					const childData = {
 						id: child.id,
@@ -817,11 +895,14 @@ function drawEntity() {
 						},
 						main: false
 					}
-					nodes.push(childData)
+					addNode(childData, 'Half-Sibling')
+					halfParent0.rels.children.push(child.id)
+					halfParent1.rels.children.push(child.id)
 				}
 			}
 		}
 	}
+	// console.log('Adding children')
 	for (const parentGroup of entity.children) {
 		otherParent = null
 		for (const parent of parentGroup.parents) {
@@ -841,7 +922,8 @@ function drawEntity() {
 					},
 					main: false
 				}
-				nodes.push(otherParent)
+				addNode(otherParent, 'Parent of ParentGroup')
+				// console.log({ message: 'Adding spouse to root based on child', root, otherParent })
 				root.rels.spouses.push(otherParent.id)
 			}
 		}
@@ -866,10 +948,10 @@ function drawEntity() {
 				childData.rels.parents.push(otherParent.id)
 				otherParent.rels.children.push(child.id)
 			}
-			nodes.push(childData)
+			addNode(childData, 'Child of ParentGroup')
 		}
 	}
-	console.log(nodes)
+	console.log({ nodes, mother, father })
 	const f3Chart = f3.createChart('#family-chart', nodes)
 		.setTransitionTime(1000)
 		.setCardXSpacing(250)
@@ -993,7 +1075,7 @@ async function handleEntityEditor(event) {
 				tip: 'Biological sex as recorded in historical documents. Leave blank if unknown or not stated in available sources.',
 				value: entity.sex
 			})
-			modal = modalForm('add', '/api/entity/edit/sex', 'Edit Sex', fields)
+			modal = modalForm({ mode: 'add', endpoint: '/api/entity/edit/sex', header: 'Edit Sex' }, fields)
 			break
 		}
 		case 'name': {
@@ -1097,7 +1179,7 @@ async function handleEntityEditor(event) {
 					tip: 'Make this the name canonical as in active for this entity.'
 				})
 			}
-			modal = modalForm(editAction, `/api/entity/${editAction}/name`, `${editAction === 'add' ? 'Add' : 'Edit'} Name`, fields, groups)
+			modal = modalForm({ mode: editAction, endpoint: `/api/entity/${editAction}/name`, header: `${editAction === 'add' ? 'Add' : 'Edit'} Name` }, fields, groups)
 			break
 		}
 	}
@@ -1115,12 +1197,21 @@ async function handleEntityEditor(event) {
  */
 function handleTimelineFact(event) {
 	event.preventDefault()
-	/** @type {HTMLElement} */
+
 	let ele = event.target
 	while (ele.tagName !== 'A') {
 		ele = ele.parentElement
 	}
-	console.log(ele.dataset.fact)
+
+	const placeId = ele.dataset.marker
+	if (!placeId) return
+
+	const marker = factMarkers.get(placeId)
+	if (!marker) return
+
+	const latlng = marker.getLatLng()
+	map.flyTo(latlng, 12, { duration: 0.75 })
+	marker.openPopup()
 }
 
 async function setup() {

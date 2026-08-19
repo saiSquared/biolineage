@@ -614,7 +614,6 @@ const pgTables = {
 			{ name: 'entity_id', type: 'UUID', nulls: false },
 
 			// Specificty for a fact that can be attached more than once
-			{ name: 'role', type: 'TEXT', nulls: false },
 			{ name: 'data', type: 'JSONB' },
 
 			// Primary date
@@ -626,9 +625,6 @@ const pgTables = {
 			{ name: 'minute', type: 'INTEGER' },
 			{ name: 'second', type: 'INTEGER' },
 			{ name: 'timezone', type: 'TEXT' },
-
-			// Fuzzy / approximate dates
-			{ name: 'approximate', type: 'BOOLEAN', default: 'FALSE' },
 
 			// Optional human-readable date
 			{ name: 'date_text', type: 'TEXT' },
@@ -656,10 +652,6 @@ const pgTables = {
 			{ fields: ['place_id'] },
 			{ fields: ['created_by'] },
 			{ fields: ['modified_by'] }
-		],
-
-		unique: [
-			{ fields: ['code', 'entity_id', 'role'] }
 		],
 
 		checks: [

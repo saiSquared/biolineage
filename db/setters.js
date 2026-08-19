@@ -124,9 +124,8 @@ class Setters {
 			if (data.birthYear) {
 				const factData = {
 					id: uuidv4(),
-					treeId: data.treeId,
+					code: 'Birth',
 					entityId: id,
-					eventType: 'birth',
 					epoch: data.birthYear >= 0 ? 'AD' : 'BC',
 					year: massageNumber(data.birthYear),
 					month: massageNumber(data.birthMonth),
@@ -139,9 +138,8 @@ class Setters {
 			if (data.deathYear) {
 				const factData = {
 					id: uuidv4(),
-					treeId: data.treeId,
+					code: 'Death',
 					entityId: id,
-					eventType: 'death',
 					epoch: data.birthYear >= 0 ? 'AD' : 'BC',
 					year: massageNumber(data.deathYear),
 					month: massageNumber(data.deathMonth),

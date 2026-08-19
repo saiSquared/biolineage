@@ -2042,7 +2042,11 @@ async function initPg() {
 		const data = {
 			id: fixPlace(place),
 			placeType: place.type,
-			name: place.name
+			name: place.name,
+			latitude: place.latitude ? Number(place.latitude) : null,
+			longitude: place.longitude ? Number(place.longitude) : null,
+			address: place.address,
+			googlePlaceId: place.googlePlaceId
 		}
 		if (place.sovereignEntityId) {
 			data.sovereignEntityId = place.sovereignEntityId
@@ -2088,7 +2092,6 @@ async function initPg() {
 				id: uuidv4(),
 				code: 'Birth',
 				entityId: entity.id,
-				role: 'Ingestion',
 				epoch: 'AD',
 				year: dateParts[0],
 				month: dateParts[1],
@@ -2105,7 +2108,6 @@ async function initPg() {
 				id: uuidv4(),
 				code: 'Death',
 				entityId: entity.id,
-				role: 'Ingestion',
 				epoch: 'AD',
 				year: dateParts[0],
 				month: dateParts[1],
@@ -2124,7 +2126,6 @@ async function initPg() {
 					id: uuidv4(),
 					code: 'Burial',
 					entityId: entity.id,
-					role: 'Ingestion',
 					epoch: 'AD',
 					year: d.getFullYear(),
 					month: d.getMonth() + 1,

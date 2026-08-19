@@ -31,7 +31,7 @@ let entityTypes
 
 async function createTree(event) {
 	event.preventDefault()
-	const modal = modalForm('add', '/api/tree/add', 'Create Tree', fields)
+	const modal = modalForm({ mode: 'add', endpoint: '/api/tree/add', header: 'Create Tree' }, fields)
 	const id = await modal.show()
 	if (id) {
 		console.log(`New id = ${id}`)

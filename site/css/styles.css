@@ -1128,7 +1128,7 @@ a.big-button:hover {
 .entity-profile-inner-card a {
 	width: 280px;
 	display: flex;
-	align-items: center;
+	align-items: start;
 	gap: 1rem;
 	background-color: var(--color-bg-alt);
 	padding: var(--card-corner-radius);

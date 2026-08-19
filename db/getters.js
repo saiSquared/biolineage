@@ -664,7 +664,7 @@ class Getters {
 			order by modified_date;`
 		const entityNames = await biolineageDb.query(sql, [id])
 
-		// events
+		// facts
 		sql =
 			`select
 				f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second" ,

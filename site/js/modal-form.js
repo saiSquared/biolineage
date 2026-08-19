@@ -54,15 +54,21 @@ const floatingUI = window.FloatingUIDOM
  */
 
 /**
+ * @typedef {Object} ModalFormOptions
+ * @property {add|edit} mode - mode the form is working in
+ * @property {String} endpoint - API endpoint for the form to POST to
+ * @property {String} [deleteEndpoint] - API endpoint for deletion
+ * @property {String} header - header for the modal
+ */
+
+/**
  * Create a new entity modal for creating, picking and/or editing an enity
- * @param {add|edit} mode - mode the form is working in
- * @param {String} endpoint - API endpoint for the form to POST to
- * @param {String} header - header for the modal
+ * @param {ModalFormOptions} options - modal form options
  * @param {ModalFormField[]} fields - array of fields to use in the form
  * @param {ModalFormGroup[]} [groups] - optional groups to organize the fields
  * @param {Object} [validators] - functions to validate fields
  */
-export default function modalForm(mode, endpoint, header, fields, groups, validators) {
+export default function modalForm(options, fields, groups, validators) {
 	const dataPackage = {}
 	const sourcePackage = {}
 	for (const field of fields) {
@@ -70,10 +76,11 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 		if (!field.ignore) sourcePackage[field.name] = field.value || null
 	}
 
-	let modalOverlay, modalDialog, modalClose, modalCancel, modalSave, modalBody
+	let modalOverlay, modalDialog, modalDelete, modalClose, modalCancel, modalSave, modalBody
 	let modalResolve
 	let isDirty = false
 	let autofocus = null
+	const mode = options.mode
 
 	function checkDirty() {
 		const dirtyReasons = []
@@ -264,6 +271,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 			'transitionend',
 			() => {
 				modalOverlay.classList.add('hidden')
+				if (modalDelete) modalDelete.removeEventListener('click', handleModalDelete)
 				if (modalCancel) modalCancel.removeEventListener('click', handleModalClose)
 				if (modalSave) modalSave.removeEventListener('click', handleModalSave)
 				modalBody.removeEventListener('submit', handleModalSave)
@@ -281,6 +289,10 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 		)
 	}
 
+	function handleModalDelete() {
+		handleModalSave(null, true)
+	}
+
 	function handleOverlayClick(event) {
 		if (event.target === modalOverlay) handleModalClose()
 	}
@@ -291,8 +303,8 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 		}
 	}
 
-	async function handleModalSave(event) {
-		event.preventDefault()
+	async function handleModalSave(event, del) {
+		if (event) event.preventDefault()
 
 		for (const key in validators) {
 			await validators[key](getValue)
@@ -307,6 +319,8 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 				dataPackage[field.name] = getValue(field.id)
 			}
 		}
+
+		const endpoint = del ? options.deleteEndpoint : options.endpoint
 
 		console.log({ endpoint, dataPackage, sourcePackage })
 
@@ -349,7 +363,7 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 			const modalDialogHeader = document.createElement('div')
 			modalDialogHeader.className = 'modal-header'
 			const modalDialogHeading = document.createElement('h2')
-			modalDialogHeading.innerHTML = header
+			modalDialogHeading.innerHTML = options.header
 			modalDialogHeader.appendChild(modalDialogHeading)
 			modalClose = document.createElement('button')
 			modalClose.type = 'button'
@@ -392,6 +406,16 @@ export default function modalForm(mode, endpoint, header, fields, groups, valida
 			floatingRoot.id = 'floating-root'
 			modalDialogActions.appendChild(floatingRoot)
 			modalDialogActions.className = 'modal-actions'
+			if (options.deleteEndpoint) {
+				modalDelete = document.createElement('button')
+				modalDelete.type = 'button'
+				modalDelete.className = 'action-button action-button-delete'
+				span = document.createElement('span')
+				span.innerHTML = 'Delete'
+				modalDelete.appendChild(span)
+				modalDelete.addEventListener('click', handleModalDelete)
+				modalDialogActions.appendChild(modalDelete)
+			}
 			modalCancel = document.createElement('button')
 			modalCancel.type = 'button'
 			modalCancel.className = 'action-button'

@@ -463,7 +463,7 @@ filterEndYear.addEventListener('input', () => {
 })
 
 addEntity.addEventListener('click', async () => {
-	const modal = modalForm('add', '/api/entity/add', `Add ${dataPackage.treeLabel}`, fields, groups, validators)
+	const modal = modalForm({ mode: 'add', endpoint: '/api/entity/add', header: `Add ${dataPackage.treeLabel}` }, fields, groups, validators)
 	const id = await modal.show()
 	if (id) {
 		console.log(`New id = ${id}`)
