@@ -24,90 +24,124 @@ const biolineageDb = pgDb({
 
 const placeFields = [
 	{
-		field: 'placeType',
-		slug: 'place-type',
 		label: 'Type',
+		name: 'placeType',
+		id: 'place-type',
+		type: 'text',
+		placeholder: 'ex. City',
 		tip: 'The kind of place this is (Farm, Cemetery, Church, Municipality, etc.). The type determines which geographical fields apply.',
-		width: '100%'
+		width: '25ch'
 	},
 	{
-		field: 'name',
-		slug: 'name',
 		label: 'Name',
+		name: 'name',
+		id: 'name',
+		type: 'text',
+		placeholder: 'ex. Mt. Sinai Hospital',
 		tip: 'The official or commonly used name for this place.',
-		width: '100%'
+		width: '25ch'
 	},
 	{
-		field: 'description',
-		slug: 'description',
 		label: 'Description',
+		name: 'description',
+		id: 'description',
+		type: 'textarea',
+		placeholder: 'Details about this place...',
 		tip: 'Contextual or historical details that help identify or describe this place.',
 		width: '100%'
 	},
 
 	// 🌍 Geography fields (meaning-focused, not UI-focused)
 	{
-		field: 'sovereignEntity',
-		slug: 'sovereign-entity',
 		label: 'Country',
+		name: 'sovereignEntity',
+		id: 'sovereign-entity',
+		type: 'combo',
+		placeholder: 'ex. United States',
+		api: '/api/geography/sovereign-entities',
 		tip: 'Current or historical country this place belongs to. This is the top‑level geographical unit.',
-		width: '100%'
+		width: '20ch'
 	},
 	{
-		field: 'subdivision',
-		slug: 'subdivision',
 		label: 'Subdivision',
+		name: 'subdivision',
+		id: 'subdivision',
+		type: 'combo',
+		placeholder: 'ex. Maryland',
+		api: '/api/geography/subdivisions',
 		tip: 'State, province, or region within the country.',
-		width: '100%'
+		width: '30ch'
 	},
 	{
-		field: 'administrativeDivision',
-		slug: 'administrative-division',
 		label: 'County/District',
+		name: 'administrativeDivision',
+		id: 'administrative-division',
+		type: 'combo',
+		placeholder: 'ex. Montgomery',
+		api: '/api/geography/administrative-divisions',
 		tip: 'County, district, or equivalent mid‑level geographical unit.',
-		width: '100%'
+		width: '40ch'
 	},
 	{
-		field: 'municipality',
-		slug: 'municipality',
 		label: 'Municipality',
-		tip: 'City, town, township, or local governing unit.'
+		name: 'municipality',
+		id: 'municipality',
+		type: 'combo',
+		placeholder: 'ex. Rockville',
+		api: '/api/geography/municipalities',
+		tip: 'City, town, township, or local governing unit.',
+		width: '50ch'
 	},
 
 	// 📍 Coordinates & address
 	{
-		field: 'latitude',
-		slug: 'latitude',
 		label: 'Latitude',
-		tip: 'Latitude in decimal degrees. Positive for north, negative for south.'
+		name: 'latitude',
+		id: 'latitude',
+		type: 'text',
+		placeholder: 'ex. 34.1436602',
+		tip: 'Latitude in decimal degrees. Positive for north, negative for south.',
+		width: '12ch'
 	},
 	{
-		field: 'longitude',
-		slug: 'longitude',
 		label: 'Longitude',
-		tip: 'Longitude in decimal degrees. Positive for east, negative for west.'
+		name: 'longitude',
+		id: 'longitude',
+		type: 'text',
+		placeholder: 'ex. -81.5304051',
+		tip: 'Longitude in decimal degrees. Positive for east, negative for west.',
+		width: '12ch'
 	},
 	{
-		field: 'address',
-		slug: 'address',
 		label: 'Address',
-		tip: 'Street or mailing address, if available. Useful for precise geolocation.'
+		name: 'address',
+		id: 'address',
+		type: 'textarea',
+		placeholder: 'ex. 80 State Rd S-36-126, Prosperity, SC 29127',
+		tip: 'Street or mailing address, if available. Useful for precise geolocation.',
+		width: '100%'
 	},
 
 	// 🔗 External reference
 	{
-		field: 'googlePlaceId',
-		slug: 'google-place-id',
 		label: 'Google Place ID',
-		tip: 'Identifier from Google Places. Paste the HTML embed code from the Google Maps share interface to link this place with Google’s location services.'
+		name: 'googlePlaceId',
+		id: 'google-place-id',
+		type: 'text',
+		placeholder: 'ex. <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3311.028172006805!2d-80.3637026!3d33.9146745!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88ff6f2bfcc63ad1%3A0x2bdfdf255eb61352!2sSumter%20Cemetery!5e0!3m2!1sen!2sus!4v1787181892900!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>',
+		tip: 'Identifier from Google Places. Paste the HTML embed code from the Google Maps share interface to link this place with Google’s location services.',
+		width: '100%'
 	},
 
 	// 📝 Misc
 	{
-		field: 'notes',
-		slug: 'notes',
 		label: 'Notes',
-		tip: 'Extra information or annotations relevant to this place.'
+		name: 'notes',
+		id: 'notes',
+		type: 'textarea',
+		placeholder: 'Extra information...',
+		tip: 'Extra information or annotations relevant to this place.',
+		width: '100%'
 	}
 ]
 
@@ -117,6 +151,75 @@ const trees = []
 const entityNameParts = []
 /** @type {BiolineageEntityType[]} */
 const entityTypes = []
+
+function getTimeZoneOffset(timeZone, date = new Date()) {
+	// Create a formatter for the target timezone
+	const tzFormatter = new Intl.DateTimeFormat('en-US', {
+		timeZone,
+		hour: 'numeric',
+		minute: 'numeric',
+		second: 'numeric',
+		hour12: false
+	})
+
+	// Create a formatter for UTC
+	const utcFormatter = new Intl.DateTimeFormat('en-US', {
+		timeZone: 'UTC',
+		hour: 'numeric',
+		minute: 'numeric',
+		second: 'numeric',
+		hour12: false
+	})
+
+	// Format the same date in both timezones
+	const tzParts = tzFormatter.formatToParts(date)
+	const utcParts = utcFormatter.formatToParts(date)
+
+	// Helper to convert parts to total seconds
+	const toSeconds = (parts) => {
+		const getPart = (type) => parseInt(parts.find(p => p.type === type).value, 10)
+		const h = getPart('hour')
+		const m = getPart('minute')
+		const s = getPart('second')
+		return h * 3600 + m * 60 + s
+	}
+
+	const tzSeconds = toSeconds(tzParts)
+	const utcSeconds = toSeconds(utcParts)
+
+	// Calculate difference in minutes
+	let diff = (tzSeconds - utcSeconds) / 60
+
+	// Handle day wrap-around (e.g., if UTC is 23:00 and TZ is 01:00 next day)
+	if (diff > 720) diff -= 1440
+	if (diff < -720) diff += 1440
+
+	// Format as ±HH:MM
+	const sign = diff >= 0 ? '+' : '-'
+	const absDiff = Math.abs(diff)
+	const hours = String(Math.floor(absDiff / 60)).padStart(2, '0')
+	const minutes = String(absDiff % 60).padStart(2, '0')
+
+	return `${sign}${hours}:${minutes}`
+}
+
+const zones = Intl.supportedValuesOf('timeZone')
+const timezones = zones.map(data => {
+	return { tz: data, offset: getTimeZoneOffset(data) }
+})
+timezones.push({ tz: 'Etc/UTC', offset: '+00:00' })
+timezones.push({ tz: 'Etc/GMT', offset: '+00:00' })
+timezones.push({ tz: 'Etc/GMT+0', offset: '+00:00' })
+timezones.push({ tz: 'Etc/GMT-0', offset: '+00:00' })
+timezones.push({ tz: 'Etc/GMT0', offset: '+00:00' })
+timezones.sort((a, b) => {
+	const toMinutes = (offset) => {
+		const sign = offset.startsWith('-') ? -1 : 1
+		const [h, m] = offset.substring(1).split(':').map(Number)
+		return sign * (h * 60 + m)
+	}
+	return toMinutes(a.offset) - toMinutes(b.offset)
+})
 
 function formatWordNumber(number) {
 	const words = [
@@ -150,7 +253,7 @@ async function startup() {
 		entityTypes.push(row)
 	}
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-types.json'), JSON.stringify(entityTypesData, null, '\t'))
-	const entityNamePartsData = await biolineageDb.query('select id, code, slug, label, surface, required, placeholder, format, description, width from entity_name_parts order by sort')
+	const entityNamePartsData = await biolineageDb.query('select id, code, id, label, surface, required, placeholder, format, description, width from entity_name_parts order by sort')
 	for (const row of entityNamePartsData) {
 		entityNameParts.push(row)
 	}
@@ -162,6 +265,7 @@ async function startup() {
 	const placeTypes = await biolineageDb.query('select id, name, description from place_types order by name')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'place-types.json'), JSON.stringify(placeTypes, null, '\t'))
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'places-fields.json'), JSON.stringify(placeFields, null, '\t'))
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'timezones.json'), JSON.stringify(timezones, null, '\t'))
 }
 
 startup()

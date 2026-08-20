@@ -104,7 +104,7 @@
 	{
 		"entityTypeId": "dd4f9cb4-4986-4e37-aad2-0991753738a5",
 		"code": "BirthNotice",
-		"name": "BirthNotice",
+		"name": "Birth Notice",
 		"description": "A fact of a person's birth notice, such as posted in a newspaper or other publishing medium."
 	},
 	{

@@ -1269,6 +1269,47 @@ a.big-button:hover {
 	aspect-ratio: 16 / 9;
 }
 
+.modal-radio-group {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 24px 1fr;
+	gap: 0.5rem;
+}
+
+.modal-radio-group > div {
+	display: flex;
+	align-items: center;
+}
+
+.modal-radio-group-radio {
+	justify-content: center;
+}
+
+.ts-control {
+	padding: 0.25rem 0.5rem;
+}
+
+.ts-dropdown,
+.ts-control,
+.ts-control input {
+	color: var(--color-text);
+	background-color: var(--color-bg-alt) !important;
+	font-size: max(16px, 1em);
+	line-height: 1;
+}
+
+.modal-body .autocomplete-input ul {
+	max-height: 15lh;
+}
+
+.modal-body .auto-clear {
+	height: calc(2.25em + 0.5rem);
+}
+
+.modal-body .loupe input {
+	padding: 12px 45px 12px 35px;
+}
+
 .theme-light {
 	--color-accent: #0ab69f;
 	--color-bg: #dceeea;

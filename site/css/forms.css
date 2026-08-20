@@ -305,6 +305,42 @@ a.button {
 	height: 2.25em;
 }
 
+input[type="radio"] {
+  appearance: none;
+  background-color: var(--color-bg-alt);
+  margin: 0;
+  font: inherit;
+  color: currentcolor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentcolor;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--color-accent);
+  background-color: CanvasText;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="radio"]:focus {
+  outline: max(2px, 0.15em) solid currentcolor;
+  outline-offset: max(2px, 0.15em);
+}
+
 input,
 textarea {
 	cursor: text;
@@ -364,17 +400,23 @@ a.button:hover {
     border-color: var(--color-accent);
 }
 
-input:read-only {
+input:read-only,
+input:disabled,
+select:disabled {
 	background-color: var(--oklab-03);
 }
 
-input:read-only:focus {
+input:read-only:focus,
+input:disabled:focus,
+select:disabled:focus {
 	border-color: var(--color-border);
 	box-shadow: none;
 	outline: none;
 }
 
-input:read-only:hover {
+input:read-only:hover,
+input:disabled:hover,
+select:disabled:hover {
 	border-color: var(--color-border);
 }
 

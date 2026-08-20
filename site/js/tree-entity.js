@@ -41,7 +41,7 @@ import modalForm from '/js/modal-form.js'
 const main = document.querySelector('main')
 const factMarkers = new Map()
 
-let entity, map, entityNameParts
+let entity, map, entityNameParts, factTypes, placesFields, timezones
 /** @type {BiolineageTimelineFact[]} */
 let facts
 
@@ -1027,7 +1027,7 @@ async function getEntity() {
 		}
 		facts.sort((a, b) => massageDate(a) - massageDate(b))
 	}
-	console.log({ entityNameParts, entity, facts })
+	console.log({ entity, facts })
 	drawEntity()
 }
 
@@ -1078,6 +1078,7 @@ async function handleEntityEditor(event) {
 			modal = modalForm({ mode: 'add', endpoint: '/api/entity/edit/sex', header: 'Edit Sex' }, fields)
 			break
 		}
+
 		case 'name': {
 			let existingName = null
 			if (editAction === 'edit') {
@@ -1182,6 +1183,178 @@ async function handleEntityEditor(event) {
 			modal = modalForm({ mode: editAction, endpoint: `/api/entity/${editAction}/name`, header: `${editAction === 'add' ? 'Add' : 'Edit'} Name` }, fields, groups)
 			break
 		}
+
+		case 'fact': {
+			let existingFact = null
+			if (editAction === 'edit') {
+				existingFact = entity.facts.find(lookup => lookup.factId === editId)
+			}
+			console.log({ existingFact })
+			const groups = [
+				{ header: null, slug: 'fact' },
+				{ header: 'Date', slug: 'date' },
+				{ header: 'Place', slug: 'place' }
+			]
+			fields.push({
+				group: 'fact',
+				label: 'Entity ID',
+				name: 'entityId',
+				id: 'entity-id',
+				type: 'text',
+				labelHidden: true,
+				value: dataPackage.entityId
+			})
+			fields.push({
+				group: 'fact',
+				label: 'Fact ID',
+				name: 'factId',
+				id: 'fact-id',
+				type: 'text',
+				labelHidden: true,
+				value: existingFact ? existingFact.factId : null
+			})
+			fields.push({
+				group: 'fact',
+				label: 'Type',
+				name: 'code',
+				id: 'code',
+				type: 'select',
+				disabled: editAction === 'edit',
+				options: factTypes,
+				value: existingFact ? existingFact.code : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Text',
+				name: 'dateText',
+				id: 'date-text',
+				type: 'text',
+				placeholder: 'ex. Sometime in the 1200s',
+				tip: 'Human readable version of the date when an exact date isn\'t known.',
+				width: '100%',
+				value: existingFact ? existingFact.dateText : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Year',
+				name: 'year',
+				id: 'year',
+				type: 'text',
+				placeholder: 'yyyy',
+				pattern: '^-?[0-9]+$',
+				tip: 'Year of fact. Partial dates are allowed; enter the year even if the month or day is unknown.',
+				width: '10ch',
+				value: existingFact ? existingFact.year : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Month',
+				name: 'month',
+				id: 'month',
+				type: 'text',
+				placeholder: 'MM',
+				pattern: '^\\d{1,2}$',
+				tip: 'Month of fact (1–12). Leave blank if the exact month is not known.',
+				width: '8ch',
+				value: existingFact ? existingFact.month : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Day',
+				name: 'day',
+				id: 'day',
+				type: 'text',
+				placeholder: 'dd',
+				pattern: '^\\d{1,2}$',
+				tip: 'Day of fact (1–31). Leave blank if the exact day is not known.',
+				width: '8ch',
+				value: existingFact ? existingFact.day : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Hour',
+				name: 'hour',
+				id: 'hour',
+				type: 'text',
+				placeholder: 'hh',
+				pattern: '^\\d{1,2}$',
+				tip: 'Hour of fact (0–23). Leave blank if the exact hour is not known.',
+				width: '8ch',
+				value: existingFact ? existingFact.hour : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Minute',
+				name: 'minute',
+				id: 'minute',
+				type: 'text',
+				placeholder: 'mm',
+				pattern: '^\\d{1,2}$',
+				tip: 'Minute of fact (0–59). Leave blank if the exact minute is not known.',
+				width: '8ch',
+				value: existingFact ? existingFact.minute : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Second',
+				name: 'second',
+				id: 'second',
+				type: 'text',
+				placeholder: 'ss',
+				pattern: '^\\d{1,2}$',
+				tip: 'Second of fact (0–59). Leave blank if the exact second is not known.',
+				width: '8ch',
+				value: existingFact ? existingFact.second : null
+			})
+			fields.push({
+				group: 'date',
+				label: 'Time Zone',
+				name: 'timezone',
+				id: 'timezone',
+				type: 'select',
+				options: timezones,
+				tip: 'Time Zone of fact. Leave blank if the exact Time Zone is not known.',
+				width: '20ch',
+				value: existingFact ? existingFact.timezone : null
+			})
+			fields.push({
+				group: 'place',
+				label: 'Place',
+				name: 'place',
+				id: 'place',
+				type: 'radio',
+				radioOptions: [
+					{
+						value: 'no',
+						text: 'No Place',
+						fields: []
+					},
+					{
+						value: 'existing',
+						text: 'Existing Place',
+						fields: [
+							{
+								label: 'Name',
+								name: 'placeId',
+								id: 'place-id',
+								type: 'autocomplete',
+								placeholder: 'Enter place name...',
+								api: '/api/places',
+								tip: 'Type a portion of the place name to find existing places to choose from.'
+							}
+						]
+					},
+					{
+						value: 'new',
+						text: 'New Place',
+						fields: placesFields
+					}
+				],
+				value: existingFact ? existingFact.placeId ? 'existing' : 'no' : null
+			})
+			modal = modalForm({ mode: editAction, endpoint: `/api/entity/${editAction}/fact`, header: `${editAction === 'add' ? 'Add' : 'Edit'} Fact` }, fields, groups)
+			break
+		}
 	}
 	const id = await modal.show()
 	console.log({ id })
@@ -1216,6 +1389,18 @@ function handleTimelineFact(event) {
 
 async function setup() {
 	entityNameParts = await fetch('/data/entity-name-parts.json').then(r => r.json())
+	factTypes = await fetch('/data/fact-types.json').then(r => r.json())
+	factTypes = factTypes.filter(data => data.entityTypeId === dataPackage.entityTypeId)
+	factTypes = factTypes.map(data => {
+		return { value: data.code, text: data.name, description: data.description }
+	})
+	placesFields = await fetch('/data/places-fields.json').then(r => r.json())
+	timezones = await fetch('/data/timezones.json').then(r => r.json())
+	timezones = timezones.map(data => {
+		return { value: data.tz, text: `(GMT${data.offset}) ${data.tz}` }
+	})
+	timezones.unshift({ value: '', text: 'Choose' })
+	console.log({ entityNameParts, factTypes, placesFields, timezones })
 }
 
 document.addEventListener('DOMContentLoaded', () => {

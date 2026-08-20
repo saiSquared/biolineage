@@ -123,6 +123,28 @@ async function apiServers(app) {
 		reply.send(await getters.entityGraph(request.params.id))
 	})
 
+	app.get('/api/geography/administrative-divisions', async (request, reply) => {
+		reply.send(await getters.administrativeDivisions(request.query.q))
+	})
+
+	app.get('/api/geography/municipalities', async (request, reply) => {
+		reply.send(await getters.municipalities(request.query.q))
+	})
+
+	app.get('/api/geography/sovereign-entities', async (request, reply) => {
+		reply.send(await getters.sovereignEntities(request.query.q))
+	})
+
+	app.get('/api/geography/subdivisions', async (request, reply) => {
+		reply.send(await getters.subdivisions(request.query.q))
+	})
+
+	app.get('/api/places', async (request, reply) => {
+		const p = await getters.places(request.query.q)
+		console.log(p)
+		reply.send(p)
+	})
+
 	app.post('/api/tree/add', async (request, reply) => {
 		reply.send(await setters.treeAdd(request.user, request.body))
 	})

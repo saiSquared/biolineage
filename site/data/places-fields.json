@@ -1,80 +1,114 @@
 [
 	{
-		"field": "placeType",
-		"slug": "place-type",
 		"label": "Type",
+		"name": "placeType",
+		"id": "place-type",
+		"type": "text",
+		"placeholder": "ex. City",
 		"tip": "The kind of place this is (Farm, Cemetery, Church, Municipality, etc.). The type determines which geographical fields apply.",
-		"width": "100%"
+		"width": "25ch"
 	},
 	{
-		"field": "name",
-		"slug": "name",
 		"label": "Name",
+		"name": "name",
+		"id": "name",
+		"type": "text",
+		"placeholder": "ex. Mt. Sinai Hospital",
 		"tip": "The official or commonly used name for this place.",
-		"width": "100%"
+		"width": "25ch"
 	},
 	{
-		"field": "description",
-		"slug": "description",
 		"label": "Description",
+		"name": "description",
+		"id": "description",
+		"type": "textarea",
+		"placeholder": "Details about this place...",
 		"tip": "Contextual or historical details that help identify or describe this place.",
 		"width": "100%"
 	},
 	{
-		"field": "sovereignEntity",
-		"slug": "sovereign-entity",
 		"label": "Country",
+		"name": "sovereignEntity",
+		"id": "sovereign-entity",
+		"type": "combo",
+		"placeholder": "ex. United States",
+		"api": "/api/geography/sovereign-entities",
 		"tip": "Current or historical country this place belongs to. This is the top‑level geographical unit.",
-		"width": "100%"
+		"width": "20ch"
 	},
 	{
-		"field": "subdivision",
-		"slug": "subdivision",
 		"label": "Subdivision",
+		"name": "subdivision",
+		"id": "subdivision",
+		"type": "combo",
+		"placeholder": "ex. Maryland",
+		"api": "/api/geography/subdivisions",
 		"tip": "State, province, or region within the country.",
-		"width": "100%"
+		"width": "30ch"
 	},
 	{
-		"field": "administrativeDivision",
-		"slug": "administrative-division",
 		"label": "County/District",
+		"name": "administrativeDivision",
+		"id": "administrative-division",
+		"type": "combo",
+		"placeholder": "ex. Montgomery",
+		"api": "/api/geography/administrative-divisions",
 		"tip": "County, district, or equivalent mid‑level geographical unit.",
+		"width": "40ch"
+	},
+	{
+		"label": "Municipality",
+		"name": "municipality",
+		"id": "municipality",
+		"type": "combo",
+		"placeholder": "ex. Rockville",
+		"api": "/api/geography/municipalities",
+		"tip": "City, town, township, or local governing unit.",
+		"width": "50ch"
+	},
+	{
+		"label": "Latitude",
+		"name": "latitude",
+		"id": "latitude",
+		"type": "text",
+		"placeholder": "ex. 34.1436602",
+		"tip": "Latitude in decimal degrees. Positive for north, negative for south.",
+		"width": "12ch"
+	},
+	{
+		"label": "Longitude",
+		"name": "longitude",
+		"id": "longitude",
+		"type": "text",
+		"placeholder": "ex. -81.5304051",
+		"tip": "Longitude in decimal degrees. Positive for east, negative for west.",
+		"width": "12ch"
+	},
+	{
+		"label": "Address",
+		"name": "address",
+		"id": "address",
+		"type": "textarea",
+		"placeholder": "ex. 80 State Rd S-36-126, Prosperity, SC 29127",
+		"tip": "Street or mailing address, if available. Useful for precise geolocation.",
 		"width": "100%"
 	},
 	{
-		"field": "municipality",
-		"slug": "municipality",
-		"label": "Municipality",
-		"tip": "City, town, township, or local governing unit."
-	},
-	{
-		"field": "latitude",
-		"slug": "latitude",
-		"label": "Latitude",
-		"tip": "Latitude in decimal degrees. Positive for north, negative for south."
-	},
-	{
-		"field": "longitude",
-		"slug": "longitude",
-		"label": "Longitude",
-		"tip": "Longitude in decimal degrees. Positive for east, negative for west."
-	},
-	{
-		"field": "address",
-		"slug": "address",
-		"label": "Address",
-		"tip": "Street or mailing address, if available. Useful for precise geolocation."
-	},
-	{
-		"field": "googlePlaceId",
-		"slug": "google-place-id",
 		"label": "Google Place ID",
-		"tip": "Identifier from Google Places. Paste the HTML embed code from the Google Maps share interface to link this place with Google’s location services."
+		"name": "googlePlaceId",
+		"id": "google-place-id",
+		"type": "text",
+		"placeholder": "ex. <iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3311.028172006805!2d-80.3637026!3d33.9146745!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88ff6f2bfcc63ad1%3A0x2bdfdf255eb61352!2sSumter%20Cemetery!5e0!3m2!1sen!2sus!4v1787181892900!5m2!1sen!2sus\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"strict-origin-when-cross-origin\"></iframe>",
+		"tip": "Identifier from Google Places. Paste the HTML embed code from the Google Maps share interface to link this place with Google’s location services.",
+		"width": "100%"
 	},
 	{
-		"field": "notes",
-		"slug": "notes",
 		"label": "Notes",
-		"tip": "Extra information or annotations relevant to this place."
+		"name": "notes",
+		"id": "notes",
+		"type": "textarea",
+		"placeholder": "Extra information...",
+		"tip": "Extra information or annotations relevant to this place.",
+		"width": "100%"
 	}
 ]

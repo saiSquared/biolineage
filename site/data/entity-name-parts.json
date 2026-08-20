@@ -2,7 +2,6 @@
 	{
 		"id": "ee5257dd-06ed-44f3-9342-ffe171544ff9",
 		"code": "Display",
-		"slug": "display",
 		"label": "Display",
 		"surface": true,
 		"required": true,
@@ -14,7 +13,6 @@
 	{
 		"id": "570490fc-c645-4106-98ad-ebf4e49ddb99",
 		"code": "PrefixTitle",
-		"slug": "prefix-title",
 		"label": "Title (Prefix)",
 		"surface": true,
 		"required": false,
@@ -26,7 +24,6 @@
 	{
 		"id": "34f89059-db35-412a-b695-fa6bd57fe122",
 		"code": "Primary",
-		"slug": "primary",
 		"label": "Given",
 		"surface": true,
 		"required": false,
@@ -38,7 +35,6 @@
 	{
 		"id": "36898115-7119-4b4b-af29-e68114af6816",
 		"code": "Moniker",
-		"slug": "moniker",
 		"label": "Nickname",
 		"surface": true,
 		"required": false,
@@ -50,7 +46,6 @@
 	{
 		"id": "d36f2f3e-7c46-4038-ac77-7db7b2613a72",
 		"code": "Secondary",
-		"slug": "secondary",
 		"label": "Additional Given",
 		"surface": false,
 		"required": false,
@@ -62,7 +57,6 @@
 	{
 		"id": "a471e69b-7a27-4ae6-9d99-2ca5086f5f73",
 		"code": "Middle",
-		"slug": "middle",
 		"label": "Middle",
 		"surface": true,
 		"required": false,
@@ -74,7 +68,6 @@
 	{
 		"id": "d13f7fc6-2103-444a-b6e1-26f1efaa5f5d",
 		"code": "Familiar",
-		"slug": "familiar",
 		"label": "Familiar",
 		"surface": false,
 		"required": false,
@@ -86,7 +79,6 @@
 	{
 		"id": "558af674-bb48-4ddb-a31e-438258e67222",
 		"code": "Religious",
-		"slug": "religious",
 		"label": "Religious",
 		"surface": false,
 		"required": false,
@@ -98,7 +90,6 @@
 	{
 		"id": "6062655a-ca60-4739-967b-5dfb1eee3490",
 		"code": "Geographic",
-		"slug": "geographic",
 		"label": "Geographic",
 		"surface": true,
 		"required": false,
@@ -110,7 +101,6 @@
 	{
 		"id": "80846dd4-72f4-4d11-a1c9-827dd2ed08bf",
 		"code": "Family",
-		"slug": "family",
 		"label": "Family",
 		"surface": true,
 		"required": false,
@@ -122,7 +112,6 @@
 	{
 		"id": "7856afd1-6447-449a-8d65-b00701d40582",
 		"code": "Maiden",
-		"slug": "maiden",
 		"label": "Maiden",
 		"surface": false,
 		"required": false,
@@ -134,7 +123,6 @@
 	{
 		"id": "f5acc40e-5645-40b7-b212-0514254f2e4b",
 		"code": "Patronymic",
-		"slug": "patronymic",
 		"label": "Patronymic",
 		"surface": false,
 		"required": false,
@@ -146,7 +134,6 @@
 	{
 		"id": "c850c49c-c6ce-40b6-aa1e-b30ac6168623",
 		"code": "Matronymic",
-		"slug": "matronymic",
 		"label": "Matronymic",
 		"surface": false,
 		"required": false,
@@ -158,7 +145,6 @@
 	{
 		"id": "c73efde0-ef84-44f3-bc98-26cb40fd48f4",
 		"code": "Occupational",
-		"slug": "occupational",
 		"label": "Occupational",
 		"surface": false,
 		"required": false,
@@ -170,7 +156,6 @@
 	{
 		"id": "6f1ff9cc-e42e-4a7b-bff7-ad825db3d37e",
 		"code": "Characteristic",
-		"slug": "characteristic",
 		"label": "Characteristic",
 		"surface": false,
 		"required": false,
@@ -182,7 +167,6 @@
 	{
 		"id": "1ef5036d-1ffb-46a9-b41f-e962bdff79d0",
 		"code": "Postnom",
-		"slug": "postnom",
 		"label": "Postnom",
 		"surface": false,
 		"required": false,
@@ -194,7 +178,6 @@
 	{
 		"id": "2f1f35e1-1a3d-4b7c-8420-edeba009c3b3",
 		"code": "Particle",
-		"slug": "particle",
 		"label": "Particle",
 		"surface": true,
 		"required": false,
@@ -206,7 +189,6 @@
 	{
 		"id": "47c8c4a0-c897-458d-8745-08c29e4e915f",
 		"code": "RootName",
-		"slug": "root-name",
 		"label": "Root",
 		"surface": false,
 		"required": false,
@@ -218,7 +200,6 @@
 	{
 		"id": "91dff396-0098-44eb-b35e-d6b7718222c7",
 		"code": "SuffixTitle",
-		"slug": "suffix-title",
 		"label": "Title (Suffix)",
 		"surface": true,
 		"required": false,

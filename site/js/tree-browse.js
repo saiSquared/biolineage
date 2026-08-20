@@ -178,10 +178,10 @@ function drawCell(item, col) {
 				img.src = '/img/horse.svg'
 			} else {
 				switch (item.sex) {
-					case 'M':
+					case 'Male':
 						img.src = '/img/man.svg'
 						break
-					case 'F':
+					case 'Female':
 						img.src = '/img/woman.svg'
 						break
 					default:

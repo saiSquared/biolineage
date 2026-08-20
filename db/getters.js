@@ -632,6 +632,10 @@ class Getters {
 		return await dbNorm.query(removeIndent(sql))
 	}
 
+	async administrativeDivisions(q) {
+		return await biolineageDb.query("select ad.id, concat(ad.name, ' (', s.name, ', ', se.name, ')') name from administrative_divisions ad join subdivisions s on s.id = ad.subdivision_id join sovereign_entities se on se.id = ad.sovereign_entity_id where ad.name ilike $1 order by name", [`%${q}%`])
+	}
+
 	async entity(id) {
 		return await biolineageDb.get('select * from entities where id = $1;', [id])
 	}
@@ -667,9 +671,9 @@ class Getters {
 		// facts
 		sql =
 			`select
-				f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second" ,
-				p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude, p.latitude place_latitude,
-				p.sovereign_entity, se."name" sovereign_entity_name, p.subdivision, s."name" subdivision_name,
+				f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second",
+				f.timezone, f.date_text, p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude,
+				p.latitude place_latitude, p.sovereign_entity, se."name" sovereign_entity_name, p.subdivision, s."name" subdivision_name,
 				p.administrative_division, ad."name" administrative_division_name, ad.longitude administrative_division_longitude,
 				ad.latitude administrative_division_latitude, p.municipality, m."name" municipality_name,
 				m.longitude municipality_longitude, m.latitude municipality_latitude
@@ -889,6 +893,25 @@ class Getters {
 		// assembly
 		const graph = { ...entity, names: entityNames, facts, parents, partners, others, children: spouses, siblings }
 		return graph
+	}
+
+	async places(q) {
+		return await biolineageDb.query("select p.id, concat(name, ' [', p.place_type, ']') name from places p where p.name ilike $1 order by p.name;", [`%${q}%`])
+	}
+
+	async municipalities(q) {
+		const m = await biolineageDb.query("select m.id, concat(m.name, ' (', ad.name, ', ', s.name, ', ', se.name, ')') name from municipalities m join administrative_divisions ad on ad.id = m.administrative_division_id join subdivisions s on s.id = m.subdivision_id join sovereign_entities se on se.id = m.sovereign_entity_id where m.name ilike $1 order by name", [`%${q}%`])
+		console.log(q, m)
+		return m
+		// return await biolineageDb.query("select m.id, concat(m.name, ' (', ad.name, ', ', s.name, ', ', se.name, ')') name from municipalities m join administrative_divisions ad on ad.id = m.administrative_division_id join subdivisions s on s.id = m.subdivision_id join sovereign_entities se on se.id = m.sovereign_entity_id where m.name ilike $1 order by name", [`%${q}%`])
+	}
+
+	async sovereignEntities(q) {
+		return await biolineageDb.query('select se.id, se.name from sovereign_entities se where se.name ilike $1 order by name', [`%${q}%`])
+	}
+
+	async subdivisions(q) {
+		return await biolineageDb.query("select s.id, concat(s.name, ' (', se.name, ')') name from subdivisions s join sovereign_entities se on se.id = s.sovereign_entity_id where s.name ilike $1 order by name", [`%${q}%`])
 	}
 
 	async superTrees(id) {

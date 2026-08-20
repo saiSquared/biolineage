@@ -1,6 +1,6 @@
 'use strict'
 
-// import Autocomplete from '/js/autocomplete/autocomplete.esm.min.js'
+import Autocomplete from '/js/autocomplete/autocomplete.esm.min.js'
 
 const floatingUI = window.FloatingUIDOM
 
@@ -14,6 +14,13 @@ const floatingUI = window.FloatingUIDOM
  * @typedef {Object} ModalFormSelectOption
  * @property {String} value - value for the option
  * @property {String} text - text for the option
+ */
+
+/**
+ * @typedef {Object} ModalFormRadioOption
+ * @property {String} value - value for the radio option
+ * @property {String} text - text for the radiooption
+ * @property {ModalFormField[]} fields - array of fields to use for this radio option
  */
 
 /**
@@ -36,7 +43,7 @@ const floatingUI = window.FloatingUIDOM
  * @property {Boolean} [labelHidden] - whether the field is hidden
  * @property {String} name - database name of the field
  * @property {String} id - for id for the field
- * @property {text|textarea|select|combo|autocomplete|toggle} type - type of field
+ * @property {text|textarea|select|radio|combo|autocomplete|toggle} type - type of field
  * @property {String} [fieldClass] - CSS class(es) fr the field
  * @property {String} [placeholder] - placeholder text for text fields
  * @property {Boolean} [hidden] - whether the field is hidden
@@ -47,7 +54,9 @@ const floatingUI = window.FloatingUIDOM
  * @property {String} [pattern] - pattern attribute for text inputs
  * @property {String} [width] - width for the field
  * @property {String} [tip] - FloatingUI tooltip
+ * @property {String} [api] - API endpoint for autocomplete and combo
  * @property {ModalFormSelectOption[]} [options] - options for select fields
+ * @property {ModalFormRadioOption[]} [radioOptions] - options for radio fields
  * @property {ModalFormHandler[]} [handlers] - event handlers for the field
  * @property {ModalFormDataAttribute[]} [data] - odataset attributes
  * @property {any} [value] - value for the field
@@ -69,18 +78,33 @@ const floatingUI = window.FloatingUIDOM
  * @param {Object} [validators] - functions to validate fields
  */
 export default function modalForm(options, fields, groups, validators) {
+	const mode = options.mode
+	const allFields = []
+	const autocompletes = []
+	const tomSelects = []
+	const tomSelectElements = []
 	const dataPackage = {}
 	const sourcePackage = {}
+	console.log(fields)
 	for (const field of fields) {
+		allFields.push(field)
 		if (!field.ignore) dataPackage[field.name] = field.value || null
 		if (!field.ignore) sourcePackage[field.name] = field.value || null
+		if (field.type === 'radio') {
+			for (const opt of field.radioOptions) {
+				for (const radioField of opt.fields) {
+					allFields.push(radioField)
+					if (!radioField.ignore) dataPackage[radioField.name] = radioField.value || null
+					if (!radioField.ignore) sourcePackage[radioField.name] = radioField.value || null
+				}
+			}
+		}
 	}
 
 	let modalOverlay, modalDialog, modalDelete, modalClose, modalCancel, modalSave, modalBody
 	let modalResolve
 	let isDirty = false
 	let autofocus = null
-	const mode = options.mode
 
 	function checkDirty() {
 		const dirtyReasons = []
@@ -89,7 +113,7 @@ export default function modalForm(options, fields, groups, validators) {
 		} else {
 			isDirty = false
 
-			for (const field of fields) {
+			for (const field of allFields) {
 				if (!field.ignore) {
 					if (getValue(field.id) !== sourcePackage[field.name]) {
 						dirtyReasons.push({ field: field.id, old: sourcePackage[field.name], new: getValue(field.id) })
@@ -113,21 +137,23 @@ export default function modalForm(options, fields, groups, validators) {
 	 * @param {String} [labelClass] - CSS class for the label
 	 * @returns {HTMLElement}
 	 */
-	function createLabel(labelInput, labelClass) {
+	function createLabel(host, labelInput) {
 		const label = document.createElement('label')
-		if (labelClass) label.className = labelClass
+		if (labelInput.labelClass) label.className = labelInput.labelClass
 		if (labelInput.width) label.style.width = labelInput.width
 		const span = document.createElement('span')
 		span.innerHTML = labelInput.label
 		label.appendChild(span)
 		if (labelInput.labelHidden) label.style.display = 'none'
 
-		let ele
+		let ele, child
+		let noLabel = false
 
 		switch (labelInput.type) {
 			case 'text': {
 				ele = document.createElement('input')
 				ele.id = labelInput.id
+				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
 				ele.type = labelInput.type
 				ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.hidden) ele.setAttribute('hidden', '')
@@ -143,11 +169,14 @@ export default function modalForm(options, fields, groups, validators) {
 					event.target.setCustomValidity('')
 					checkDirty()
 				})
+				child = ele
 				break
 			}
+
 			case 'textarea': {
 				ele = document.createElement('textarea')
 				ele.id = labelInput.id
+				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
 				ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
@@ -160,11 +189,15 @@ export default function modalForm(options, fields, groups, validators) {
 					event.target.setCustomValidity('')
 					checkDirty()
 				})
+				child = ele
 				break
 			}
+
 			case 'select': {
+				console.log(labelInput)
 				ele = document.createElement('select')
 				ele.id = labelInput.id
+				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
 				if (labelInput.autofocus) {
 					ele.setAttribute('autofocus', '')
@@ -181,8 +214,10 @@ export default function modalForm(options, fields, groups, validators) {
 					event.target.setCustomValidity('')
 					checkDirty()
 				})
+				child = ele
 				break
 			}
+
 			case 'toggle': {
 				label.classList.add('toggle')
 				label.innerHTML = ''
@@ -195,53 +230,139 @@ export default function modalForm(options, fields, groups, validators) {
 					autofocus = ele
 				}
 				if (labelInput.value) ele.setAttribute('checked', '')
+				child = ele
+				break
+			}
+
+			case 'radio': {
+				noLabel = true
+				const radioGroup = document.createElement('section')
+				radioGroup.className = 'modal-radio-group'
+				let div
+				for (const opt of labelInput.radioOptions) {
+					div = document.createElement('div')
+					div.className = 'modal-radio-group-radio'
+					const radio = document.createElement('input')
+					radio.id = `${labelInput.id}-${opt.value}`
+					radio.name = labelInput.id
+					radio.type = 'radio'
+					radio.value = opt.value
+					if (labelInput.value && labelInput.value === opt.value) radio.setAttribute('checked', '')
+					div.appendChild(radio)
+					radioGroup.appendChild(div)
+					div = document.createElement('div')
+					const radioLabel = document.createElement('label')
+					radioLabel.setAttribute('for', `${labelInput.id}-${opt.value}`)
+					radioLabel.innerHTML = opt.text
+					div.appendChild(radioLabel)
+					radioGroup.appendChild(div)
+					if (opt.fields.length > 0) {
+						div = document.createElement('div')
+						radioGroup.appendChild(div)
+						div = document.createElement('div')
+						div.className = 'modal-group'
+						for (const field of opt.fields) {
+							createLabel(div, field)
+						}
+						radioGroup.appendChild(div)
+					}
+				}
+				host.appendChild(radioGroup)
+				break
+			}
+
+			case 'autocomplete': {
+				const div = document.createElement('div')
+				div.className = 'autocomplete-input auto-search-wrapper max-height loupe'
+				ele = document.createElement('input')
+				ele.id = labelInput.id
+				ele.type = 'text'
+				ele.dataset.field = labelInput.name
+				ele.dataset.value = labelInput.value || ''
+				ele.setAttribute('autocomplete', 'off')
+				ele.setAttribute('placeholder', labelInput.placeholder)
+				if (labelInput.required) ele.setAttribute('required', '')
+				if (labelInput.autofocus) {
+					ele.setAttribute('autofocus', '')
+					autofocus = ele
+				}
+				if (labelInput.value) ele.setAttribute('value', labelInput.value)
+				ele.addEventListener('input', event => {
+					event.target.setCustomValidity('')
+					checkDirty()
+				})
+				div.appendChild(ele)
+				child = div
+				autocompletes.push({ id: labelInput.id, api: labelInput.api })
+				break
+			}
+
+			case 'combo': {
+				ele = document.createElement('select')
+				ele.id = labelInput.id
+				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
+				if (labelInput.required) ele.setAttribute('required', '')
+				if (labelInput.autofocus) {
+					ele.setAttribute('autofocus', '')
+					autofocus = ele
+				}
+				if (labelInput.value) ele.setAttribute('value', labelInput.value)
+				ele.addEventListener('input', event => {
+					event.target.setCustomValidity('')
+					checkDirty()
+				})
+				child = ele
+				tomSelects.push({ id: labelInput.id, api: labelInput.api })
 				break
 			}
 		}
 
-		if (labelInput.tip) {
-			ele.addEventListener('focus', () => {
-				showFieldTooltip(ele, labelInput.tip)
-			})
-			ele.addEventListener('blur', () => {
-				hideFieldTooltip(ele)
-			})
-		}
-
-		if (labelInput.labelData) {
-			for (const item of labelInput.labelData) {
-				label.dataset[item.attribute] = item.value
+		if (!noLabel) {
+			if (labelInput.tip) {
+				ele.addEventListener('focus', () => {
+					showFieldTooltip(ele, labelInput.tip)
+				})
+				ele.addEventListener('blur', () => {
+					hideFieldTooltip(ele)
+				})
 			}
-		}
 
-		if (labelInput.fieldData) {
-			for (const item of labelInput.fieldData) {
-				ele.dataset[item.attribute] = item.value
+			if (labelInput.labelData) {
+				for (const item of labelInput.labelData) {
+					label.dataset[item.attribute] = item.value
+				}
 			}
-		}
 
-		if (labelInput.handlers) {
-			for (const handler of labelInput.handlers) {
-				ele.addEventListener(handler.event, () => { handler.handler() })
+			if (labelInput.fieldData) {
+				for (const item of labelInput.fieldData) {
+					ele.dataset[item.attribute] = item.value
+				}
 			}
-		}
 
-		label.appendChild(ele)
-
-		switch (labelInput.type) {
-			case 'toggle': {
-				const toggleSwitch = document.createElement('div')
-				toggleSwitch.className = 'toggle-switch'
-				label.appendChild(toggleSwitch)
-				const toggleLabel = document.createElement('span')
-				toggleLabel.className = 'toggle-label'
-				toggleLabel.innerHTML = labelInput.label
-				label.appendChild(toggleLabel)
-				break
+			if (labelInput.handlers) {
+				for (const handler of labelInput.handlers) {
+					ele.addEventListener(handler.event, () => { handler.handler() })
+				}
 			}
-		}
 
-		return label
+			label.appendChild(child)
+
+			// before append
+			switch (labelInput.type) {
+				case 'toggle': {
+					const toggleSwitch = document.createElement('div')
+					toggleSwitch.className = 'toggle-switch'
+					label.appendChild(toggleSwitch)
+					const toggleLabel = document.createElement('span')
+					toggleLabel.className = 'toggle-label'
+					toggleLabel.innerHTML = labelInput.label
+					label.appendChild(toggleLabel)
+					break
+				}
+			}
+
+			host.appendChild(label)
+		}
 	}
 
 	function createModalOverlay() {
@@ -259,7 +380,51 @@ export default function modalForm(options, fields, groups, validators) {
 	}
 
 	function getValue(field) {
-		const value = document.getElementById(field).type === 'checkbox' ? document.getElementById(field).checked : document.getElementById(field).value
+		// console.log(field)
+		const fieldDetails = allFields.find(lookup => lookup.id === field)
+		// console.log(fieldDetails)
+		let value
+		switch (fieldDetails.type) {
+			case 'autocomplete': {
+				const ele = document.getElementById(field)
+				if (ele.dataset.value === '') {
+					value = null
+				} else {
+					value = ele.dataset.value
+				}
+				break
+			}
+			case 'combo': {
+				const ts = tomSelectElements.find(lookup => lookup.id === field)
+				value = ts.ts.getValue()
+				break
+			}
+			case 'radio': {
+				const ele = document.querySelector(`input[name="${field}"]:checked`)
+				value = ele.value
+				break
+			}
+			default: {
+				const ele = document.getElementById(field)
+				switch (ele.nodeName) {
+					case 'SELECT':
+					case 'TEXTAREA':
+						value = ele.value
+						break
+					case 'INPUT':
+						switch (ele.type) {
+							case 'checkbox':
+								value = ele.checked
+								break
+							case 'radio':
+								value = ele.checked
+								break
+							default:
+								value = ele.value
+						}
+				}
+			}
+		}
 		return value === '' ? null : value
 	}
 
@@ -311,10 +476,10 @@ export default function modalForm(options, fields, groups, validators) {
 		}
 
 		const valid = modalBody.reportValidity()
-		console.log({ valid })
+		// console.log({ valid })
 		if (!valid) return
 
-		for (const field of fields) {
+		for (const field of allFields) {
 			if (!field.ignore) {
 				dataPackage[field.name] = getValue(field.id)
 			}
@@ -388,13 +553,13 @@ export default function modalForm(options, fields, groups, validators) {
 					groupContainer.className = 'modal-group'
 					const groupFields = fields.filter(data => data.group === group.slug)
 					for (const field of groupFields) {
-						groupContainer.appendChild(createLabel(field))
+						createLabel(groupContainer, field)
 					}
 					modalBody.appendChild(groupContainer)
 				}
 			} else {
 				for (const field of fields) {
-					modalBody.appendChild(createLabel(field))
+					createLabel(modalBody, field)
 				}
 			}
 
@@ -434,6 +599,49 @@ export default function modalForm(options, fields, groups, validators) {
 			modalDialogActions.appendChild(modalSave)
 			modalDialog.appendChild(modalDialogActions)
 			modalOverlay.appendChild(modalDialog)
+
+			for (const autocomplete of autocompletes) {
+				new Autocomplete(autocomplete.id, {
+					clearButtonOnInitial: true,
+					cache: true,
+					onSearch: async ({ currentValue }) => {
+						return await fetch(`${autocomplete.api}?q=${encodeURI(currentValue)}`).then(r => r.json())
+					},
+					onResults: ({ matches }) => {
+						return matches.map(data => `<li>${data.name}</li>`).join('')
+					},
+					onSubmit: ({ element, object }) => {
+						// console.log({ element, object })
+						element.dataset.value = object.id
+					},
+					onReset: (element) => {
+						element.dataset.value = ''
+					}
+				})
+			}
+
+			for (const tomSelect of tomSelects) {
+				const ts = new TomSelect(`#${tomSelect.id}`, {
+					valueField: 'id',
+					labelField: 'name',
+					searchField: 'name',
+					allowHtml: true,
+					persist: false,
+					create: true,
+					createOnBlur: true,
+					maxItems: 1,
+					placeholder: 'City, town...',
+					load: function (query, callback) {
+						fetch(`${tomSelect.api}?q=${encodeURI(query)}`)
+							.then(r => r.json())
+							.then(json => {
+								callback(json)
+							})
+							.catch(() => callback())
+					}
+				})
+				tomSelectElements.push({ id: tomSelect.id, ts })
+			}
 
 			checkDirty()
 

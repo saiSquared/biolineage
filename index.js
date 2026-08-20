@@ -49,6 +49,7 @@ app.addHook('onRequest', async (request, reply) => {
 	if (url.startsWith('/login')) return
 	if (url.startsWith('/logout')) return
 	if (url.startsWith('/api/person')) return
+	if (url.startsWith('/api/geography')) return
 
 	const sid = request.cookies.session
 	if (!sid) return reply.redirect('/login')

@@ -170,16 +170,6 @@ class AppGenerators {
 		const tree = trees.find(lookup => lookup.slug === slug)
 		if (!tree) return null
 		if (!tree.ownerId === user.userId && !user.role === 'super') return null
-		let icon, text
-		switch (tree.key) {
-			case 'human':
-				icon = '/img/person.svg'
-				text = 'Add Person'
-				break
-			case 'equine':
-				icon = '/img/horse.svg'
-				text = 'Add Horse'
-		}
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
@@ -210,7 +200,7 @@ class AppGenerators {
 				{ name: 'filter-text', label: 'Filter', placeholder: 'Filter by name', type: 'text', autocomplete: true, nospellcheck: true },
 				{ name: 'filter-start-year', label: 'Start Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
 				{ name: 'filter-end-year', label: 'End Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
-				{ name: 'add-entity', label: '&nbsp;', fixed: true, type: 'button', icon, text }
+				{ name: 'add-entity', label: '&nbsp;', fixed: true, type: 'button', icon: '/img/plus.svg', text: `Add ${tree.label}` }
 			]
 		})
 		const dataPackage = {
@@ -237,16 +227,6 @@ class AppGenerators {
 		const tree = trees.find(lookup => lookup.slug === slug)
 		if (!tree) return null
 		if (!tree.ownerId === user.userId && !user.role === 'super') return null
-		let icon, text
-		switch (tree.entityTypeId) {
-			case 'd4780b1f-3764-491d-9942-dc814c3750b4':
-				icon = '/img/person.svg'
-				text = 'Add Person'
-				break
-			case '409a8c4f-1167-4039-b298-f46ce7bcf7fd':
-				icon = '/img/horse.svg'
-				text = 'Add Horse'
-		}
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
@@ -278,7 +258,7 @@ class AppGenerators {
 				{ name: 'filter-text', label: 'Filter', placeholder: 'Filter by name', type: 'text', autocomplete: true, nospellcheck: true },
 				{ name: 'filter-start-year', label: 'Start Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
 				{ name: 'filter-end-year', label: 'End Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
-				{ name: 'add-entity', label: '&nbsp;', fixed: true, type: 'button', icon, text }
+				{ name: 'add-entity', label: '&nbsp;', fixed: true, type: 'button', icon: '/img/plus.svg', text: `Add ${tree.label}` }
 			]
 		})
 		const dataPackage = {
@@ -325,6 +305,7 @@ class AppGenerators {
 				{ file: 'theme-menu.html' }
 			],
 			stylesheets: [
+				'/js/autocomplete/autocomplete.min.css',
 				'https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css',
 				'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
 				'https://unpkg.com/family-chart@0.9.0/dist/styles/family-chart.css'
@@ -342,6 +323,7 @@ class AppGenerators {
 		const dataPackage = {
 			treeId: tree.id,
 			treeSlug: slug,
+			entityTypeId: tree.entityTypeId,
 			treeType: tree.key,
 			entityId: entity.id,
 			userId: user.userId,

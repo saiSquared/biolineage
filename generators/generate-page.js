@@ -350,50 +350,6 @@ function handleReplacements(match, object, debug) {
 						html += '</ul>\n'
 						break
 
-					case 'form': {
-						html += `<form${slotItem.class ? ` class="${slotItem.class}"` : ''} method="${slotItem.method}" action="${slotItem.action}">\n`
-						for (const field of slotItem.fields) {
-							if (field.label) {
-								html += `\t<label for="${field.name}">${field.label}</label>\n`
-							}
-							switch (field.type) {
-								case 'text':
-								case 'email':
-								case 'password': {
-									let fieldHtml = `\t<input type="${field.type}" name="${field.name}" id="${field.name}"`
-									if (field.class) fieldHtml += ` class="${field.class}"`
-									if (field.placeholder) fieldHtml += ` placeholder="${field.placeholder}"`
-									if (field.minlength) fieldHtml += ` minlength="${field.minlength}"`
-									if (field.maxlength) fieldHtml += ` maxlength="${field.maxlength}"`
-									if (field.pattern) fieldHtml += ` pattern="${field.pattern}"`
-									if (field.title) fieldHtml += ` title="${field.title}"`
-									if (field.value) fieldHtml += ` value="${field.value}"`
-									if (field.required) fieldHtml += ' required'
-									if (field.readonly) fieldHtml += ' readonly'
-									if (field.autocomplete) fieldHtml += ' autocomplete="on"'
-									if (field.nospellcheck) fieldHtml += ' spellcheck="false"'
-									html += `${fieldHtml}>\n`
-									break
-								}
-								case 'select': {
-									html += `\t<select name="${field.name}" id="${field.name}">\n`
-									for (const value of field.values) {
-										html += `\t\t<option value="${value.value}"${value.value === field.value ? ' selected' : ''}>${value.text}</option>\n`
-									}
-									html += '\t</select>\n'
-								}
-							}
-						}
-						for (const button of slotItem.buttons) {
-							let buttonHtml = `\t<button type="${button.type}"`
-							if (button.class) buttonHtml += ` class="${button.class}"`
-							buttonHtml += `>${button.text}</button>\n`
-							html += buttonHtml
-						}
-						html += '</form>\n'
-						break
-					}
-
 					case 'filter-bar': {
 						html += '<div class="filter-stats"></div>\n'
 						html += `<form class="filter-bar" method="${slotItem.method}" action="${slotItem.action}">\n`
@@ -440,6 +396,50 @@ function handleReplacements(match, object, debug) {
 						html += '</form>\n'
 						html += '<div class="filter-results"></div>\n'
 						html += '<div class="filter-nav"></div>\n'
+						break
+					}
+
+					case 'form': {
+						html += `<form${slotItem.class ? ` class="${slotItem.class}"` : ''} method="${slotItem.method}" action="${slotItem.action}">\n`
+						for (const field of slotItem.fields) {
+							if (field.label) {
+								html += `\t<label for="${field.name}">${field.label}</label>\n`
+							}
+							switch (field.type) {
+								case 'text':
+								case 'email':
+								case 'password': {
+									let fieldHtml = `\t<input type="${field.type}" name="${field.name}" id="${field.name}"`
+									if (field.class) fieldHtml += ` class="${field.class}"`
+									if (field.placeholder) fieldHtml += ` placeholder="${field.placeholder}"`
+									if (field.minlength) fieldHtml += ` minlength="${field.minlength}"`
+									if (field.maxlength) fieldHtml += ` maxlength="${field.maxlength}"`
+									if (field.pattern) fieldHtml += ` pattern="${field.pattern}"`
+									if (field.title) fieldHtml += ` title="${field.title}"`
+									if (field.value) fieldHtml += ` value="${field.value}"`
+									if (field.required) fieldHtml += ' required'
+									if (field.readonly) fieldHtml += ' readonly'
+									if (field.autocomplete) fieldHtml += ' autocomplete="on"'
+									if (field.nospellcheck) fieldHtml += ' spellcheck="false"'
+									html += `${fieldHtml}>\n`
+									break
+								}
+								case 'select': {
+									html += `\t<select name="${field.name}" id="${field.name}">\n`
+									for (const value of field.values) {
+										html += `\t\t<option value="${value.value}"${value.value === field.value ? ' selected' : ''}>${value.text}</option>\n`
+									}
+									html += '\t</select>\n'
+								}
+							}
+						}
+						for (const button of slotItem.buttons) {
+							let buttonHtml = `\t<button type="${button.type}"`
+							if (button.class) buttonHtml += ` class="${button.class}"`
+							buttonHtml += `>${button.text}</button>\n`
+							html += buttonHtml
+						}
+						html += '</form>\n'
 						break
 					}
 

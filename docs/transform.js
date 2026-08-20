@@ -894,7 +894,7 @@ async function initPg() {
 	await biolineageDb.insert('fact_types', {
 		entityTypeId: human,
 		code: 'BirthNotice',
-		name: 'BirthNotice',
+		name: 'Birth Notice',
 		description: "A fact of a person's birth notice, such as posted in a newspaper or other publishing medium.",
 		createdBy: clubside,
 		modifiedBy: clubside
@@ -942,7 +942,7 @@ async function initPg() {
 	await biolineageDb.insert('fact_types', {
 		entityTypeId: human,
 		code: 'ChildOrder',
-		name: 'ChildOrder',
+		name: 'Child Order',
 		description: 'A fact about the child order between a parent and a child.',
 		createdBy: clubside,
 		modifiedBy: clubside
@@ -966,7 +966,7 @@ async function initPg() {
 	await biolineageDb.insert('fact_types', {
 		entityTypeId: human,
 		code: 'CivilUnion',
-		name: 'CivilUnion',
+		name: 'Civil Union',
 		description: 'The fact of a civil union.',
 		createdBy: clubside,
 		modifiedBy: clubside
@@ -1302,7 +1302,7 @@ async function initPg() {
 	await biolineageDb.insert('fact_types', {
 		entityTypeId: human,
 		code: 'MilitaryService',
-		name: 'MilitaryService',
+		name: 'Military Service',
 		description: "A fact of a person's militray service.",
 		createdBy: clubside,
 		modifiedBy: clubside
