@@ -24,6 +24,62 @@ const normSQLite = new sqliteDb('../db/norm.db')
 
 const placeFixes = [
 	{
+		ogName: null,
+		ogCountry: null,
+		ogRegion: 'NY',
+		ogCity: null,
+		uuid: '8ec24278-20e7-4c72-8cc0-1bc7fc42ad9f'
+	},
+	{
+		ogName: null,
+		ogCountry: 'us',
+		ogRegion: 'AL',
+		ogCity: 'Marengo',
+		uuid: '02be28fd-6498-478a-b3e2-ebf37029fa75'
+	},
+	{
+		ogName: null,
+		ogCountry: 'us',
+		ogRegion: 'FL',
+		ogCity: 'Escambria',
+		uuid: '3870f7f0-62f0-4e6e-abd7-9c33c22bd6b1'
+	},
+	{
+		ogName: null,
+		ogCountry: 'us',
+		ogRegion: 'NC',
+		ogCity: 'Tyrrell',
+		uuid: '13a55902-115f-4610-b886-26f361724fb8'
+	},
+	{
+		ogName: null,
+		ogCountry: 'us',
+		ogRegion: 'NY',
+		ogCity: 'Tappan',
+		uuid: 'e09fb1d1-28df-4600-9f74-d187f97ea966'
+	},
+	{
+		ogName: null,
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: 'Lynches River',
+		uuid: '45e357cf-caaa-4ce8-9a90-f12e2531b450'
+	},
+	{
+		ogName: null,
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: 'Lynches River or Johnsonville',
+		uuid: '45e357cf-caaa-4ce8-9a90-f12e2531b450'
+	},
+	{
+		ogName: 'Anderson County',
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: 'Pendleton',
+		uuid: 'f608e063-619f-4b71-9938-b6e18606f248'
+	},
+	{
 		ogName: 'Marion County',
 		ogCountry: null,
 		ogRegion: null,
@@ -784,6 +840,7 @@ async function initPg() {
 		code: 'Adoption',
 		name: 'Adoption',
 		description: "A fact of a person's adoption. In the context of a parent-child relationship, it describes a fact of the adoption of a child by a parent.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -792,6 +849,7 @@ async function initPg() {
 		code: 'AdoptiveParent',
 		name: 'Adoptive Parent',
 		description: 'A fact about an adoptive relationship between a parent an a child.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -800,6 +858,7 @@ async function initPg() {
 		code: 'AdultChristening',
 		name: 'Adult Christening',
 		description: "A fact of a person's christening as an adult.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -808,6 +867,7 @@ async function initPg() {
 		code: 'Amnesty',
 		name: 'Amnesty',
 		description: "A fact of a person's amnesty.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -816,6 +876,7 @@ async function initPg() {
 		code: 'AncestralHall',
 		name: 'Ancestral Hall',
 		description: "A fact of a person's ancestral hall. An ancestral hall refers to a location where the early ancestors of the person originated. It may also refer to the name of an early ancestor. Family clans are often distinguished one from another by the ancestral hall. Clans that cannot prove direct relationships to other clans with the same surname can assume a direct relationship if they share the same ancestral hall.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -824,6 +885,7 @@ async function initPg() {
 		code: 'AncestralPoem',
 		name: 'Ancestral Poem',
 		description: "A fact of a person's ancestral poem. An ancestral poem (or generation poem) is composed of the \"generation characters\" that are to be used when choosing names for the members of different generations of an extended family. Ancestral poems are prominent in Asian countries, particularly China.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -832,6 +894,7 @@ async function initPg() {
 		code: 'Annulment',
 		name: 'Annulment',
 		description: 'The fact of an annulment of a marriage.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -840,6 +903,7 @@ async function initPg() {
 		code: 'Apprenticeship',
 		name: 'Apprenticeship',
 		description: "A fact of a person's apprenticeship.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -848,6 +912,7 @@ async function initPg() {
 		code: 'Arrest',
 		name: 'Arrest',
 		description: "A fact of a person's arrest.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -856,6 +921,7 @@ async function initPg() {
 		code: 'Baptism',
 		name: 'Baptism',
 		description: "A fact of a person's baptism.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -864,6 +930,7 @@ async function initPg() {
 		code: 'BarMitzvah',
 		name: 'Bar Mitzvah',
 		description: "A fact of a person's bar mitzvah.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -872,6 +939,7 @@ async function initPg() {
 		code: 'BatMitzvah',
 		name: 'Bat Mitzvah',
 		description: "A fact of a person's bat mitzvah.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -880,6 +948,7 @@ async function initPg() {
 		code: 'BiologicalParent',
 		name: 'Biological Parent',
 		description: 'A fact the biological relationship between a parent and a child.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -888,6 +957,7 @@ async function initPg() {
 		code: 'Birth',
 		name: 'Birth',
 		description: "A fact of a person's birth.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -896,6 +966,7 @@ async function initPg() {
 		code: 'BirthNotice',
 		name: 'Birth Notice',
 		description: "A fact of a person's birth notice, such as posted in a newspaper or other publishing medium.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -904,6 +975,7 @@ async function initPg() {
 		code: 'Blessing',
 		name: 'Blessing',
 		description: 'A fact of an official blessing received by a person, such as at the hands of a clergy member or at another religious rite.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -912,6 +984,7 @@ async function initPg() {
 		code: 'Branch',
 		name: 'Branch',
 		description: "A fact of a person's branch within an extended clan.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -920,6 +993,7 @@ async function initPg() {
 		code: 'Burial',
 		name: 'Burial',
 		description: "A fact of the burial of person's body after death.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -928,6 +1002,7 @@ async function initPg() {
 		code: 'Caste',
 		name: 'Caste',
 		description: "A fact of a person's caste.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -936,6 +1011,7 @@ async function initPg() {
 		code: 'Census',
 		name: 'Census',
 		description: "A fact of a person's participation in a census.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -944,6 +1020,7 @@ async function initPg() {
 		code: 'ChildOrder',
 		name: 'Child Order',
 		description: 'A fact about the child order between a parent and a child.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -952,6 +1029,7 @@ async function initPg() {
 		code: 'Christening',
 		name: 'Christening',
 		description: "A fact of a person's christening *at birth*. Note: use `AdultChristening` for the christening as an adult.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -960,6 +1038,7 @@ async function initPg() {
 		code: 'Circumcision',
 		name: 'Circumcision',
 		description: "A fact of a person's circumcision.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -968,6 +1047,7 @@ async function initPg() {
 		code: 'CivilUnion',
 		name: 'Civil Union',
 		description: 'The fact of a civil union.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -976,6 +1056,7 @@ async function initPg() {
 		code: 'Clan',
 		name: 'Clan',
 		description: "A fact of a person's clan.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -984,6 +1065,7 @@ async function initPg() {
 		code: 'CommonLawMarriage',
 		name: 'Common Law Marriage',
 		description: 'The fact of a marriage by common law.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -992,6 +1074,7 @@ async function initPg() {
 		code: 'Confirmation',
 		name: 'Confirmation',
 		description: "A fact of a person's confirmation (or other rite of initiation) in a church or religion.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1000,6 +1083,7 @@ async function initPg() {
 		code: 'Court',
 		name: 'Court',
 		description: 'A fact of the appearance of a person in a court proceeding.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1008,6 +1092,7 @@ async function initPg() {
 		code: 'Cremation',
 		name: 'Cremation',
 		description: "A fact of the cremation of person's body after death.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1016,6 +1101,7 @@ async function initPg() {
 		code: 'Death',
 		name: 'Death',
 		description: 'A fact of the death of a person.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1024,6 +1110,7 @@ async function initPg() {
 		code: 'Divorce',
 		name: 'Divorce',
 		description: 'The fact of a divorce of a couple.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1032,6 +1119,7 @@ async function initPg() {
 		code: 'DivorceFiling',
 		name: 'Divorce Filing',
 		description: 'The fact of a filing for divorce.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1040,6 +1128,7 @@ async function initPg() {
 		code: 'DomesticPartnership',
 		name: 'Domestic Partnership',
 		description: 'The fact of a domestic partnership.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1048,6 +1137,7 @@ async function initPg() {
 		code: 'Education',
 		name: 'Education',
 		description: 'A fact of an education of a person.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1056,6 +1146,7 @@ async function initPg() {
 		code: 'EducationEnrollment',
 		name: 'Education Enrollment',
 		description: "A fact of a person's enrollment in an educational program or institution.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1064,6 +1155,7 @@ async function initPg() {
 		code: 'Emigration',
 		name: 'Emigration',
 		description: 'A fact of the emigration of a person.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1072,6 +1164,7 @@ async function initPg() {
 		code: 'Engagement',
 		name: 'Engagement',
 		description: 'The fact of an engagement to be married.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1080,6 +1173,7 @@ async function initPg() {
 		code: 'EnteringHeir',
 		name: 'EnteringHeir',
 		description: 'A fact about an entering heir relationship between a parent and a child. An entering heir is received from another parent as an "exiting heir" for designation of inheritance.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1088,6 +1182,7 @@ async function initPg() {
 		code: 'Ethnicity',
 		name: 'Ethnicity',
 		description: "A fact of a person's ethnicity or race.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1096,6 +1191,7 @@ async function initPg() {
 		code: 'Excommunication',
 		name: 'Excommunication',
 		description: "A fact of a person's excommunication from a church.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1104,6 +1200,7 @@ async function initPg() {
 		code: 'ExitingHeir',
 		name: 'Exiting Heir',
 		description: 'A fact about an exiting heir relationship between a parent and a child. An exiting heir is given as an "entering heir" to another parent for designation of inheritance.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1112,6 +1209,7 @@ async function initPg() {
 		code: 'FirstCommunion',
 		name: 'First Communion',
 		description: "A fact of a person's first communion in a church.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1120,6 +1218,7 @@ async function initPg() {
 		code: 'FosterParent',
 		name: 'Foster Parent',
 		description: 'A fact about a foster relationship between a foster parent and a child.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1128,6 +1227,7 @@ async function initPg() {
 		code: 'Funeral',
 		name: 'Funeral',
 		description: "A fact of a person's funeral.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1136,6 +1236,7 @@ async function initPg() {
 		code: 'GenderChange',
 		name: 'Gender Change',
 		description: "A fact of a person's gender change.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1144,6 +1245,7 @@ async function initPg() {
 		code: 'GenerationNumber',
 		name: 'Generation Number',
 		description: "A fact of a person's generation number, indicating the number of generations the person is removed from a known \"first\" ancestor.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1152,6 +1254,7 @@ async function initPg() {
 		code: 'Graduation',
 		name: 'Graduation',
 		description: "A fact of a person's graduation from a scholastic institution.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1160,6 +1263,7 @@ async function initPg() {
 		code: 'GuardianParent',
 		name: 'Guardian Parent',
 		description: 'A fact about a legal guardianship between a parent and a child.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1168,6 +1272,7 @@ async function initPg() {
 		code: 'Immigration',
 		name: 'Immigration',
 		description: "A fact of a person's immigration.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1176,6 +1281,7 @@ async function initPg() {
 		code: 'Imprisonment',
 		name: 'Imprisonment',
 		description: "A fact of a person's imprisonment.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1184,6 +1290,7 @@ async function initPg() {
 		code: 'Inquest',
 		name: 'Inquest',
 		description: 'A legal inquest. Inquests usually only occur when there’s something suspicious about the death. Inquests might in some instances lead to a murder investigation. Most people that die have a death certificate wherein a doctor indicates the cause of death and often indicates when the decedent was last seen by that physician; these require no inquest.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1192,6 +1299,7 @@ async function initPg() {
 		code: 'LandTransaction',
 		name: 'Land Transaction',
 		description: 'A fact of a land transaction enacted by a person.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1200,6 +1308,7 @@ async function initPg() {
 		code: 'Language',
 		name: 'Language',
 		description: 'A fact of a language spoken by a person.',
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1208,6 +1317,7 @@ async function initPg() {
 		code: 'Living',
 		name: 'Living',
 		description: "A fact of a record of a person's living for a specific period. This is designed to include \"flourish\", defined to mean the time period in an adult's life where he was most productive, perhaps as a writer or member of the state assembly. It does not reflect the person's birth and death dates.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1216,6 +1326,7 @@ async function initPg() {
 		code: 'MaritalStatus',
 		name: 'Marital Status',
 		description: "A fact of a person's marital status.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1224,6 +1335,7 @@ async function initPg() {
 		code: 'Marriage',
 		name: 'Marriage',
 		description: 'The fact of a marriage.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1232,6 +1344,7 @@ async function initPg() {
 		code: 'MarriageBanns',
 		name: 'Marriage Banns',
 		description: 'The fact of a marriage banns.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1240,6 +1353,7 @@ async function initPg() {
 		code: 'MarriageContract',
 		name: 'Marriage Contract',
 		description: 'The fact of a marriage contract.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1248,6 +1362,7 @@ async function initPg() {
 		code: 'MarriageLicense',
 		name: 'Marriage License',
 		description: 'The fact of a marriage license.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1256,6 +1371,7 @@ async function initPg() {
 		code: 'MarriageNotice',
 		name: 'Marriage Notice',
 		description: 'The fact of a marriage notice.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1264,6 +1380,7 @@ async function initPg() {
 		code: 'Medical',
 		name: 'Medical',
 		description: "A fact of a person's medical record, such as for an illness or hospital stay.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1272,6 +1389,7 @@ async function initPg() {
 		code: 'MilitaryAward',
 		name: 'Military Award',
 		description: "A fact of a person's military award.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1280,6 +1398,7 @@ async function initPg() {
 		code: 'MilitaryDischarge',
 		name: 'Military Discharge',
 		description: "A fact of a person's military discharge.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1288,6 +1407,7 @@ async function initPg() {
 		code: 'MilitaryDraftRegistration',
 		name: 'Military Draft Registration',
 		description: "A fact of a person's registration for a military draft.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1296,6 +1416,7 @@ async function initPg() {
 		code: 'MilitaryInduction',
 		name: 'Military Induction',
 		description: "A fact of a person's military induction.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1304,6 +1425,7 @@ async function initPg() {
 		code: 'MilitaryService',
 		name: 'Military Service',
 		description: "A fact of a person's militray service.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1312,6 +1434,7 @@ async function initPg() {
 		code: 'Mission',
 		name: 'Mission',
 		description: "A fact of a person's church mission.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1320,6 +1443,7 @@ async function initPg() {
 		code: 'MoveFrom',
 		name: 'Move From',
 		description: "A fact of a person's move (i.e. change of residence) from a location.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1328,6 +1452,7 @@ async function initPg() {
 		code: 'MoveTo',
 		name: 'Move To',
 		description: "A fact of a person's move (i.e. change of residence) to a new location.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1336,6 +1461,7 @@ async function initPg() {
 		code: 'MultipleBirth',
 		name: 'Multiple Birth',
 		description: 'A fact that a person was born as part of a multiple birth (e.g. twin, triplet, etc.)',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1344,6 +1470,7 @@ async function initPg() {
 		code: 'NationalId',
 		name: 'National ID',
 		description: "A fact of a person's national id (e.g. social security number).",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1352,6 +1479,7 @@ async function initPg() {
 		code: 'Nationality',
 		name: 'Nationality',
 		description: "A fact of a person's nationality.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1360,6 +1488,7 @@ async function initPg() {
 		code: 'Naturalization',
 		name: 'Naturalization',
 		description: "A fact of a person's naturalization (i.e. acquisition of citizenship and nationality).",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1368,6 +1497,7 @@ async function initPg() {
 		code: 'NumberOfChildren',
 		name: 'Number of Children',
 		description: 'A fact of the number of children of a person or relationship.',
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1376,6 +1506,7 @@ async function initPg() {
 		code: 'NumberOfMarriages',
 		name: 'Number of Marriages',
 		description: "A fact of a person's number of marriages.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1384,6 +1515,7 @@ async function initPg() {
 		code: 'Obituary',
 		name: 'Obituary',
 		description: "A fact of a person's obituary.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1392,6 +1524,7 @@ async function initPg() {
 		code: 'Occupation',
 		name: 'Occupation',
 		description: "A fact of a person's occupation or employment.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1400,6 +1533,7 @@ async function initPg() {
 		code: 'OfficialPosition',
 		name: 'Official Position',
 		description: "A fact of a person's official (government) position.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1408,6 +1542,7 @@ async function initPg() {
 		code: 'Ordination',
 		name: 'Ordination',
 		description: "A fact of a person's ordination to a stewardship in a church.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1416,6 +1551,7 @@ async function initPg() {
 		code: 'Pardon',
 		name: 'Pardon',
 		description: "A fact of a person's legal pardon.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1424,6 +1560,7 @@ async function initPg() {
 		code: 'PhysicalDescription',
 		name: 'Physical Description',
 		description: "A fact of a person's physical description.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1432,6 +1569,7 @@ async function initPg() {
 		code: 'Probate',
 		name: 'Probate',
 		description: "A fact of a receipt of probate of a person's property.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1440,6 +1578,7 @@ async function initPg() {
 		code: 'Property',
 		name: 'Property',
 		description: "A fact of a person's property or possessions.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1448,6 +1587,7 @@ async function initPg() {
 		code: 'Religion',
 		name: 'Religion',
 		description: "A fact of a person's religion.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1456,6 +1596,7 @@ async function initPg() {
 		code: 'Residence',
 		name: 'Residence',
 		description: "A fact of a person's residence.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1464,6 +1605,7 @@ async function initPg() {
 		code: 'Retirement',
 		name: 'Retirement',
 		description: "A fact of a person's retirement.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1472,6 +1614,7 @@ async function initPg() {
 		code: 'Separation',
 		name: 'Separation',
 		description: "A fact of a couple's separation.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1480,6 +1623,7 @@ async function initPg() {
 		code: 'SociologicalParent',
 		name: 'Sociological Parent',
 		description: 'A fact about a sociological relationship between a parent and a child, but not definable in typical legal or biological term',
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1488,6 +1632,7 @@ async function initPg() {
 		code: 'StepParent',
 		name: 'Step Parent',
 		description: 'A fact about the step relationship between a parent and a child.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1496,6 +1641,7 @@ async function initPg() {
 		code: 'Stillbirth',
 		name: 'Stillbirth',
 		description: "A fact of a person's stillbirth.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1504,6 +1650,7 @@ async function initPg() {
 		code: 'TaxAssessment',
 		name: 'Tax Assessment',
 		description: "A fact of a person's tax assessment.",
+		required: 'data',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1512,6 +1659,7 @@ async function initPg() {
 		code: 'Visit',
 		name: 'Visit',
 		description: "A fact of a person's visit to a place different from the person's residence.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1520,6 +1668,7 @@ async function initPg() {
 		code: 'Will',
 		name: 'Will',
 		description: "A fact of a person's will.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1528,6 +1677,7 @@ async function initPg() {
 		code: 'Yahrzeit',
 		name: 'Yahrzeit',
 		description: "A fact of a person's _yahrzeit_ date. A person's yahzeit is the anniversary of their death as measured by the Hebrew calendar.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1536,6 +1686,7 @@ async function initPg() {
 		code: 'Birth',
 		name: 'Birth',
 		description: "A fact of a equine's birth.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1544,6 +1695,7 @@ async function initPg() {
 		code: 'Burial',
 		name: 'Burial',
 		description: "A fact of the burial of equine's body after death.",
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -1552,6 +1704,7 @@ async function initPg() {
 		code: 'Death',
 		name: 'Death',
 		description: 'A fact of the death of an equine.',
+		required: 'date',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -2039,6 +2192,7 @@ async function initPg() {
 	const places = []
 	const sqlitePlaces = await normSQLite.query('SELECT * FROM places')
 	for (const place of sqlitePlaces) {
+		console.log(place)
 		const data = {
 			id: fixPlace(place),
 			placeType: place.type,

@@ -12,6 +12,19 @@ const { slugify } = require('../modules/clubside-utils')
  */
 
 /**
+ * @typedef {Object} BiolineageValidationError
+ * @property {String} id - HTML Element id to set customValidity
+ * @property {String} text - text to show for customValidity
+ */
+
+/**
+ * @typedef {Object} BiolineageSetterResponse
+ * @property {Boolean} ok - whether the setter was succesful
+ * @property {String} [id] - id of new record or other client-side success information
+ * @property {BiolineageValidationError} [validationError] - server-side validation error information for client to show
+ */
+
+/**
  * Build the necessary fields for entity_names and entities from form data
  * @param {Object} data - source data
  * @returns {BiolineageEntityNameData}
@@ -75,6 +88,8 @@ const buildName = (data) => {
 		nameParts
 	}
 }
+
+const isUuid = (str) => typeof str === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str)
 
 const massageNumber = (num) => {
 	if (!num) return null
@@ -159,65 +174,202 @@ class Setters {
 	}
 
 	/**
-	 * Edit aspect(s) on an entity
-	 * @param {Object} user - session user information
+	 * Edit aor add entity fact
+	 * @param {BiolineageSession} user - session user information
 	 * @param {add|edit} mode - edit mode
-	 * @param {String} editor - which editor
-	 * @param {Object} data - POSTed field data
-	 * @returns {Object}
+	 * @param {BiolineageEntityFact} data - POSTed field data
+	 * @returns {BiolineageSetterResponse}
 	 */
-	async entityEdit(user, mode, editor, data) {
-		switch (editor) {
-			case 'name': {
-				console.log(data)
-				const name = buildName(data)
-				console.log(name)
-				if (mode === 'edit') {
-					await biolineageDb.begin()
-					try {
-						await biolineageDb.update('entity_names', { nameType: data.nameType, nameParts: name.nameParts, description: data.description }, { id: data.nameId })
-						const entityData = { fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
-						if (data.canonical) entityData.canonicalNameId = data.nameId
-						await biolineageDb.update('entities', entityData, { id: data.entityId })
-						return { ok: true, id: data.entityId }
-					} catch (error) {
-						await biolineageDb.rollback()
-						console.log('Failed to edit name', mode, editor, data, error)
-						return { ok: false }
-					}
+	async entityFact(user, mode, fact) {
+		// normalize to database format
+		const numbers = ['year', 'month', 'day', 'hour', 'minute', 'second']
+		const geographyFields = ['sovereignEntity', 'subdivision', 'administrativeDivision', 'municipality']
+
+		for (const number of numbers) {
+			if (isNaN(Number(fact[number]))) {
+				return { ok: false, validationError: { id: number, text: 'Not a valid number' } }
+			}
+			fact[number] = Number(fact[number])
+		}
+
+		for (const geographyField of geographyFields) {
+			if (fact[geographyField] === null) {
+				fact[`${geographyField}Id`] = null
+			} else {
+				if (isUuid(fact[geographyField])) {
+					fact[`${geographyField}Id`] = fact[geographyField]
+					fact[geographyField] = null
 				} else {
-					try {
-						const nameData = {
-							id: uuidv4(),
-							entityId: data.entityId,
-							nameType: data.nameType,
-							nameParts: name.nameParts,
-							description: data.description,
-							createdBy: user.userId,
-							modifiedBy: user.userId
-						}
-						await biolineageDb.insert('entity_names', nameData)
-						if (data.canonical) {
-							const entityData = { canonicalNameId: nameData.id, fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
-							await biolineageDb.update('entities', entityData, { id: data.entityId })
-						}
-						return { ok: true, id: data.entityId }
-					} catch (error) {
-						await biolineageDb.rollback()
-						console.log('Failed to add name', mode, editor, data, error)
-						return { ok: false }
+					fact[`${geographyField}Id`] = null
+				}
+			}
+		}
+
+		// validate geography
+		if (fact.place === 'new') {
+			if (fact.municipalityId) {
+				if (fact.administrativeDivision || fact.subdivision || fact.sovereignEntity) {
+					let id
+					if (fact.administrativeDivision) id = 'administrative-division'
+					else if (fact.subdivision) id = 'subdivision'
+					else id = 'sovereign-entity'
+
+					return { ok: false, validationError: { id, text: 'Mix of chosen and custom geography information' } }
+				}
+
+				if (fact.administrativeDivisionId && fact.subdivisionId && fact.sovereignEntityId) {
+					const results = biolineageDb.get(
+                    `select se.name
+                     from municipalities m
+                     join administrative_divisions ad on ad.id = m.administrative_division_id
+                     join subdivisions s on s.id = m.subdivision_id
+                     join sovereign_entities se on se.id = m.sovereign_entity_id
+                     where m.id = $1`,
+                    [fact.municipalityId]
+					)
+					if (results.length === 0) {
+						return { ok: false, validationError: { id: 'municipality', text: 'The four geography fields must link' } }
+					}
+				} else if (fact.administrativeDivisionId && fact.subdivisionId) {
+					const results = biolineageDb.get(
+                    `select s.name
+                     from municipalities m
+                     join administrative_divisions ad on ad.id = m.administrative_division_id
+                     join subdivisions s on s.id = m.subdivision_id
+                     where m.id = $1`,
+                    [fact.municipalityId]
+					)
+					if (results.length === 0) {
+						return { ok: false, validationError: { id: 'municipality', text: 'The three geography fields must link' } }
+					}
+				} else if (fact.administrativeDivisionId) {
+					const results = biolineageDb.get(
+                    `select ad.name
+                     from municipalities m
+                     join administrative_divisions ad on ad.id = m.administrative_division_id
+                     where m.id = $1`,
+                    [fact.municipalityId]
+					)
+					if (results.length === 0) {
+						return { ok: false, validationError: { id: 'municipality', text: 'Both geography fields must link' } }
+					}
+				}
+			} else if (fact.administrativeDivisionId) {
+				if (fact.subdivision || fact.sovereignEntity) {
+					const id = fact.subdivision ? 'subdivision' : 'sovereign-entity'
+					return { ok: false, validationError: { id, text: 'Mix of chosen and custom geography information' } }
+				}
+
+				if (fact.subdivisionId && fact.sovereignEntityId) {
+					const results = biolineageDb.get(
+                    `select se.name
+                     from administrative_divisions ad
+                     join subdivisions s on s.id = ad.subdivision_id
+                     join sovereign_entities se on se.id = ad.sovereign_entity_id
+                     where ad.id = $1`,
+                    [fact.administrativeDivisionId]
+					)
+					if (results.length === 0) {
+						return { ok: false, validationError: { id: 'administrative-division', text: 'The three geography fields must link' } }
+					}
+				} else if (fact.subdivisionId) {
+					const results = biolineageDb.get(
+                    `select s.name
+                     from administrative_divisions ad
+                     join subdivisions s on s.id = ad.subdivision_id
+                     where ad.id = $1`,
+                    [fact.administrativeDivisionId]
+					)
+					if (results.length === 0) {
+						return { ok: false, validationError: { id: 'administrative-division', text: 'Both geography fields must link' } }
+					}
+				}
+			} else if (fact.subdivisionId) {
+				if (fact.sovereignEntity) {
+					return { ok: false, validationError: { id: 'sovereign-entity', text: 'Mix of chosen and custom geography information' } }
+				}
+
+				if (fact.sovereignEntityId) {
+					const results = biolineageDb.get(
+                    `select se.name
+                     from subdivisions s
+                     join sovereign_entities se on se.id = s.sovereign_entity_id
+                     where s.id = $1`,
+                    [fact.subdivisionId]
+					)
+					if (results.length === 0) {
+						return { ok: false, validationError: { id: 'subdivision', text: 'Both geography fields must link' } }
 					}
 				}
 			}
-			case 'sex': {
-				try {
-					await biolineageDb.update('entities', { sex: data.sex, modifiedBy: user.userId, modifiedDate: new Date() }, { id: data.entityId })
-					return { ok: true, id: data.entityId }
-				} catch (error) {
-					console.log('Failed to edit sex', mode, editor, data, error)
-					return { ok: false }
-				}
+		}
+
+		console.log(fact)
+		return { ok: false }
+	}
+
+	/**
+	 * Edit aor add entity fact
+	 * @param {BiolineageSession} user - session user information
+	 * @param {add|edit} mode - edit mode
+	 * @param {BiolineageEntityName} data - POSTed field data
+	 * @returns {BiolineageSetterResponse}
+	 */
+	async entityName(user, mode, data) {
+		console.log(data)
+		const name = buildName(data)
+		console.log(name)
+		if (mode === 'edit') {
+			await biolineageDb.begin()
+			try {
+				await biolineageDb.update('entity_names', { nameType: data.nameType, nameParts: name.nameParts, description: data.description }, { id: data.nameId })
+				const entityData = { fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
+				if (data.canonical) entityData.canonicalNameId = data.nameId
+				await biolineageDb.update('entities', entityData, { id: data.entityId })
+				return { ok: true, id: data.entityId }
+			} catch (error) {
+				await biolineageDb.rollback()
+				console.log('Failed to edit name', mode, data, error)
+				return { ok: false }
 			}
+		} else {
+			try {
+				const nameData = {
+					id: uuidv4(),
+					entityId: data.entityId,
+					nameType: data.nameType,
+					nameParts: name.nameParts,
+					description: data.description,
+					createdBy: user.userId,
+					modifiedBy: user.userId
+				}
+				await biolineageDb.insert('entity_names', nameData)
+				if (data.canonical) {
+					const entityData = { canonicalNameId: nameData.id, fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
+					await biolineageDb.update('entities', entityData, { id: data.entityId })
+				}
+				return { ok: true, id: data.entityId }
+			} catch (error) {
+				await biolineageDb.rollback()
+				console.log('Failed to add name', mode, data, error)
+				return { ok: false }
+			}
+		}
+	}
+
+	/**
+	 * Edit aor add entity fact
+	 * @param {BiolineageSession} user - session user information
+	 * @param {BiolineageEntitySex} data - POSTed field data
+	 * @returns {BiolineageSetterResponse}
+	 */
+	async entitySex(user, data) {
+		try {
+			await biolineageDb.update('entities', { sex: data.sex, modifiedBy: user.userId, modifiedDate: new Date() }, { id: data.entityId })
+			return { ok: true, id: data.entityId }
+		} catch (error) {
+			console.log('Failed to edit sex', data, error)
+			return { ok: false }
 		}
 	}
 

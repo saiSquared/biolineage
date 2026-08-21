@@ -34,8 +34,8 @@ const placeFields = [
 	},
 	{
 		label: 'Name',
-		name: 'name',
-		id: 'name',
+		name: 'placeName',
+		id: 'place-name',
 		type: 'text',
 		placeholder: 'ex. Mt. Sinai Hospital',
 		tip: 'The official or commonly used name for this place.',
@@ -43,8 +43,8 @@ const placeFields = [
 	},
 	{
 		label: 'Description',
-		name: 'description',
-		id: 'description',
+		name: 'placeDescription',
+		id: 'place-description',
 		type: 'textarea',
 		placeholder: 'Details about this place...',
 		tip: 'Contextual or historical details that help identify or describe this place.',
@@ -136,8 +136,8 @@ const placeFields = [
 	// 📝 Misc
 	{
 		label: 'Notes',
-		name: 'notes',
-		id: 'notes',
+		name: 'placeNotes',
+		id: 'place-notes',
 		type: 'textarea',
 		placeholder: 'Extra information...',
 		tip: 'Extra information or annotations relevant to this place.',
@@ -253,14 +253,14 @@ async function startup() {
 		entityTypes.push(row)
 	}
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-types.json'), JSON.stringify(entityTypesData, null, '\t'))
-	const entityNamePartsData = await biolineageDb.query('select id, code, id, label, surface, required, placeholder, format, description, width from entity_name_parts order by sort')
+	const entityNamePartsData = await biolineageDb.query('select id, code, slug, label, surface, required, placeholder, format, description, width from entity_name_parts order by sort')
 	for (const row of entityNamePartsData) {
 		entityNameParts.push(row)
 	}
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-name-parts.json'), JSON.stringify(entityNamePartsData, null, '\t'))
 	const relationshipTypes = await biolineageDb.query('select id, type, direction, name, description, left_output, right_output from relationship_types order by type, main desc, name')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'relationship-types.json'), JSON.stringify(relationshipTypes, null, '\t'))
-	const factTypes = await biolineageDb.query('select entity_type_id, code, name, description from fact_types order by entity_type_id, code')
+	const factTypes = await biolineageDb.query('select entity_type_id, code, name, description, required from fact_types order by entity_type_id, code')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'fact-types.json'), JSON.stringify(factTypes, null, '\t'))
 	const placeTypes = await biolineageDb.query('select id, name, description from place_types order by name')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'place-types.json'), JSON.stringify(placeTypes, null, '\t'))

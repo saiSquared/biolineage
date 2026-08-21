@@ -105,7 +105,7 @@ async function shutdown(signal) {
 async function startup() {
 	try {
 		await loadTrees()
-		app.listen({ port: 3452 }, (err) => {
+		app.listen({ port: env.PORT }, (err) => {
 			if (err) throw err
 		})
 	} catch (error) {

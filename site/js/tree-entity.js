@@ -1,4 +1,3 @@
-/// <reference path="../dhtmlx-diagram/diagram.d.ts" />
 'use strict'
 
 // TODO revisit pre-alpha naming documentation as noted in Obsidian > Biolineage > Names
@@ -1075,7 +1074,7 @@ async function handleEntityEditor(event) {
 				tip: 'Biological sex as recorded in historical documents. Leave blank if unknown or not stated in available sources.',
 				value: entity.sex
 			})
-			modal = modalForm({ mode: 'add', endpoint: '/api/entity/edit/sex', header: 'Edit Sex' }, fields)
+			modal = modalForm({ mode: 'edit', endpoint: '/api/entity/edit/sex', header: 'Edit Sex' }, fields)
 			break
 		}
 
@@ -1193,7 +1192,8 @@ async function handleEntityEditor(event) {
 			const groups = [
 				{ header: null, slug: 'fact' },
 				{ header: 'Date', slug: 'date' },
-				{ header: 'Place', slug: 'place' }
+				{ header: 'Place', slug: 'place' },
+				{ header: 'Properties', slug: 'properties' }
 			]
 			fields.push({
 				group: 'fact',
@@ -1220,6 +1220,7 @@ async function handleEntityEditor(event) {
 				id: 'code',
 				type: 'select',
 				disabled: editAction === 'edit',
+				autofocus: editAction === 'add',
 				options: factTypes,
 				value: existingFact ? existingFact.code : null
 			})
@@ -1230,6 +1231,7 @@ async function handleEntityEditor(event) {
 				id: 'date-text',
 				type: 'text',
 				placeholder: 'ex. Sometime in the 1200s',
+				autofocus: editAction === 'edit',
 				tip: 'Human readable version of the date when an exact date isn\'t known.',
 				width: '100%',
 				value: existingFact ? existingFact.dateText : null
@@ -1350,9 +1352,82 @@ async function handleEntityEditor(event) {
 						fields: placesFields
 					}
 				],
-				value: existingFact ? existingFact.placeId ? 'existing' : 'no' : null
+				value: existingFact ? existingFact.placeId ? 'existing' : 'no' : 'no'
 			})
-			modal = modalForm({ mode: editAction, endpoint: `/api/entity/${editAction}/fact`, header: `${editAction === 'add' ? 'Add' : 'Edit'} Fact` }, fields, groups)
+			fields.push({
+				group: 'properties',
+				label: null,
+				name: 'data',
+				id: 'data',
+				type: 'properties',
+				tip: 'Additional information about the fact. Add as many properties and values as needed.',
+				width: '100%',
+				value: existingFact ? existingFact.data : null
+			})
+			const validators = {
+				checkDayAndMonth(getValue) {
+					if (getValue('day') && !getValue('month')) {
+						document.getElementById('month').setCustomValidity('Month required if day is set')
+					}
+				},
+				checkMonthAndYear(getValue) {
+					if (getValue('month') && !getValue('year')) {
+						document.getElementById('year').setCustomValidity('Year required if month is set')
+					}
+				},
+				checkDateAndHour(getValue) {
+					if (getValue('hour') && (!getValue('year') || !getValue('month') || !getValue('day'))) {
+						let field
+						if (!getValue('year')) {
+							field = 'year'
+						} else if (!getValue('month')) {
+							field = 'month'
+						} else {
+							field = 'day'
+						}
+						document.getElementById(field).setCustomValidity('Date is required if hour is set')
+					}
+				},
+				checkDateAndHourAndMinute(getValue) {
+					if (getValue('minute') && (!getValue('year') || !getValue('month') || !getValue('day') || !getValue('hour'))) {
+						document.getElementById('hour').setCustomValidity('Hour is required if minute is set')
+					}
+				},
+				checkTimezone(getValue) {
+					if (getValue('timezone') && !getValue('hour') && !getValue('minute')) {
+						document.getElementById('hour').setCustomValidity('Time is required if timezone is set')
+					}
+				},
+				checkPlaceTypeAndPlace(getValue) {
+					const place = getValue('place')
+
+					if (place === 'existing' && !getValue('place-id')) document.getElementById('place-id').setCustomValidity('Existing place required')
+
+					if (place === 'new') {
+						if (!getValue('place-type')) document.getElementById('place-type').setCustomValidity('Place type required')
+						if (!getValue('place-name')) document.getElementById('place-name').setCustomValidity('Place name required')
+
+						// Latitude/Longitude pairing
+						const lat = getValue('latitude')
+						const lng = getValue('longitude')
+
+						if (lat && !lng) document.getElementById('longitude').setCustomValidity('Longitude required if latitude is set')
+						if (lng && !lat) document.getElementById('latitude').setCustomValidity('Latitude required if longitude is set')
+
+						// Google Maps embed iframe validation
+						const gpid = getValue('google-place-id')
+						if (gpid) {
+							const isValidEmbed =
+								gpid.startsWith('<iframe') &&
+									gpid.includes('src="https://www.google.com/maps/embed?pb=') &&
+									gpid.includes('</iframe>')
+
+							if (!isValidEmbed) document.getElementById('google-place-id').setCustomValidity('Google Maps embed iframe required')
+						}
+					}
+				}
+			}
+			modal = modalForm({ mode: editAction, endpoint: `/api/entity/${editAction}/fact`, header: `${editAction === 'add' ? 'Add' : 'Edit'} Fact` }, fields, groups, validators)
 			break
 		}
 	}

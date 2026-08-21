@@ -1285,8 +1285,46 @@ a.big-button:hover {
 	justify-content: center;
 }
 
+.property-grid {
+	width: 100%;
+	border: 1px solid var(--oklab-15);
+}
+
+.property-grid thead tr {
+	border-bottom: 1px solid var(--oklab-15);
+}
+
+.property-grid tbody tr {
+	border-bottom: var(--oklab-07);
+}
+
+.property-grid tbody tr:last-child {
+	border: none
+}
+
+.property-grid td {
+	padding: 0.25rem 0.5rem;
+}
+
+.property-grid td:nth-child(1) {
+	border-right: 1px solid var(--oklab-07);
+}
+
+.property-grid td:nth-child(1),
+.property-grid td:nth-child(2) {
+	width: 49%;
+	cursor: text;
+}
+
+.property-grid td:nth-child(3) {
+	width: 2%;
+	cursor: pointer;
+}
+
 .ts-control {
 	padding: 0.25rem 0.5rem;
+	height: 2.25em;
+	align-items: center;
 }
 
 .ts-dropdown,
@@ -1296,6 +1334,21 @@ a.big-button:hover {
 	background-color: var(--color-bg-alt) !important;
 	font-size: max(16px, 1em);
 	line-height: 1;
+}
+
+.ts-control > input {
+	height: calc(2.25em - 0.5rem);
+}
+
+.ts-wrapper.form-select, .ts-wrapper.single {
+	--ts-pr-caret: 2.25rem;
+}
+
+.ts-wrapper:not(.form-control,.form-select).single .ts-control {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right .75rem center;
+	background-size: 16px 12px;
 }
 
 .modal-body .autocomplete-input ul {

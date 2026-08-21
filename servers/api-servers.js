@@ -107,16 +107,24 @@ async function apiServers(app) {
 		reply.send(await setters.entityAdd(request.user, request.body))
 	})
 
-	app.post('/api/entity/add/name', async (request, reply) => {
-		reply.send(await setters.entityEdit(request.user, 'add', 'name', request.body))
+	app.post('/api/entity/add/fact', async (request, reply) => {
+		reply.send(await setters.entityFact(request.user, 'add', request.body))
 	})
 
-	app.post('/api/entity/edit/sex', async (request, reply) => {
-		reply.send(await setters.entityEdit(request.user, 'edit', 'sex', request.body))
+	app.post('/api/entity/add/name', async (request, reply) => {
+		reply.send(await setters.entityName(request.user, 'add', request.body))
+	})
+
+	app.post('/api/entity/edit/fact', async (request, reply) => {
+		reply.send(await setters.entityFact(request.user, 'edit', request.body))
 	})
 
 	app.post('/api/entity/edit/name', async (request, reply) => {
-		reply.send(await setters.entityEdit(request.user, 'edit', 'name', request.body))
+		reply.send(await setters.entityName(request.user, 'edit', request.body))
+	})
+
+	app.post('/api/entity/edit/sex', async (request, reply) => {
+		reply.send(await setters.entitySex(request.user, request.body))
 	})
 
 	app.get('/api/entity/graph/:id', async (request, reply) => {

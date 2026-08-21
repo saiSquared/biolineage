@@ -10,8 +10,8 @@
 	},
 	{
 		"label": "Name",
-		"name": "name",
-		"id": "name",
+		"name": "placeName",
+		"id": "place-name",
 		"type": "text",
 		"placeholder": "ex. Mt. Sinai Hospital",
 		"tip": "The official or commonly used name for this place.",
@@ -19,8 +19,8 @@
 	},
 	{
 		"label": "Description",
-		"name": "description",
-		"id": "description",
+		"name": "placeDescription",
+		"id": "place-description",
 		"type": "textarea",
 		"placeholder": "Details about this place...",
 		"tip": "Contextual or historical details that help identify or describe this place.",
@@ -104,8 +104,8 @@
 	},
 	{
 		"label": "Notes",
-		"name": "notes",
-		"id": "notes",
+		"name": "placeNotes",
+		"id": "place-notes",
 		"type": "textarea",
 		"placeholder": "Extra information...",
 		"tip": "Extra information or annotations relevant to this place.",

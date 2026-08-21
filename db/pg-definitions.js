@@ -502,6 +502,7 @@ const pgTables = {
 			{ name: 'code', type: 'TEXT', nulls: false },
 			{ name: 'name', type: 'TEXT', nulls: false },
 			{ name: 'description', type: 'TEXT' },
+			{ name: 'required', type: 'TEXT', nulls: false },
 			{ name: 'created_by', type: 'UUID', nulls: false },
 			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
 			{ name: 'modified_by', type: 'UUID', nulls: false },

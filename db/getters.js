@@ -671,12 +671,12 @@ class Getters {
 		// facts
 		sql =
 			`select
-				f.id fact_id, f.code, f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second",
-				f.timezone, f.date_text, p.id place_id, p.place_type, p."name" place_name, p.longitude place_longitude,
+				f.id fact_id, f.code, f."data", f.epoch, f."year", f."month", f."day", f."hour", f."minute", f."second",
+				f.timezone, f.date_text, p.id place_id, p.place_type, p."name" place_name, p.description place_description, p.longitude place_longitude,
 				p.latitude place_latitude, p.sovereign_entity, se."name" sovereign_entity_name, p.subdivision, s."name" subdivision_name,
 				p.administrative_division, ad."name" administrative_division_name, ad.longitude administrative_division_longitude,
 				ad.latitude administrative_division_latitude, p.municipality, m."name" municipality_name,
-				m.longitude municipality_longitude, m.latitude municipality_latitude
+				m.longitude municipality_longitude, m.latitude municipality_latitude, p.notes place_notes
 			from
 				facts f
 				left join places p on p.id = f.place_id
@@ -900,10 +900,7 @@ class Getters {
 	}
 
 	async municipalities(q) {
-		const m = await biolineageDb.query("select m.id, concat(m.name, ' (', ad.name, ', ', s.name, ', ', se.name, ')') name from municipalities m join administrative_divisions ad on ad.id = m.administrative_division_id join subdivisions s on s.id = m.subdivision_id join sovereign_entities se on se.id = m.sovereign_entity_id where m.name ilike $1 order by name", [`%${q}%`])
-		console.log(q, m)
-		return m
-		// return await biolineageDb.query("select m.id, concat(m.name, ' (', ad.name, ', ', s.name, ', ', se.name, ')') name from municipalities m join administrative_divisions ad on ad.id = m.administrative_division_id join subdivisions s on s.id = m.subdivision_id join sovereign_entities se on se.id = m.sovereign_entity_id where m.name ilike $1 order by name", [`%${q}%`])
+		return await biolineageDb.query("select m.id, concat(m.name, ' (', ad.name, ', ', s.name, ', ', se.name, ')') name from municipalities m join administrative_divisions ad on ad.id = m.administrative_division_id join subdivisions s on s.id = m.subdivision_id join sovereign_entities se on se.id = m.sovereign_entity_id where m.name ilike $1 order by name", [`%${q}%`])
 	}
 
 	async sovereignEntities(q) {
