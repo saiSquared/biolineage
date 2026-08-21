@@ -1321,6 +1321,38 @@ a.big-button:hover {
 	cursor: pointer;
 }
 
+.extended-family {
+	padding: 1rem 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+.extended-family > div {
+	padding: 0.5rem;
+	border-radius: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.extended-family div.invert {
+	color: var(--color-bg-alt);
+	background-color: var(--color-text);
+}
+
+.extended-family h2,
+.extended-family h4 {
+	margin: 0;
+}
+
+.entity-profile-inner-card .extended-family a {
+	background-color: transparent;
+}
+
 .ts-control {
 	padding: 0.25rem 0.5rem;
 	height: 2.25em;

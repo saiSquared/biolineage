@@ -890,8 +890,35 @@ class Getters {
 			siblings.push(...parentGroups)
 		}
 
+		let extendedFamily = await biolineageDb.query('select * from get_entity_tree($1)', [id])
+		const extendedFamilyGroups = (() => {
+			const map = new Map()
+			for (const row of extendedFamily) {
+				if (!map.has(row.level)) {
+					map.set(row.level, { level: row.level, members: [] })
+				}
+				map.get(row.level).members.push(row)
+			}
+			return Array.from(map.values())
+		})()
+
+		// Sort members inside each group: null birthYear FIRST
+		for (const group of extendedFamilyGroups) {
+			group.members.sort((a, b) => {
+				const ay = a.birthYear
+				const by = b.birthYear
+
+				if (ay == null && by == null) return 0
+				if (ay == null) return -1
+				if (by == null) return 1
+
+				return ay - by
+			})
+		}
+		extendedFamily = extendedFamilyGroups.sort((a, b) => a.level - b.level)
+
 		// assembly
-		const graph = { ...entity, names: entityNames, facts, parents, partners, others, children: spouses, siblings }
+		const graph = { ...entity, names: entityNames, facts, parents, partners, others, children: spouses, siblings, extendedFamily }
 		return graph
 	}
 

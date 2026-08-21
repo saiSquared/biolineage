@@ -229,6 +229,51 @@ const drawFact = (fact, birth) => {
 	return section
 }
 
+const extendedFamilyHeader = (level) => {
+	const header = document.createElement('h3')
+	if (level < -4) {
+		if (level === -5) {
+			header.innerHTML = '3rd Great-Grandparents'
+		} else {
+			header.innerHTML = `${Math.abs(level) - 2}th Great-Grandparents`
+		}
+	} else if (level > 4) {
+		if (level === 5) {
+			header.innerHTML = '3rd Great-Grandchildren'
+		} else {
+			header.innerHTML = `${Math.abs(level) - 2}th Great-Grandchildren`
+		}
+	} else {
+		switch (level) {
+			case -4:
+				header.innerHTML = 'Great-Great-Grandparents'
+				break
+			case -3:
+				header.innerHTML = 'Great-Grandparents'
+				break
+			case -2:
+				header.innerHTML = 'Grandparents'
+				break
+			case -1:
+				header.innerHTML = 'Parents'
+				break
+			case 1:
+				header.innerHTML = 'Children'
+				break
+			case 2:
+				header.innerHTML = 'Grandchildren'
+				break
+			case 3:
+				header.innerHTML = 'Great-Grandchildren'
+				break
+			case 4:
+				header.innerHTML = 'Great-Great-Grandchildren'
+				break
+		}
+	}
+	return header
+}
+
 /**
  * Format a standard fact date
  * @param {Number} year - date year
@@ -535,7 +580,7 @@ function drawEntity() {
 	entityFacts.appendChild(h2)
 	const filteredFacts = entity.facts.filter(data => !['Birth', 'Death'].includes(data.code))
 	for (const fact of filteredFacts) {
-		console.log(fact)
+		// console.log(fact)
 		cardItem = document.createElement('article')
 		cardItem.className = 'entity-profile-card-item'
 		section = document.createElement('section')
@@ -706,7 +751,55 @@ function drawEntity() {
 	timeline.appendChild(div)
 	profile.appendChild(timeline)
 
-	// other relationships
+	// extended family
+	const extendedFamily = document.createElement('section')
+	extendedFamily.className = 'entity-profile-card'
+	h2 = document.createElement('h2')
+	h2.innerHTML = 'Extended Family'
+	extendedFamily.appendChild(h2)
+	for (const level of entity.extendedFamily) {
+		cardItem = document.createElement('article')
+		cardItem.className = 'entity-profile-inner-card'
+		section = document.createElement('section')
+		section.className = 'extended-family'
+		div = document.createElement('div')
+		if (level.level !== 0) {
+			section.appendChild(extendedFamilyHeader(level.level))
+		} else {
+			div.className = 'invert'
+		}
+		for (const member of level.members) {
+			const a = document.createElement('a')
+			a.href = `/trees/${dataPackage.treeSlug}/entities/${member.entityId}`
+			const img = document.createElement('img')
+			switch (member.sex) {
+				case 'Male':
+					img.src = '/img/man.svg'
+					break
+				case 'Female':
+					img.src = '/img/woman.svg'
+					break
+				default:
+					img.src = '/img/person.svg'
+			}
+			a.appendChild(img)
+			const infoDiv = document.createElement('div')
+			const h4 = document.createElement('h4')
+			h4.innerHTML = member.displayName
+			infoDiv.appendChild(h4)
+			const aDiv = document.createElement('div')
+			aDiv.innerHTML = chartLifespan(member)
+			infoDiv.appendChild(aDiv)
+			a.appendChild(infoDiv)
+			div.appendChild(a)
+		}
+		section.appendChild(div)
+		cardItem.appendChild(section)
+		extendedFamily.appendChild(cardItem)
+	}
+	profile.appendChild(extendedFamily)
+
+	// family tree
 	const familyTree = document.createElement('section')
 	familyTree.className = 'entity-profile-card'
 	h2 = document.createElement('h2')
