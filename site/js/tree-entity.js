@@ -1281,7 +1281,7 @@ async function handleEntityEditor(event) {
 			if (editAction === 'edit') {
 				existingFact = entity.facts.find(lookup => lookup.factId === editId)
 			}
-			console.log({ existingFact })
+			// console.log({ existingFact })
 			const groups = [
 				{ header: null, slug: 'fact' },
 				{ header: 'Date', slug: 'date' },
@@ -1518,6 +1518,22 @@ async function handleEntityEditor(event) {
 							if (!isValidEmbed) document.getElementById('google-place-id').setCustomValidity('Google Maps embed iframe required')
 						}
 					}
+				},
+				checkFactRquirements(getValue) {
+					const factType = factTypes.find(lookup => lookup.value === getValue('code'))
+					switch (factType.required) {
+						case 'date':
+							if (!getValue('date-text') && !getValue('year')) {
+								document.getElementById('year').setCustomValidity('Date text or year required')
+							}
+							break
+						case 'data':
+							if (!getValue('data')) {
+								const pg = document.getElementById('data').querySelector('input')
+								pg.setCustomValidity('At least one property required')
+							}
+							break
+					}
 				}
 			}
 			modal = modalForm({ mode: editAction, endpoint: `/api/entity/${editAction}/fact`, header: `${editAction === 'add' ? 'Add' : 'Edit'} Fact` }, fields, groups, validators)
@@ -1560,7 +1576,7 @@ async function setup() {
 	factTypes = await fetch('/data/fact-types.json').then(r => r.json())
 	factTypes = factTypes.filter(data => data.entityTypeId === dataPackage.entityTypeId)
 	factTypes = factTypes.map(data => {
-		return { value: data.code, text: data.name, description: data.description }
+		return { value: data.code, text: data.name, description: data.description, required: data.required }
 	})
 	placesFields = await fetch('/data/places-fields.json').then(r => r.json())
 	timezones = await fetch('/data/timezones.json').then(r => r.json())

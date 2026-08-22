@@ -167,7 +167,7 @@ export default function modalForm(options, fields, groups, validators) {
 				ele.id = labelInput.id
 				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
 				ele.type = labelInput.type
-				ele.setAttribute('placeholder', labelInput.placeholder)
+				if (labelInput.placeholder) ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.hidden) ele.setAttribute('hidden', '')
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
@@ -177,10 +177,12 @@ export default function modalForm(options, fields, groups, validators) {
 				}
 				if (labelInput.pattern) ele.setAttribute('pattern', labelInput.pattern)
 				if (labelInput.value) ele.setAttribute('value', labelInput.value)
-				ele.addEventListener('input', event => {
-					event.target.setCustomValidity('')
-					checkDirty()
-				})
+				if (!labelInput.ignore) {
+					ele.addEventListener('input', event => {
+						event.target.setCustomValidity('')
+						checkDirty()
+					})
+				}
 				child = ele
 				break
 			}
@@ -189,7 +191,7 @@ export default function modalForm(options, fields, groups, validators) {
 				ele = document.createElement('textarea')
 				ele.id = labelInput.id
 				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
-				ele.setAttribute('placeholder', labelInput.placeholder)
+				if (labelInput.placeholder) ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.disabled) ele.setAttribute('disabled', '')
 				if (labelInput.autofocus) {
@@ -295,7 +297,7 @@ export default function modalForm(options, fields, groups, validators) {
 				ele.dataset.field = labelInput.name
 				ele.dataset.value = labelInput.value || ''
 				ele.setAttribute('autocomplete', 'off')
-				ele.setAttribute('placeholder', labelInput.placeholder)
+				if (labelInput.placeholder) ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.autofocus) {
 					ele.setAttribute('autofocus', '')
@@ -316,7 +318,7 @@ export default function modalForm(options, fields, groups, validators) {
 				ele = document.createElement('select')
 				ele.id = labelInput.id
 				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
-				ele.setAttribute('placeholder', labelInput.placeholder)
+				if (labelInput.placeholder) ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.required) ele.setAttribute('required', '')
 				if (labelInput.autofocus) {
 					ele.setAttribute('autofocus', '')
@@ -335,6 +337,8 @@ export default function modalForm(options, fields, groups, validators) {
 			case 'properties': {
 				ele = document.createElement('div')
 				ele.id = labelInput.id
+				ele.className = 'property-grid'
+				ele.tabIndex = 0
 				if (labelInput.value) ele.setAttribute('value', labelInput.value)
 				child = ele
 				propertyGrids.push({ id: labelInput.id, value: labelInput.value })
@@ -505,7 +509,7 @@ export default function modalForm(options, fields, groups, validators) {
 		}
 
 		const valid = modalBody.reportValidity()
-		// console.log({ valid })
+		console.log({ valid })
 		if (!valid) return
 
 		for (const field of allFields) {

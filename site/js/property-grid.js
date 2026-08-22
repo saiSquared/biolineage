@@ -12,94 +12,93 @@ export default function propertyGrid(container, inputObject) {
 		model.push({ key: '', value: '' })
 	}
 
-	container.innerHTML = '' // Clear container
-
-	const table = document.createElement('table')
-	table.className = 'property-grid'
-
-	const thead = document.createElement('thead')
-	const headRow = document.createElement('tr')
-
-	for (const header of ['Property', 'Value', '']) {
-		const th = document.createElement('th')
-		th.textContent = header
-		headRow.appendChild(th)
-	}
-
-	thead.appendChild(headRow)
-	table.appendChild(thead)
-
-	const tbody = document.createElement('tbody')
-	table.appendChild(tbody)
-
-	container.appendChild(table)
-
-	function focusCell(cell) {
-		cell.focus()
-		const range = document.createRange()
-		range.selectNodeContents(cell)
-		range.collapse(false)
-		const sel = window.getSelection()
-		sel.removeAllRanges()
-		sel.addRange(range)
-	}
-
-	function focusKeyCellOfNewRow() {
-		const lastRow = tbody.lastElementChild
-		if (!lastRow) return
-		focusCell(lastRow.children[0])
-	}
-
 	function render() {
-		tbody.innerHTML = ''
+		container.innerHTML = '' // Clear container
+
+		for (const header of ['Property', 'Value', '']) {
+			const div = document.createElement('div')
+			div.className = 'property-grid-header'
+			div.innerHTML = header
+			container.appendChild(div)
+		}
 
 		model.forEach((row, idx) => {
-			const tr = document.createElement('tr')
-
-			const keyTd = document.createElement('td')
-			keyTd.contentEditable = 'true'
-			keyTd.textContent = row.key || ''
-			keyTd.oninput = () => {
-				model[idx].key = keyTd.textContent.trim()
+			const keyDiv = document.createElement('div')
+			const keyInput = document.createElement('input')
+			keyInput.type = 'text'
+			keyInput.value = row.key || ''
+			keyInput.addEventListener('input', () => {
+				model[idx].key = keyInput.value.trim()
 				container.dispatchEvent(new Event('propertygridchange', { bubbles: true }))
-			}
-
-			const valueTd = document.createElement('td')
-			valueTd.contentEditable = 'true'
-			valueTd.textContent = row.value || ''
-			valueTd.oninput = () => {
-				model[idx].value = valueTd.textContent.trim()
-				container.dispatchEvent(new Event('propertygridchange', { bubbles: true }))
-			}
-
-			// ENTER in keyTd → move caret to valueTd
-			keyTd.addEventListener('keydown', (ev) => {
-				if (ev.key === 'Enter') {
-					ev.preventDefault()
-					focusCell(valueTd)
+			})
+			// ENTER in keyDiv → move caret to valueDiv
+			keyInput.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter') {
+					event.preventDefault()
+					if (keyInput.value.trim() !== '') {
+						const el = event.target.parentElement
+						const sib = el.nextElementSibling
+						sib.firstElementChild.focus()
+					}
 				}
 			})
+			keyInput.addEventListener('blur', (event) => {
+				event.target.setCustomValidity('')
+			})
+			keyDiv.appendChild(keyInput)
+			container.appendChild(keyDiv)
 
-			// ENTER in valueTd → add new row
-			valueTd.addEventListener('keydown', (ev) => {
-				if (ev.key === 'Enter') {
-					ev.preventDefault()
-					api.add()
-					focusKeyCellOfNewRow()
+			const valueDiv = document.createElement('div')
+			const valueInput = document.createElement('input')
+			valueInput.type = 'text'
+			valueInput.value = row.value || ''
+			valueInput.addEventListener('input', () => {
+				model[idx].value = valueInput.value.trim()
+				container.dispatchEvent(new Event('propertygridchange', { bubbles: true }))
+			})
+			// ENTER in valueDiv → add new row
+			valueDiv.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter') {
+					event.preventDefault()
+					if (valueInput.value.trim() !== '') {
+						api.add()
+						requestAnimationFrame(() => {
+							const inputs = container.querySelectorAll('input')
+							inputs[inputs.length - 2].focus()
+						})
+					}
 				}
 			})
+			valueDiv.appendChild(valueInput)
+			container.appendChild(valueDiv)
 
-			const deleteTd = document.createElement('td')
-			deleteTd.innerHTML = '⛔'
-			deleteTd.onclick = () => {
-				model.splice(idx, 1)
-				render()
+			const actionDiv = document.createElement('div')
+			const actionButton = document.createElement('button')
+			actionButton.type = 'button'
+			if (idx === 0) {
+				actionButton.innerHTML = '<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m256 0c-141.2 0-256 114.8-256 256s114.8 256 256 256 256-114.8 256-256-114.8-256-256-256z" fill="#4bae4f" fill-rule="evenodd"/><path d="m116 279.6v-47.3c0-4.8 3.9-8.8 8.8-8.8h98.9v-98.8c0-4.8 3.9-8.8 8.8-8.8h47.3c4.8 0 8.7 3.9 8.7 8.8v98.9h98.8c4.8 0 8.8 3.9 8.8 8.8v47.3c0 4.8-3.9 8.7-8.8 8.7h-98.9v98.8c0 4.8-3.9 8.8-8.7 8.8h-47.3c-4.8 0-8.8-3.9-8.8-8.8v-98.9h-98.8c-4.9.1-8.8-3.9-8.8-8.7z" fill="#fff"/></svg>'
+				actionButton.addEventListener('click', () => {
+					model.push({ key: '', value: '' })
+					render()
+					requestAnimationFrame(() => {
+						const inputs = container.querySelectorAll('input')
+						inputs[inputs.length - 2].focus()
+					})
+				})
+			} else {
+				actionButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><ellipse style="fill:#E21B1B;" cx="256" cy="256" rx="256" ry="255.832"/><rect x="113.12" y="228" style="fill:#FFFFFF;" width="285.672" height="56"/></svg>'
+				actionButton.addEventListener('click', () => {
+					model.splice(idx, 1)
+					render()
+					// Focus last row's value cell
+					requestAnimationFrame(() => {
+						const inputs = container.querySelectorAll('input')
+						inputs[inputs.length - 1].focus()
+					})
+				})
 			}
-
-			tr.appendChild(keyTd)
-			tr.appendChild(valueTd)
-			tr.appendChild(deleteTd)
-			tbody.appendChild(tr)
+			actionDiv.appendChild(actionButton)
+			container.appendChild(actionDiv)
 		})
 	}
 

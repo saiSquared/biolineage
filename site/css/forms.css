@@ -1,9 +1,4 @@
 /*
-button, input, textarea, select, option {
-	font-family: inherit;
-	font-size: inherit;
-}
-
 .date-row button img {
 	width: 36px;
 	height: 36px;
@@ -246,6 +241,11 @@ button.img-button img {
 	grid-area: select;
 }
 */
+
+label, button, input, textarea, select, option {
+	font-family: inherit;
+	font-size: inherit;
+}
 
 .filter-bar {
     width: 100%;
