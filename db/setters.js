@@ -305,7 +305,64 @@ class Setters {
 		}
 
 		console.log(fact)
-		return { ok: false }
+
+		await biolineageDb.begin()
+		try {
+			let placeId = fact.placeId
+			if (fact.place === 'new') {
+				placeId = uuidv4()
+				let googlePlaceId = fact.googlePlaceId
+				if (googlePlaceId) {
+					const pb = googlePlaceId.indexOf('?pb=')
+					googlePlaceId = googlePlaceId.substring(pb + 4, googlePlaceId.indexOf('"', pb))
+				}
+				await biolineageDb.insert('places',
+					{
+						id: placeId,
+						placeType: fact.placeType,
+						name: fact.placeNane,
+						description: fact.placeDescription,
+						sovereignEntity: fact.sovereignEntity,
+						sovereignEntityId: fact.sovereignEntityId,
+						subdivision: fact.subdivision,
+						subdivisionId: fact.subdivisionId,
+						administrativeDivision: fact.administrativeDivision,
+						administrativeDivisionId: fact.administrativeDivisionId,
+						municipality: fact.municipality,
+						municipalityId: fact.municipalityId,
+						latitude: fact.latitude,
+						longitude: fact.longitude,
+						address: fact.address,
+						googlePlaceId,
+						notes: fact.placeNotes,
+						createdBy: user.userId,
+						modifiedBy: user.userId
+					}
+				)
+			}
+			if (mode === 'edit') {
+				await biolineageDb.update('facts',
+					{
+						data: fact.data,
+						epoch: fact.year >= 0 ? 'AD' : 'BC',
+						year: fact.year,
+						month: fact.month,
+						day: fact.day
+					},
+					{
+						id: fact.factId,
+						code: fact.code,
+						entityId: fact.entityId
+					}
+				)
+			}
+			await biolineageDb.commit()
+			return { ok: true, id: fact.entityId }
+		} catch (error) {
+			await biolineageDb.rollback()
+			console.log('Failed processing fact', mode, fact, error)
+			return { ok: false }
+		}
 	}
 
 	/**
@@ -326,10 +383,11 @@ class Setters {
 				const entityData = { fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
 				if (data.canonical) entityData.canonicalNameId = data.nameId
 				await biolineageDb.update('entities', entityData, { id: data.entityId })
+				await biolineageDb.commit()
 				return { ok: true, id: data.entityId }
 			} catch (error) {
 				await biolineageDb.rollback()
-				console.log('Failed to edit name', mode, data, error)
+				console.log('Failed to updxate name', data, error)
 				return { ok: false }
 			}
 		} else {
@@ -348,10 +406,11 @@ class Setters {
 					const entityData = { canonicalNameId: nameData.id, fullName: name.fullName, displayName: name.displayName, familyName: name.familyName, searchName: name.searchName }
 					await biolineageDb.update('entities', entityData, { id: data.entityId })
 				}
+				await biolineageDb.commit()
 				return { ok: true, id: data.entityId }
 			} catch (error) {
 				await biolineageDb.rollback()
-				console.log('Failed to add name', mode, data, error)
+				console.log('Failed to add name', data, error)
 				return { ok: false }
 			}
 		}

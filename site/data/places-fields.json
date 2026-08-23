@@ -3,8 +3,9 @@
 		"label": "Type",
 		"name": "placeType",
 		"id": "place-type",
-		"type": "text",
+		"type": "combo",
 		"placeholder": "ex. City",
+		"api": "/api/place-types",
 		"tip": "The kind of place this is (Farm, Cemetery, Church, Municipality, etc.). The type determines which geographical fields apply.",
 		"width": "25ch"
 	},

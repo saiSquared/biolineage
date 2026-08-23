@@ -922,8 +922,12 @@ class Getters {
 		return graph
 	}
 
-	async places(q) {
-		return await biolineageDb.query("select p.id, concat(name, ' [', p.place_type, ']') name from places p where p.name ilike $1 order by p.name;", [`%${q}%`])
+	async places(tree, q) {
+		return await biolineageDb.query("select p.id, concat(name, ' [', p.place_type, ']') name from places p where p.tree_id = $1 and p.name ilike $2 order by p.name;", [tree, `%${q}%`])
+	}
+
+	async placeTypes(q) {
+		return await biolineageDb.query('select id, name, description from place_types where name ilike $1 order by name;', [`%${q}%`])
 	}
 
 	async municipalities(q) {

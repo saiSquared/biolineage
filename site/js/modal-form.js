@@ -310,7 +310,7 @@ export default function modalForm(options, fields, groups, validators) {
 				})
 				div.appendChild(ele)
 				child = div
-				autocompletes.push({ id: labelInput.id, api: labelInput.api })
+				autocompletes.push({ id: labelInput.id, api: labelInput.api, apiFields: labelInput.apiFields })
 				break
 			}
 
@@ -330,7 +330,7 @@ export default function modalForm(options, fields, groups, validators) {
 					checkDirty()
 				})
 				child = ele
-				tomSelects.push({ id: labelInput.id, api: labelInput.api, tip: labelInput.tip })
+				tomSelects.push({ id: labelInput.id, api: labelInput.api, apiFields: labelInput.apiFields, tip: labelInput.tip })
 				break
 			}
 
@@ -638,7 +638,21 @@ export default function modalForm(options, fields, groups, validators) {
 					clearButtonOnInitial: true,
 					cache: true,
 					onSearch: async ({ currentValue }) => {
-						return await fetch(`${autocomplete.api}?q=${encodeURI(currentValue)}`).then(r => r.json())
+						if (autocomplete.apiFields) {
+							let url = `${autocomplete.api}?`
+							const fields = []
+							for (const apiField of autocomplete.apiFields) {
+								if (apiField.value) {
+									fields.push(`${apiField.query}=${encodeURI(apiField.value)}`)
+								} else {
+									fields.push(`${apiField.query}=${encodeURI(currentValue)}`)
+								}
+							}
+							url += fields.join('&')
+							return await fetch(url).then(r => r.json())
+						} else {
+							return await fetch(`${autocomplete.api}?q=${encodeURI(currentValue)}`).then(r => r.json())
+						}
 					},
 					onResults: ({ matches }) => {
 						return matches.map(data => `<li>${data.name}</li>`).join('')

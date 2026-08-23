@@ -553,6 +553,7 @@ const pgTables = {
 		name: 'places',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'tree_id', type: 'UUID', nulls: false },
 			{ name: 'place_type', type: 'TEXT', nulls: false },
 			{ name: 'place_type_id', type: 'UUID' },
 			{ name: 'name', type: 'TEXT', nulls: false },
@@ -576,6 +577,7 @@ const pgTables = {
 			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' }
 		],
 		foreignKeys: [
+			{ fields: ['tree_id'], refTable: 'trees', refFields: ['id'] },
 			{ fields: ['place_type_id'], refTable: 'place_types', refFields: ['id'] },
 			{ fields: ['sovereign_entity_id'], refTable: 'sovereign_entities', refFields: ['id'] },
 			{ fields: ['subdivision_id'], refTable: 'subdivisions', refFields: ['id'] },
@@ -585,10 +587,11 @@ const pgTables = {
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		unique: [
-			{ fields: ['place_type', 'name'] },
-			{ fields: ['name', 'sovereign_entity_id', 'subdivision_id', 'administrative_division_id', 'municipality_id'] }
+			{ fields: ['tree_id', 'place_type', 'name'] },
+			{ fields: ['tree_id', 'name', 'sovereign_entity_id', 'subdivision_id', 'administrative_division_id', 'municipality_id'] }
 		],
 		indexes: [
+			{ fields: ['tree_id'] },
 			{ fields: ['place_type_id'] },
 			{ fields: ['sovereign_entity_id'] },
 			{ fields: ['subdivision_id'] },

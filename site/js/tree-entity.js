@@ -1290,6 +1290,15 @@ async function handleEntityEditor(event) {
 			]
 			fields.push({
 				group: 'fact',
+				label: 'Tree ID',
+				name: 'treeId',
+				id: 'tree-id',
+				type: 'text',
+				labelHidden: true,
+				value: dataPackage.treeId
+			})
+			fields.push({
+				group: 'fact',
 				label: 'Entity ID',
 				name: 'entityId',
 				id: 'entity-id',
@@ -1435,6 +1444,7 @@ async function handleEntityEditor(event) {
 								type: 'autocomplete',
 								placeholder: 'Enter place name...',
 								api: '/api/places',
+								apiFields: [{ query: 'tree', value: dataPackage.treeId }, { query: 'q' }],
 								tip: 'Type a portion of the place name to find existing places to choose from.'
 							}
 						]

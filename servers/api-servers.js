@@ -147,9 +147,15 @@ async function apiServers(app) {
 		reply.send(await getters.subdivisions(request.query.q))
 	})
 
+	app.get('/api/place-types', async (request, reply) => {
+		const p = await getters.placeTypes(request.query.q)
+		// console.log(p)
+		reply.send(p)
+	})
+
 	app.get('/api/places', async (request, reply) => {
-		const p = await getters.places(request.query.q)
-		console.log(p)
+		const p = await getters.places(request.query.tree, request.query.q)
+		// console.log(p)
 		reply.send(p)
 	})
 

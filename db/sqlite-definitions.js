@@ -36,7 +36,7 @@ const sqliteTables = {
 			{ name: 'ParentPtr', type: 'INTEGER' },
 			{ name: 'OldKey', type: 'INTEGER' }
 		],
-		key: '"kee"  AUTOINCREMENT'
+		key: '"kee" '
 	},
 	person: {
 		name: 'person',
@@ -70,27 +70,37 @@ const sqliteTables = {
 			{ name: 'PersonKey', type: 'INTEGER' },
 			{ name: 'Notes', type: 'TEXT' }
 		],
-		key: '"keeNew"  AUTOINCREMENT'
+		key: '"keeNew"'
 	},
 	places: {
 		name: 'places',
 		fields: [
-			{ name: 'id', type: 'INTEGER', nulls: false, skip: true },
-			{ name: 'TEXT', type: 'TEXT', nulls: false },
+			{ name: 'id', type: 'INTEGER', nulls: false },
+			{ name: 'uuid', type: 'TEXT', nulls: false },
 			{ name: 'type', type: 'TEXT' },
 			{ name: 'name', type: 'TEXT' },
-			{ name: 'country', type: 'TEXT' },
-			{ name: 'countryId', type: 'TEXT' },
-			{ name: 'region', type: 'TEXT' },
-			{ name: 'regionId', type: 'TEXT' },
-			{ name: 'city', type: 'TEXT' },
-			{ name: 'cityId', type: 'TEXT' },
+			{ name: 'sovereignEntity', type: 'TEXT' },
+			{ name: 'sovereignEntityId', type: 'TEXT' },
+			{ name: 'subdivision', type: 'TEXT' },
+			{ name: 'subdivisionId', type: 'TEXT' },
+			{ name: 'administrativeDivision', type: 'TEXT' },
+			{ name: 'administrativeDivisionId', type: 'TEXT' },
+			{ name: 'municipality', type: 'TEXT' },
+			{ name: 'municipalityId', type: 'TEXT' },
+			{ name: 'latitude', type: 'TEXT' },
+			{ name: 'longitude', type: 'TEXT' },
+			{ name: 'address', type: 'TEXT' },
+			{ name: 'googlePlaceId', type: 'TEXT' },
 			{ name: 'ogName', type: 'TEXT' },
 			{ name: 'ogCountry', type: 'TEXT' },
 			{ name: 'ogRegion', type: 'TEXT' },
-			{ name: 'ogCity', type: 'TEXT' }
+			{ name: 'ogCity', type: 'TEXT' },
+			{ name: 'notes', type: 'TEXT' },
+			{ name: 'horsesUuid', type: 'TEXT' },
+			{ name: 'charlesUuid', type: 'TEXT' },
+			{ name: 'normUuid', type: 'TEXT' }
 		],
-		key: '"id"  AUTOINCREMENT'
+		key: '"id"'
 	},
 	charles: {
 		name: 'charles',
