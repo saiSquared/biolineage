@@ -311,34 +311,58 @@ class Setters {
 			let placeId = fact.placeId
 			if (fact.place === 'new') {
 				placeId = uuidv4()
+				if (isUuid(fact.placeType)) {
+					const placeTypeLookup = await biolineageDb.get('select name from place_types where id = $1', [fact.placeType])
+					fact.placeTypeId = fact.placeType
+					fact.placeType = placeTypeLookup.name
+				} else {
+					fact.placeTypeId = null
+				}
+				if (fact.municipalityId && !fact.administrativeDivisionId && !fact.subdivisionId && !fact.sovereignEntityId) {
+					const rollup = await biolineageDb.get('select sovereign_entity_id, subdivision_id, administrative_division_id from municipalities where id = $1', [fact.municipalityId])
+					fact.administrativeDivisionId = rollup.administrativeDivisionId
+					fact.subdivisionId = rollup.subdivisionId
+					fact.sovereignEntityId = rollup.sovereignEntityId
+				} else if (fact.administrativeDivisionId && !fact.subdivisionId && !fact.sovereignEntityId) {
+					const rollup = await biolineageDb.get('select sovereign_entity_id, subdivision_id from administrative_divisions where id = $1', [fact.administrativeDivisionId])
+					fact.subdivisionId = rollup.subdivisionId
+					fact.sovereignEntityId = rollup.sovereignEntityId
+				} else if (fact.subdivisionId && !fact.sovereignEntityId) {
+					const rollup = await biolineageDb.get('select sovereign_entity_id from subdivisions where id = $1', [fact.subdivisionId])
+					fact.sovereignEntityId = rollup.sovereignEntityId
+				}
 				let googlePlaceId = fact.googlePlaceId
 				if (googlePlaceId) {
 					const pb = googlePlaceId.indexOf('?pb=')
 					googlePlaceId = googlePlaceId.substring(pb + 4, googlePlaceId.indexOf('"', pb))
 				}
-				await biolineageDb.insert('places',
-					{
-						id: placeId,
-						placeType: fact.placeType,
-						name: fact.placeNane,
-						description: fact.placeDescription,
-						sovereignEntity: fact.sovereignEntity,
-						sovereignEntityId: fact.sovereignEntityId,
-						subdivision: fact.subdivision,
-						subdivisionId: fact.subdivisionId,
-						administrativeDivision: fact.administrativeDivision,
-						administrativeDivisionId: fact.administrativeDivisionId,
-						municipality: fact.municipality,
-						municipalityId: fact.municipalityId,
-						latitude: fact.latitude,
-						longitude: fact.longitude,
-						address: fact.address,
-						googlePlaceId,
-						notes: fact.placeNotes,
-						createdBy: user.userId,
-						modifiedBy: user.userId
-					}
-				)
+				const newPlace = {
+					id: placeId,
+					treeId: fact.treeId,
+					placeType: fact.placeType,
+					placeTypeId: fact.placeTypeId,
+					name: fact.placeName,
+					description: fact.placeDescription,
+					sovereignEntity: fact.sovereignEntity,
+					sovereignEntityId: fact.sovereignEntityId,
+					subdivision: fact.subdivision,
+					subdivisionId: fact.subdivisionId,
+					administrativeDivision: fact.administrativeDivision,
+					administrativeDivisionId: fact.administrativeDivisionId,
+					municipality: fact.municipality,
+					municipalityId: fact.municipalityId,
+					latitude: fact.latitude,
+					longitude: fact.longitude,
+					address: fact.address,
+					googlePlaceId,
+					notes: fact.placeNotes,
+					createdBy: user.userId,
+					modifiedBy: user.userId
+				}
+				console.log({ newPlace })
+				await biolineageDb.insert('places',	newPlace)
+			} else if (fact.place === 'no') {
+				placeId = null
 			}
 			if (mode === 'edit') {
 				await biolineageDb.update('facts',
@@ -347,7 +371,15 @@ class Setters {
 						epoch: fact.year >= 0 ? 'AD' : 'BC',
 						year: fact.year,
 						month: fact.month,
-						day: fact.day
+						day: fact.day,
+						hour: fact.hour,
+						minute: fact.minute,
+						second: fact.second,
+						timezone: fact.timezone,
+						dateText: fact.dateText,
+						placeId,
+						modifiedBy: user.userId,
+						modifiedDate: new Date()
 					},
 					{
 						id: fact.factId,

@@ -29,7 +29,7 @@ const placeFields = [
 		id: 'place-type',
 		type: 'combo',
 		placeholder: 'ex. City',
-		api: '/api/place-types',
+		api: { endpoint: '/api/place-types', params: [{ query: 'q' }] },
 		tip: 'The kind of place this is (Farm, Cemetery, Church, Municipality, etc.). The type determines which geographical fields apply.',
 		width: '25ch'
 	},
@@ -59,7 +59,7 @@ const placeFields = [
 		id: 'sovereign-entity',
 		type: 'combo',
 		placeholder: 'ex. United States',
-		api: '/api/geography/sovereign-entities',
+		api: { endpoint: '/api/geography/sovereign-entities', params: [{ query: 'q' }] },
 		tip: 'Current or historical country this place belongs to. This is the top‑level geographical unit.',
 		width: '20ch'
 	},
@@ -69,7 +69,7 @@ const placeFields = [
 		id: 'subdivision',
 		type: 'combo',
 		placeholder: 'ex. Maryland',
-		api: '/api/geography/subdivisions',
+		api: { endpoint: '/api/geography/subdivisions', params: [{ query: 'q' }] },
 		tip: 'State, province, or region within the country.',
 		width: '30ch'
 	},
@@ -79,7 +79,7 @@ const placeFields = [
 		id: 'administrative-division',
 		type: 'combo',
 		placeholder: 'ex. Montgomery',
-		api: '/api/geography/administrative-divisions',
+		api: { endpoint: '/api/geography/administrative-divisions', params: [{ query: 'q' }] },
 		tip: 'County, district, or equivalent mid‑level geographical unit.',
 		width: '40ch'
 	},
@@ -89,7 +89,7 @@ const placeFields = [
 		id: 'municipality',
 		type: 'combo',
 		placeholder: 'ex. Rockville',
-		api: '/api/geography/municipalities',
+		api: { endpoint: '/api/geography/municipalities', params: [{ query: 'q' }] },
 		tip: 'City, town, township, or local governing unit.',
 		width: '50ch'
 	},
@@ -242,7 +242,7 @@ async function hashPassword(text) {
 
 async function loadTrees() {
 	trees.length = 0
-	const treeData = await biolineageDb.query('select t.*, et.key, et.label from trees t join entity_types et on et.id = t.entity_type_id')
+	const treeData = await biolineageDb.query('select t.*, et.key, et.label, et.plural_label from trees t join entity_types et on et.id = t.entity_type_id')
 	for (const tree of treeData) {
 		trees.push(tree)
 	}
@@ -261,7 +261,7 @@ async function startup() {
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-name-parts.json'), JSON.stringify(entityNamePartsData, null, '\t'))
 	const relationshipTypes = await biolineageDb.query('select id, type, direction, name, description, left_output, right_output from relationship_types order by type, main desc, name')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'relationship-types.json'), JSON.stringify(relationshipTypes, null, '\t'))
-	const factTypes = await biolineageDb.query('select entity_type_id, code, name, description, required from fact_types order by entity_type_id, code')
+	const factTypes = await biolineageDb.query('select entity_type_id, code, name, relationship_scope, description, required from fact_types order by entity_type_id, code')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'fact-types.json'), JSON.stringify(factTypes, null, '\t'))
 	const placeTypes = await biolineageDb.query('select id, name, description from place_types order by name')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'place-types.json'), JSON.stringify(placeTypes, null, '\t'))

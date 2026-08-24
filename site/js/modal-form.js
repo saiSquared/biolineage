@@ -12,6 +12,18 @@ const floatingUI = window.FloatingUIDOM
  */
 
 /**
+ * @typedef {Object} ModalFormApiParam
+ * @property {String} query - querystring paramter
+ * @property {String} [value] - explict value to pass otherwise function derived
+ */
+
+/**
+ * @typedef {Object} ModalFormApi
+ * @property {String} endpoint - server endpoint for the API call
+ * @property {ModalFormApiParam[]} [params] - paramerters for the API call
+ */
+
+/**
  * @typedef {Object} ModalFormSelectOption
  * @property {String} value - value for the option
  * @property {String} text - text for the option
@@ -55,12 +67,13 @@ const floatingUI = window.FloatingUIDOM
  * @property {String} [pattern] - pattern attribute for text inputs
  * @property {String} [width] - width for the field
  * @property {String} [tip] - FloatingUI tooltip
- * @property {String} [api] - API endpoint for autocomplete and combo
+ * @property {ModalFormApi} [api] - API information for field
  * @property {ModalFormSelectOption[]} [options] - options for select fields
  * @property {ModalFormRadioOption[]} [radioOptions] - options for radio fields
  * @property {ModalFormHandler[]} [handlers] - event handlers for the field
  * @property {ModalFormDataAttribute[]} [data] - odataset attributes
  * @property {any} [value] - value for the field
+ * @property {any} [dataValue] - value for data-value attribute of the field
  */
 
 /**
@@ -88,31 +101,40 @@ export default function modalForm(options, fields, groups, validators) {
 	const propertyGridElements = []
 	const dataPackage = {}
 	const sourcePackage = {}
-	console.log(fields)
-	for (const field of fields) {
-		allFields.push(field)
-		if (!field.ignore) {
-			dataPackage[field.name] = field.value ? String(field.value) : null
-			sourcePackage[field.name] = field.value ? String(field.value) : null
-			if (field.type === 'radio') {
-				for (const opt of field.radioOptions) {
-					for (const radioField of opt.fields) {
-						allFields.push(radioField)
-						if (!radioField.ignore) {
-							dataPackage[radioField.name] = radioField.value ? String(radioField.value) : null
-							sourcePackage[radioField.name] = radioField.value ? String(radioField.value) : null
-						}
-					}
-				}
-			}
-		}
-	}
-	// console.log({ dataPackage, sourcePackage })
+	buildPackages(fields)
+	console.log({ dataPackage, sourcePackage })
 
 	let modalOverlay, modalDialog, modalDelete, modalClose, modalCancel, modalSave, modalBody
 	let modalResolve
 	let isDirty = false
 	let autofocus = null
+
+	function buildPackages(fields) {
+		for (const field of fields) {
+			if (!field.ignore) {
+				allFields.push(field)
+				switch (field.type) {
+					case 'radio': {
+						dataPackage[field.name] = field.value ? String(field.value) : null
+						sourcePackage[field.name] = field.value ? String(field.value) : null
+						for (const opt of field.radioOptions) {
+							buildPackages(opt.fields)
+						}
+						break
+					}
+					case 'autocomplete': {
+						dataPackage[field.name] = field.value ? String(field.dataValue) : null
+						sourcePackage[field.name] = field.value ? String(field.dataValue) : null
+						break
+					}
+					default: {
+						dataPackage[field.name] = field.value ? String(field.value) : null
+						sourcePackage[field.name] = field.value ? String(field.value) : null
+					}
+				}
+			}
+		}
+	}
 
 	function checkDirty() {
 		// console.log({ mode })
@@ -249,7 +271,7 @@ export default function modalForm(options, fields, groups, validators) {
 
 			case 'radio': {
 				noLabel = true
-				const radioGroup = document.createElement('section')
+				const radioGroup = document.createElement('fieldset')
 				radioGroup.className = 'modal-radio-group'
 				let div
 				for (const opt of labelInput.radioOptions) {
@@ -259,12 +281,13 @@ export default function modalForm(options, fields, groups, validators) {
 					radio.id = `${labelInput.id}-${opt.value}`
 					radio.name = labelInput.id
 					radio.type = 'radio'
-					radio.value = opt.value
+					radio.dataset.value = opt.value
 					if (labelInput.value && labelInput.value === opt.value) radio.setAttribute('checked', '')
 					radio.addEventListener('change', event => {
 						event.target.setCustomValidity('')
 						checkDirty()
 					})
+					console.log(radio)
 					div.appendChild(radio)
 					radioGroup.appendChild(div)
 					div = document.createElement('div')
@@ -295,7 +318,7 @@ export default function modalForm(options, fields, groups, validators) {
 				ele.id = labelInput.id
 				ele.type = 'text'
 				ele.dataset.field = labelInput.name
-				ele.dataset.value = labelInput.value || ''
+				ele.dataset.value = labelInput.dataValue || ''
 				ele.setAttribute('autocomplete', 'off')
 				if (labelInput.placeholder) ele.setAttribute('placeholder', labelInput.placeholder)
 				if (labelInput.required) ele.setAttribute('required', '')
@@ -310,7 +333,7 @@ export default function modalForm(options, fields, groups, validators) {
 				})
 				div.appendChild(ele)
 				child = div
-				autocompletes.push({ id: labelInput.id, api: labelInput.api, apiFields: labelInput.apiFields })
+				autocompletes.push({ id: labelInput.id, api: labelInput.api })
 				break
 			}
 
@@ -330,7 +353,7 @@ export default function modalForm(options, fields, groups, validators) {
 					checkDirty()
 				})
 				child = ele
-				tomSelects.push({ id: labelInput.id, api: labelInput.api, apiFields: labelInput.apiFields, tip: labelInput.tip })
+				tomSelects.push({ id: labelInput.id, api: labelInput.api, tip: labelInput.tip })
 				break
 			}
 
@@ -429,7 +452,7 @@ export default function modalForm(options, fields, groups, validators) {
 			}
 			case 'radio': {
 				const ele = document.querySelector(`input[name="${field}"]:checked`)
-				value = ele.value
+				value = ele.dataset.value
 				break
 			}
 			case 'properties': {
@@ -638,21 +661,20 @@ export default function modalForm(options, fields, groups, validators) {
 					clearButtonOnInitial: true,
 					cache: true,
 					onSearch: async ({ currentValue }) => {
-						if (autocomplete.apiFields) {
-							let url = `${autocomplete.api}?`
-							const fields = []
-							for (const apiField of autocomplete.apiFields) {
-								if (apiField.value) {
-									fields.push(`${apiField.query}=${encodeURI(apiField.value)}`)
+						let url = `${autocomplete.api.endpoint}`
+						if (autocomplete.api.params) {
+							url += '?'
+							const params = []
+							for (const apiParam of autocomplete.api.params) {
+								if (apiParam.value) {
+									params.push(`${apiParam.query}=${encodeURI(apiParam.value)}`)
 								} else {
-									fields.push(`${apiField.query}=${encodeURI(currentValue)}`)
+									params.push(`${apiParam.query}=${encodeURI(currentValue)}`)
 								}
 							}
-							url += fields.join('&')
-							return await fetch(url).then(r => r.json())
-						} else {
-							return await fetch(`${autocomplete.api}?q=${encodeURI(currentValue)}`).then(r => r.json())
+							url += params.join('&')
 						}
+						return await fetch(url).then(r => r.json())
 					},
 					onResults: ({ matches }) => {
 						return matches.map(data => `<li>${data.name}</li>`).join('')
@@ -660,6 +682,7 @@ export default function modalForm(options, fields, groups, validators) {
 					onSubmit: ({ element, object }) => {
 						// console.log({ element, object })
 						element.dataset.value = object.id
+						checkDirty()
 					},
 					onReset: (element) => {
 						element.dataset.value = ''
@@ -678,7 +701,20 @@ export default function modalForm(options, fields, groups, validators) {
 					createOnBlur: true,
 					maxItems: 1,
 					load: function (query, callback) {
-						fetch(`${tomSelect.api}?q=${encodeURI(query)}`)
+						let url = `${tomSelect.api.endpoint}`
+						if (tomSelect.api.params) {
+							url += '?'
+							const params = []
+							for (const apiParam of tomSelect.api.params) {
+								if (apiParam.value) {
+									params.push(`${apiParam.query}=${encodeURI(apiParam.value)}`)
+								} else {
+									params.push(`${apiParam.query}=${encodeURI(query)}`)
+								}
+							}
+							url += params.join('&')
+						}
+						fetch(url)
 							.then(r => r.json())
 							.then(json => {
 								callback(json)

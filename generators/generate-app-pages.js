@@ -296,7 +296,7 @@ class AppGenerators {
 				{ link: '/', text: 'Home' },
 				{ link: '/trees', text: 'Trees' },
 				{ link: `/trees/${tree.slug}`, text: tree.name },
-				{ link: `/trees/${tree.slug}/entities`, text: 'Entities' },
+				{ link: `/trees/${tree.slug}/entities`, text: tree.pluralLabel },
 				{ text: entity.displayName }
 			],
 			full: [],

@@ -5,7 +5,14 @@
 		"id": "place-type",
 		"type": "combo",
 		"placeholder": "ex. City",
-		"api": "/api/place-types",
+		"api": {
+			"endpoint": "/api/place-types",
+			"params": [
+				{
+					"query": "q"
+				}
+			]
+		},
 		"tip": "The kind of place this is (Farm, Cemetery, Church, Municipality, etc.). The type determines which geographical fields apply.",
 		"width": "25ch"
 	},
@@ -33,7 +40,14 @@
 		"id": "sovereign-entity",
 		"type": "combo",
 		"placeholder": "ex. United States",
-		"api": "/api/geography/sovereign-entities",
+		"api": {
+			"endpoint": "/api/geography/sovereign-entities",
+			"params": [
+				{
+					"query": "q"
+				}
+			]
+		},
 		"tip": "Current or historical country this place belongs to. This is the top‑level geographical unit.",
 		"width": "20ch"
 	},
@@ -43,7 +57,14 @@
 		"id": "subdivision",
 		"type": "combo",
 		"placeholder": "ex. Maryland",
-		"api": "/api/geography/subdivisions",
+		"api": {
+			"endpoint": "/api/geography/subdivisions",
+			"params": [
+				{
+					"query": "q"
+				}
+			]
+		},
 		"tip": "State, province, or region within the country.",
 		"width": "30ch"
 	},
@@ -53,7 +74,14 @@
 		"id": "administrative-division",
 		"type": "combo",
 		"placeholder": "ex. Montgomery",
-		"api": "/api/geography/administrative-divisions",
+		"api": {
+			"endpoint": "/api/geography/administrative-divisions",
+			"params": [
+				{
+					"query": "q"
+				}
+			]
+		},
 		"tip": "County, district, or equivalent mid‑level geographical unit.",
 		"width": "40ch"
 	},
@@ -63,7 +91,14 @@
 		"id": "municipality",
 		"type": "combo",
 		"placeholder": "ex. Rockville",
-		"api": "/api/geography/municipalities",
+		"api": {
+			"endpoint": "/api/geography/municipalities",
+			"params": [
+				{
+					"query": "q"
+				}
+			]
+		},
 		"tip": "City, town, township, or local governing unit.",
 		"width": "50ch"
 	},

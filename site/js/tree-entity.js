@@ -344,7 +344,7 @@ const massageDate = (data) => {
  * @param {Object} data - entity data
  */
 const showLocation = (ele, data) => {
-	const fields = ['sovereignEntity', 'sovereignEntityName', 'subdivision', 'subdivisionName', 'administrativeDivision', 'administrativeDivisionName', 'municipality', 'municipalityName']
+	const fields = ['placeName', 'address', 'sovereignEntity', 'sovereignEntityName', 'subdivision', 'subdivisionName', 'administrativeDivision', 'administrativeDivisionName', 'municipality', 'municipalityName']
 	let hasLocation = false
 	for (const field of fields) {
 		if (data[field]) {
@@ -354,6 +354,7 @@ const showLocation = (ele, data) => {
 	}
 	if (hasLocation) {
 		const parts = []
+		if (data.placeName) parts.push(data.placeName)
 		if (data.address) parts.push(data.address)
 		if (data.municipality || data.municipalityName) parts.push(data.municipality || data.municipalityName)
 		if (data.administrativeDivision || data.administrativeDivisionName) parts.push(data.administrativeDivision || data.administrativeDivisionName)
@@ -366,7 +367,7 @@ const showLocation = (ele, data) => {
 }
 
 const timelineLocation = (data) => {
-	const fields = ['sovereignEntity', 'sovereignEntityName', 'subdivision', 'subdivisionName', 'administrativeDivision', 'administrativeDivisionName', 'municipality', 'municipalityName']
+	const fields = ['placeName', 'address', 'sovereignEntity', 'sovereignEntityName', 'subdivision', 'subdivisionName', 'administrativeDivision', 'administrativeDivisionName', 'municipality', 'municipalityName']
 	let hasLocation = false
 	for (const field of fields) {
 		if (data[field]) {
@@ -376,6 +377,7 @@ const timelineLocation = (data) => {
 	}
 	if (hasLocation) {
 		const parts = []
+		if (data.placeName) parts.push(data.placeName)
 		if (data.address) parts.push(data.address)
 		if (data.municipality || data.municipalityName) parts.push(data.municipality || data.municipalityName)
 		if (data.administrativeDivision || data.administrativeDivisionName) parts.push(data.administrativeDivision || data.administrativeDivisionName)
@@ -1443,9 +1445,10 @@ async function handleEntityEditor(event) {
 								id: 'place-id',
 								type: 'autocomplete',
 								placeholder: 'Enter place name...',
-								api: '/api/places',
-								apiFields: [{ query: 'tree', value: dataPackage.treeId }, { query: 'q' }],
-								tip: 'Type a portion of the place name to find existing places to choose from.'
+								api: { endpoint: '/api/places', params: [{ query: 'tree', value: dataPackage.treeId }, { query: 'q' }] },
+								tip: 'Type a portion of the place name to find existing places to choose from.',
+								value: existingFact ? existingFact.placeName : null,
+								dataValue: existingFact ? existingFact.placeId : null
 							}
 						]
 					},
