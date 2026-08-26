@@ -1,181 +1,181 @@
 [
 	{
-		"id": "328dfd35-824d-444b-b960-4a8f4fabc8d0",
+		"id": "6efc3015-6c00-4301-950a-95080baca28e",
 		"name": "Burial Ground",
 		"description": "A historical or informal burial site."
 	},
 	{
-		"id": "af86b63e-222f-4d39-bd88-e4958d58939c",
+		"id": "91439d53-0738-4d00-987b-d1bf11c6e247",
 		"name": "Canton",
 		"description": "A regional administrative unit, especially in Switzerland."
 	},
 	{
-		"id": "36aff298-4e02-4640-a113-29108f2920e4",
+		"id": "3d180a66-248e-431a-8e7d-e40eb782953b",
 		"name": "Cemetery",
 		"description": "A designated burial ground."
 	},
 	{
-		"id": "5e96de3b-c334-42b6-a23a-645e8d5216f7",
+		"id": "34f6706a-9f10-4b56-9117-a46753d9bc0f",
 		"name": "Church",
 		"description": "A religious building or congregation location."
 	},
 	{
-		"id": "15219142-4e76-4f57-bbad-c5e6651dd6ec",
+		"id": "448ac0be-cd51-4702-a31f-39225df6a3cd",
 		"name": "Churchyard",
 		"description": "A burial or gathering area adjacent to a church."
 	},
 	{
-		"id": "86f6d3c6-2ae9-4750-bae2-511627e6440e",
+		"id": "620d8cd5-8543-4cef-88d7-6d6a726504d0",
 		"name": "City",
 		"description": "A large, incorporated urban settlement."
 	},
 	{
-		"id": "89ae0c05-6d55-4fbb-997f-3fcc1c44afb8",
+		"id": "91b1c0fd-118f-44fc-995d-76d450cb3fde",
 		"name": "Commune",
 		"description": "A local administrative unit common in parts of Europe and Africa."
 	},
 	{
-		"id": "d21a71f7-df18-44f2-a365-7d3d82ed7ee8",
+		"id": "fa0b7013-1449-4128-85fc-87964c39fe5a",
 		"name": "Country",
 		"description": "A national-level sovereign entity."
 	},
 	{
-		"id": "cf9c5074-7f92-4157-a6fb-8ada9757246e",
+		"id": "1afcfcc4-3f3a-442e-ac3f-459bde9714c1",
 		"name": "County",
 		"description": "A common mid-level administrative division."
 	},
 	{
-		"id": "37eead6e-87b2-46fc-81d7-ec1ba19149a7",
+		"id": "7306d99f-5e1e-4377-83f4-71122ec55b83",
 		"name": "District",
 		"description": "A mid-level administrative area within a region or state."
 	},
 	{
-		"id": "7ce0dabe-2223-47e9-b0cf-0b72e02409d4",
+		"id": "6e73bf09-e090-4fe7-a6c5-7b07004f534c",
 		"name": "Estate",
 		"description": "A large property, manor, or plantation."
 	},
 	{
-		"id": "58f3b750-2e0d-47d9-a710-a86f587373ef",
+		"id": "3bf2d905-6e4b-4210-8710-4e5579dd6482",
 		"name": "Farm",
 		"description": "An agricultural property or homestead."
 	},
 	{
-		"id": "2e817fc3-0675-4488-8ab2-af6f8162ecfd",
+		"id": "42252933-9b29-4908-bb6b-43b7edaff00a",
 		"name": "Hamlet",
 		"description": "A very small settlement, often without its own government."
 	},
 	{
-		"id": "f80475e1-964d-4eef-9f86-4eecce0d3e21",
+		"id": "3fc82681-ffa3-418f-bb8a-2531dd685a4f",
 		"name": "Historic Site",
 		"description": "A location of historical significance."
 	},
 	{
-		"id": "132ac56c-7d2c-4162-9782-6128cccccece",
+		"id": "3b68c2cb-e954-4e4c-afe7-dd714bd7bd35",
 		"name": "Hospital",
 		"description": "A medical facility providing care."
 	},
 	{
-		"id": "4ef1b90b-4c3b-4b90-a082-eb7440a087d0",
+		"id": "c4ed245f-34f7-4a19-8c09-b1f02dee4de4",
 		"name": "Industrial Site",
 		"description": "A factory, mill, foundry, or similar facility."
 	},
 	{
-		"id": "5134463d-c94c-470a-8d4a-319d9ddd67c3",
+		"id": "d5817721-86c7-4652-bd2e-9f630619ca6c",
 		"name": "Military Base",
 		"description": "A fort, camp, or military installation."
 	},
 	{
-		"id": "39e4a965-694d-4ac6-ad44-bd78adf4ee20",
+		"id": "4594d601-bede-4615-a333-c7cac6ad44df",
 		"name": "Monastery",
 		"description": "A religious community or complex."
 	},
 	{
-		"id": "e4dc0543-74b4-4b77-a2b6-b60ab4e38958",
+		"id": "f0df0553-33e4-4853-a169-bcca4f50042f",
 		"name": "Municipality",
 		"description": "A city, town, township, or local governing unit."
 	},
 	{
-		"id": "0da80321-0994-4c0a-80a0-75d6bb8434d8",
+		"id": "c78b7a0d-86f2-4d05-9079-f4c39335a6dd",
 		"name": "Neighborhood",
 		"description": "A defined area within a city or town."
 	},
 	{
-		"id": "54da9752-274a-4fbd-b2be-94ace4f81814",
+		"id": "fd0a3918-0a7b-4d31-bf7c-7f174c6bc692",
 		"name": "Parish",
 		"description": "A religious or civil administrative area."
 	},
 	{
-		"id": "c3e61723-2d12-4295-a32b-3fbad556221c",
+		"id": "a5fe9461-3c95-43ab-8994-ee8bbe538b4b",
 		"name": "Port",
 		"description": "A harbor or maritime facility."
 	},
 	{
-		"id": "3f571f5e-a4f0-4c9b-8ebd-3f0682678a90",
+		"id": "ca0f6b42-56d1-4232-ac8e-6dc6284d1659",
 		"name": "Precinct",
 		"description": "A voting, police, or administrative subdivision."
 	},
 	{
-		"id": "1f1db0ae-ace0-42ef-a5ff-80f74585f63c",
+		"id": "14667433-3a97-46e4-b1e7-264269a0dd7d",
 		"name": "Prefecture",
 		"description": "An administrative jurisdiction used in several countries."
 	},
 	{
-		"id": "35b7c9fa-491d-4ad1-8099-cbed3a08e943",
+		"id": "485737e0-8af5-4558-9479-b24761ea4705",
 		"name": "Province",
 		"description": "A major regional subdivision within a country."
 	},
 	{
-		"id": "050116ad-715f-42eb-9281-503cd3500f87",
+		"id": "71a4c666-890c-4872-854a-daf1558e9ae3",
 		"name": "Rail Station",
 		"description": "A train station or railway stop."
 	},
 	{
-		"id": "a99e3427-d277-453a-91fd-5eef051c4401",
+		"id": "3738cf92-b78c-4674-b522-72f82ab00a72",
 		"name": "Region",
 		"description": "A broad geographical or administrative area."
 	},
 	{
-		"id": "5a7071be-7e91-4538-b22b-ec0e98226f19",
+		"id": "357758e5-64bd-4f2f-823c-3ed5c51f58ee",
 		"name": "Residence",
 		"description": "A home, dwelling, or living place."
 	},
 	{
-		"id": "fec177fe-23a8-49d8-9cb8-78cc2de776eb",
+		"id": "85aa69f4-5bbe-4e5e-8a60-752ace37d481",
 		"name": "School",
 		"description": "An educational institution."
 	},
 	{
-		"id": "672c5c1a-fc28-4a7b-a671-a892f0b5983b",
+		"id": "5b3848a2-dfd8-4c6d-a74c-8bfd2d63cb1b",
 		"name": "School District",
 		"description": "An administrative area for public schools."
 	},
 	{
-		"id": "d6e8323c-8b68-4983-8fdc-14ddc42d5f84",
+		"id": "303c31d2-8b92-4c79-ab7d-c33fd9ae8c73",
 		"name": "State",
 		"description": "A primary subdivision within a country."
 	},
 	{
-		"id": "fed1f58d-662b-4a4a-b67e-c9cf381ccc90",
+		"id": "f3e9913b-1d53-4b35-a0e5-d07ce4ceff17",
 		"name": "Town",
 		"description": "A mid-sized urban settlement."
 	},
 	{
-		"id": "ec46d4db-f359-4740-880d-12c77b0e4468",
+		"id": "32effa2f-c654-4bb7-871f-d0abb3dd330e",
 		"name": "Township",
 		"description": "A local administrative or survey-based division."
 	},
 	{
-		"id": "81a48c8c-1001-40fd-a0f7-a33055dc729a",
+		"id": "67800944-3709-4547-9e44-2d2fad290654",
 		"name": "Village",
 		"description": "A small settlement, typically rural."
 	},
 	{
-		"id": "a977993f-ed1a-4029-8af0-ee64c399daa0",
+		"id": "1520315f-6c93-41ee-b901-260fa7fc9e9b",
 		"name": "Ward",
 		"description": "A subdivision of a city or municipality."
 	},
 	{
-		"id": "a7ed39f7-92dc-4b6c-a529-e4cbc4ceb1a1",
+		"id": "11c349c4-aeb2-4f6b-9aba-a43cbfb61caa",
 		"name": "Workplace",
 		"description": "A location where people are employed."
 	}

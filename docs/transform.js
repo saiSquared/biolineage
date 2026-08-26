@@ -536,6 +536,8 @@ async function initPg() {
 		key: 'human',
 		label: 'Person',
 		pluralLabel: 'People',
+		icon: '/img/person-transparent.svg',
+		iconAdd: '/img/person-add.svg',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -545,6 +547,8 @@ async function initPg() {
 		key: 'equine',
 		label: 'Horse',
 		pluralLabel: 'Horses',
+		icon: '/img/horse-transparent.svg',
+		iconAdd: '/img/horse-add.svg',
 		createdBy: clubside,
 		modifiedBy: clubside
 	})
@@ -687,7 +691,7 @@ async function initPg() {
 		await biolineageDb.commit()
 	} catch (error) {
 		await biolineageDb.rollback()
-		console.log('FAILED TO INSERT sovereign_entities')
+		console.log('FAILED TO INSERT sovereign_entities', error)
 		process.exit()
 	}
 	await biolineageDb.begin()
@@ -700,7 +704,7 @@ async function initPg() {
 		await biolineageDb.commit()
 	} catch (error) {
 		await biolineageDb.rollback()
-		console.log('FAILED TO INSERT subdivisions')
+		console.log('FAILED TO INSERT subdivisions', error)
 		process.exit()
 	}
 	await biolineageDb.begin()
@@ -713,7 +717,7 @@ async function initPg() {
 		await biolineageDb.commit()
 	} catch (error) {
 		await biolineageDb.rollback()
-		console.log('FAILED TO INSERT administrative_divisions')
+		console.log('FAILED TO INSERT administrative_divisions', error)
 		process.exit()
 	}
 	await biolineageDb.begin()
@@ -726,7 +730,7 @@ async function initPg() {
 		await biolineageDb.commit()
 	} catch (error) {
 		await biolineageDb.rollback()
-		console.log('FAILED TO INSERT municipalities')
+		console.log('FAILED TO INSERT municipalities', error)
 		process.exit()
 	}
 

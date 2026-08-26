@@ -174,7 +174,7 @@ class AppGenerators {
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
 			title: `${tree.name} - Trees`,
-			description: `Browse people in tree ${tree.name}`,
+			description: `Start page for tree ${tree.name}`,
 			breadcrumbs: [
 				{ link: '/', text: 'Home' },
 				{ link: '/trees', text: 'Trees' },
@@ -191,18 +191,15 @@ class AppGenerators {
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' }
 			]
 		}
-		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 1 })
-		data.full.push({
-			type: 'filter-bar',
-			method: 'POST',
-			action: '/browse',
-			fields: [
-				{ name: 'filter-text', label: 'Filter', placeholder: 'Filter by name', type: 'text', autocomplete: true, nospellcheck: true },
-				{ name: 'filter-start-year', label: 'Start Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
-				{ name: 'filter-end-year', label: 'End Year', fixed: true, placeholder: 'yyyy', type: 'text', inputmode: 'numeric', maxlength: 4 },
-				{ name: 'add-entity', label: '&nbsp;', fixed: true, type: 'button', icon: '/img/plus.svg', text: `Add ${tree.label}` }
-			]
-		})
+		data.full.push({ type: 'home-logo-holder', logo: '/img/tree.svg', header: tree.name })
+		data.full.push({ type: 'home-search-holder', action: `/trees/${tree.slug}/entities`, method: 'GET', param: 'q', placeholder: `Search ${tree.pluralLabel}` })
+		data.full.push({ type: 'header', content: 'Actions', level: 2 })
+		const buttons = [
+			{ icon: tree.icon, text: `Browse ${tree.pluralLabel}`, link: `/trees/${tree.slug}/entities` },
+			{ icon: tree.iconAdd, text: `Add ${tree.label}`, link: `/trees/${tree.slug}/entities/add`, id: 'add-entity' },
+			{ icon: '/img/place.svg', text: 'Places', link: `/trees/${tree.slug}/entities/add` }
+		]
+		data.full.push({ type: 'big-buttons', content: buttons })
 		const dataPackage = {
 			treeId: tree.id,
 			treeSlug: slug,
@@ -230,13 +227,13 @@ class AppGenerators {
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
-			title: `Entities - ${tree.name} - Trees`,
-			description: `Browse people in tree ${tree.name}`,
+			title: `${tree.pluralLabel} - ${tree.name} - Trees`,
+			description: `Browse ${tree.pluralLabel} in tree ${tree.name}`,
 			breadcrumbs: [
 				{ link: '/', text: 'Home' },
 				{ link: '/trees', text: 'Trees' },
 				{ link: `/trees/${tree.slug}`, text: tree.name },
-				{ text: 'Entities' }
+				{ text: tree.pluralLabel }
 			],
 			full: [],
 			menus: [
@@ -277,7 +274,7 @@ class AppGenerators {
 				]
 			}
 		)
-		data.scripts.push({ type: 'link', content: '/js/tree-browse.js', module: true })
+		data.scripts.push({ type: 'link', content: '/js/tree-entities.js', module: true })
 		return generatePage(data, 'standard.html', true)
 	}
 
@@ -290,8 +287,8 @@ class AppGenerators {
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
-			title: `${entity.displayName} - Entities - ${tree.name} - Trees`,
-			description: `Browse people in tree ${tree.name}`,
+			title: `${entity.displayName} - ${tree.pluralLabel} - ${tree.name} - Trees`,
+			description: `Browse ${tree.pluralLabel} in tree ${tree.name}`,
 			breadcrumbs: [
 				{ link: '/', text: 'Home' },
 				{ link: '/trees', text: 'Trees' },

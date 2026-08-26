@@ -258,6 +258,20 @@ function handleReplacements(match, object, debug) {
 						html += renderBreadcrumbs(slotItem.content, 'breadcrumbs-block')
 						break
 
+					case 'big-buttons': {
+						html += '<ul class="big-button-holder">\n'
+						for (const button of slotItem.content) {
+							html += '\t<li>'
+							html += `<a${button.id ? ` id="${button.id}"` : ''} class="big-button" href="${button.link}">`
+							html += `<img src="${button.icon}">`
+							html += `<span>${smartify(button.text)}</span>`
+							html += '</a>'
+							html += '</li>\n'
+						}
+						html += '</div>\n'
+						break
+					}
+
 					case 'button-list':
 						html += `<ul class="${slotItem.class}">\n`
 						for (const filter of slotItem.content) {
@@ -461,6 +475,30 @@ function handleReplacements(match, object, debug) {
 						if (slotItem.link) {
 							html += '</a>'
 						}
+						break
+					}
+
+					case 'home-logo-holder': {
+						html += '<div class="home-logo-holder">\n'
+						html += '\t'
+						if (slotItem.link) html += `<a class="home-logo" href="${slotItem.link}">`
+						html += `<img src="${slotItem.logo}">`
+						if (slotItem.link) html += '</a>'
+						html += '\n'
+						if (slotItem.header) {
+							html += `\t<h1>${slotItem.header}</h1>\n`
+						}
+						html += '</div>\n'
+						break
+					}
+
+					case 'home-search-holder': {
+						html += `<form class="home-search-holder" action="${slotItem.action}" method="${slotItem.method}" role="search">\n`
+						html += '\t<div class="home-search">\n'
+						html += `\t\t<input name="${slotItem.param}" type="text" required autofocus autocomplete placeholder="${slotItem.placeholder}">\n`
+						html += '\t\t<button type="submit"><svg><use href="#icon-search"></use></svg></button>\n'
+						html += '\t</div>\n'
+						html += '</form>\n'
 						break
 					}
 

@@ -1,53 +1,5 @@
 [
 	{
-		"tz": "Antarctica/McMurdo",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Asia/Anadyr",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Asia/Kamchatka",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Auckland",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Fiji",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Funafuti",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Kwajalein",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Majuro",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Nauru",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Tarawa",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Wake",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Wallis",
-		"offset": "-12:00"
-	},
-	{
 		"tz": "Pacific/Chatham",
 		"offset": "-11:15"
 	},
@@ -1690,5 +1642,53 @@
 	{
 		"tz": "Pacific/Ponape",
 		"offset": "+11:00"
+	},
+	{
+		"tz": "Antarctica/McMurdo",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Asia/Anadyr",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Asia/Kamchatka",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Auckland",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Fiji",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Funafuti",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Kwajalein",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Majuro",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Nauru",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Tarawa",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Wake",
+		"offset": "+12:00"
+	},
+	{
+		"tz": "Pacific/Wallis",
+		"offset": "+12:00"
 	}
 ]

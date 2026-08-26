@@ -1,6 +1,6 @@
 [
 	{
-		"id": "fcbf3455-cafa-47f1-a65f-67f41f989bd2",
+		"id": "272e2b18-fa2d-49a7-9dca-b6708667e7d4",
 		"code": "Display",
 		"slug": "display",
 		"label": "Display",
@@ -12,7 +12,7 @@
 		"width": "100%"
 	},
 	{
-		"id": "03004bef-490c-4b43-8acd-ec15d8a09bc1",
+		"id": "0300a577-2562-4ea4-8563-22acece9e1b9",
 		"code": "PrefixTitle",
 		"slug": "prefix-title",
 		"label": "Title (Prefix)",
@@ -24,7 +24,7 @@
 		"width": "14ch"
 	},
 	{
-		"id": "bcb73385-8c5d-4240-88e1-9909324547eb",
+		"id": "340f1baa-3b07-45f1-ab54-824ffa8d176c",
 		"code": "Primary",
 		"slug": "primary",
 		"label": "Given",
@@ -36,7 +36,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "bf6ac3b2-239c-48e9-b09e-97149e94ae29",
+		"id": "a04df39e-dd1c-4278-9250-a6f246a901ba",
 		"code": "Moniker",
 		"slug": "moniker",
 		"label": "Nickname",
@@ -48,7 +48,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "b7f43b3f-23b0-45a5-9042-3f657d16efd2",
+		"id": "c4d522a1-1f91-4490-a525-053d7800a340",
 		"code": "Secondary",
 		"slug": "secondary",
 		"label": "Additional Given",
@@ -60,7 +60,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "25501784-8714-461a-871b-23e6ea4e14d2",
+		"id": "853918d3-2082-4cc1-a238-030f17a06d4f",
 		"code": "Middle",
 		"slug": "middle",
 		"label": "Middle",
@@ -72,7 +72,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "af8521a9-aaf7-4dbd-ac70-b8f412388cab",
+		"id": "b9615fe1-62a3-42a8-967e-b48881b792a6",
 		"code": "Familiar",
 		"slug": "familiar",
 		"label": "Familiar",
@@ -84,7 +84,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "01b57692-0787-4e43-b350-d7240a991c39",
+		"id": "822e98f9-5fca-450d-a7ed-27821c756cf0",
 		"code": "Religious",
 		"slug": "religious",
 		"label": "Religious",
@@ -96,7 +96,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "ad123c01-6a45-42e3-b15c-a93f784b6693",
+		"id": "20c33e7c-b683-477c-95a3-56f02741c37f",
 		"code": "Geographic",
 		"slug": "geographic",
 		"label": "Geographic",
@@ -108,7 +108,7 @@
 		"width": "14ch"
 	},
 	{
-		"id": "7a026a2f-4476-40dc-ad80-fee481b5bd69",
+		"id": "4124b8f6-266e-462a-9df5-39d8e14a47a3",
 		"code": "Family",
 		"slug": "family",
 		"label": "Family",
@@ -120,7 +120,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "d6e70f91-ffe1-495d-80a1-d16768857759",
+		"id": "e82a1986-a43e-49aa-8ea9-9ca01d8a666b",
 		"code": "Maiden",
 		"slug": "maiden",
 		"label": "Maiden",
@@ -132,7 +132,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "dfb73b75-6b0e-4a15-a28b-ebb8ff28a092",
+		"id": "61bc5f99-f25c-4491-ba76-c6b78c515517",
 		"code": "Patronymic",
 		"slug": "patronymic",
 		"label": "Patronymic",
@@ -144,7 +144,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "13f931ea-ec69-4b19-bc07-14cd634a4483",
+		"id": "3d88b937-fef1-497e-baf2-cebbf6aea7b7",
 		"code": "Matronymic",
 		"slug": "matronymic",
 		"label": "Matronymic",
@@ -156,7 +156,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "0a45919f-88b7-4862-86c6-7c2239d1cc94",
+		"id": "9e312c79-f37a-4c47-af67-035bc981b1ac",
 		"code": "Occupational",
 		"slug": "occupational",
 		"label": "Occupational",
@@ -168,7 +168,7 @@
 		"width": "14ch"
 	},
 	{
-		"id": "c5515a57-3b8c-4cba-83ee-2f3270d76134",
+		"id": "4d89c8f1-b9af-4f12-a9cc-09ea5286e719",
 		"code": "Characteristic",
 		"slug": "characteristic",
 		"label": "Characteristic",
@@ -180,7 +180,7 @@
 		"width": "20ch"
 	},
 	{
-		"id": "0e986298-2c67-44a0-9904-1dd63c998db0",
+		"id": "dd1a8b55-a1ef-4134-b85f-5ce7c513c510",
 		"code": "Postnom",
 		"slug": "postnom",
 		"label": "Postnom",
@@ -192,7 +192,7 @@
 		"width": "14ch"
 	},
 	{
-		"id": "8e621b52-ae68-411a-b4ab-067a975d632d",
+		"id": "a0e82c4c-b4ba-4a20-ae4d-2ae3de0e04e3",
 		"code": "Particle",
 		"slug": "particle",
 		"label": "Particle",
@@ -204,7 +204,7 @@
 		"width": "14ch"
 	},
 	{
-		"id": "d5144b45-56aa-452f-9e84-eb2146947b24",
+		"id": "97165da6-179f-4748-9944-f2d63a63e848",
 		"code": "RootName",
 		"slug": "root-name",
 		"label": "Root",
@@ -216,7 +216,7 @@
 		"width": "14ch"
 	},
 	{
-		"id": "17e67e9e-f6c1-4a0d-8542-bcabcd6bda84",
+		"id": "ef64be11-2a92-424d-8b43-344fb107842f",
 		"code": "SuffixTitle",
 		"slug": "suffix-title",
 		"label": "Title (Suffix)",
