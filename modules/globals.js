@@ -152,6 +152,10 @@ const trees = []
 const entityNameParts = []
 /** @type {BiolineageEntityType[]} */
 const entityTypes = []
+/** @type {BiolineageFactType[]} */
+const factTypes = []
+/** @type {BiolineagePlaceType[]} */
+const placeTypes = []
 
 function getTimeZoneOffset(timeZone, date = new Date()) {
 	// Create a formatter for the target timezone
@@ -261,10 +265,16 @@ async function startup() {
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'entity-name-parts.json'), JSON.stringify(entityNamePartsData, null, '\t'))
 	const relationshipTypes = await biolineageDb.query('select id, type, direction, name, description, left_output, right_output from relationship_types order by type, main desc, name')
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'relationship-types.json'), JSON.stringify(relationshipTypes, null, '\t'))
-	const factTypes = await biolineageDb.query('select entity_type_id, code, name, relationship_scope, description, required from fact_types order by entity_type_id, code')
-	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'fact-types.json'), JSON.stringify(factTypes, null, '\t'))
-	const placeTypes = await biolineageDb.query('select id, name, description from place_types order by name')
-	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'place-types.json'), JSON.stringify(placeTypes, null, '\t'))
+	const factTypeData = await biolineageDb.query('select entity_type_id, code, name, relationship_scope, description, required from fact_types order by entity_type_id, code')
+	for (const row of factTypeData) {
+		factTypes.push(row)
+	}
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'fact-types.json'), JSON.stringify(factTypeData, null, '\t'))
+	const placeTypeData = await biolineageDb.query('select id, name, description from place_types order by name')
+	for (const row of placeTypeData) {
+		placeTypes.push(row)
+	}
+	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'place-types.json'), JSON.stringify(placeTypeData, null, '\t'))
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'places-fields.json'), JSON.stringify(placeFields, null, '\t'))
 	fs.writeFileSync(path.resolve(__dirname, '..', 'site', 'data', 'timezones.json'), JSON.stringify(timezones, null, '\t'))
 }
@@ -272,5 +282,5 @@ async function startup() {
 startup()
 
 module.exports = {
-	env, dbNorm, biolineageDb, entityNameParts, entityTypes, formatWordNumber, hashPassword, loadTrees, trees
+	env, dbNorm, biolineageDb, entityNameParts, entityTypes, factTypes, placeTypes, formatWordNumber, hashPassword, loadTrees, trees
 }

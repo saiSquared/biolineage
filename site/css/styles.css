@@ -475,6 +475,10 @@ main.home {
 	margin-top: 0;
 }
 
+.italics {
+	font-style: italic;
+}
+
 #item-image {
 	aspect-ratio: 1 / 1;
 	position: relative;

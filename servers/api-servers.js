@@ -147,6 +147,12 @@ async function apiServers(app) {
 		reply.send(await getters.subdivisions(request.query.q))
 	})
 
+	app.get('/api/place/:id', async (request, reply) => {
+		const p = await getters.place(request.params.id)
+		// console.log(p)
+		reply.send(p)
+	})
+
 	app.get('/api/place-types', async (request, reply) => {
 		const p = await getters.placeTypes(request.query.q)
 		// console.log(p)
@@ -163,12 +169,16 @@ async function apiServers(app) {
 		reply.send(await setters.treeAdd(request.user, request.body))
 	})
 
+	app.post('/api/tree/browse', async (request, reply) => {
+		reply.send(await getters.treeEntities(request.body))
+	})
+
 	app.post('/api/tree/get', async (request, reply) => {
 		reply.send(await getters.tree(request.body))
 	})
 
-	app.post('/api/tree/browse', async (request, reply) => {
-		reply.send(await getters.treeEntities(request.body))
+	app.post('/api/tree/places/browse', async (request, reply) => {
+		reply.send(await getters.treePlaces(request.body))
 	})
 }
 

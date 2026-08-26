@@ -70,6 +70,24 @@ async function appServers(app) {
 			return handle404Page(reply, request.user)
 		}
 	})
+
+	app.get('/trees/:slug/places/browse', async (request, reply) => {
+		const placesPage = await appGenerators.treePlaces(request.user, request.params.slug)
+		if (placesPage) {
+			return handleStandardPage(reply, request.user, placesPage)
+		} else {
+			return handle404Page(reply, request.user)
+		}
+	})
+
+	app.get('/trees/:slug/places/:id', async (request, reply) => {
+		const placesPage = await appGenerators.treePlace(request.user, request.params.slug, request.params.id)
+		if (placesPage) {
+			return handleStandardPage(reply, request.user, placesPage)
+		} else {
+			return handle404Page(reply, request.user)
+		}
+	})
 }
 
 module.exports = appServers

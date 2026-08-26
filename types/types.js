@@ -111,3 +111,19 @@
  * @property {String} entityId - entity UUID this fact pertains to
  * @property {String|null} sex - entity sex
  */
+
+/**
+ * @typedef {Object} BiolineageFactType
+ * @property {String} entityTypeId - UUID of entity type this fact belongs to
+ * @property {String} code - plain text code for the fact type
+ * @property {String} name - name of the fact type
+ * @property {String} relationshipScore - category of the fact type
+ * @property {String} description - description of the fact type
+ * @property {String} required - fact data required for this fact type
+ */
+
+/**
+ * @typedef {Object} BiolineagePlaceType
+ * @property {String} name - name of the fact type
+ * @property {String} description - description of the fact type
+ */

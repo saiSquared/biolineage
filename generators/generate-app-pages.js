@@ -1,7 +1,7 @@
 const getters = require('../db/getters')
 const { generatePage } = require('./generate-page')
-const { formatWordNumber, trees } = require('../modules/globals')
-// const { smartify } = require('../modules/clubside-utils')
+const { formatWordNumber, trees, placeTypes } = require('../modules/globals')
+const { smartify } = require('../modules/clubside-utils')
 
 class AppGenerators {
 	async addPerson(user) {
@@ -197,7 +197,8 @@ class AppGenerators {
 		const buttons = [
 			{ icon: tree.icon, text: `Browse ${tree.pluralLabel}`, link: `/trees/${tree.slug}/entities` },
 			{ icon: tree.iconAdd, text: `Add ${tree.label}`, link: `/trees/${tree.slug}/entities/add`, id: 'add-entity' },
-			{ icon: '/img/place.svg', text: 'Places', link: `/trees/${tree.slug}/entities/add` }
+			{ icon: '/img/place.svg', text: 'Browse Places', link: `/trees/${tree.slug}/places/browse` },
+			{ icon: '/img/places-explore.svg', text: 'Explore Places', link: `/trees/${tree.slug}/places` }
 		]
 		data.full.push({ type: 'big-buttons', content: buttons })
 		const dataPackage = {
@@ -335,6 +336,119 @@ class AppGenerators {
 			}
 		)
 		data.scripts.push({ type: 'link', content: '/js/tree-entity.js', module: true })
+		return generatePage(data, 'standard.html', true)
+	}
+
+	async treePlace(user, slug, id) {
+		const tree = trees.find(lookup => lookup.slug === slug)
+		if (!tree) return null
+		if (!tree.ownerId === user.userId && !user.role === 'super') return null
+		const place = await getters.place(id)
+		if (!place) return null
+		/** @type {Page} */
+		const data = {
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			title: `${tree.pluralLabel} - ${tree.name} - Trees`,
+			description: `Information on the place ${smartify(place.name)} of type ${place.placeType}`,
+			breadcrumbs: [
+				{ link: '/', text: 'Home' },
+				{ link: '/trees', text: 'Trees' },
+				{ link: `/trees/${tree.slug}`, text: tree.name },
+				{ link: `/trees/${tree.slug}/places`, text: 'Places' },
+				{ text: `${smartify(place.name)} [${place.placeType}]` }
+			],
+			full: [],
+			menus: [
+				{ file: 'account-menu.html' },
+				{ file: 'theme-menu.html' }
+			],
+			stylesheets: [],
+			scripts: [
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' }
+			]
+		}
+		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 2, class: 'no-margin-bottom' })
+		data.full.push({ type: 'header', content: smartify(place.name), level: 1, class: 'no-margin' })
+		data.full.push({ type: 'header', content: place.placeType, level: 3, class: 'no-margin-top italics' })
+		const dataPackage = {
+			treeId: tree.id,
+			treeSlug: slug,
+			treeType: tree.entityTypeId,
+			treeLabel: tree.label,
+			placeId: id,
+			userId: user.userId,
+			role: user.role
+		}
+		data.scripts.push(
+			{
+				type: 'inline',
+				content: [
+						`const dataPackage = JSON.parse(\`${JSON.stringify(dataPackage)}\`)`
+				]
+			}
+		)
+		data.scripts.push({ type: 'link', content: '/js/tree-place.js', module: true })
+		return generatePage(data, 'standard.html', true)
+	}
+
+	async treePlaces(user, slug) {
+		const tree = trees.find(lookup => lookup.slug === slug)
+		if (!tree) return null
+		if (!tree.ownerId === user.userId && !user.role === 'super') return null
+		/** @type {Page} */
+		const data = {
+			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
+			title: `${tree.pluralLabel} - ${tree.name} - Trees`,
+			description: `Browse ${tree.pluralLabel} in tree ${tree.name}`,
+			breadcrumbs: [
+				{ link: '/', text: 'Home' },
+				{ link: '/trees', text: 'Trees' },
+				{ link: `/trees/${tree.slug}`, text: tree.name },
+				{ link: `/trees/${tree.slug}/places`, text: 'Places' },
+				{ text: 'Browse' }
+			],
+			full: [],
+			menus: [
+				{ file: 'account-menu.html' },
+				{ file: 'theme-menu.html' }
+			],
+			stylesheets: [],
+			scripts: [
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' }
+			]
+		}
+		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 1 })
+		const values = [{ value: '', text: 'Filter by Place Type' }]
+		for (const placeType of placeTypes) {
+			values.push({ value: placeType.name, text: placeType.name })
+		}
+		data.full.push({
+			type: 'filter-bar',
+			method: 'POST',
+			action: '/browse',
+			fields: [
+				{ name: 'filter-type', label: 'Place Type', type: 'select', values, fixed: true }
+			]
+		})
+		const dataPackage = {
+			treeId: tree.id,
+			treeSlug: slug,
+			treeType: tree.entityTypeId,
+			treeLabel: tree.label,
+			userId: user.userId,
+			role: user.role
+		}
+		data.scripts.push(
+			{
+				type: 'inline',
+				content: [
+						`const dataPackage = JSON.parse(\`${JSON.stringify(dataPackage)}\`)`
+				]
+			}
+		)
+		data.scripts.push({ type: 'link', content: '/js/tree-places-browse.js', module: true })
 		return generatePage(data, 'standard.html', true)
 	}
 

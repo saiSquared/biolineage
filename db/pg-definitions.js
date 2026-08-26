@@ -1434,6 +1434,96 @@ const pgFunctions = [
 				RETURN COALESCE(v_facts, '[]'::jsonb);
 			END;
 			$$;`
+	},
+	{
+		code:
+			`CREATE OR REPLACE FUNCTION browse_tree_places(
+				p_tree_id     UUID,
+				p_filter_type TEXT DEFAULT NULL,
+				p_page        INTEGER DEFAULT 1
+			)
+			RETURNS JSONB
+			LANGUAGE plpgsql AS $$
+			DECLARE
+				v_offset INTEGER := (p_page - 1) * 40;
+				v_total INTEGER;
+				v_pages INTEGER;
+				v_items JSONB;
+			BEGIN
+				-- total count
+				SELECT COUNT(*) INTO v_total
+				FROM places
+				WHERE tree_id = p_tree_id
+				AND (p_filter_type IS NULL OR place_type = p_filter_type);
+
+				v_pages := CEIL(v_total / 40.0);
+
+				-- items
+				SELECT jsonb_agg(to_jsonb(t))
+				INTO v_items
+				FROM (
+					SELECT id, place_type, name,
+						(select count(*) from facts where place_id = places.id) facts
+					FROM places
+					WHERE tree_id = p_tree_id
+					AND (p_filter_type IS NULL OR place_type = p_filter_type)
+					ORDER BY name
+					OFFSET v_offset LIMIT 40
+				) t;
+
+				RETURN jsonb_build_object(
+					'total', v_total,
+					'pages', v_pages,
+					'items', COALESCE(v_items, '[]'::jsonb)
+				);
+			END;
+			$$;`
+	},
+	{
+		code:
+			`CREATE OR REPLACE FUNCTION place_entities(
+				p_place_id     UUID,
+				p_filter_type TEXT DEFAULT NULL,
+				p_page        INTEGER DEFAULT 1
+			)
+			RETURNS JSONB
+			LANGUAGE plpgsql AS $$
+			DECLARE
+				v_offset INTEGER := (p_page - 1) * 40;
+				v_total INTEGER;
+				v_pages INTEGER;
+				v_items JSONB;
+			BEGIN
+				-- total count
+				SELECT COUNT(*) INTO v_total
+				FROM facts f
+					JOIN entities e ON e.id = f.entity_id
+				WHERE f.place_id = p_place_id
+				AND (p_filter_type IS NULL OR f.code = p_filter_type);
+
+				v_pages := CEIL(v_total / 40.0);
+
+				-- items
+				SELECT jsonb_agg(to_jsonb(t))
+				INTO v_items
+				FROM (
+					SELECT f.entity_id, e.display_name, e.full_name, e.sex, f.code,
+						f.epoch, f."year", f."month", f."day", f.date_text
+					FROM facts f
+						JOIN entities e ON e.id = f.entity_id
+					WHERE f.place_id = p_place_id
+					AND (p_filter_type IS NULL OR f.code = p_filter_type)
+					ORDER BY e.display_name
+					OFFSET v_offset LIMIT 40
+				) t;
+
+				RETURN jsonb_build_object(
+					'total', v_total,
+					'pages', v_pages,
+					'items', COALESCE(v_items, '[]'::jsonb)
+				);
+			END;
+			$$;`
 	}
 ]
 
