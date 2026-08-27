@@ -991,9 +991,16 @@ class Getters {
 		return { total: resultData.total, pages: resultData.pages, items: resultData.items.map(data => pgToJs(data)) }
 	}
 
+	async treePlaceEntities(data) {
+		console.log(data)
+		const results = await biolineageDb.get('select * from place_entities($1, $2, $3);', [data.place, data.filter, data.page])
+		const resultData = results.placeEntities
+		return { total: resultData.total, pages: resultData.pages, items: resultData.items.map(data => pgToJs(data)) }
+	}
+
 	async treePlaces(data) {
 		console.log(data)
-		const results = await biolineageDb.get('select * from browse_tree_places($1, $2, $3);', [data.tree, data.type, data.page])
+		const results = await biolineageDb.get('select * from browse_tree_places($1, $2, $3, $4);', [data.tree, data.filter, data.type, data.page])
 		const resultData = results.browseTreePlaces
 		return { total: resultData.total, pages: resultData.pages, items: resultData.items.map(data => pgToJs(data)) }
 	}

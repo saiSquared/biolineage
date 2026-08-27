@@ -2,6 +2,7 @@
 
 const filterPackage = {
 	tree: null,
+	filter: null,
 	type: null,
 	page: 1
 }
@@ -9,6 +10,7 @@ const filterPackage = {
 const filterStats = document.querySelector('.filter-stats')
 const filterResults = document.querySelector('.filter-results')
 const filterNav = document.querySelector('.filter-nav')
+const filterText = document.getElementById('filter-text')
 const filterType = document.getElementById('filter-type')
 const cols = [
 	{ width: '44%', align: 'left', header: 'Name', headerAlign: 'left', field: 'name' },
@@ -18,6 +20,7 @@ const cols = [
 
 const debouncedFilterUpdate = debounce(() => {
 	filterPackage.page = 1
+	filterPackage.filter = filterText.value === '' ? null : filterText.value
 	filterPackage.type = filterType.value === '' ? null : filterType.value
 	updatePlaces()
 }, 250)
@@ -213,6 +216,8 @@ async function updatePlaces() {
 	drawTable(response.items)
 	buildPagination(filterPackage.page, response.pages)
 }
+
+filterText.addEventListener('input', debouncedFilterUpdate)
 
 filterType.addEventListener('change', debouncedFilterUpdate)
 

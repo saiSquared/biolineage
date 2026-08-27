@@ -374,8 +374,9 @@ class AppGenerators {
 		const dataPackage = {
 			treeId: tree.id,
 			treeSlug: slug,
-			treeType: tree.entityTypeId,
+			treeType: tree.key,
 			treeLabel: tree.label,
+			treePluralLabel: tree.pluralLabel,
 			placeId: id,
 			userId: user.userId,
 			role: user.role
@@ -420,7 +421,7 @@ class AppGenerators {
 			]
 		}
 		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 1 })
-		const values = [{ value: '', text: 'Filter by Place Type' }]
+		const values = [{ value: '', text: 'All' }]
 		for (const placeType of placeTypes) {
 			values.push({ value: placeType.name, text: placeType.name })
 		}
@@ -429,6 +430,7 @@ class AppGenerators {
 			method: 'POST',
 			action: '/browse',
 			fields: [
+				{ name: 'filter-text', label: 'Filter', placeholder: 'Filter by name', type: 'text', autocomplete: true, nospellcheck: true },
 				{ name: 'filter-type', label: 'Place Type', type: 'select', values, fixed: true }
 			]
 		})

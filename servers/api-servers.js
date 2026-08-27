@@ -153,6 +153,10 @@ async function apiServers(app) {
 		reply.send(p)
 	})
 
+	app.post('/api/place/entities', async (request, reply) => {
+		reply.send(await getters.treePlaceEntities(request.body))
+	})
+
 	app.get('/api/place-types', async (request, reply) => {
 		const p = await getters.placeTypes(request.query.q)
 		// console.log(p)

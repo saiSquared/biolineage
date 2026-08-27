@@ -847,6 +847,7 @@ main.full {
 
 .table-holder td.large-image img {
 	height: 1.5em;
+	border-radius: calc(infinity * 1px);
 }
 
 .error-popover {
@@ -1424,6 +1425,28 @@ a.big-button:hover {
 
 .entity-profile-inner-card .extended-family a {
 	background-color: transparent;
+}
+
+.place-details {
+	display: grid;
+	grid-template-columns: 1fr 3fr 1fr;
+	gap: 1rem;
+}
+
+.place-details > div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.place-details > div:nth-child(2) {
+	align-items: start;
+	justify-content: start;
+}
+
+.place-details img {
+	max-width: 100%;
 }
 
 .ts-control {

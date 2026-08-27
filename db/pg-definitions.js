@@ -595,11 +595,12 @@ const pgTables = {
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		unique: [
-			{ fields: ['tree_id', 'place_type', 'name'] },
+			{ fields: ['tree_id', 'name'] },
 			{ fields: ['tree_id', 'name', 'sovereign_entity_id', 'subdivision_id', 'administrative_division_id', 'municipality_id'] }
 		],
 		indexes: [
 			{ fields: ['tree_id'] },
+			{ fields: ['place_type'] },
 			{ fields: ['place_type_id'] },
 			{ fields: ['sovereign_entity_id'] },
 			{ fields: ['subdivision_id'] },
@@ -1439,6 +1440,7 @@ const pgFunctions = [
 		code:
 			`CREATE OR REPLACE FUNCTION browse_tree_places(
 				p_tree_id     UUID,
+				p_filter_name TEXT DEFAULT NULL,
 				p_filter_type TEXT DEFAULT NULL,
 				p_page        INTEGER DEFAULT 1
 			)
@@ -1454,6 +1456,7 @@ const pgFunctions = [
 				SELECT COUNT(*) INTO v_total
 				FROM places
 				WHERE tree_id = p_tree_id
+				AND (p_filter_name IS NULL OR name ILIKE '%' || p_filter_name || '%')
 				AND (p_filter_type IS NULL OR place_type = p_filter_type);
 
 				v_pages := CEIL(v_total / 40.0);
@@ -1466,6 +1469,7 @@ const pgFunctions = [
 						(select count(*) from facts where place_id = places.id) facts
 					FROM places
 					WHERE tree_id = p_tree_id
+					AND (p_filter_name IS NULL OR name ILIKE '%' || p_filter_name || '%')
 					AND (p_filter_type IS NULL OR place_type = p_filter_type)
 					ORDER BY name
 					OFFSET v_offset LIMIT 40
