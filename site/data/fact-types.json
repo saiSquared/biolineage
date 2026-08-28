@@ -1,766 +1,6 @@
 [
 	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Adoption",
-		"name": "Adoption",
-		"relationshipScope": "self",
-		"description": "A fact of a person's adoption. In the context of a parent-child relationship, it describes a fact of the adoption of a child by a parent.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "AdoptiveParent",
-		"name": "Adoptive Parent",
-		"relationshipScope": "parent",
-		"description": "A fact about an adoptive relationship between a parent an a child.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "AdultChristening",
-		"name": "Adult Christening",
-		"relationshipScope": "self",
-		"description": "A fact of a person's christening as an adult.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Amnesty",
-		"name": "Amnesty",
-		"relationshipScope": "self",
-		"description": "A fact of a person's amnesty.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "AncestralHall",
-		"name": "Ancestral Hall",
-		"relationshipScope": "self",
-		"description": "A fact of a person's ancestral hall. An ancestral hall refers to a location where the early ancestors of the person originated. It may also refer to the name of an early ancestor. Family clans are often distinguished one from another by the ancestral hall. Clans that cannot prove direct relationships to other clans with the same surname can assume a direct relationship if they share the same ancestral hall.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "AncestralPoem",
-		"name": "Ancestral Poem",
-		"relationshipScope": "self",
-		"description": "A fact of a person's ancestral poem. An ancestral poem (or generation poem) is composed of the \"generation characters\" that are to be used when choosing names for the members of different generations of an extended family. Ancestral poems are prominent in Asian countries, particularly China.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Annulment",
-		"name": "Annulment",
-		"relationshipScope": "partner",
-		"description": "The fact of an annulment of a marriage.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Apprenticeship",
-		"name": "Apprenticeship",
-		"relationshipScope": "self",
-		"description": "A fact of a person's apprenticeship.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Arrest",
-		"name": "Arrest",
-		"relationshipScope": "self",
-		"description": "A fact of a person's arrest.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "AssistedConception",
-		"name": "Assisted Conception",
-		"relationshipScope": "parent",
-		"description": "A fact of a person's asisted conception such as IVF, ICSI, donor sperm, donor egg, surrogate, etc.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Baptism",
-		"name": "Baptism",
-		"relationshipScope": "self",
-		"description": "A fact of a person's baptism.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "BarMitzvah",
-		"name": "Bar Mitzvah",
-		"relationshipScope": "self",
-		"description": "A fact of a person's bar mitzvah.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "BatMitzvah",
-		"name": "Bat Mitzvah",
-		"relationshipScope": "self",
-		"description": "A fact of a person's bat mitzvah.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "BiologicalParent",
-		"name": "Biological Parent",
-		"relationshipScope": "parent",
-		"description": "A fact the biological relationship between a parent and a child.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Birth",
-		"name": "Birth",
-		"relationshipScope": "self",
-		"description": "A fact of a person's birth.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "BirthNotice",
-		"name": "Birth Notice",
-		"relationshipScope": "self",
-		"description": "A fact of a person's birth notice, such as posted in a newspaper or other publishing medium.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Blessing",
-		"name": "Blessing",
-		"relationshipScope": "self",
-		"description": "A fact of an official blessing received by a person, such as at the hands of a clergy member or at another religious rite.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Branch",
-		"name": "Branch",
-		"relationshipScope": "self",
-		"description": "A fact of a person's branch within an extended clan.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Burial",
-		"name": "Burial",
-		"relationshipScope": "self",
-		"description": "A fact of the burial of person's body after death.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Caste",
-		"name": "Caste",
-		"relationshipScope": "self",
-		"description": "A fact of a person's caste.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Census",
-		"name": "Census",
-		"relationshipScope": "self",
-		"description": "A fact of a person's participation in a census.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "ChildOrder",
-		"name": "Child Order",
-		"relationshipScope": "parent",
-		"description": "A fact about the child order between a parent and a child.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Christening",
-		"name": "Christening",
-		"relationshipScope": "self",
-		"description": "A fact of a person's christening *at birth*. Note: use `AdultChristening` for the christening as an adult.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Circumcision",
-		"name": "Circumcision",
-		"relationshipScope": "self",
-		"description": "A fact of a person's circumcision.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "CivilUnion",
-		"name": "Civil Union",
-		"relationshipScope": "partner",
-		"description": "The fact of a civil union.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Clan",
-		"name": "Clan",
-		"relationshipScope": "self",
-		"description": "A fact of a person's clan.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "CommonLawMarriage",
-		"name": "Common Law Marriage",
-		"relationshipScope": "partner",
-		"description": "The fact of a marriage by common law.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Confirmation",
-		"name": "Confirmation",
-		"relationshipScope": "self",
-		"description": "A fact of a person's confirmation (or other rite of initiation) in a church or religion.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Court",
-		"name": "Court",
-		"relationshipScope": "self",
-		"description": "A fact of the appearance of a person in a court proceeding.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Cremation",
-		"name": "Cremation",
-		"relationshipScope": "self",
-		"description": "A fact of the cremation of person's body after death.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Death",
-		"name": "Death",
-		"relationshipScope": "self",
-		"description": "A fact of the death of a person.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Divorce",
-		"name": "Divorce",
-		"relationshipScope": "partner",
-		"description": "The fact of a divorce of a couple.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "DivorceFiling",
-		"name": "Divorce Filing",
-		"relationshipScope": "partner",
-		"description": "The fact of a filing for divorce.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "DomesticPartnership",
-		"name": "Domestic Partnership",
-		"relationshipScope": "partner",
-		"description": "The fact of a domestic partnership.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Education",
-		"name": "Education",
-		"relationshipScope": "self",
-		"description": "A fact of an education of a person.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "EducationEnrollment",
-		"name": "Education Enrollment",
-		"relationshipScope": "self",
-		"description": "A fact of a person's enrollment in an educational program or institution.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Emigration",
-		"name": "Emigration",
-		"relationshipScope": "self",
-		"description": "A fact of the emigration of a person.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Engagement",
-		"name": "Engagement",
-		"relationshipScope": "partner",
-		"description": "The fact of an engagement to be married.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "EnteringHeir",
-		"name": "EnteringHeir",
-		"relationshipScope": "parent",
-		"description": "A fact about an entering heir relationship between a parent and a child. An entering heir is received from another parent as an \"exiting heir\" for designation of inheritance.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Ethnicity",
-		"name": "Ethnicity",
-		"relationshipScope": "self",
-		"description": "A fact of a person's ethnicity or race.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Excommunication",
-		"name": "Excommunication",
-		"relationshipScope": "self",
-		"description": "A fact of a person's excommunication from a church.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "ExitingHeir",
-		"name": "Exiting Heir",
-		"relationshipScope": "parent",
-		"description": "A fact about an exiting heir relationship between a parent and a child. An exiting heir is given as an \"entering heir\" to another parent for designation of inheritance.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "FirstCommunion",
-		"name": "First Communion",
-		"relationshipScope": "self",
-		"description": "A fact of a person's first communion in a church.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "FosterParent",
-		"name": "Foster Parent",
-		"relationshipScope": "parent",
-		"description": "A fact about a foster relationship between a foster parent and a child.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Funeral",
-		"name": "Funeral",
-		"relationshipScope": "self",
-		"description": "A fact of a person's funeral.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "GenderChange",
-		"name": "Gender Change",
-		"relationshipScope": "self",
-		"description": "A fact of a person's gender change.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "GenerationNumber",
-		"name": "Generation Number",
-		"relationshipScope": "self",
-		"description": "A fact of a person's generation number, indicating the number of generations the person is removed from a known \"first\" ancestor.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Graduation",
-		"name": "Graduation",
-		"relationshipScope": "self",
-		"description": "A fact of a person's graduation from a scholastic institution.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "GuardianParent",
-		"name": "Guardian Parent",
-		"relationshipScope": "parent",
-		"description": "A fact about a legal guardianship between a parent and a child.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Immigration",
-		"name": "Immigration",
-		"relationshipScope": "self",
-		"description": "A fact of a person's immigration.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Imprisonment",
-		"name": "Imprisonment",
-		"relationshipScope": "self",
-		"description": "A fact of a person's imprisonment.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Inquest",
-		"name": "Inquest",
-		"relationshipScope": "self",
-		"description": "A legal inquest. Inquests usually only occur when there’s something suspicious about the death. Inquests might in some instances lead to a murder investigation. Most people that die have a death certificate wherein a doctor indicates the cause of death and often indicates when the decedent was last seen by that physician; these require no inquest.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "LandTransaction",
-		"name": "Land Transaction",
-		"relationshipScope": "self",
-		"description": "A fact of a land transaction enacted by a person.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Language",
-		"name": "Language",
-		"relationshipScope": "self",
-		"description": "A fact of a language spoken by a person.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Living",
-		"name": "Living",
-		"relationshipScope": "self",
-		"description": "A fact of a record of a person's living for a specific period. This is designed to include \"flourish\", defined to mean the time period in an adult's life where he was most productive, perhaps as a writer or member of the state assembly. It does not reflect the person's birth and death dates.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MaritalStatus",
-		"name": "Marital Status",
-		"relationshipScope": "self",
-		"description": "A fact of a person's marital status.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Marriage",
-		"name": "Marriage",
-		"relationshipScope": "partner",
-		"description": "The fact of a marriage.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MarriageBanns",
-		"name": "Marriage Banns",
-		"relationshipScope": "partner",
-		"description": "The fact of a marriage banns.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MarriageContract",
-		"name": "Marriage Contract",
-		"relationshipScope": "partner",
-		"description": "The fact of a marriage contract.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MarriageLicense",
-		"name": "Marriage License",
-		"relationshipScope": "partner",
-		"description": "The fact of a marriage license.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MarriageNotice",
-		"name": "Marriage Notice",
-		"relationshipScope": "partner",
-		"description": "The fact of a marriage notice.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Medical",
-		"name": "Medical",
-		"relationshipScope": "self",
-		"description": "A fact of a person's medical record, such as for an illness or hospital stay.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MilitaryAward",
-		"name": "Military Award",
-		"relationshipScope": "self",
-		"description": "A fact of a person's military award.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MilitaryDischarge",
-		"name": "Military Discharge",
-		"relationshipScope": "self",
-		"description": "A fact of a person's military discharge.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MilitaryDraftRegistration",
-		"name": "Military Draft Registration",
-		"relationshipScope": "self",
-		"description": "A fact of a person's registration for a military draft.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MilitaryInduction",
-		"name": "Military Induction",
-		"relationshipScope": "self",
-		"description": "A fact of a person's military induction.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MilitaryService",
-		"name": "Military Service",
-		"relationshipScope": "self",
-		"description": "A fact of a person's militray service.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Mission",
-		"name": "Mission",
-		"relationshipScope": "self",
-		"description": "A fact of a person's church mission.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MoveFrom",
-		"name": "Move From",
-		"relationshipScope": "self",
-		"description": "A fact of a person's move (i.e. change of residence) from a location.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MoveTo",
-		"name": "Move To",
-		"relationshipScope": "self",
-		"description": "A fact of a person's move (i.e. change of residence) to a new location.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "MultipleBirth",
-		"name": "Multiple Birth",
-		"relationshipScope": "self",
-		"description": "A fact that a person was born as part of a multiple birth (e.g. twin, triplet, etc.)",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "NationalId",
-		"name": "National ID",
-		"relationshipScope": "self",
-		"description": "A fact of a person's national id (e.g. social security number).",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Nationality",
-		"name": "Nationality",
-		"relationshipScope": "self",
-		"description": "A fact of a person's nationality.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Naturalization",
-		"name": "Naturalization",
-		"relationshipScope": "self",
-		"description": "A fact of a person's naturalization (i.e. acquisition of citizenship and nationality).",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "NumberOfChildren",
-		"name": "Number of Children",
-		"relationshipScope": "self",
-		"description": "A fact of the number of children of a person or relationship.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "NumberOfMarriages",
-		"name": "Number of Marriages",
-		"relationshipScope": "self",
-		"description": "A fact of a person's number of marriages.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Obituary",
-		"name": "Obituary",
-		"relationshipScope": "self",
-		"description": "A fact of a person's obituary.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Occupation",
-		"name": "Occupation",
-		"relationshipScope": "self",
-		"description": "A fact of a person's occupation or employment.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "OfficialPosition",
-		"name": "Official Position",
-		"relationshipScope": "self",
-		"description": "A fact of a person's official (government) position.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Ordination",
-		"name": "Ordination",
-		"relationshipScope": "self",
-		"description": "A fact of a person's ordination to a stewardship in a church.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Pardon",
-		"name": "Pardon",
-		"relationshipScope": "self",
-		"description": "A fact of a person's legal pardon.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "PhysicalDescription",
-		"name": "Physical Description",
-		"relationshipScope": "self",
-		"description": "A fact of a person's physical description.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Probate",
-		"name": "Probate",
-		"relationshipScope": "self",
-		"description": "A fact of a receipt of probate of a person's property.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Property",
-		"name": "Property",
-		"relationshipScope": "self",
-		"description": "A fact of a person's property or possessions.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Religion",
-		"name": "Religion",
-		"relationshipScope": "self",
-		"description": "A fact of a person's religion.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Residence",
-		"name": "Residence",
-		"relationshipScope": "self",
-		"description": "A fact of a person's residence.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Retirement",
-		"name": "Retirement",
-		"relationshipScope": "self",
-		"description": "A fact of a person's retirement.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Separation",
-		"name": "Separation",
-		"relationshipScope": "partner",
-		"description": "A fact of a couple's separation.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "SociologicalParent",
-		"name": "Sociological Parent",
-		"relationshipScope": "parent",
-		"description": "A fact about a sociological relationship between a parent and a child, but not definable in typical legal or biological term",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "StepParent",
-		"name": "Step Parent",
-		"relationshipScope": "parent",
-		"description": "A fact about the step relationship between a parent and a child.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Stillbirth",
-		"name": "Stillbirth",
-		"relationshipScope": "self",
-		"description": "A fact of a person's stillbirth.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "TaxAssessment",
-		"name": "Tax Assessment",
-		"relationshipScope": "self",
-		"description": "A fact of a person's tax assessment.",
-		"required": "data"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Visit",
-		"name": "Visit",
-		"relationshipScope": "self",
-		"description": "A fact of a person's visit to a place different from the person's residence.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Will",
-		"name": "Will",
-		"relationshipScope": "self",
-		"description": "A fact of a person's will.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "6fc40b24-4e27-4ef5-b106-be0d52dd894f",
-		"code": "Yahrzeit",
-		"name": "Yahrzeit",
-		"relationshipScope": "self",
-		"description": "A fact of a person's _yahrzeit_ date. A person's yahzeit is the anniversary of their death as measured by the Hebrew calendar.",
-		"required": "date"
-	},
-	{
-		"entityTypeId": "83814c2e-f80f-4f81-8c2b-26a3156244d7",
+		"entityTypeId": "3cdc514b-a84d-4d0c-aa0f-5f74e8e04989",
 		"code": "Birth",
 		"name": "Birth",
 		"relationshipScope": "self",
@@ -768,7 +8,7 @@
 		"required": "date"
 	},
 	{
-		"entityTypeId": "83814c2e-f80f-4f81-8c2b-26a3156244d7",
+		"entityTypeId": "3cdc514b-a84d-4d0c-aa0f-5f74e8e04989",
 		"code": "Burial",
 		"name": "Burial",
 		"relationshipScope": "self",
@@ -776,11 +16,771 @@
 		"required": "date"
 	},
 	{
-		"entityTypeId": "83814c2e-f80f-4f81-8c2b-26a3156244d7",
+		"entityTypeId": "3cdc514b-a84d-4d0c-aa0f-5f74e8e04989",
 		"code": "Death",
 		"name": "Death",
 		"relationshipScope": "self",
 		"description": "A fact of the death of an equine.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Adoption",
+		"name": "Adoption",
+		"relationshipScope": "self",
+		"description": "A fact of a person's adoption. In the context of a parent-child relationship, it describes a fact of the adoption of a child by a parent.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "AdoptiveParent",
+		"name": "Adoptive Parent",
+		"relationshipScope": "parent",
+		"description": "A fact about an adoptive relationship between a parent an a child.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "AdultChristening",
+		"name": "Adult Christening",
+		"relationshipScope": "self",
+		"description": "A fact of a person's christening as an adult.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Amnesty",
+		"name": "Amnesty",
+		"relationshipScope": "self",
+		"description": "A fact of a person's amnesty.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "AncestralHall",
+		"name": "Ancestral Hall",
+		"relationshipScope": "self",
+		"description": "A fact of a person's ancestral hall. An ancestral hall refers to a location where the early ancestors of the person originated. It may also refer to the name of an early ancestor. Family clans are often distinguished one from another by the ancestral hall. Clans that cannot prove direct relationships to other clans with the same surname can assume a direct relationship if they share the same ancestral hall.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "AncestralPoem",
+		"name": "Ancestral Poem",
+		"relationshipScope": "self",
+		"description": "A fact of a person's ancestral poem. An ancestral poem (or generation poem) is composed of the \"generation characters\" that are to be used when choosing names for the members of different generations of an extended family. Ancestral poems are prominent in Asian countries, particularly China.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Annulment",
+		"name": "Annulment",
+		"relationshipScope": "partner",
+		"description": "The fact of an annulment of a marriage.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Apprenticeship",
+		"name": "Apprenticeship",
+		"relationshipScope": "self",
+		"description": "A fact of a person's apprenticeship.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Arrest",
+		"name": "Arrest",
+		"relationshipScope": "self",
+		"description": "A fact of a person's arrest.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "AssistedConception",
+		"name": "Assisted Conception",
+		"relationshipScope": "parent",
+		"description": "A fact of a person's asisted conception such as IVF, ICSI, donor sperm, donor egg, surrogate, etc.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Baptism",
+		"name": "Baptism",
+		"relationshipScope": "self",
+		"description": "A fact of a person's baptism.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "BarMitzvah",
+		"name": "Bar Mitzvah",
+		"relationshipScope": "self",
+		"description": "A fact of a person's bar mitzvah.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "BatMitzvah",
+		"name": "Bat Mitzvah",
+		"relationshipScope": "self",
+		"description": "A fact of a person's bat mitzvah.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "BiologicalParent",
+		"name": "Biological Parent",
+		"relationshipScope": "parent",
+		"description": "A fact the biological relationship between a parent and a child.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Birth",
+		"name": "Birth",
+		"relationshipScope": "self",
+		"description": "A fact of a person's birth.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "BirthNotice",
+		"name": "Birth Notice",
+		"relationshipScope": "singular",
+		"description": "A fact of a person's birth notice, such as posted in a newspaper or other publishing medium.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Blessing",
+		"name": "Blessing",
+		"relationshipScope": "self",
+		"description": "A fact of an official blessing received by a person, such as at the hands of a clergy member or at another religious rite.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Branch",
+		"name": "Branch",
+		"relationshipScope": "self",
+		"description": "A fact of a person's branch within an extended clan.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Burial",
+		"name": "Burial",
+		"relationshipScope": "self",
+		"description": "A fact of the burial of person's body after death.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Caste",
+		"name": "Caste",
+		"relationshipScope": "self",
+		"description": "A fact of a person's caste.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Census",
+		"name": "Census",
+		"relationshipScope": "self",
+		"description": "A fact of a person's participation in a census.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "ChildOrder",
+		"name": "Child Order",
+		"relationshipScope": "parent",
+		"description": "A fact about the child order between a parent and a child.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Christening",
+		"name": "Christening",
+		"relationshipScope": "self",
+		"description": "A fact of a person's christening *at birth*. Note: use `AdultChristening` for the christening as an adult.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Circumcision",
+		"name": "Circumcision",
+		"relationshipScope": "self",
+		"description": "A fact of a person's circumcision.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "CivilUnion",
+		"name": "Civil Union",
+		"relationshipScope": "partner",
+		"description": "The fact of a civil union.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Clan",
+		"name": "Clan",
+		"relationshipScope": "self",
+		"description": "A fact of a person's clan.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "CommonLawMarriage",
+		"name": "Common Law Marriage",
+		"relationshipScope": "partner",
+		"description": "The fact of a marriage by common law.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Confirmation",
+		"name": "Confirmation",
+		"relationshipScope": "self",
+		"description": "A fact of a person's confirmation (or other rite of initiation) in a church or religion.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Court",
+		"name": "Court",
+		"relationshipScope": "self",
+		"description": "A fact of the appearance of a person in a court proceeding.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Cremation",
+		"name": "Cremation",
+		"relationshipScope": "self",
+		"description": "A fact of the cremation of person's body after death.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Death",
+		"name": "Death",
+		"relationshipScope": "singular",
+		"description": "A fact of the death of a person.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Divorce",
+		"name": "Divorce",
+		"relationshipScope": "partner",
+		"description": "The fact of a divorce of a couple.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "DivorceFiling",
+		"name": "Divorce Filing",
+		"relationshipScope": "partner",
+		"description": "The fact of a filing for divorce.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "DomesticPartnership",
+		"name": "Domestic Partnership",
+		"relationshipScope": "partner",
+		"description": "The fact of a domestic partnership.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Education",
+		"name": "Education",
+		"relationshipScope": "self",
+		"description": "A fact of an education of a person.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "EducationEnrollment",
+		"name": "Education Enrollment",
+		"relationshipScope": "self",
+		"description": "A fact of a person's enrollment in an educational program or institution.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Emigration",
+		"name": "Emigration",
+		"relationshipScope": "self",
+		"description": "A fact of the emigration of a person.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Engagement",
+		"name": "Engagement",
+		"relationshipScope": "partner",
+		"description": "The fact of an engagement to be married.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "EnteringHeir",
+		"name": "EnteringHeir",
+		"relationshipScope": "parent",
+		"description": "A fact about an entering heir relationship between a parent and a child. An entering heir is received from another parent as an \"exiting heir\" for designation of inheritance.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Ethnicity",
+		"name": "Ethnicity",
+		"relationshipScope": "self",
+		"description": "A fact of a person's ethnicity or race.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Excommunication",
+		"name": "Excommunication",
+		"relationshipScope": "self",
+		"description": "A fact of a person's excommunication from a church.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "ExitingHeir",
+		"name": "Exiting Heir",
+		"relationshipScope": "parent",
+		"description": "A fact about an exiting heir relationship between a parent and a child. An exiting heir is given as an \"entering heir\" to another parent for designation of inheritance.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "FirstCommunion",
+		"name": "First Communion",
+		"relationshipScope": "self",
+		"description": "A fact of a person's first communion in a church.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "FosterParent",
+		"name": "Foster Parent",
+		"relationshipScope": "parent",
+		"description": "A fact about a foster relationship between a foster parent and a child.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Funeral",
+		"name": "Funeral",
+		"relationshipScope": "self",
+		"description": "A fact of a person's funeral.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "GenderChange",
+		"name": "Gender Change",
+		"relationshipScope": "self",
+		"description": "A fact of a person's gender change.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "GenerationNumber",
+		"name": "Generation Number",
+		"relationshipScope": "self",
+		"description": "A fact of a person's generation number, indicating the number of generations the person is removed from a known \"first\" ancestor.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Graduation",
+		"name": "Graduation",
+		"relationshipScope": "self",
+		"description": "A fact of a person's graduation from a scholastic institution.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "GuardianParent",
+		"name": "Guardian Parent",
+		"relationshipScope": "parent",
+		"description": "A fact about a legal guardianship between a parent and a child.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Immigration",
+		"name": "Immigration",
+		"relationshipScope": "self",
+		"description": "A fact of a person's immigration.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Imprisonment",
+		"name": "Imprisonment",
+		"relationshipScope": "self",
+		"description": "A fact of a person's imprisonment.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Inquest",
+		"name": "Inquest",
+		"relationshipScope": "self",
+		"description": "A legal inquest. Inquests usually only occur when there’s something suspicious about the death. Inquests might in some instances lead to a murder investigation. Most people that die have a death certificate wherein a doctor indicates the cause of death and often indicates when the decedent was last seen by that physician; these require no inquest.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "LandTransaction",
+		"name": "Land Transaction",
+		"relationshipScope": "self",
+		"description": "A fact of a land transaction enacted by a person.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Language",
+		"name": "Language",
+		"relationshipScope": "self",
+		"description": "A fact of a language spoken by a person.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Living",
+		"name": "Living",
+		"relationshipScope": "self",
+		"description": "A fact of a record of a person's living for a specific period. This is designed to include \"flourish\", defined to mean the time period in an adult's life where he was most productive, perhaps as a writer or member of the state assembly. It does not reflect the person's birth and death dates.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MaritalStatus",
+		"name": "Marital Status",
+		"relationshipScope": "self",
+		"description": "A fact of a person's marital status.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Marriage",
+		"name": "Marriage",
+		"relationshipScope": "partner",
+		"description": "The fact of a marriage.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MarriageBanns",
+		"name": "Marriage Banns",
+		"relationshipScope": "partner",
+		"description": "The fact of a marriage banns.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MarriageContract",
+		"name": "Marriage Contract",
+		"relationshipScope": "partner",
+		"description": "The fact of a marriage contract.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MarriageLicense",
+		"name": "Marriage License",
+		"relationshipScope": "partner",
+		"description": "The fact of a marriage license.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MarriageNotice",
+		"name": "Marriage Notice",
+		"relationshipScope": "partner",
+		"description": "The fact of a marriage notice.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Medical",
+		"name": "Medical",
+		"relationshipScope": "self",
+		"description": "A fact of a person's medical record, such as for an illness or hospital stay.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MilitaryAward",
+		"name": "Military Award",
+		"relationshipScope": "self",
+		"description": "A fact of a person's military award.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MilitaryDischarge",
+		"name": "Military Discharge",
+		"relationshipScope": "self",
+		"description": "A fact of a person's military discharge.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MilitaryDraftRegistration",
+		"name": "Military Draft Registration",
+		"relationshipScope": "self",
+		"description": "A fact of a person's registration for a military draft.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MilitaryInduction",
+		"name": "Military Induction",
+		"relationshipScope": "self",
+		"description": "A fact of a person's military induction.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MilitaryService",
+		"name": "Military Service",
+		"relationshipScope": "self",
+		"description": "A fact of a person's militray service.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Mission",
+		"name": "Mission",
+		"relationshipScope": "self",
+		"description": "A fact of a person's church mission.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MoveFrom",
+		"name": "Move From",
+		"relationshipScope": "self",
+		"description": "A fact of a person's move (i.e. change of residence) from a location.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MoveTo",
+		"name": "Move To",
+		"relationshipScope": "self",
+		"description": "A fact of a person's move (i.e. change of residence) to a new location.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "MultipleBirth",
+		"name": "Multiple Birth",
+		"relationshipScope": "self",
+		"description": "A fact that a person was born as part of a multiple birth (e.g. twin, triplet, etc.)",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "NationalId",
+		"name": "National ID",
+		"relationshipScope": "self",
+		"description": "A fact of a person's national id (e.g. social security number).",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Nationality",
+		"name": "Nationality",
+		"relationshipScope": "self",
+		"description": "A fact of a person's nationality.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Naturalization",
+		"name": "Naturalization",
+		"relationshipScope": "self",
+		"description": "A fact of a person's naturalization (i.e. acquisition of citizenship and nationality).",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "NumberOfChildren",
+		"name": "Number of Children",
+		"relationshipScope": "self",
+		"description": "A fact of the number of children of a person or relationship.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "NumberOfMarriages",
+		"name": "Number of Marriages",
+		"relationshipScope": "self",
+		"description": "A fact of a person's number of marriages.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Obituary",
+		"name": "Obituary",
+		"relationshipScope": "self",
+		"description": "A fact of a person's obituary.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Occupation",
+		"name": "Occupation",
+		"relationshipScope": "self",
+		"description": "A fact of a person's occupation or employment.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "OfficialPosition",
+		"name": "Official Position",
+		"relationshipScope": "self",
+		"description": "A fact of a person's official (government) position.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Ordination",
+		"name": "Ordination",
+		"relationshipScope": "self",
+		"description": "A fact of a person's ordination to a stewardship in a church.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Pardon",
+		"name": "Pardon",
+		"relationshipScope": "self",
+		"description": "A fact of a person's legal pardon.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "PhysicalDescription",
+		"name": "Physical Description",
+		"relationshipScope": "self",
+		"description": "A fact of a person's physical description.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Probate",
+		"name": "Probate",
+		"relationshipScope": "self",
+		"description": "A fact of a receipt of probate of a person's property.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Property",
+		"name": "Property",
+		"relationshipScope": "self",
+		"description": "A fact of a person's property or possessions.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Religion",
+		"name": "Religion",
+		"relationshipScope": "self",
+		"description": "A fact of a person's religion.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Residence",
+		"name": "Residence",
+		"relationshipScope": "self",
+		"description": "A fact of a person's residence.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Retirement",
+		"name": "Retirement",
+		"relationshipScope": "self",
+		"description": "A fact of a person's retirement.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Separation",
+		"name": "Separation",
+		"relationshipScope": "partner",
+		"description": "A fact of a couple's separation.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "SociologicalParent",
+		"name": "Sociological Parent",
+		"relationshipScope": "parent",
+		"description": "A fact about a sociological relationship between a parent and a child, but not definable in typical legal or biological term",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "StepParent",
+		"name": "Step Parent",
+		"relationshipScope": "parent",
+		"description": "A fact about the step relationship between a parent and a child.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Stillbirth",
+		"name": "Stillbirth",
+		"relationshipScope": "self",
+		"description": "A fact of a person's stillbirth.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "TaxAssessment",
+		"name": "Tax Assessment",
+		"relationshipScope": "self",
+		"description": "A fact of a person's tax assessment.",
+		"required": "data"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Visit",
+		"name": "Visit",
+		"relationshipScope": "self",
+		"description": "A fact of a person's visit to a place different from the person's residence.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Will",
+		"name": "Will",
+		"relationshipScope": "self",
+		"description": "A fact of a person's will.",
+		"required": "date"
+	},
+	{
+		"entityTypeId": "bdb921d9-11a0-4720-9a7f-3d75f2ca409b",
+		"code": "Yahrzeit",
+		"name": "Yahrzeit",
+		"relationshipScope": "self",
+		"description": "A fact of a person's _yahrzeit_ date. A person's yahzeit is the anniversary of their death as measured by the Hebrew calendar.",
 		"required": "date"
 	}
 ]

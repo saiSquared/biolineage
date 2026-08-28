@@ -348,7 +348,7 @@ class AppGenerators {
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
-			title: `${tree.pluralLabel} - ${tree.name} - Trees`,
+			title: `${smartify(place.name)} [${place.placeType}] - Places - ${tree.name} - Trees`,
 			description: `Information on the place ${smartify(place.name)} of type ${place.placeType}`,
 			breadcrumbs: [
 				{ link: '/', text: 'Home' },
@@ -362,10 +362,11 @@ class AppGenerators {
 				{ file: 'account-menu.html' },
 				{ file: 'theme-menu.html' }
 			],
-			stylesheets: [],
+			stylesheets: ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'],
 			scripts: [
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
-				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' }
+				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' },
+				{ type: 'link', content: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' }
 			]
 		}
 		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 2, class: 'no-margin-bottom' })

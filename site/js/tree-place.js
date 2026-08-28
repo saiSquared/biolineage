@@ -1,5 +1,7 @@
 'use strict'
 
+import { smartify } from './clubside-utils.js'
+
 const filterPackage = {
 	place: null,
 	filter: null,
@@ -14,7 +16,14 @@ const cols = [
 	{ width: '25%', align: 'right', header: 'Date', headerAlign: 'right', field: 'date' }
 ]
 
-let place, tableResults, tableNav
+let place, tableResults, tableNav, map
+
+const formatDecimalNumber = number => {
+	return new Intl.NumberFormat(navigator.language, {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 2
+	}).format(number)
+}
 
 const formatGenealogyDate = (data) => {
 	if (data.dateText) return data.dateText
@@ -32,6 +41,43 @@ const formatGenealogyDate = (data) => {
 	const formattedYear = d.getFullYear()
 
 	return `${formattedDay} ${formattedMonth} ${formattedYear}`
+}
+
+const renderImage = (prefix, file) => {
+	const img = document.createElement('img')
+	img.src = `/img/${prefix}/${file}`
+	return img
+}
+
+const renderKeyValueBlock = (label, obj) => {
+	const p = document.createElement('p')
+	const keys = []
+	for (const key of Object.keys(obj)) {
+		const val = obj[key]
+		if (!val) continue
+		let str = `<span style="font-weight: 500;">${key}</span>: `
+		switch (key) {
+			case 'zips': {
+				str += JSON.parse(val).join(', ')
+				break
+			}
+			case 'population':
+			case 'density':
+				str += formatDecimalNumber(val)
+				break
+			default:
+				str += val
+		}
+		keys.push(str)
+	}
+	p.innerHTML = `<strong>${label}</strong>: ${keys.join(', ')}`
+	return p
+}
+
+const renderLatLng = (lat, lng, zoom) => {
+	const p = document.createElement('p')
+	p.innerHTML = `<strong>Latitude</strong>: ${lat}, <strong>Longitude</strong>: ${lng} <a href="https://www.google.com/maps/@?api=1&map_action=map&center=${lat},${lng}&zoom=${zoom}" target="_blank"><strong>Open Map</strong></a>`
+	return p
 }
 
 function buildPagination(page, totalPages) {
@@ -148,7 +194,7 @@ function drawTable(items) {
 	const theadTr = document.createElement('tr')
 	for (const col of cols) {
 		const th = document.createElement('th')
-		th.style.width = col.with
+		th.style.width = col.width
 		th.style.textAlign = col.headerAlign
 		th.innerHTML = col.header
 		theadTr.appendChild(th)
@@ -185,44 +231,138 @@ async function updateTable() {
 async function setup() {
 	let section, h2, h3, div, p
 	place = await fetch(`/api/place/${dataPackage.placeId}`).then(r => r.json())
-	console.log(place)
+	let lat, lng, zoom
+	if (place.latitude) {
+		lat = place.latitude
+		lng = place.longitude
+		zoom = 14
+	} else if (place.municipalityLatitude) {
+		lat = place.municipalityLatitude
+		lng = place.municipalityLongitude
+		zoom = 10
+	} else if (place.administrativeDivisionLatitude) {
+		lat = place.administrativeDivisionLatitude
+		lng = place.administrativeDivisionLongitude
+		zoom = 8
+	} else if (place.subdivisionLatitude) {
+		lat = place.subdivisionLatitude
+		lng = place.subdivisionLongitude
+		zoom = 6
+	} else if (place.sovereignEntityLatitude) {
+		lat = place.sovereignEntityLatitude
+		lng = place.sovereignEntityLongitide
+		zoom = 4
+	} else {
+		lat = null
+		lng = null
+	}
+	console.log(place, lat, lng, zoom)
 
 	section = document.createElement('section')
-	section.className = 'entity-profile-card'
-	h2 = document.createElement('h2')
-	h2.innerHTML = 'Vitals'
-	section.appendChild(h2)
+	section.className = 'profile-card'
+	p = document.createElement('p')
+	p.innerHTML = `<strong>Name</strong>: ${smartify(place.name)}`
+	section.appendChild(p)
+	p = document.createElement('p')
+	p.innerHTML = `<strong>Type</strong>: ${smartify(place.placeType)}`
+	section.appendChild(p)
+	if (place.description) {
+		p = document.createElement('p')
+		p.innerHTML = `<strong>Description</strong>: ${smartify(place.description)}`
+		section.appendChild(p)
+	}
+	if (place.address) {
+		p = document.createElement('p')
+		p.innerHTML = `<strong>Address</strong>: <address>${smartify(place.address)}</address>`
+		section.appendChild(p)
+	}
+	if (place.sovereignEntity || place.sovereignEntityName) {
+		p = document.createElement('p')
+		p.innerHTML = `<strong>Country</strong>: ${smartify(place.sovereignEntity || place.sovereignEntityName)}`
+		section.appendChild(p)
+	}
+	if (place.subdivision || place.subdivisionName) {
+		p = document.createElement('p')
+		p.innerHTML = `<strong>Subdivision</strong>: ${smartify(place.subdivision || place.subdivisionName)}`
+		section.appendChild(p)
+	}
+	if (place.administrativeDivision || place.administrativeDivisionName) {
+		p = document.createElement('p')
+		p.innerHTML = `<strong>County/District</strong>: ${smartify(place.administrativeDivision || place.administrativeDivisionName)}`
+		section.appendChild(p)
+	}
+	if (place.municipality || place.municipalityName) {
+		p = document.createElement('p')
+		p.innerHTML = `<strong>Municipality</strong>: ${smartify(place.municipality || place.municipalityName)}`
+		section.appendChild(p)
+	}
+	if (place.latitude) {
+		p = document.createElement('p')
+		p.innerHTML = `<strong>Latitude</strong>: ${place.latitude}, <strong>Longitude</strong>: ${place.longitude} <a href="https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}" target="_blank"><strong>Open Map</strong></a>`
+		section.appendChild(p)
+	}
 	main.appendChild(section)
+
+	if (lat) {
+		h2 = document.createElement('h2')
+		h2.innerHTML = `Map${place.googlePlaceId ? 's' : ''}`
+		main.appendChild(h2)
+		section = document.createElement('section')
+		section.classList.add('profile-maps')
+		if (place.googlePlaceId) section.classList.add('profile-maps-two-up')
+		div = document.createElement('div')
+		div.id = 'map'
+		section.appendChild(div)
+		if (place.googlePlaceId) {
+			const iframe = document.createElement('iframe')
+			iframe.src = `https://www.google.com/maps/embed?pb=${place.googlePlaceId}`
+			iframe.setAttribute('allowfullscreen', '')
+			iframe.setAttribute('loading', 'lazy')
+			iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin')
+			section.appendChild(iframe)
+		}
+		main.appendChild(section)
+		map = L.map('map', {
+			center: new L.LatLng(lat, lng),
+			zoom
+		})
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map)
+	}
 
 	if (place.sovereignEntityName) {
 		h2 = document.createElement('h2')
 		h2.innerHTML = 'Sovereign Entity'
 		main.appendChild(h2)
 		section = document.createElement('section')
-		section.className = 'entity-profile-card'
+		section.className = 'profile-card'
 		const placeDetails = document.createElement('div')
 		placeDetails.className = 'place-details'
 		div = document.createElement('div')
-		if (place.sovereignEntityHasFlag) {
-			const img = document.createElement('img')
-			img.src = `/img/flags/${place.sovereignEntityFlagFile}`
-			div.appendChild(img)
-		}
+		if (place.sovereignEntityHasFlag) div.appendChild(renderImage('flags', place.sovereignEntityFlagFile))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
 		h3 = document.createElement('h3')
 		h3.innerHTML = place.sovereignEntityLongName || place.sovereignEntityName
 		div.appendChild(h3)
 		p = document.createElement('p')
+		p.innerHTML = `<strong>Name</strong>: ${place.sovereignEntityName}`
+		div.appendChild(p)
+		if (place.sovereignEntityLongName) {
+			p = document.createElement('p')
+			p.innerHTML = `<strong>Long Name</strong>: ${place.sovereignEntityLongName}`
+			div.appendChild(p)
+		}
+		p = document.createElement('p')
 		p.innerHTML = `<strong>Type</strong>: ${place.sovereignEntityType}`
 		div.appendChild(p)
+		if (place.sovereignEntityIso31661) div.appendChild(renderKeyValueBlock('ISO 3166-1', place.sovereignEntityIso31661))
+		if (place.sovereignEntityLatitude) div.appendChild(renderLatLng(place.sovereignEntityLatitude, place.sovereignEntityLongitide, 5))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
-		if (place.sovereignEntityHasArmorial) {
-			const img = document.createElement('img')
-			img.src = `/img/armorials/${place.sovereignEntityArmorialFile}`
-			div.appendChild(img)
-		}
+		if (place.sovereignEntityHasArmorial) div.appendChild(renderImage('armorials', place.sovereignEntityArmorialFile))
 		placeDetails.appendChild(div)
 		section.appendChild(placeDetails)
 		main.appendChild(section)
@@ -233,15 +373,11 @@ async function setup() {
 		h2.innerHTML = 'Subdivision'
 		main.appendChild(h2)
 		section = document.createElement('section')
-		section.className = 'entity-profile-card'
+		section.className = 'profile-card'
 		const placeDetails = document.createElement('div')
 		placeDetails.className = 'place-details'
 		div = document.createElement('div')
-		if (place.subdivisionHasFlag) {
-			const img = document.createElement('img')
-			img.src = `/img/flags/${place.subdivisionFlagFile}`
-			div.appendChild(img)
-		}
+		if (place.subdivisionHasFlag) div.appendChild(renderImage('flags', place.subdivisionFlagFile))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
 		h3 = document.createElement('h3')
@@ -250,13 +386,11 @@ async function setup() {
 		p = document.createElement('p')
 		p.innerHTML = `<strong>Type</strong>: ${place.subdivisionType}`
 		div.appendChild(p)
+		if (place.subdivisionIso31662) div.appendChild(renderKeyValueBlock('ISO 3166-2', place.subdivisionIso31662))
+		if (place.subdivisionLatitude) div.appendChild(renderLatLng(place.subdivisionLatitude, place.subdivisionLongitude, 9))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
-		if (place.subdivisionHasArmorial) {
-			const img = document.createElement('img')
-			img.src = `/img/armorials/${place.subdivisionArmorialFile}`
-			div.appendChild(img)
-		}
+		if (place.subdivisionHasArmorial) div.appendChild(renderImage('armorials', place.subdivisionArmorialFile))
 		placeDetails.appendChild(div)
 		section.appendChild(placeDetails)
 		main.appendChild(section)
@@ -267,15 +401,11 @@ async function setup() {
 		h2.innerHTML = 'Administrative Division'
 		main.appendChild(h2)
 		section = document.createElement('section')
-		section.className = 'entity-profile-card'
+		section.className = 'profile-card'
 		const placeDetails = document.createElement('div')
 		placeDetails.className = 'place-details'
 		div = document.createElement('div')
-		if (place.administrativeDivisionHasFlag) {
-			const img = document.createElement('img')
-			img.src = `/img/flags/${place.administrativeDivisionFlagFile}`
-			div.appendChild(img)
-		}
+		if (place.administrativeDivisionHasFlag) div.appendChild(renderImage('flags', place.administrativeDivisionFlagFile))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
 		h3 = document.createElement('h3')
@@ -284,13 +414,12 @@ async function setup() {
 		p = document.createElement('p')
 		p.innerHTML = `<strong>Type</strong>: ${place.administrativeDivisionType}`
 		div.appendChild(p)
+		if (place.administrativeDivisionIso31662) div.appendChild(renderKeyValueBlock('ISO 3166-2', place.administrativeDivisionIso31662))
+		if (place.administrativeDivisionMeta) div.appendChild(renderKeyValueBlock('Meta', place.administrativeDivisionMeta))
+		if (place.administrativeDivisionLatitude) div.appendChild(renderLatLng(place.administrativeDivisionLatitude, place.administrativeDivisionLongitude, 13))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
-		if (place.administrativeDivisionHasArmorial) {
-			const img = document.createElement('img')
-			img.src = `/img/armorials/${place.administrativeDivisionArmorialFile}`
-			div.appendChild(img)
-		}
+		if (place.administrativeDivisionHasArmorial) div.appendChild(renderImage('armorials', place.administrativeDivisionArmorialFile))
 		placeDetails.appendChild(div)
 		section.appendChild(placeDetails)
 		main.appendChild(section)
@@ -301,15 +430,11 @@ async function setup() {
 		h2.innerHTML = 'Municipality'
 		main.appendChild(h2)
 		section = document.createElement('section')
-		section.className = 'entity-profile-card'
+		section.className = 'profile-card'
 		const placeDetails = document.createElement('div')
 		placeDetails.className = 'place-details'
 		div = document.createElement('div')
-		if (place.municipalityHasFlag) {
-			const img = document.createElement('img')
-			img.src = `/img/flags/${place.municipalityFlagFile}`
-			div.appendChild(img)
-		}
+		if (place.municipalityHasFlag) div.appendChild(renderImage('flags', place.municipalityFlagFile))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
 		h3 = document.createElement('h3')
@@ -318,13 +443,11 @@ async function setup() {
 		p = document.createElement('p')
 		p.innerHTML = `<strong>Type</strong>: ${place.municipalityType}`
 		div.appendChild(p)
+		if (place.municipalityMeta) div.appendChild(renderKeyValueBlock('Meta', place.municipalityMeta))
+		if (place.municipalityLatitude) div.appendChild(renderLatLng(place.municipalityLatitude, place.municipalityLongitude, 16))
 		placeDetails.appendChild(div)
 		div = document.createElement('div')
-		if (place.municipalityHasArmorial) {
-			const img = document.createElement('img')
-			img.src = `/img/armorials/${place.municipalityArmorialFile}`
-			div.appendChild(img)
-		}
+		if (place.municipalityHasArmorial) div.appendChild(renderImage('armorials', place.municipalityArmorialFile))
 		placeDetails.appendChild(div)
 		section.appendChild(placeDetails)
 		main.appendChild(section)

@@ -595,7 +595,7 @@ const pgTables = {
 			{ fields: ['modified_by'], refTable: 'users', refFields: ['id'] }
 		],
 		unique: [
-			{ fields: ['tree_id', 'name'] },
+			{ fields: ['tree_id', 'place_type', 'name'] },
 			{ fields: ['tree_id', 'name', 'sovereign_entity_id', 'subdivision_id', 'administrative_division_id', 'municipality_id'] }
 		],
 		indexes: [
