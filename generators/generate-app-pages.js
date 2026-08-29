@@ -195,10 +195,10 @@ class AppGenerators {
 		data.full.push({ type: 'home-search-holder', action: `/trees/${tree.slug}/entities`, method: 'GET', param: 'q', placeholder: `Search ${tree.pluralLabel}` })
 		data.full.push({ type: 'header', content: 'Actions', level: 2 })
 		const buttons = [
-			{ icon: tree.icon, text: `Browse ${tree.pluralLabel}`, link: `/trees/${tree.slug}/entities` },
-			{ icon: tree.iconAdd, text: `Add ${tree.label}`, link: `/trees/${tree.slug}/entities/add`, id: 'add-entity' },
-			{ icon: '/img/place.svg', text: 'Browse Places', link: `/trees/${tree.slug}/places/browse` },
-			{ icon: '/img/places-explore.svg', text: 'Explore Places', link: `/trees/${tree.slug}/places` }
+			{ icon: tree.icon, text: [`Browse ${tree.pluralLabel}`], link: `/trees/${tree.slug}/entities` },
+			{ icon: tree.iconAdd, text: [`Add ${tree.label}`], link: `/trees/${tree.slug}/entities/add`, id: 'add-entity' },
+			{ icon: '/img/place.svg', text: ['Browse Places'], link: `/trees/${tree.slug}/places/browse` },
+			{ icon: '/img/places-explore.svg', text: ['Explore Places'], link: `/trees/${tree.slug}/places` }
 		]
 		data.full.push({ type: 'big-buttons', content: buttons })
 		const dataPackage = {

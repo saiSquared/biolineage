@@ -261,14 +261,17 @@ function handleReplacements(match, object, debug) {
 					case 'big-buttons': {
 						html += '<ul class="big-button-holder">\n'
 						for (const button of slotItem.content) {
+							console.log(button)
 							html += '\t<li>'
 							html += `<a${button.id ? ` id="${button.id}"` : ''} class="big-button" href="${button.link}">`
 							html += `<img src="${button.icon}">`
-							html += `<span>${smartify(button.text)}</span>`
+							for (const line of button.text) {
+								html += `<span>${smartify(line)}</span>`
+							}
 							html += '</a>'
 							html += '</li>\n'
 						}
-						html += '</div>\n'
+						html += '</ul>\n'
 						break
 					}
 

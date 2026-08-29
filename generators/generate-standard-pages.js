@@ -55,7 +55,7 @@ class StandardGenerators {
 			ownTreesButtons.push({ link: `/trees/${ownTree.slug}`, icon: '/img/tree.svg', text: [ownTree.name, `(${formatWordNumber(ownTree.c)} member${ownTree.c === 1 ? '' : 's'})`] })
 		}
 		ownTreesButtons.push({ id: 'add-tree', link: '/add-tree', icon: '/img/plus.svg', text: ['Add New Tree', '&nbsp;'] })
-		data.full.push({ type: 'flex-link-list', buttonClass: 'big-button', content: ownTreesButtons })
+		data.full.push({ type: 'big-buttons', content: ownTreesButtons })
 		if (user.role === 'super') {
 			data.full.push({ type: 'header', content: 'Other Trees', level: 2 })
 			const otherTreesButtons = []
@@ -63,7 +63,7 @@ class StandardGenerators {
 			for (const otherTree of otherTrees) {
 				otherTreesButtons.push({ link: `/trees/${otherTree.slug}`, icon: '/img/tree.svg', text: [otherTree.name, `(${formatWordNumber(otherTree.c)} member${otherTree.c === 1 ? '' : 's'})`] })
 			}
-			data.full.push({ type: 'flex-link-list', buttonClass: 'big-button', content: otherTreesButtons })
+			data.full.push({ type: 'big-buttons', content: otherTreesButtons })
 			data.full.push({ type: 'header', content: 'Administration', level: 2 })
 			const menuList = [
 				{ link: '/users', name: 'Manage Users', description: 'Add, delete and edit user accounts', image: '/img/users.svg' }
