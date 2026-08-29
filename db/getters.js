@@ -633,7 +633,7 @@ class Getters {
 	}
 
 	async administrativeDivisions(q) {
-		return await biolineageDb.query("select ad.id, concat(ad.name, ' (', s.name, ', ', se.name, ')') name from administrative_divisions ad join subdivisions s on s.id = ad.subdivision_id join sovereign_entities se on se.id = ad.sovereign_entity_id where ad.name ilike $1 order by name", [`%${q}%`])
+		return await biolineageDb.query("select ad.id, concat(ad.name, ' (', s.name, ', ', se.name, ')') text from administrative_divisions ad join subdivisions s on s.id = ad.subdivision_id join sovereign_entities se on se.id = ad.sovereign_entity_id where ad.name ilike $1 order by text limit 100", [`%${q}%`])
 	}
 
 	async entity(id) {
@@ -924,22 +924,22 @@ class Getters {
 
 	async place(id) {
 		const sql =
-			`select p.place_type, p.name, p.description, p.sovereign_entity, se."name" sovereign_entity_name, se.long_name sovereign_entity_long_name,
+			`select p.place_type, p.place_type_id, p.name place_name, p.description, p.sovereign_entity, p.sovereign_entity_id, se."name" sovereign_entity_name, se.long_name sovereign_entity_long_name,
 				se."type" sovereign_entity_type, se.latitude sovereign_entity_latitude, se.longitude sovereign_entity_longitide,
 				se.iso31661 sovereign_entity_iso31661, se.has_flag sovereign_entity_has_flag, se.flag_file sovereign_entity_flag_file,
 				se.has_armorial sovereign_entity_has_armorial, se.armorial_type sovereign_entity_armorial_type,
-				se.armorial_file sovereign_entity_armorial_file, se.tlds sovereign_entity_tlds, p.subdivision,
+				se.armorial_file sovereign_entity_armorial_file, se.tlds sovereign_entity_tlds, p.subdivision, p.subdivision_id,
 				s."name" subdivision_name, s.long_name subdivision_long_name, s."type" subdivision_type, s.latitude subdivision_latitude, s.longitude subdivision_longitude,
 				s.iso31662 subdivision_iso31662, s.has_flag subdivision_has_flag, s.flag_file subdivision_flag_file,
 				s.has_armorial subdivision_has_armorial, s.armorial_type subdivision_armorial_type,
-				s.armorial_file subdivision_armorial_file, p.administrative_division, ad.name administrative_division_name,
-				ad.long_name administrative_division_long_name, ad.type administrative_division_type,
+				s.armorial_file subdivision_armorial_file, p.administrative_division, p.administrative_division_id,
+				ad.name administrative_division_name, ad.long_name administrative_division_long_name, ad.type administrative_division_type,
 				ad.fips administrative_division_fips, ad.latitude administrative_division_latitude,
 				ad.longitude administrative_division_longitude, ad.iso31662 administrative_division_iso31662,
 				ad."meta" administrative_division_meta, ad.has_flag administrative_division_has_flag,
 				ad.flag_file administrative_division_flag_file, ad.has_armorial administrative_division_has_armorial,
 				ad.armorial_type administrative_division_armorial_type, ad.armorial_file administrative_division_armorial_file,
-				p.municipality, m."name" municipality_name, m.long_name municipality_long_name, m."type" municipality_type,
+				p.municipality, p.municipality_id, m."name" municipality_name, m.long_name municipality_long_name, m."type" municipality_type,
 				m.latitude municipality_latitude, m.longitude municipality_longitude, m."meta" municipality_meta,
 				m.has_flag municipality_has_flag, m.flag_file municipality_flag_file, m.has_armorial municipality_has_armorial,
 				m.armorial_type municipality_armorial_type, m.armorial_file municipality_armorial_file,
@@ -962,19 +962,19 @@ class Getters {
 	}
 
 	async placeTypes(q) {
-		return await biolineageDb.query('select id, name, description from place_types where name ilike $1 order by name;', [`%${q}%`])
+		return await biolineageDb.query('select id, name text, description from place_types where name ilike $1 order by text;', [`%${q}%`])
 	}
 
 	async municipalities(q) {
-		return await biolineageDb.query("select m.id, concat(m.name, ' (', ad.name, ', ', s.name, ', ', se.name, ')') name from municipalities m join administrative_divisions ad on ad.id = m.administrative_division_id join subdivisions s on s.id = m.subdivision_id join sovereign_entities se on se.id = m.sovereign_entity_id where m.name ilike $1 order by name", [`%${q}%`])
+		return await biolineageDb.query("select m.id, concat(m.name, ' (', ad.name, ', ', s.name, ', ', se.name, ')') text from municipalities m join administrative_divisions ad on ad.id = m.administrative_division_id join subdivisions s on s.id = m.subdivision_id join sovereign_entities se on se.id = m.sovereign_entity_id where m.name ilike $1 order by text limit 100", [`%${q}%`])
 	}
 
 	async sovereignEntities(q) {
-		return await biolineageDb.query('select se.id, se.name from sovereign_entities se where se.name ilike $1 order by name', [`%${q}%`])
+		return await biolineageDb.query('select se.id, se.name text from sovereign_entities se where se.name ilike $1 order by text limit 100', [`%${q}%`])
 	}
 
 	async subdivisions(q) {
-		return await biolineageDb.query("select s.id, concat(s.name, ' (', se.name, ')') name from subdivisions s join sovereign_entities se on se.id = s.sovereign_entity_id where s.name ilike $1 order by name", [`%${q}%`])
+		return await biolineageDb.query("select s.id, concat(s.name, ' (', se.name, ')') text from subdivisions s join sovereign_entities se on se.id = s.sovereign_entity_id where s.name ilike $1 order by text limit 100", [`%${q}%`])
 	}
 
 	async superTrees(id) {

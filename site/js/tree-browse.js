@@ -1,6 +1,6 @@
 'use strict'
 
-import { entityGroups, entityFields, entityValidators } from './entity-form.js'
+import { entityGroups, entityFields, entityValidators } from './forms/entity.js'
 import modalForm from '/js/modal-form.js'
 
 const addEntity = document.getElementById('add-entity')

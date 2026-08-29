@@ -1,6 +1,7 @@
 'use strict'
 
 import Autocomplete from '/js/autocomplete/autocomplete.esm.min.js'
+import clubsideComboBox from '/js/clubside-combobox/clubside-combobox.js'
 import propertyGrid from './property-grid.js'
 
 const floatingUI = window.FloatingUIDOM
@@ -95,8 +96,7 @@ export default function modalForm(options, fields, groups, validators) {
 	const mode = options.mode
 	const allFields = []
 	const autocompletes = []
-	const tomSelects = []
-	const tomSelectElements = []
+	const comboboxes = []
 	const propertyGrids = []
 	const propertyGridElements = []
 	const dataPackage = {}
@@ -127,6 +127,10 @@ export default function modalForm(options, fields, groups, validators) {
 						sourcePackage[field.name] = field.value ? String(field.dataValue) : null
 						break
 					}
+					case 'combo':
+						dataPackage[field.name] = field.value || null
+						sourcePackage[field.name] = field.value || null
+						break
 					default: {
 						dataPackage[field.name] = field.value ? String(field.value) : null
 						sourcePackage[field.name] = field.value ? String(field.value) : null
@@ -147,7 +151,14 @@ export default function modalForm(options, fields, groups, validators) {
 			for (const field of allFields) {
 				// console.log(field)
 				if (!field.ignore) {
-					if (getValue(field.id) !== sourcePackage[field.name]) {
+					let fieldDirty = false
+					if (field.type === 'combo') {
+						// console.log(JSON.stringify(getValue(field.id)), JSON.stringify(sourcePackage[field.name]), JSON.stringify(getValue(field.id)) !== JSON.stringify(sourcePackage[field.name]))
+						if (JSON.stringify(getValue(field.id)) !== JSON.stringify(sourcePackage[field.name])) fieldDirty = true
+					} else if (getValue(field.id) !== sourcePackage[field.name]) {
+						fieldDirty = true
+					}
+					if (fieldDirty) {
 						dirtyReasons.push({ field: field.id, old: sourcePackage[field.name], new: getValue(field.id) })
 						isDirty = true
 					}
@@ -220,7 +231,7 @@ export default function modalForm(options, fields, groups, validators) {
 					ele.setAttribute('autofocus', '')
 					autofocus = ele
 				}
-				if (labelInput.value) ele.setAttribute('value', labelInput.value)
+				if (labelInput.value) ele.innerHTML = labelInput.value
 				ele.addEventListener('input', event => {
 					event.target.setCustomValidity('')
 					checkDirty()
@@ -338,22 +349,11 @@ export default function modalForm(options, fields, groups, validators) {
 			}
 
 			case 'combo': {
-				ele = document.createElement('select')
+				ele = document.createElement('div')
 				ele.id = labelInput.id
 				if (labelInput.fieldClass) ele.className = labelInput.fieldClass
-				if (labelInput.placeholder) ele.setAttribute('placeholder', labelInput.placeholder)
-				if (labelInput.required) ele.setAttribute('required', '')
-				if (labelInput.autofocus) {
-					ele.setAttribute('autofocus', '')
-					autofocus = ele
-				}
-				if (labelInput.value) ele.setAttribute('value', labelInput.value)
-				ele.addEventListener('input', event => {
-					event.target.setCustomValidity('')
-					checkDirty()
-				})
 				child = ele
-				tomSelects.push({ id: labelInput.id, api: labelInput.api, tip: labelInput.tip })
+				comboboxes.push(labelInput)
 				break
 			}
 
@@ -433,8 +433,8 @@ export default function modalForm(options, fields, groups, validators) {
 	function getValue(field) {
 		// console.log(field)
 		const fieldDetails = allFields.find(lookup => lookup.id === field)
-		// console.log(fieldDetails)
 		let value
+		// console.log(field, fieldDetails)
 		switch (fieldDetails.type) {
 			case 'autocomplete': {
 				const ele = document.getElementById(field)
@@ -443,11 +443,6 @@ export default function modalForm(options, fields, groups, validators) {
 				} else {
 					value = ele.dataset.value
 				}
-				break
-			}
-			case 'combo': {
-				const ts = tomSelectElements.find(lookup => lookup.id === field)
-				value = ts.ts.getValue()
 				break
 			}
 			case 'radio': {
@@ -462,11 +457,8 @@ export default function modalForm(options, fields, groups, validators) {
 			}
 			default: {
 				const ele = document.getElementById(field)
+				// console.log(field, ele)
 				switch (ele.nodeName) {
-					case 'SELECT':
-					case 'TEXTAREA':
-						value = ele.value
-						break
 					case 'INPUT':
 						switch (ele.type) {
 							case 'checkbox':
@@ -478,6 +470,9 @@ export default function modalForm(options, fields, groups, validators) {
 							default:
 								value = ele.value
 						}
+						break
+					default:
+						value = ele.value
 				}
 			}
 		}
@@ -598,7 +593,7 @@ export default function modalForm(options, fields, groups, validators) {
 			modalBody.className = 'modal-body modal-body-flex'
 			modalBody.noValidate = true
 
-			if (groups) {
+			if (groups && groups.length > 0) {
 				for (const group of groups) {
 					if (group.header) {
 						const groupHeading = document.createElement('h3')
@@ -614,9 +609,12 @@ export default function modalForm(options, fields, groups, validators) {
 					modalBody.appendChild(groupContainer)
 				}
 			} else {
+				const groupContainer = document.createElement('div')
+				groupContainer.className = 'modal-group'
 				for (const field of fields) {
-					createLabel(modalBody, field)
+					createLabel(groupContainer, field)
 				}
+				modalBody.appendChild(groupContainer)
 			}
 
 			modalBody.addEventListener('submit', handleModalSave)
@@ -690,48 +688,45 @@ export default function modalForm(options, fields, groups, validators) {
 				})
 			}
 
-			for (const tomSelect of tomSelects) {
-				const ts = new TomSelect(`#${tomSelect.id}`, {
-					valueField: 'id',
-					labelField: 'name',
-					searchField: 'name',
-					allowHtml: true,
-					persist: false,
-					create: true,
-					createOnBlur: true,
-					maxItems: 1,
-					load: function (query, callback) {
-						let url = `${tomSelect.api.endpoint}`
-						if (tomSelect.api.params) {
+			for (const combobox of comboboxes) {
+				const cb = new clubsideComboBox(document.getElementById(combobox.id), {
+					onSearch: async ({ text }) => {
+						let url = `${combobox.api.endpoint}`
+						if (combobox.api.params) {
 							url += '?'
 							const params = []
-							for (const apiParam of tomSelect.api.params) {
+							for (const apiParam of combobox.api.params) {
 								if (apiParam.value) {
 									params.push(`${apiParam.query}=${encodeURI(apiParam.value)}`)
 								} else {
-									params.push(`${apiParam.query}=${encodeURI(query)}`)
+									params.push(`${apiParam.query}=${encodeURI(text)}`)
 								}
 							}
 							url += params.join('&')
 						}
-						fetch(url)
-							.then(r => r.json())
-							.then(json => {
-								callback(json)
-							})
-							.catch(() => callback())
-					}
+						return await fetch(url).then(r => r.json())
+					},
+					onResults: ({ items }) => {
+						return items.map(item => item.text)
+					},
+					showOnEmpty: combobox.showOnEmpty === true,
+					placeholder: combobox.placeholder,
+					value: combobox.value || { id: null, text: '' }
 				})
-				tomSelectElements.push({ id: tomSelect.id, ts })
-				// console.log(ts.control_input)
-				if (tomSelect.tip) {
-					ts.control_input.addEventListener('focus', () => {
-						showFieldTooltip(ts.control_input, tomSelect.tip)
-					})
-					ts.control_input.addEventListener('blur', () => {
-						hideFieldTooltip(ts.control_input)
-					})
-				}
+				cb.addEventListener('change', event => {
+					cb.input.setCustomValidity('')
+					checkDirty()
+				})
+				cb.input.addEventListener('input', event => {
+					event.target.setCustomValidity('')
+					checkDirty()
+				})
+				cb.input.addEventListener('focus', () => {
+					showFieldTooltip(cb.input, combobox.tip)
+				})
+				cb.input.addEventListener('blur', () => {
+					hideFieldTooltip(cb.input)
+				})
 			}
 
 			for (const pg of propertyGrids) {

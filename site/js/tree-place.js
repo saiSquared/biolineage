@@ -1,6 +1,8 @@
 'use strict'
 
 import { smartify } from './clubside-utils.js'
+import { placeFields, placeGroups, placeValidators } from '/js/forms/place.js'
+import modalForm from '/js/modal-form.js'
 
 const filterPackage = {
 	place: null,
@@ -217,6 +219,61 @@ function drawTable(items) {
 	tableResults.appendChild(div)
 }
 
+async function editPlace(event) {
+	event.preventDefault()
+	const combos = ['placeType', 'sovereignEntity', 'subdivision', 'administrativeDivision', 'municipality']
+	for (const field of placeFields) {
+		if (combos.includes(field.name)) {
+			if (field.name === 'placeType') {
+				if (place.placeTypeId) {
+					field.value = { id: place.placeTypeId, text: place.placeType }
+				} else {
+					field.value = { id: null, text: place.placeType }
+				}
+				field.showOnEmpty = true
+			} else {
+				if (place[`${field.name}Id`]) {
+					field.value = { id: place[`${field.name}Id`], text: place[`${field.name}Name`] }
+				} else {
+					field.value = { id: null, text: place[field.name] }
+				}
+			}
+		} else {
+			if (field.name === 'googlePlaceId') {
+				if (place.googlePlaceId) field.value = `<iframe src="https://www.google.com/maps/embed?pb=${place.googlePlaceId}"></iframe>`
+			} else {
+				if (place[field.name]) field.value = place[field.name]
+			}
+		}
+	}
+	const fields = [
+		{
+			label: 'Place Type',
+			name: 'place',
+			id: 'place',
+			type: 'text',
+			labelHidden: true,
+			value: 'new'
+		},
+		{
+			label: 'Place ID',
+			name: 'placeId',
+			id: 'place-id',
+			type: 'text',
+			labelHidden: true,
+			value: dataPackage.placeId
+		},
+		...placeFields
+	]
+	const modal = modalForm({ mode: 'edit', endpoint: '/api/place/edit', header: 'Edit Place' }, fields, placeGroups, placeValidators)
+	const id = await modal.show()
+	console.log({ id })
+	if (id) {
+		console.log(`New id = ${id}`)
+		setup()
+	}
+}
+
 async function updateTable() {
 	const response = await fetch('/api/place/entities', {
 		method: 'POST',
@@ -258,10 +315,24 @@ async function setup() {
 	}
 	console.log(place, lat, lng, zoom)
 
+	main.innerHTML = ''
+	h2 = document.createElement('h2')
+	h2.className = 'no-margin-bottom'
+	h2.innerHTML = `<img src="/img/tree.svg"> ${dataPackage.treeName}`
+	main.appendChild(h2)
+	const h1 = document.createElement('h1')
+	h1.className = 'no-margin'
+	h1.innerHTML = smartify(place.placeName)
+	main.appendChild(h1)
+	h3 = document.createElement('h3')
+	h3.className = 'no-margin-top italics'
+	h3.innerHTML = place.placeType
+	main.appendChild(h3)
+
 	section = document.createElement('section')
 	section.className = 'profile-card'
 	p = document.createElement('p')
-	p.innerHTML = `<strong>Name</strong>: ${smartify(place.name)}`
+	p.innerHTML = `<strong>Name</strong>: ${smartify(place.placeName)}`
 	section.appendChild(p)
 	p = document.createElement('p')
 	p.innerHTML = `<strong>Type</strong>: ${smartify(place.placeType)}`
@@ -300,6 +371,22 @@ async function setup() {
 		p = document.createElement('p')
 		p.innerHTML = `<strong>Latitude</strong>: ${place.latitude}, <strong>Longitude</strong>: ${place.longitude} <a href="https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}" target="_blank"><strong>Open Map</strong></a>`
 		section.appendChild(p)
+	}
+	if (UserActivation.role !== 'reader') {
+		div = document.createElement('div')
+		div.className = 'flex-wrap flex-wrap-end'
+		const button = document.createElement('button')
+		button.className = 'button'
+		button.type = 'button'
+		const img = document.createElement('img')
+		img.src = '/img/pencil.svg'
+		button.appendChild(img)
+		const span = document.createElement('span')
+		span.innerHTML = 'Edit Place'
+		button.appendChild(span)
+		button.addEventListener('click', editPlace)
+		div.appendChild(button)
+		section.appendChild(div)
 	}
 	main.appendChild(section)
 

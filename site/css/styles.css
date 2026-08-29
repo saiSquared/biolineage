@@ -346,6 +346,15 @@ main.home {
 	padding: 0;
 }
 
+.flex-wrap {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.flex-wrap.flex-wrap-end {
+	justify-content: end;
+}
+
 .cdn-files {
 	margin: 1rem 0 0;
 }

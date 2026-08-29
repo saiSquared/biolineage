@@ -348,32 +348,33 @@ class AppGenerators {
 		/** @type {Page} */
 		const data = {
 			avatar: user.avatar ? `/img/avatars/${user.email.split('@')[0]}.png` : '/img/avatars/blank.png',
-			title: `${smartify(place.name)} [${place.placeType}] - Places - ${tree.name} - Trees`,
-			description: `Information on the place ${smartify(place.name)} of type ${place.placeType}`,
+			title: `${smartify(place.placeName)} [${place.placeType}] - Places - ${tree.name} - Trees`,
+			description: `Information on the place ${smartify(place.placeName)} of type ${place.placeType}`,
 			breadcrumbs: [
 				{ link: '/', text: 'Home' },
 				{ link: '/trees', text: 'Trees' },
 				{ link: `/trees/${tree.slug}`, text: tree.name },
 				{ link: `/trees/${tree.slug}/places`, text: 'Places' },
-				{ text: `${smartify(place.name)} [${place.placeType}]` }
+				{ text: `${smartify(place.placeName)} [${place.placeType}]` }
 			],
 			full: [],
 			menus: [
 				{ file: 'account-menu.html' },
 				{ file: 'theme-menu.html' }
 			],
-			stylesheets: ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'],
+			stylesheets: [
+				'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+				'/js/clubside-combobox/clubside-combobox.css'
+			],
 			scripts: [
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' },
 				{ type: 'link', content: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' }
 			]
 		}
-		data.full.push({ type: 'header', content: `<img src="/img/tree.svg"> ${tree.name}`, level: 2, class: 'no-margin-bottom' })
-		data.full.push({ type: 'header', content: smartify(place.name), level: 1, class: 'no-margin' })
-		data.full.push({ type: 'header', content: place.placeType, level: 3, class: 'no-margin-top italics' })
 		const dataPackage = {
 			treeId: tree.id,
+			treeName: tree.name,
 			treeSlug: slug,
 			treeType: tree.key,
 			treeLabel: tree.label,
