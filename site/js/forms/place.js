@@ -38,7 +38,7 @@ const placeValidators = {
 	}
 }
 
-export default async function setup() {
+export default async function getPlaceForm() {
 	const placesFields = await fetch('/data/places-fields.json').then(r => r.json())
 	for (const placesField of placesFields) {
 		placeFields.push(placesField)

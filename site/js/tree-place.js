@@ -1,7 +1,7 @@
 'use strict'
 
 import { smartify } from './clubside-utils.js'
-import { placeFields, placeGroups, placeValidators } from '/js/forms/place.js'
+import getPlaceForm from '/js/forms/place.js'
 import modalForm from '/js/modal-form.js'
 
 const filterPackage = {
@@ -18,7 +18,7 @@ const cols = [
 	{ width: '25%', align: 'right', header: 'Date', headerAlign: 'right', field: 'date' }
 ]
 
-let place, tableResults, tableNav, map
+let place, tableResults, tableNav, map, placeFields
 
 const formatDecimalNumber = number => {
 	return new Intl.NumberFormat(navigator.language, {
@@ -265,12 +265,12 @@ async function editPlace(event) {
 		},
 		...placeFields
 	]
-	const modal = modalForm({ mode: 'edit', endpoint: '/api/place/edit', header: 'Edit Place' }, fields, placeGroups, placeValidators)
+	const modal = modalForm({ mode: 'edit', endpoint: '/api/place/edit', header: 'Edit Place' }, fields)
 	const id = await modal.show()
 	console.log({ id })
 	if (id) {
 		console.log(`New id = ${id}`)
-		setup()
+		showPlace()
 	}
 }
 
@@ -286,6 +286,11 @@ async function updateTable() {
 }
 
 async function setup() {
+	const placeForm = await getPlaceForm()
+	placeFields = placeForm.placeFields
+}
+
+async function showPlace() {
 	let section, h2, h3, div, p
 	place = await fetch(`/api/place/${dataPackage.placeId}`).then(r => r.json())
 	let lat, lng, zoom
@@ -557,4 +562,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	console.log(dataPackage)
 	filterPackage.place = dataPackage.placeId
 	setup()
+	showPlace()
 })

@@ -24,6 +24,41 @@ const normSQLite = new sqliteDb('../db/norm.db')
 
 const placeFixes = [
 	{
+		ogName: 'Sumter cemetary near Mama Comp',
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: 'Greenville',
+		uuid: '4de025c7-059b-446b-996c-7b8cae18f9df'
+	},
+	{
+		ogName: 'Darlington',
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: null,
+		uuid: '57d1bb67-59ae-4be2-80c5-11bac2396c74'
+	},
+	{
+		ogName: 'Old Johnsonville Methodist Church Cemetery',
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: 'Johnsonville',
+		uuid: '65a31b18-d052-475b-873a-34fd1393457a'
+	},
+	{
+		ogName: 'Ole Johnsonville Cemetary',
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: 'Johnsonville',
+		uuid: '65a31b18-d052-475b-873a-34fd1393457a'
+	},
+	{
+		ogName: 'Tuomey',
+		ogCountry: 'us',
+		ogRegion: 'SC',
+		ogCity: 'Sumter',
+		uuid: '54faccb0-d82a-414b-8574-69b55e6c0303'
+	},
+	{
 		ogName: null,
 		ogCountry: null,
 		ogRegion: 'NY',
