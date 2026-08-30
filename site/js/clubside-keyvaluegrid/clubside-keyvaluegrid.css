@@ -1,0 +1,58 @@
+.cskvg {
+	width: 100%;
+	border: var(--cskvg-border-width, 1px) solid var(--cskvg-border-color, #818283);
+	display: grid;
+	grid-template-columns: 2fr 3fr 36px;
+}
+
+.cskvg div {
+	display: flex;
+	align-items: center;
+	padding: var(--cskvg-cell-padding-vertical, 2px) var(--cskvg-cell-padding-horizontal, 4px);
+}
+
+.cskvg div:nth-child(3n + 1) {
+	border-right: var(--cskvg-border-width, 1px) solid var(--cskvg-border-color, #818283);
+	font-weight: var(--cskvg-key-weight, 500);
+}
+
+.cskvg div:nth-child(3n + 3) {
+	justify-content: center;
+}
+
+.cskvg-header {
+	border-bottom: var(--cskvg-border-width, 1px) solid var(--cskvg-border-color, #818283);
+	text-align: center;
+	justify-content: center;
+}
+
+.cskvg div:nth-child(6n + 4),
+.cskvg div:nth-child(6n + 5),
+.cskvg div:nth-child(6n + 6) {
+	background-color: var(--cskvg-stripe-color, #ECEDEE);
+}
+
+.cskvg input {
+	border: none;
+	padding: 0;
+	background-color: transparent;
+	font-weight: inherit;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cskvg button {
+	appearance: none;
+	outline: none;
+	border: none;
+	padding: 0;
+	background-color: transparent;
+	line-height: 0;
+	cursor: pointer;
+}
+
+.cskvg button svg,
+.cskvg button img {
+	height: 24px;
+}

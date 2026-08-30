@@ -304,12 +304,12 @@ class AppGenerators {
 			],
 			stylesheets: [
 				'/js/autocomplete/autocomplete.min.css',
-				'https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css',
 				'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-				'https://unpkg.com/family-chart@0.9.0/dist/styles/family-chart.css'
+				'https://unpkg.com/family-chart@0.9.0/dist/styles/family-chart.css',
+				'/js/clubside-combobox/clubside-combobox.css',
+				'/js/clubside-keyvaluegrid/clubside-keyvaluegrid.css'
 			],
 			scripts: [
-				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js' },
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5' },
 				{ type: 'link', content: 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.6' },
 				{ type: 'link', content: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' },

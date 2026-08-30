@@ -2,7 +2,7 @@
 
 import Autocomplete from '/js/autocomplete/autocomplete.esm.min.js'
 import clubsideComboBox from '/js/clubside-combobox/clubside-combobox.js'
-import propertyGrid from './property-grid.js'
+import clubsideKeyValueGrid from '/js/clubside-keyvaluegrid/clubside-keyvaluegrid.js'
 
 const floatingUI = window.FloatingUIDOM
 
@@ -98,7 +98,6 @@ export default function modalForm(options, fields, groups, validators) {
 	const autocompletes = []
 	const comboboxes = []
 	const propertyGrids = []
-	const propertyGridElements = []
 	const dataPackage = {}
 	const sourcePackage = {}
 	buildPackages(fields)
@@ -128,8 +127,8 @@ export default function modalForm(options, fields, groups, validators) {
 						break
 					}
 					case 'combo':
-						dataPackage[field.name] = field.value || null
-						sourcePackage[field.name] = field.value || null
+						dataPackage[field.name] = field.value || { id: null, text: '' }
+						sourcePackage[field.name] = field.value || { id: null, text: '' }
 						break
 					default: {
 						dataPackage[field.name] = field.value ? String(field.value) : null
@@ -450,11 +449,6 @@ export default function modalForm(options, fields, groups, validators) {
 				value = ele.dataset.value
 				break
 			}
-			case 'properties': {
-				const ele = propertyGridElements.find(lookup => lookup.id === field)
-				value = ele.pGrid.value
-				break
-			}
 			default: {
 				const ele = document.getElementById(field)
 				// console.log(field, ele)
@@ -730,9 +724,8 @@ export default function modalForm(options, fields, groups, validators) {
 			}
 
 			for (const pg of propertyGrids) {
-				const pGrid = new propertyGrid(document.getElementById(pg.id), pg.value)
-				document.getElementById(pg.id).addEventListener('propertygridchange', checkDirty)
-				propertyGridElements.push({ id: pg.id, pGrid })
+				const pGrid = new clubsideKeyValueGrid(document.getElementById(pg.id), { value: pg.value })
+				pGrid.addEventListener('change', checkDirty)
 			}
 
 			checkDirty()

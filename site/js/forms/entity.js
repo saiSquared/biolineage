@@ -1,5 +1,7 @@
 'use strict'
 
+import getNameForm from '/js/forms/name.js'
+
 const entityFields = []
 
 const entityGroups = [
@@ -32,8 +34,7 @@ const entityValidators = {
 	}
 }
 
-async function setup() {
-	const entityNameParts = await fetch('/data/entity-name-parts.json').then(r => r.json())
+export default async function getAddEntityForm() {
 	entityFields.push({
 		group: 'name',
 		label: 'Tree ID',
@@ -43,66 +44,10 @@ async function setup() {
 		labelHidden: true,
 		value: dataPackage.treeId
 	})
-	entityFields.push({
-		group: 'name',
-		label: 'Name Type',
-		name: 'nameType',
-		id: 'name-type',
-		type: 'text',
-		placeholder: 'Type',
-		required: true,
-		autofocus: true,
-		width: '100%',
-		tip: 'Identifies which version of this person’s name this record represents (birth, married, adopted, professional, religious, imported, etc.). Each person may have multiple names, but only one of each type.'
-	})
-	for (const entityNamePart of entityNameParts) {
-		entityFields.push({
-			group: 'name',
-			label: entityNamePart.label,
-			labelHidden: !entityNamePart.surface,
-			name: entityNamePart.code,
-			id: entityNamePart.slug,
-			type: 'text',
-			placeholder: entityNamePart.placeholder,
-			required: entityNamePart.required,
-			labelData: !entityNamePart.surface ? [{ attribute: 'extended', value: 'true' }] : null,
-			width: entityNamePart.width,
-			tip: entityNamePart.description
-		})
+	const { nameFields } = await getNameForm()
+	for (const nameField of nameFields) {
+		entityFields.push(nameField)
 	}
-	entityFields.push({
-		group: 'name',
-		label: 'Description',
-		name: 'description',
-		id: 'description',
-		type: 'textarea',
-		placeholder: 'Additional information',
-		width: '100%',
-		tip: 'Optional notes or context about this name record, such as spelling variations, transcription notes, or cultural naming details.'
-	})
-	entityFields.push({
-		group: 'name',
-		label: 'Show Extended Fields',
-		name: 'extended',
-		id: 'extended',
-		type: 'toggle',
-		width: '100%',
-		ignore: true,
-		value: false,
-		tip: 'Switch between primary and all name fields.',
-		handlers: [
-			{
-				event: 'change',
-				handler() {
-					const show = document.getElementById('extended').checked
-					const extended = document.querySelectorAll('[data-extended="true"')
-					for (const ele of extended) {
-						ele.style.display = show ? 'flex' : 'none'
-					}
-				}
-			}
-		]
-	})
 	entityFields.push({
 		group: 'sex',
 		label: 'Sex',
@@ -178,8 +123,6 @@ async function setup() {
 		pattern: '^\\d{1,2}$',
 		tip: 'Day of death (1–31). Leave blank if the exact day is not known.'
 	})
+
+	return { entityFields, entityGroups, entityValidators }
 }
-
-setup()
-
-export { entityFields, entityGroups, entityValidators }

@@ -1,9 +1,18 @@
 'use strict'
 
-import { entityGroups, entityFields, entityValidators } from './forms/entity.js'
+import getAddEntityForm from './forms/entity.js'
 import modalForm from '/js/modal-form.js'
 
 const addEntity = document.getElementById('add-entity')
+
+let entityFields, entityGroups, entityValidators
+
+async function setup() {
+	const entityForm = await getAddEntityForm()
+	entityFields = entityForm.entityFields
+	entityGroups = entityForm.entityGroups
+	entityValidators = entityForm.entityValidators
+}
 
 addEntity.addEventListener('click', async (event) => {
 	event.preventDefault()
@@ -18,4 +27,5 @@ addEntity.addEventListener('click', async (event) => {
 document.addEventListener('DOMContentLoaded', () => {
 	console.log('DOM loaded: Tree Browse')
 	console.log(dataPackage)
+	setup()
 })

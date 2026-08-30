@@ -3,6 +3,7 @@
 // TODO revisit pre-alpha naming documentation as noted in Obsidian > Biolineage > Names
 
 import { smartify } from '/js/clubside-utils.js'
+import getNameForm from './forms/name.js'
 import modalForm from '/js/modal-form.js'
 
 /**
@@ -40,7 +41,7 @@ import modalForm from '/js/modal-form.js'
 const main = document.querySelector('main')
 const factMarkers = new Map()
 
-let entity, map, entityNameParts, factTypes, placesFields, timezones
+let entity, map, entityNameParts, nameFields, factTypes, placesFields, timezones
 /** @type {BiolineageTimelineFact[]} */
 let facts
 
@@ -1150,7 +1151,7 @@ async function handleEntityEditor(event) {
 				name: 'entityId',
 				id: 'entity-id',
 				type: 'text',
-				hidden: true,
+				labelHidden: true,
 				value: dataPackage.entityId
 			})
 			fields.push({
@@ -1167,6 +1168,7 @@ async function handleEntityEditor(event) {
 					{ value: 'Unknown', text: 'Unknown' }
 				],
 				tip: 'Biological sex as recorded in historical documents. Leave blank if unknown or not stated in available sources.',
+				autofocus: true,
 				value: entity.sex
 			})
 			modal = modalForm({ mode: 'edit', endpoint: '/api/entity/edit/sex', header: 'Edit Sex' }, fields)
@@ -1199,69 +1201,16 @@ async function handleEntityEditor(event) {
 				labelHidden: true,
 				value: editId || null
 			})
-			fields.push({
-				group: 'name',
-				label: 'Name Type',
-				name: 'nameType',
-				id: 'name-type',
-				type: 'text',
-				placeholder: 'Type',
-				required: true,
-				autofocus: true,
-				width: '100%',
-				tip: 'Identifies which version of this person’s name this record represents (birth, married, adopted, professional, religious, imported, etc.). Each person may have multiple names, but only one of each type.',
-				value: existingName ? existingName.nameType : null
-			})
-			for (const entityNamePart of entityNameParts) {
-				fields.push({
-					group: 'name',
-					label: entityNamePart.label,
-					labelHidden: !entityNamePart.surface,
-					name: entityNamePart.code,
-					id: entityNamePart.slug,
-					type: 'text',
-					placeholder: entityNamePart.placeholder,
-					required: entityNamePart.required,
-					labelData: !entityNamePart.surface ? [{ attribute: 'extended', value: 'true' }] : null,
-					width: entityNamePart.width,
-					tip: entityNamePart.description,
-					value: existingName ? existingName.nameParts[entityNamePart.code] ? existingName.nameParts[entityNamePart.code] : null : null
-				})
+			for (const field of nameFields) {
+				if (field.name === 'nameType') {
+					field.value = existingName ? existingName.nameType ? existingName.nameType : null : null
+				} else if (field.name === 'description') {
+					field.value = existingName ? existingName.description ? existingName.description : null : null
+				} else {
+					field.value = existingName ? existingName.nameParts[field.name] ? existingName.nameParts[field.name] : null : null
+				}
+				fields.push(field)
 			}
-			fields.push({
-				group: 'name',
-				label: 'Description',
-				name: 'description',
-				id: 'description',
-				type: 'textarea',
-				placeholder: 'Additional information',
-				width: '100%',
-				tip: 'Optional notes or context about this name record, such as spelling variations, transcription notes, or cultural naming details.',
-				value: existingName ? existingName.description : null
-			})
-			fields.push({
-				group: 'name',
-				label: 'Show Extended Fields',
-				name: 'extended',
-				id: 'extended',
-				type: 'toggle',
-				width: '100%',
-				ignore: true,
-				value: false,
-				tip: 'Switch between primary and all name fields.',
-				handlers: [
-					{
-						event: 'change',
-						handler() {
-							const show = document.getElementById('extended').checked
-							const extended = document.querySelectorAll('[data-extended="true"')
-							for (const ele of extended) {
-								ele.style.display = show ? 'flex' : 'none'
-							}
-						}
-					}
-				]
-			})
 			if (editAction === 'add' || (editAction === 'edit' && editId !== entity.canonicalNameId)) {
 				fields.push({
 					group: 'name',
@@ -1283,12 +1232,12 @@ async function handleEntityEditor(event) {
 			if (editAction === 'edit') {
 				existingFact = entity.facts.find(lookup => lookup.factId === editId)
 			}
-			// console.log({ existingFact })
+			console.log({ existingFact })
 			const groups = [
 				{ header: null, slug: 'fact' },
+				{ header: 'Properties', slug: 'properties' },
 				{ header: 'Date', slug: 'date' },
-				{ header: 'Place', slug: 'place' },
-				{ header: 'Properties', slug: 'properties' }
+				{ header: 'Place', slug: 'place' }
 			]
 			fields.push({
 				group: 'fact',
@@ -1327,6 +1276,16 @@ async function handleEntityEditor(event) {
 				autofocus: editAction === 'add',
 				options: factTypes,
 				value: existingFact ? existingFact.code : null
+			})
+			fields.push({
+				group: 'properties',
+				label: null,
+				name: 'data',
+				id: 'data',
+				type: 'properties',
+				tip: 'Additional information about the fact. Add as many properties and values as needed.',
+				width: '100%',
+				value: existingFact ? existingFact.data : null
 			})
 			fields.push({
 				group: 'date',
@@ -1460,16 +1419,6 @@ async function handleEntityEditor(event) {
 				],
 				value: existingFact ? existingFact.placeId ? 'existing' : 'no' : 'no'
 			})
-			fields.push({
-				group: 'properties',
-				label: null,
-				name: 'data',
-				id: 'data',
-				type: 'properties',
-				tip: 'Additional information about the fact. Add as many properties and values as needed.',
-				width: '100%',
-				value: existingFact ? existingFact.data : null
-			})
 			const validators = {
 				checkDayAndMonth(getValue) {
 					if (getValue('day') && !getValue('month')) {
@@ -1586,6 +1535,8 @@ function handleTimelineFact(event) {
 
 async function setup() {
 	entityNameParts = await fetch('/data/entity-name-parts.json').then(r => r.json())
+	const nameForm = await getNameForm()
+	nameFields = nameForm.nameFields
 	factTypes = await fetch('/data/fact-types.json').then(r => r.json())
 	factTypes = factTypes.filter(data => data.entityTypeId === dataPackage.entityTypeId)
 	factTypes = factTypes.map(data => {
@@ -1597,7 +1548,7 @@ async function setup() {
 		return { value: data.tz, text: `(GMT${data.offset}) ${data.tz}` }
 	})
 	timezones.unshift({ value: '', text: 'Choose' })
-	console.log({ entityNameParts, factTypes, placesFields, timezones })
+	console.log({ nameFields, factTypes, placesFields, timezones })
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,5 +1,6 @@
 'use strict'
 
+import getAddEntityForm from './forms/entity.js'
 import modalForm from '/js/modal-form.js'
 
 const filterPackage = {
@@ -24,37 +25,8 @@ const cols = [
 	{ width: '15%', align: 'center', header: 'Children', headerAlign: 'center', field: 'childCount' },
 	{ width: '25%', align: 'right', header: 'Dates', headerAlign: 'right', field: 'dates' }
 ]
-const fields = []
-const groups = [
-	{ header: 'Name', slug: 'name' },
-	{ header: 'Sex', slug: 'sex' },
-	{ header: 'Birth', slug: 'birth' },
-	{ header: 'Death', slug: 'death' }
-]
-const validators = {
-	checkBirthDayAndMonth(getValue) {
-		if (getValue('birth-day') && !getValue('birth-month')) {
-			document.getElementById('birth-month').setCustomValidity('Month required if day is set')
-		}
-	},
-	checkBirthMonthAndYear(getValue) {
-		if (getValue('birth-month') && !getValue('birth-year')) {
-			document.getElementById('birth-year').setCustomValidity('Year required if month is set')
-		}
-	},
-	checkDeathDayAndMonth(getValue) {
-		if (getValue('death-day') && !getValue('death-month')) {
-			document.getElementById('death-month').setCustomValidity('Month required if day is set')
-		}
-	},
-	checkDeathMonthAndYear(getValue) {
-		if (getValue('death-month') && !getValue('death-year')) {
-			document.getElementById('death-year').setCustomValidity('Year required if month is set')
-		}
-	}
-}
 
-let entityNameParts
+let entityFields, entityGroups, entityValidators
 
 const debouncedFilterUpdate = debounce(() => {
 	filterPackage.page = 1
@@ -237,151 +209,10 @@ function drawTable(items) {
 }
 
 async function setup() {
-	entityNameParts = await fetch('/data/entity-name-parts.json').then(r => r.json())
-	fields.push({
-		group: 'name',
-		label: 'Tree ID',
-		name: 'treeId',
-		id: 'tree-id',
-		type: 'text',
-		labelHidden: true,
-		value: dataPackage.treeId
-	})
-	fields.push({
-		group: 'name',
-		label: 'Name Type',
-		name: 'nameType',
-		id: 'name-type',
-		type: 'text',
-		placeholder: 'Type',
-		required: true,
-		autofocus: true,
-		width: '100%',
-		tip: 'Identifies which version of this person’s name this record represents (birth, married, adopted, professional, religious, imported, etc.). Each person may have multiple names, but only one of each type.'
-	})
-	for (const entityNamePart of entityNameParts) {
-		fields.push({
-			group: 'name',
-			label: entityNamePart.label,
-			labelHidden: !entityNamePart.surface,
-			name: entityNamePart.code,
-			id: entityNamePart.slug,
-			type: 'text',
-			placeholder: entityNamePart.placeholder,
-			required: entityNamePart.required,
-			labelData: !entityNamePart.surface ? [{ attribute: 'extended', value: 'true' }] : null,
-			width: entityNamePart.width,
-			tip: entityNamePart.description
-		})
-	}
-	fields.push({
-		group: 'name',
-		label: 'Description',
-		name: 'description',
-		id: 'description',
-		type: 'textarea',
-		placeholder: 'Additional information',
-		width: '100%',
-		tip: 'Optional notes or context about this name record, such as spelling variations, transcription notes, or cultural naming details.'
-	})
-	fields.push({
-		group: 'name',
-		label: 'Show Extended Fields',
-		name: 'extended',
-		id: 'extended',
-		type: 'toggle',
-		width: '100%',
-		ignore: true,
-		value: false,
-		tip: 'Switch between primary and all name fields.',
-		handlers: [
-			{
-				event: 'change',
-				handler() {
-					const show = document.getElementById('extended').checked
-					const extended = document.querySelectorAll('[data-extended="true"')
-					for (const ele of extended) {
-						ele.style.display = show ? 'flex' : 'none'
-					}
-				}
-			}
-		]
-	})
-	fields.push({
-		group: 'sex',
-		label: 'Sex',
-		name: 'sex',
-		id: 'sex',
-		type: 'select',
-		options: [
-			{ value: '', text: 'Choose' },
-			{ value: 'Male', text: 'Male' },
-			{ value: 'Female', text: 'Female' },
-			{ value: 'Intersex', text: 'Intersex' },
-			{ value: 'Unknown', text: 'Unknown' }
-		],
-		tip: 'Biological sex as recorded in historical documents. Leave blank if unknown or not stated in available sources.'
-	})
-	fields.push({
-		group: 'birth',
-		label: 'Year',
-		name: 'birthYear',
-		id: 'birth-year',
-		type: 'text',
-		placeholder: 'yyyy',
-		pattern: '^-?[0-9]+$',
-		tip: 'Year of birth. Partial dates are allowed; enter the year even if the month or day is unknown.'
-	})
-	fields.push({
-		group: 'birth',
-		label: 'Month',
-		name: 'birthMonth',
-		id: 'birth-month',
-		type: 'text',
-		placeholder: 'mm',
-		pattern: '^\\d{1,2}$',
-		tip: 'Month of birth (1–12). Leave blank if the exact month is not known.'
-	})
-	fields.push({
-		group: 'birth',
-		label: 'Day',
-		name: 'birthDay',
-		id: 'birth-day',
-		type: 'text',
-		placeholder: 'dd',
-		pattern: '^\\d{1,2}$',
-		tip: 'Day of birth (1–31). Leave blank if the exact day is not known.'
-	})
-	fields.push({
-		group: 'death',
-		label: 'Year',
-		name: 'deathYear',
-		id: 'death-year',
-		type: 'text',
-		placeholder: 'yyyy',
-		pattern: '^-?[0-9]+$',
-		tip: 'Year of death. Partial dates are allowed; enter the year even if the month or day is unknown.'
-	})
-	fields.push({
-		group: 'death',
-		label: 'Month',
-		name: 'deathMonth',
-		id: 'death-month',
-		type: 'text',
-		placeholder: 'mm',
-		pattern: '^\\d{1,2}$',
-		tip: 'Month of death (1–12). Leave blank if the exact month is not known.'
-	})
-	fields.push({
-		group: 'death',
-		label: 'Day',
-		name: 'deathDay',
-		id: 'death-day',
-		type: 'text',
-		placeholder: 'dd',
-		pattern: '^\\d{1,2}$',
-		tip: 'Day of death (1–31). Leave blank if the exact day is not known.'
-	})
+	const entityForm = await getAddEntityForm()
+	entityFields = entityForm.entityFields
+	entityGroups = entityForm.entityGroups
+	entityValidators = entityForm.entityValidators
 }
 
 async function updateEntities() {
@@ -462,8 +293,9 @@ filterEndYear.addEventListener('input', () => {
 	debouncedBirthYearAndUpdate()
 })
 
-addEntity.addEventListener('click', async () => {
-	const modal = modalForm({ mode: 'add', endpoint: '/api/entity/add', header: `Add ${dataPackage.treeLabel}` }, fields, groups, validators)
+addEntity.addEventListener('click', async (event) => {
+	event.preventDefault()
+	const modal = modalForm({ mode: 'add', endpoint: '/api/entity/add', header: `Add ${dataPackage.treeLabel}` }, entityFields, entityGroups, entityValidators)
 	const id = await modal.show()
 	if (id) {
 		console.log(`New id = ${id}`)
@@ -474,7 +306,6 @@ addEntity.addEventListener('click', async () => {
 document.addEventListener('DOMContentLoaded', () => {
 	console.log('DOM loaded: Tree Entities')
 	console.log(dataPackage)
-	setup()
 	filterPackage.tree = dataPackage.treeId
 	const urlParams = new URLSearchParams(window.location.search)
 	const q = urlParams.get('q')
@@ -485,4 +316,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	} else {
 		updateEntities()
 	}
+	setup()
 })
