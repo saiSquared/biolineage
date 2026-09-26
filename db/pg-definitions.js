@@ -106,26 +106,92 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
+	linkProviders: {
+		name: 'link_providers',
+		fields: [
+			{ name: 'id', type: 'SERIAL', primary: true },
+			{ name: 'name', type: 'TEXT', nulls: false, unique: true },
+			{ name: 'url', type: 'TEXT', nulls: false, unique: true },
+			{ name: 'icon', type: 'TEXT' },
+			{ name: 'poster', type: 'TEXT' },
+			{ name: 'created_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'modified_date', type: 'TIMESTAMPTZ', nulls: false, default: 'NOW()' },
+			{ name: 'deleted', type: 'BOOLEAN' },
+			{ name: 'deleted_by', type: 'UUID' },
+			{ name: 'deleted_date', type: 'TIMESTAMPTZ' }
+		]
+	},
+
+	/** @type {PGTable} */
+	links: {
+		name: 'links',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'link_provider_id', type: 'INTEGER', nulls: false },
+			{ name: 'url', type: 'TEXT', nulls: false },
+			{ name: 'title', type: 'TEXT' },
+			{ name: 'icon', type: 'TEXT' }
+		],
+		foreignKeys: [
+			{ fields: ['link_provider_id'], refTable: 'link_providers', refFields: ['id'] }
+		]
+	},
+
+	/** @type {PGTable} */
+	linksMap: {
+		name: 'links_map',
+		fields: [
+			{ name: 'link_id', type: 'UUID', nulls: false },
+			{ name: 'table_id', type: 'INTEGER', nulls: false },
+			{ name: 'lookup_id', type: 'UUID', nulls: false },
+			{ name: 'title', type: 'TEXT' }
+		],
+		primary: ['link_id', 'table_id', 'lookup_id'],
+		foreignKeys: [
+			{ fields: ['link_id'], refTable: 'links', refFields: ['id'] }
+		]
+	},
+
+	/** @type {PGTable} */
 	sovereignEntities: {
 		name: 'sovereign_entities',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'slug', type: 'TEXT', nulls: false, unique: true },
+			{ name: 'display_name', type: 'TEXT', nulls: false },
 			{ name: 'long_name', type: 'TEXT', nulls: false },
+			{ name: 'sort_name', type: 'TEXT', nulls: false },
 			{ name: 'type', type: 'TEXT', nulls: false },
 			{ name: 'latitude', type: 'DOUBLE PRECISION' },
 			{ name: 'longitude', type: 'DOUBLE PRECISION' },
-			{ name: 'iso31661', type: 'JSONB' },
+			{ name: 'meta', type: 'JSONB' },
 			{ name: 'has_flag', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
 			{ name: 'flag_file', type: 'TEXT' },
 			{ name: 'has_armorial', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
 			{ name: 'armorial_type', type: 'TEXT' },
-			{ name: 'armorial_file', type: 'TEXT' },
-			{ name: 'tlds', type: 'JSONB' }
+			{ name: 'armorial_file', type: 'TEXT' }
 		],
 		indexes: [
-			{ method: 'gin', fields: ['iso31661'] },
-			{ method: 'gin', fields: ['tlds'] }
+			{ method: 'gin', fields: ['meta'] }
+		],
+		checks: [
+			{ expression: 'latitude BETWEEN -90 AND 90' },
+			{ expression: 'longitude BETWEEN -180 AND 180' }
+		]
+	},
+
+	/** @type {PGTable} */
+	sovereignEntityAliases: {
+		name: 'sovereign_entity_aliases',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'sovereign_entity_id', type: 'UUID', nulls: false },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'lang', type: 'TEXT', nulls: false }
+		],
+		indexes: [
+			{ fields: ['sovereign_entity_id'] }
 		]
 	},
 
@@ -136,23 +202,45 @@ const pgTables = {
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'sovereign_entity_id', type: 'UUID', nulls: false },
 			{ name: 'name', type: 'TEXT', nulls: false },
-			{ name: 'long_name', type: 'TEXT' },
+			{ name: 'slug', type: 'TEXT', nulls: false },
+			{ name: 'display_name', type: 'TEXT', nulls: false },
+			{ name: 'long_name', type: 'TEXT', nulls: false },
+			{ name: 'sort_name', type: 'TEXT', nulls: false },
 			{ name: 'type', type: 'TEXT', nulls: false },
 			{ name: 'latitude', type: 'DOUBLE PRECISION' },
 			{ name: 'longitude', type: 'DOUBLE PRECISION' },
-			{ name: 'iso31662', type: 'JSONB' },
+			{ name: 'meta', type: 'JSONB' },
 			{ name: 'has_flag', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
 			{ name: 'flag_file', type: 'TEXT' },
 			{ name: 'has_armorial', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
 			{ name: 'armorial_type', type: 'TEXT' },
 			{ name: 'armorial_file', type: 'TEXT' }
 		],
+		unique: [{ fields: ['sovereign_entity_id', 'slug'] }],
 		foreignKeys: [
 			{ fields: ['sovereign_entity_id'], refTable: 'sovereign_entities', refFields: ['id'] }
 		],
 		indexes: [
 			{ fields: ['sovereign_entity_id'] },
-			{ method: 'gin', fields: ['iso31662'] }
+			{ method: 'gin', fields: ['meta'] }
+		],
+		checks: [
+			{ expression: 'latitude BETWEEN -90 AND 90' },
+			{ expression: 'longitude BETWEEN -180 AND 180' }
+		]
+	},
+
+	/** @type {PGTable} */
+	subdivisionAliases: {
+		name: 'subdivision_aliases',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'subdivision_id', type: 'UUID', nulls: false },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'lang', type: 'TEXT', nulls: false }
+		],
+		indexes: [
+			{ fields: ['subdivision_id'] }
 		]
 	},
 
@@ -164,12 +252,65 @@ const pgTables = {
 			{ name: 'sovereign_entity_id', type: 'UUID', nulls: false },
 			{ name: 'subdivision_id', type: 'UUID' }, // corrected spelling
 			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'slug', type: 'TEXT', nulls: false },
+			{ name: 'display_name', type: 'TEXT', nulls: false },
 			{ name: 'long_name', type: 'TEXT', nulls: false },
+			{ name: 'sort_name', type: 'TEXT', nulls: false },
 			{ name: 'type', type: 'TEXT', nulls: false },
-			{ name: 'fips', type: 'INTEGER' },
 			{ name: 'latitude', type: 'DOUBLE PRECISION' },
 			{ name: 'longitude', type: 'DOUBLE PRECISION' },
-			{ name: 'iso31662', type: 'JSONB' },
+			{ name: 'meta', type: 'JSONB' },
+			{ name: 'has_flag', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
+			{ name: 'flag_file', type: 'TEXT' },
+			{ name: 'has_armorial', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
+			{ name: 'armorial_type', type: 'TEXT' },
+			{ name: 'armorial_file', type: 'TEXT' }
+		],
+		foreignKeys: [
+			{ fields: ['sovereign_entity_id'], refTable: 'sovereign_entities', refFields: ['id'] },
+			{ fields: ['subdivision_id'], refTable: 'subdivisions', refFields: ['id'] }
+		],
+		unique: [{ fields: ['sovereign_entity_id', 'subdivision_id', 'slug'] }],
+		indexes: [
+			{ fields: ['sovereign_entity_id'] },
+			{ fields: ['subdivision_id'] },
+			{ method: 'gin', fields: ['meta'] }
+		],
+		checks: [
+			{ expression: 'latitude BETWEEN -90 AND 90' },
+			{ expression: 'longitude BETWEEN -180 AND 180' }
+		]
+	},
+
+	/** @type {PGTable} */
+	administrativeDivisionAliases: {
+		name: 'administrative_division_aliases',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'administrative_division_id', type: 'UUID', nulls: false },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'lang', type: 'TEXT', nulls: false }
+		],
+		indexes: [
+			{ fields: ['administrative_division_id'] }
+		]
+	},
+
+	/** @type {PGTable} */
+	municipalities: {
+		name: 'municipalities',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'sovereign_entity_id', type: 'UUID', nulls: false },
+			{ name: 'subdivision_id', type: 'UUID' }, // corrected spelling
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'slug', type: 'TEXT', nulls: false },
+			{ name: 'display_name', type: 'TEXT', nulls: false },
+			{ name: 'long_name', type: 'TEXT', nulls: false },
+			{ name: 'sort_name', type: 'TEXT', nulls: false },
+			{ name: 'type', type: 'TEXT', nulls: false },
+			{ name: 'latitude', type: 'DOUBLE PRECISION' },
+			{ name: 'longitude', type: 'DOUBLE PRECISION' },
 			{ name: 'meta', type: 'JSONB' },
 			{ name: 'has_flag', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
 			{ name: 'flag_file', type: 'TEXT' },
@@ -184,7 +325,6 @@ const pgTables = {
 		indexes: [
 			{ fields: ['sovereign_entity_id'] },
 			{ fields: ['subdivision_id'] },
-			{ method: 'gin', fields: ['iso31662'] },
 			{ method: 'gin', fields: ['meta'] }
 		],
 		checks: [
@@ -194,39 +334,59 @@ const pgTables = {
 	},
 
 	/** @type {PGTable} */
-	municipalities: {
-		name: 'municipalities',
+	municipalityAliases: {
+		name: 'municipality_aliases',
+		fields: [
+			{ name: 'id', type: 'UUID', primary: true },
+			{ name: 'municipality_id', type: 'UUID', nulls: false },
+			{ name: 'name', type: 'TEXT', nulls: false },
+			{ name: 'lang', type: 'TEXT', nulls: false }
+		],
+		indexes: [
+			{ fields: ['municipality_id'] }
+		]
+	},
+
+	/** @type {PGTable} */
+	municipalityAds: {
+		name: 'municipality_ads',
+		fields: [
+			{ name: 'municipality_id', type: 'UUID', nulls: false },
+			{ name: 'administrative_division_id', type: 'UUID', nulls: false }
+		],
+		primary: ['municipality_id', 'administrative_division_id'],
+		foreignKeys: [
+			{ fields: ['municipality_id'], refTable: 'municipalities', refFields: ['id'] },
+			{ fields: ['administrative_division_id'], refTable: 'administrative_divisions', refFields: ['id'] }
+		]
+	},
+
+	/** @type {PGTable} */
+	geoSearch: {
+		name: 'geo_search',
 		fields: [
 			{ name: 'id', type: 'UUID', primary: true },
 			{ name: 'sovereign_entity_id', type: 'UUID', nulls: false },
-			{ name: 'subdivision_id', type: 'UUID' }, // corrected spelling
+			{ name: 'subdivision_id', type: 'UUID' },
 			{ name: 'administrative_division_id', type: 'UUID' },
-			{ name: 'name', type: 'TEXT', nulls: false },
-			{ name: 'long_name', type: 'TEXT' },
-			{ name: 'type', type: 'TEXT', nulls: false },
-			{ name: 'latitude', type: 'DOUBLE PRECISION' },
-			{ name: 'longitude', type: 'DOUBLE PRECISION' },
-			{ name: 'meta', type: 'JSONB' },
-			{ name: 'has_flag', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
-			{ name: 'flag_file', type: 'TEXT' },
-			{ name: 'has_armorial', type: 'BOOLEAN', nulls: false, default: 'FALSE' },
-			{ name: 'armorial_type', type: 'TEXT' },
-			{ name: 'armorial_file', type: 'TEXT' }
+			{ name: 'municipality_id', type: 'UUID' },
+			{ name: 'search_display', type: 'TEXT', nulls: false },
+			{ name: 'search_text', type: 'TEXT', nulls: false }
 		],
 		foreignKeys: [
 			{ fields: ['sovereign_entity_id'], refTable: 'sovereign_entities', refFields: ['id'] },
 			{ fields: ['subdivision_id'], refTable: 'subdivisions', refFields: ['id'] },
-			{ fields: ['administrative_division_id'], refTable: 'administrative_divisions', refFields: ['id'] }
+			{ fields: ['administrative_division_id'], refTable: 'administrative_divisions', refFields: ['id'] },
+			{ fields: ['municipality_id'], refTable: 'municipalities', refFields: ['id'] }
 		],
 		indexes: [
-			{ fields: ['sovereign_entity_id'] },
-			{ fields: ['subdivision_id'] },
-			{ fields: ['administrative_division_id'] },
-			{ method: 'gin', fields: ['meta'] }
-		],
-		checks: [
-			{ expression: 'latitude BETWEEN -90 AND 90' },
-			{ expression: 'longitude BETWEEN -180 AND 180' }
+			{
+				name: 'geo_search_text_fts_idx',
+				method: 'gin',
+				expressions: [
+					'to_tsvector(\'simple\', search_text)'
+				]
+			}
 		]
 	},
 
@@ -1663,7 +1823,8 @@ const pgTriggers = [
 	}
 ]
 
-const pgViews = [
+const pgViews = []
+/* const pgViews = [
 	{
 		code:
 			`create or replace view geography_flat as
@@ -1741,6 +1902,6 @@ const pgViews = [
 			order by
 				se_name, sd_name, ad_name, mu_name;`
 	}
-]
+] */
 
 module.exports = { pgTables, pgFunctions, pgTriggers, pgViews }

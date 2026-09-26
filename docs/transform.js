@@ -422,7 +422,7 @@ function mapName(data) {
 
 async function buildSQLiteChildren() {
 	await normSQLite.createTable(sqliteTables.children)
-	const people = await normSQLite.query('SELECT * FROM person WHERE uuid IS NOT NULL')
+	const people = await normSQLite.query('SELECT * FROM person WHERE uuid IS NOT NULL AND FamilyName NOT LIKE \'%hors%\'')
 	for (const person of people) {
 		const sql = `
 			SELECT
@@ -589,7 +589,7 @@ async function initPg() {
 	})
 
 	// Create initial trees
-	console.log('  Creating 3 trees')
+	console.log('  Creating 2 trees')
 	const normTree = 'fa9704a2-456c-4790-bf11-5c58ea191ae3'
 	await biolineageDb.insert('trees', {
 		id: normTree,
@@ -610,7 +610,7 @@ async function initPg() {
 		createdBy: norm,
 		modifiedBy: norm
 	})
-	const horseTree = '5038086b-5833-42be-9398-bb4bee9ffa26'
+	/* const horseTree = '5038086b-5833-42be-9398-bb4bee9ffa26'
 	await biolineageDb.insert('trees', {
 		id: horseTree,
 		ownerId: norm,
@@ -619,15 +619,49 @@ async function initPg() {
 		slug: 'norm-horses',
 		createdBy: norm,
 		modifiedBy: norm
-	})
+	}) */
+
+	// import links
+	// Create Geography-related tables
+	const linkProviders = await normSQLite.query('SELECT * FROM link_providers')
+	console.log(`  Creating ${linkProviders.length} link providers`)
+	for (const linkProvider of linkProviders) {
+		await biolineageDb.insert('link_providers', linkProvider)
+	}
+	await biolineageDb.begin()
+	try {
+		const links = await normSQLite.query('select * from links')
+		console.log(`  Creating ${links.length} links`)
+		for (const link of links) {
+			await biolineageDb.insert('links', link)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT links', error)
+		process.exit()
+	}
+	await biolineageDb.begin()
+	try {
+		const linkMaps = await normSQLite.query('select * from links_map')
+		console.log(`  Creating ${linkMaps.length} link maps`)
+		for (const linkMap of linkMaps) {
+			await biolineageDb.insert('links_map', linkMap)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT links_map', error)
+		process.exit()
+	}
 
 	// add old person data to correct tree
 	const used = []
 	const people = await normSQLite.query('SELECT * FROM person')
 	const horses = await normSQLite.query('SELECT * FROM person WHERE FamilyName LIKE \'%hors%\';')
-	console.log(`  Creating ${horses.length} horse tree entities`)
+	console.log(`  Skipping ${horses.length} horse tree entities`)
 	for (const horse of horses) {
-		const id = uuidv4()
+		/* const id = uuidv4()
 		const names = buildName(horse)
 		const nameId = uuidv4()
 		await biolineageDb.insert('entity_names', {
@@ -650,7 +684,7 @@ async function initPg() {
 			createdBy: norm,
 			modifiedBy: norm
 		})
-		await normSQLite.execute('UPDATE person SET uuid = @uuid, tree = @tree WHERE keeNew = @id', { uuid: id, tree: horseTree, id: horse.keeNew })
+		await normSQLite.execute('UPDATE person SET uuid = @uuid, tree = @tree WHERE keeNew = @id', { uuid: id, tree: horseTree, id: horse.keeNew }) */
 		used.push(horse.keeNew)
 	}
 	const charlesData = await normSQLite.query('SELECT * FROM charles')
@@ -718,7 +752,7 @@ async function initPg() {
 	// Create Geography-related tables
 	await biolineageDb.begin()
 	try {
-		const sovereignEntities = await normSQLite.query('select * from sovereign_entities')
+		const sovereignEntities = await normSQLite.query('select * from se')
 		console.log(`  Creating ${sovereignEntities.length} sovereign entities`)
 		for (const sovereignEnity of sovereignEntities) {
 			await biolineageDb.insert('sovereign_entities', sovereignEnity)
@@ -731,7 +765,20 @@ async function initPg() {
 	}
 	await biolineageDb.begin()
 	try {
-		const subdivisions = await normSQLite.query('select * from subdivisions')
+		const sovereignEntityAliases = await normSQLite.query('select * from se_aliases')
+		console.log(`  Creating ${sovereignEntityAliases.length} sovereign entity aliases`)
+		for (const sovereignEntityAlias of sovereignEntityAliases) {
+			await biolineageDb.insert('sovereign_entity_aliases', sovereignEntityAlias)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT sovereign_entity aliases', error)
+		process.exit()
+	}
+	await biolineageDb.begin()
+	try {
+		const subdivisions = await normSQLite.query('select * from s')
 		console.log(`  Creating ${subdivisions.length} subdivisions`)
 		for (const subdivision of subdivisions) {
 			await biolineageDb.insert('subdivisions', subdivision)
@@ -744,7 +791,20 @@ async function initPg() {
 	}
 	await biolineageDb.begin()
 	try {
-		const administrativeDivisions = await normSQLite.query('select * from administrative_divisions')
+		const subdivisionAliases = await normSQLite.query('select * from s_aliases')
+		console.log(`  Creating ${subdivisionAliases.length} subdivision aliases`)
+		for (const subdivisionAlias of subdivisionAliases) {
+			await biolineageDb.insert('subdivision_aliases', subdivisionAlias)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT subdivision_aliases', error)
+		process.exit()
+	}
+	await biolineageDb.begin()
+	try {
+		const administrativeDivisions = await normSQLite.query('select * from ad')
 		console.log(`  Creating ${administrativeDivisions.length} administrative divisions`)
 		for (const administrativeDivision of administrativeDivisions) {
 			await biolineageDb.insert('administrative_divisions', administrativeDivision)
@@ -757,7 +817,20 @@ async function initPg() {
 	}
 	await biolineageDb.begin()
 	try {
-		const municipalities = await normSQLite.query('select * from municipalities')
+		const administrativeDivisionAliases = await normSQLite.query('select * from ad_aliases')
+		console.log(`  Creating ${administrativeDivisionAliases.length} administrative division aliases`)
+		for (const administrativeDivisionAlias of administrativeDivisionAliases) {
+			await biolineageDb.insert('administrative_division_aliases', administrativeDivisionAlias)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT administrative_division_aliases', error)
+		process.exit()
+	}
+	await biolineageDb.begin()
+	try {
+		const municipalities = await normSQLite.query('select * from m')
 		console.log(`  Creating ${municipalities.length} municipalities`)
 		for (const municipality of municipalities) {
 			await biolineageDb.insert('municipalities', municipality)
@@ -766,6 +839,45 @@ async function initPg() {
 	} catch (error) {
 		await biolineageDb.rollback()
 		console.log('FAILED TO INSERT municipalities', error)
+		process.exit()
+	}
+	await biolineageDb.begin()
+	try {
+		const municipalityAliases = await normSQLite.query('select * from m_aliases')
+		console.log(`  Creating ${municipalityAliases.length} municipality aliases`)
+		for (const municipalityAlias of municipalityAliases) {
+			await biolineageDb.insert('municipality_aliases', municipalityAlias)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT municipality_aliases', error)
+		process.exit()
+	}
+	await biolineageDb.begin()
+	try {
+		const municipalityAds = await normSQLite.query('select * from m_ads')
+		console.log(`  Creating ${municipalityAds.length} municipality to administrative division links`)
+		for (const municipalityAd of municipalityAds) {
+			await biolineageDb.insert('municipality_ads', municipalityAd)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT municipality_ads', error)
+		process.exit()
+	}
+	await biolineageDb.begin()
+	try {
+		const geoSearches = await normSQLite.query('select * from geo_search')
+		console.log(`  Creating ${geoSearches.length} geo searches`)
+		for (const geoSearch of geoSearches) {
+			await biolineageDb.insert('geo_search', geoSearch)
+		}
+		await biolineageDb.commit()
+	} catch (error) {
+		await biolineageDb.rollback()
+		console.log('FAILED TO INSERT geo_search', error)
 		process.exit()
 	}
 
@@ -2419,7 +2531,7 @@ async function initPg() {
 		} else {
 			data.municipality = place.municipality
 		}
-		const horseLookup = sqlitePlaces.find(lookup => lookup.uuid === oldId)
+		/* const horseLookup = sqlitePlaces.find(lookup => lookup.uuid === oldId)
 		const horseData = { id: horseLookup.horsesUuid, treeId: horseTree, createdBy: norm, modifiedBy: norm, ...data }
 		// console.log({ message: 'Pre-insert', oldId, horseTree, horseLookup, horseData })
 		await biolineageDb.insert('places', horseData)
@@ -2427,7 +2539,7 @@ async function initPg() {
 		horseData.ogCountry = place.ogCountry
 		horseData.ogRegion = place.ogRegion
 		horseData.ogCity = place.ogCity
-		places.push(horseData)
+		places.push(horseData) */
 		const charlesLookup = sqlitePlaces.find(lookup => lookup.uuid === oldId)
 		const charlesData = { id: charlesLookup.charlesUuid, treeId: charlesTree, createdBy: charles, modifiedBy: charles, ...data }
 		await biolineageDb.insert('places', charlesData)
@@ -2510,7 +2622,7 @@ async function initPg() {
 
 	// cleean up places
 	console.log('  Removing unused places from each tree')
-	await biolineageDb.run('delete from places where tree_id = $1 and id not in (select distinct facts.place_id id from facts join entities on entities.id = facts.entity_id where entities.tree_id = $2 and place_id is not null)', [horseTree, horseTree])
+	// await biolineageDb.run('delete from places where tree_id = $1 and id not in (select distinct facts.place_id id from facts join entities on entities.id = facts.entity_id where entities.tree_id = $2 and place_id is not null)', [horseTree, horseTree])
 	await biolineageDb.run('delete from places where tree_id = $1 and id not in (select distinct facts.place_id id from facts join entities on entities.id = facts.entity_id where entities.tree_id = $2 and place_id is not null)', [charlesTree, charlesTree])
 	await biolineageDb.run('delete from places where tree_id = $1 and id not in (select distinct facts.place_id id from facts join entities on entities.id = facts.entity_id where entities.tree_id = $2 and place_id is not null)', [normTree, normTree])
 }
@@ -2670,6 +2782,7 @@ async function transformRelationshipsAndGender(parentId) {
 	try {
 		for (const child of children) {
 			const childEntity = await biolineageDb.get('select tree_id, created_by from entities where id = $1', [child.childUuid])
+			// console.log({ child, childEntity })
 			const createdBy = childEntity.createdBy
 
 			let relationshipRow = {
