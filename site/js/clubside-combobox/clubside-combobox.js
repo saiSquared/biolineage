@@ -1,5 +1,7 @@
 'use strict'
 
+// TODO Revisit results lifecycle, when down arrow is pressed wait for search results
+
 /**
  * @typedef {Object} ClubsideComboBoxModel
  * @property {ClubsideComboBoxValue} value - getter/setter pair
@@ -91,6 +93,14 @@ export default function clubsideComboBox(root, options) {
 	// Internal search state
 	let lastResults = []
 	let searchTimer = null
+	let searchSequence = 0
+	let hasFocus = false
+
+	function closeDropdown() {
+		listbox.style.display = 'none'
+		input.setAttribute('aria-expanded', 'false')
+		input.removeAttribute('aria-activedescendant')
+	}
 
 	/**
 	 * Create the clear button, reeserve space for it on the right of input, and attach listeners
@@ -127,8 +137,7 @@ export default function clubsideComboBox(root, options) {
 			lastResults = []
 
 			listbox.innerHTML = ''
-			listbox.style.display = 'none'
-			input.setAttribute('aria-expanded', 'false')
+			closeDropdown()
 
 			root.dispatchEvent(new Event('change', { bubbles: true }))
 
@@ -170,6 +179,11 @@ export default function clubsideComboBox(root, options) {
 		}
 
 		return window
+	}
+
+	function focusRemainsInsideComboBox(target) {
+		return target &&
+		(root.contains(target) || listbox.contains(target))
 	}
 
 	/**
@@ -232,14 +246,30 @@ export default function clubsideComboBox(root, options) {
 		listbox.style.width = `${rect.width}px`
 	}
 
+	async function resolveExactMatch(text) {
+		const searchResults = await onSearch({ text })
+
+		return searchResults.find(r =>
+			r.text.toLowerCase() === text.toLowerCase()
+		)
+	}
+
 	/**
 	 * Execute onSearch and store results
 	 * @param {string} text - the text to search for
 	 */
 	async function runSearch(text) {
+		if (!hasFocus) return
+
 		try {
-			console.log('Running search...')
+			const sequence = ++searchSequence
+
 			const results = await onSearch({ text })
+
+			// Ignore stale async responses
+			if (sequence !== searchSequence) {
+				return
+			}
 
 			if (!Array.isArray(results)) {
 				console.error('onSearch must return an array')
@@ -248,15 +278,11 @@ export default function clubsideComboBox(root, options) {
 				lastResults = results
 			}
 
-			console.log('Search results:', lastResults)
-
 			if (lastResults.length > 0) {
 				renderResults(lastResults)
 			} else {
-				// No results → close dropdown
 				listbox.innerHTML = ''
-				listbox.style.display = 'none'
-				input.setAttribute('aria-expanded', 'false')
+				closeDropdown()
 			}
 		} catch (err) {
 			console.error('onSearch error:', err)
@@ -279,25 +305,33 @@ export default function clubsideComboBox(root, options) {
 	}
 
 	/**
+ 	 * Select a search result and update control state
+ 	 * @param {{id:string|number|null,text:string}} result
+ 	 */
+	function selectResult(result) {
+		model.value = {
+			id: result.id ?? null,
+			text: result.text || ''
+		}
+
+		root.value = model.value
+		input.value = model.value.text
+
+		closeDropdown()
+
+		root.dispatchEvent(new Event('change', { bubbles: true }))
+	}
+
+	/**
 	 * Set the ComboBox's value to an `<li>` element that was selecvted via keyboard/mouse/touch
 	 * @param {HTMLElement} li - the `<li>` element selected
 	 */
 	function selectItem(li) {
-		const id = li.dataset.id ? li.dataset.id : null
-		const text = li.dataset.text || li.textContent.trim()
+		selectResult({
+			id: li.dataset.id || null,
+			text: li.dataset.text || li.textContent.trim()
+		})
 
-		model.value = { id, text }
-		root.value = model.value
-		input.value = text
-
-		input.removeAttribute('aria-activedescendant')
-		input.setAttribute('aria-expanded', 'false')
-
-		// console.log({ message: 'LI selected, model.value set', model })
-
-		root.dispatchEvent(new Event('change', { bubbles: true }))
-
-		listbox.style.display = 'none'
 		input.focus()
 	}
 
@@ -323,29 +357,34 @@ export default function clubsideComboBox(root, options) {
 		input.value = value.text
 	}
 
-	input.addEventListener('keydown', e => {
-		if (e.key === 'Tab') {
-			// Close listbox
-			listbox.style.display = 'none'
-			input.setAttribute('aria-expanded', 'false')
-			input.removeAttribute('aria-activedescendant')
-			// Allow normal tabbing
+	// Prepare for exact-match-on-blur
+	input.addEventListener('blur', async (e) => {
+		if (focusRemainsInsideComboBox(e.relatedTarget)) {
 			return
 		}
 
-		if (e.key === 'ArrowDown') {
-			const items = listbox.querySelectorAll('li')
-			if (!items.length && showOnEmpty) {
-				runSearch('')
-			} else if (!items.length) {
+		hasFocus = false
+
+		const text = input.value.trim().toLowerCase()
+
+		if (text) {
+			const match = lastResults.find(r =>
+				r.text.toLowerCase() === text
+			) ||
+			await resolveExactMatch(text)
+
+			if (match) {
+				selectResult(match)
 				return
 			}
-
-			e.preventDefault()
-			if (listbox.style.display === 'none') listbox.style.display = 'flex'
-			items[0].focus()
-			input.setAttribute('aria-activedescendant', items[0].id)
 		}
+
+		closeDropdown()
+	})
+
+	// Prepare for exact-match-on-blur
+	input.addEventListener('focus', () => {
+		hasFocus = true
 	})
 
 	// BASIC INPUT LISTENER (before search, before dropdown)
@@ -363,20 +402,27 @@ export default function clubsideComboBox(root, options) {
 		scheduleSearch(text)
 	})
 
-	// Prepare for exact-match-on-blur
-	input.addEventListener('blur', () => {
-		const text = input.value.trim().toLowerCase()
+	input.addEventListener('keydown', e => {
+		if (e.key === 'Tab') {
+			// Close listbox
+			closeDropdown()
+			// Allow normal tabbing
+			return
+		}
 
-		if (!text) return
+		if (e.key === 'ArrowDown') {
+			const items = listbox.querySelectorAll('li')
+			if (!items.length && showOnEmpty) {
+				runSearch('')
+			} else if (!items.length) {
+				return
+			}
 
-		const match = lastResults.find(r =>
-			r.text.toLowerCase() === text
-		)
-
-		if (match) {
-			model.value = { id: match.id, text: match.text }
-			root.value = model.value
-			root.dispatchEvent(new Event('change', { bubbles: true }))
+			console.log('Down arrow')
+			e.preventDefault()
+			if (listbox.style.display === 'none') listbox.style.display = 'flex'
+			items[0].focus()
+			input.setAttribute('aria-activedescendant', items[0].id)
 		}
 	})
 
@@ -430,17 +476,13 @@ export default function clubsideComboBox(root, options) {
 			case 'Escape':
 				e.stopPropagation()
 				e.preventDefault()
-				listbox.style.display = 'none'
-				input.setAttribute('aria-expanded', 'false')
+				closeDropdown()
 				input.focus()
-				input.removeAttribute('aria-activedescendant')
 				break
 
 			case 'Tab':
 				// Close listbox
-				listbox.style.display = 'none'
-				input.setAttribute('aria-expanded', 'false')
-				input.removeAttribute('aria-activedescendant')
+				closeDropdown()
 
 				// Return focus to input *just long enough* for tabbing to continue
 				input.focus()
@@ -462,9 +504,7 @@ export default function clubsideComboBox(root, options) {
 		if (listbox.contains(e.target)) return
 
 		// Otherwise → close
-		listbox.style.display = 'none'
-		input.setAttribute('aria-expanded', 'false')
-		input.removeAttribute('aria-activedescendant')
+		closeDropdown()
 	})
 
 	const scrollParent = findScrollParent(root)
@@ -485,6 +525,24 @@ export default function clubsideComboBox(root, options) {
 
 	Object.defineProperty(root, 'input', {
 		value: input
+	})
+
+	Object.defineProperty(root, 'setCustomValidity', {
+		value(message) {
+			input.setCustomValidity(message)
+		}
+	})
+
+	Object.defineProperty(root, 'checkValidity', {
+		value() {
+			return input.checkValidity()
+		}
+	})
+
+	Object.defineProperty(root, 'reportValidity', {
+		value() {
+			return input.reportValidity()
+		}
 	})
 
 	return root

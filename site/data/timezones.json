@@ -1,18 +1,10 @@
 [
 	{
-		"tz": "Antarctica/McMurdo",
-		"offset": "-12:00"
-	},
-	{
 		"tz": "Asia/Anadyr",
 		"offset": "-12:00"
 	},
 	{
 		"tz": "Asia/Kamchatka",
-		"offset": "-12:00"
-	},
-	{
-		"tz": "Pacific/Auckland",
 		"offset": "-12:00"
 	},
 	{
@@ -36,6 +28,10 @@
 		"offset": "-12:00"
 	},
 	{
+		"tz": "Pacific/Norfolk",
+		"offset": "-12:00"
+	},
+	{
 		"tz": "Pacific/Tarawa",
 		"offset": "-12:00"
 	},
@@ -48,11 +44,15 @@
 		"offset": "-12:00"
 	},
 	{
-		"tz": "Pacific/Chatham",
-		"offset": "-11:15"
+		"tz": "Antarctica/McMurdo",
+		"offset": "-11:00"
 	},
 	{
 		"tz": "Pacific/Apia",
+		"offset": "-11:00"
+	},
+	{
+		"tz": "Pacific/Auckland",
 		"offset": "-11:00"
 	},
 	{
@@ -78,6 +78,10 @@
 	{
 		"tz": "Pacific/Tongatapu",
 		"offset": "-11:00"
+	},
+	{
+		"tz": "Pacific/Chatham",
+		"offset": "-10:15"
 	},
 	{
 		"tz": "Pacific/Honolulu",
@@ -256,10 +260,6 @@
 		"offset": "-06:00"
 	},
 	{
-		"tz": "Pacific/Easter",
-		"offset": "-06:00"
-	},
-	{
 		"tz": "Pacific/Galapagos",
 		"offset": "-06:00"
 	},
@@ -349,6 +349,10 @@
 	},
 	{
 		"tz": "America/Winnipeg",
+		"offset": "-05:00"
+	},
+	{
+		"tz": "Pacific/Easter",
 		"offset": "-05:00"
 	},
 	{
@@ -508,10 +512,6 @@
 		"offset": "-04:00"
 	},
 	{
-		"tz": "America/Santiago",
-		"offset": "-04:00"
-	},
-	{
 		"tz": "America/Santo_Domingo",
 		"offset": "-04:00"
 	},
@@ -660,6 +660,10 @@
 		"offset": "-03:00"
 	},
 	{
+		"tz": "America/Santiago",
+		"offset": "-03:00"
+	},
+	{
 		"tz": "America/Sao_Paulo",
 		"offset": "-03:00"
 	},
@@ -732,11 +736,19 @@
 		"offset": "+00:00"
 	},
 	{
+		"tz": "Africa/Casablanca",
+		"offset": "+00:00"
+	},
+	{
 		"tz": "Africa/Conakry",
 		"offset": "+00:00"
 	},
 	{
 		"tz": "Africa/Dakar",
+		"offset": "+00:00"
+	},
+	{
+		"tz": "Africa/El_Aaiun",
 		"offset": "+00:00"
 	},
 	{
@@ -812,15 +824,7 @@
 		"offset": "+01:00"
 	},
 	{
-		"tz": "Africa/Casablanca",
-		"offset": "+01:00"
-	},
-	{
 		"tz": "Africa/Douala",
-		"offset": "+01:00"
-	},
-	{
-		"tz": "Africa/El_Aaiun",
 		"offset": "+01:00"
 	},
 	{
@@ -1584,23 +1588,11 @@
 		"offset": "+09:00"
 	},
 	{
-		"tz": "Australia/Adelaide",
-		"offset": "+09:30"
-	},
-	{
-		"tz": "Australia/Broken_Hill",
-		"offset": "+09:30"
-	},
-	{
 		"tz": "Australia/Darwin",
 		"offset": "+09:30"
 	},
 	{
 		"tz": "Antarctica/DumontDUrville",
-		"offset": "+10:00"
-	},
-	{
-		"tz": "Antarctica/Macquarie",
 		"offset": "+10:00"
 	},
 	{
@@ -1616,19 +1608,7 @@
 		"offset": "+10:00"
 	},
 	{
-		"tz": "Australia/Hobart",
-		"offset": "+10:00"
-	},
-	{
 		"tz": "Australia/Lindeman",
-		"offset": "+10:00"
-	},
-	{
-		"tz": "Australia/Melbourne",
-		"offset": "+10:00"
-	},
-	{
-		"tz": "Australia/Sydney",
 		"offset": "+10:00"
 	},
 	{
@@ -1648,8 +1628,16 @@
 		"offset": "+10:00"
 	},
 	{
-		"tz": "Australia/Lord_Howe",
+		"tz": "Australia/Adelaide",
 		"offset": "+10:30"
+	},
+	{
+		"tz": "Australia/Broken_Hill",
+		"offset": "+10:30"
+	},
+	{
+		"tz": "Antarctica/Macquarie",
+		"offset": "+11:00"
 	},
 	{
 		"tz": "Asia/Magadan",
@@ -1661,6 +1649,22 @@
 	},
 	{
 		"tz": "Asia/Srednekolymsk",
+		"offset": "+11:00"
+	},
+	{
+		"tz": "Australia/Hobart",
+		"offset": "+11:00"
+	},
+	{
+		"tz": "Australia/Lord_Howe",
+		"offset": "+11:00"
+	},
+	{
+		"tz": "Australia/Melbourne",
+		"offset": "+11:00"
+	},
+	{
+		"tz": "Australia/Sydney",
 		"offset": "+11:00"
 	},
 	{
@@ -1677,10 +1681,6 @@
 	},
 	{
 		"tz": "Pacific/Kosrae",
-		"offset": "+11:00"
-	},
-	{
-		"tz": "Pacific/Norfolk",
 		"offset": "+11:00"
 	},
 	{

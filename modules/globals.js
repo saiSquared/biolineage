@@ -54,6 +54,16 @@ const placeFields = [
 
 	// 🌍 Geography fields (meaning-focused, not UI-focused)
 	{
+		label: 'Location',
+		name: 'location',
+		id: 'location',
+		type: 'autocomplete',
+		placeholder: 'ex. Rockville Maryland',
+		api: { endpoint: '/api/geography/locations', params: [{ query: 'q' }] },
+		tip: 'Current or historical location, free-text lookup.',
+		width: '100%'
+	},
+	{
 		label: 'Country',
 		name: 'sovereignEntity',
 		id: 'sovereign-entity',

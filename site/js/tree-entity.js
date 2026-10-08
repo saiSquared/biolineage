@@ -822,6 +822,7 @@ function drawEntity() {
 	})
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
+		referrerPolicy: 'strict-origin-when-cross-origin',
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map)
 
@@ -1459,7 +1460,7 @@ async function handleEntityEditor(event) {
 					if (place === 'existing' && !getValue('place-id')) document.getElementById('place-id').setCustomValidity('Existing place required')
 
 					if (place === 'new') {
-						if (!getValue('place-type')) document.getElementById('place-type').setCustomValidity('Place type required')
+						if (getValue('place-type').text === '') document.querySelector('#place-type input').setCustomValidity('Place type required')
 						if (!getValue('place-name')) document.getElementById('place-name').setCustomValidity('Place name required')
 
 						// Latitude/Longitude pairing

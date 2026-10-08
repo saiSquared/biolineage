@@ -926,17 +926,16 @@ class Getters {
 		const sql =
 			`select p.place_type, p.place_type_id, p.name place_name, p.description, p.sovereign_entity, p.sovereign_entity_id, se."name" sovereign_entity_name, se.long_name sovereign_entity_long_name,
 				se."type" sovereign_entity_type, se.latitude sovereign_entity_latitude, se.longitude sovereign_entity_longitide,
-				se.iso31661 sovereign_entity_iso31661, se.has_flag sovereign_entity_has_flag, se.flag_file sovereign_entity_flag_file,
+				se."meta" sovereign_entity_meta, se.has_flag sovereign_entity_has_flag, se.flag_file sovereign_entity_flag_file,
 				se.has_armorial sovereign_entity_has_armorial, se.armorial_type sovereign_entity_armorial_type,
-				se.armorial_file sovereign_entity_armorial_file, se.tlds sovereign_entity_tlds, p.subdivision, p.subdivision_id,
+				se.armorial_file sovereign_entity_armorial_file, p.subdivision, p.subdivision_id,
 				s."name" subdivision_name, s.long_name subdivision_long_name, s."type" subdivision_type, s.latitude subdivision_latitude, s.longitude subdivision_longitude,
-				s.iso31662 subdivision_iso31662, s.has_flag subdivision_has_flag, s.flag_file subdivision_flag_file,
+				s."meta" subdivision_meta, s.has_flag subdivision_has_flag, s.flag_file subdivision_flag_file,
 				s.has_armorial subdivision_has_armorial, s.armorial_type subdivision_armorial_type,
 				s.armorial_file subdivision_armorial_file, p.administrative_division, p.administrative_division_id,
 				ad.name administrative_division_name, ad.long_name administrative_division_long_name, ad.type administrative_division_type,
-				ad.fips administrative_division_fips, ad.latitude administrative_division_latitude,
-				ad.longitude administrative_division_longitude, ad.iso31662 administrative_division_iso31662,
-				ad."meta" administrative_division_meta, ad.has_flag administrative_division_has_flag,
+				ad.latitude administrative_division_latitude,
+				ad.longitude administrative_division_longitude, ad."meta" administrative_division_meta, ad.has_flag administrative_division_has_flag,
 				ad.flag_file administrative_division_flag_file, ad.has_armorial administrative_division_has_armorial,
 				ad.armorial_type administrative_division_armorial_type, ad.armorial_file administrative_division_armorial_file,
 				p.municipality, p.municipality_id, m."name" municipality_name, m.long_name municipality_long_name, m."type" municipality_type,
@@ -963,6 +962,10 @@ class Getters {
 
 	async placeTypes(q) {
 		return await biolineageDb.query('select id, name text, description from place_types where name ilike $1 order by text;', [`%${q}%`])
+	}
+
+	async locations(q) {
+		return await biolineageDb.query('select * from geo_query($1)', [q])
 	}
 
 	async municipalities(q) {

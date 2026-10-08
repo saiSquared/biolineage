@@ -545,6 +545,19 @@ export default function modalForm(options, fields, groups, validators) {
 		if (response.ok) {
 			handleModalClose()
 			modalResolve(response.id)
+		} else if (response.validationError) {
+			const vErr = response.validationError
+			const field = allFields.find(lookup => lookup.name === vErr.id)
+			if (field) {
+				console.log(field)
+				switch (field.type) {
+					default:
+						document.getElementById(vErr.id).setCustomValidity(vErr.text)
+				}
+				modalBody.reportValidity()
+			} else {
+				console.error('Field not found', vErr)
+			}
 		}
 	}
 

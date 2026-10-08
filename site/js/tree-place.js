@@ -420,6 +420,7 @@ async function showPlace() {
 		})
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 19,
+			referrerPolicy: 'strict-origin-when-cross-origin',
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map)
 	}

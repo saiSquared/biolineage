@@ -135,6 +135,10 @@ async function apiServers(app) {
 		reply.send(await getters.administrativeDivisions(request.query.q))
 	})
 
+	app.get('/api/geography/locations', async (request, reply) => {
+		reply.send(await getters.locations(request.query.q))
+	})
+
 	app.get('/api/geography/municipalities', async (request, reply) => {
 		reply.send(await getters.municipalities(request.query.q))
 	})

@@ -89,6 +89,8 @@ const buildName = (data) => {
 	}
 }
 
+const camelCaseToSnakeCase = (str) => str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)
+
 const isUuid = (str) => typeof str === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str)
 
 const massageNumber = (num) => {
@@ -205,9 +207,26 @@ class Setters {
 			}
 		}
 
+		console.log(fact)
+
 		// validate geography
 		if (fact.place === 'new') {
-			if (fact.municipalityId) {
+			if (fact.location) {
+				const location = await biolineageDb.get('select * from geo_search where id = $1', [fact.location])
+				if (!location) {
+					return { ok: false, validationError: { id: 'location', text: 'Location not found' } }
+				} else {
+					console.log(location)
+					fact.sovereignEntityId = location.sovereignEntityId
+					fact.sovereignEntity = null
+					fact.subdivisionId = location.subdivisionId
+					fact.subdivision = null
+					fact.administrativeDivisionId = location.administrativeDivisionId
+					fact.administrativeDivision = null
+					fact.municipalityId = location.municipalityId
+					fact.municipality = null
+				}
+			} else if (fact.municipalityId) {
 				if (fact.administrativeDivision || fact.subdivision || fact.sovereignEntity) {
 					let id
 					if (fact.administrativeDivision) id = 'administrative-division'
@@ -306,17 +325,40 @@ class Setters {
 
 		console.log(fact)
 
+		if (fact.place === 'new') {
+			const placeTypeName = await biolineageDb.get('select * from places where tree_id = $1 and place_type = $2 and name = $3', [fact.treeId, fact.placeType, fact.placeName])
+			if (placeTypeName) {
+				return { ok: false, validationError: { id: 'place-type', text: 'A place of that type and name already exists.' } }
+			}
+			let paramCount = 2
+			let placeLocationSql = 'select * from places where tree_id = $1 and name = $2'
+			const placeLocationParams = [fact.treeId, fact.placeName]
+			for (const geographyField of geographyFields) {
+				if (fact[`${geographyField}Id`]) {
+					paramCount++
+					placeLocationSql += ` and ${camelCaseToSnakeCase(`${geographyField}Id`)} = $${paramCount}`
+					placeLocationParams.push(fact[`${geographyField}Id`])
+				} else {
+					placeLocationSql += `and ${camelCaseToSnakeCase(`${geographyField}Id`)} is null`
+				}
+			}
+			const placeNameLocation = await biolineageDb.get(placeLocationSql, placeLocationParams)
+			if (placeNameLocation) {
+				return { ok: false, validationError: { id: 'place-name', text: 'A place of that name and location already exists.' } }
+			}
+		}
+
 		await biolineageDb.begin()
 		try {
 			let placeId = fact.placeId
 			if (fact.place === 'new') {
 				placeId = uuidv4()
-				if (isUuid(fact.placeType)) {
-					const placeTypeLookup = await biolineageDb.get('select name from place_types where id = $1', [fact.placeType])
-					fact.placeTypeId = fact.placeType
-					fact.placeType = placeTypeLookup.name
+				if (fact.placeType.id) {
+					fact.placeTypeId = fact.placeType.id
+					fact.placeType = fact.placeType.text
 				} else {
 					fact.placeTypeId = null
+					fact.placeType = fact.placeType.text
 				}
 				if (fact.municipalityId && !fact.administrativeDivisionId && !fact.subdivisionId && !fact.sovereignEntityId) {
 					const rollup = await biolineageDb.get('select sovereign_entity_id, subdivision_id, administrative_division_id from municipalities where id = $1', [fact.municipalityId])

@@ -1688,6 +1688,55 @@ const pgFunctions = [
 				);
 			END;
 			$$;`
+	},
+	{
+		code:
+			`CREATE OR REPLACE FUNCTION public.geo_query(p_search text, p_limit integer DEFAULT 20)
+			RETURNS TABLE(id uuid, name text, score real)
+			LANGUAGE plpgsql
+			AS $function$
+			DECLARE
+				v_search TEXT;
+				v_terms TEXT[];
+				v_tsquery TEXT;
+			BEGIN
+				v_search := lower(trim(regexp_replace(p_search, '\\s+', ' ', 'g')));
+
+				IF v_search = '' THEN
+					RETURN;
+				END IF;
+
+				v_terms := string_to_array(v_search, ' ');
+
+				IF array_length(v_terms, 1) = 1 THEN
+					v_tsquery := v_terms[1] || ':*';
+				ELSE
+					v_tsquery :=
+						array_to_string(
+							v_terms[1:array_length(v_terms, 1) - 1],
+							' & '
+						)
+						|| ' & '
+						|| v_terms[array_length(v_terms, 1)]
+						|| ':*';
+				END IF;
+
+				RETURN QUERY
+				SELECT
+					gs.id,
+					gs.search_display name,
+					ts_rank_cd(
+						to_tsvector('simple', gs.search_text),
+						to_tsquery('simple', v_tsquery)
+					) AS score
+				FROM geo_search gs
+				WHERE to_tsvector('simple', gs.search_text)
+					@@ to_tsquery('simple', v_tsquery)
+				ORDER BY score DESC, gs.search_display
+				LIMIT p_limit;
+			END;
+			$function$
+			;`
 	}
 ]
 
